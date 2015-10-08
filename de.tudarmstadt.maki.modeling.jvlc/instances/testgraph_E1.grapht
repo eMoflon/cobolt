@@ -1,0 +1,9 @@
+# test case for ie-ktc
+3 3
+n1 10
+n2 30
+n3 60
+# distance is not important for this test case
+e12 e21 n1 n2 1.0  5
+e13 e31 n1 n3 1.0 10
+e23 e32 n2 n3 1.0 15
