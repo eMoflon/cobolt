@@ -28,6 +28,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	@Before
 	public void setup() {
 		this.facade = (JVLCFacade) TopologyControlFacadeFactory.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
+		this.facade.configureAlgorithm(ALGO_ID);
 	}
 
 	@Test
@@ -69,7 +70,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		assertIsSymmetric(graph);
 
-		facade.run(ALGO_ID, 1.41);
+		facade.run(1.41);
 
 		assertIsActive(link12);
 		assertIsActive(link12.getReverseEdge());
@@ -84,7 +85,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	@Test
 	public void testFacadeWithTestgraph1() throws Exception {
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(1));
-		facade.run(ALGO_ID, 1.1);
+		facade.run(1.1);
 
 		final Topology topology = facade.getTopology();
 
@@ -105,7 +106,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 	{
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(3));
-		facade.run(ALGO_ID, 1.5);
+		facade.run(1.5);
 
 		final Topology topology = facade.getTopology();
 

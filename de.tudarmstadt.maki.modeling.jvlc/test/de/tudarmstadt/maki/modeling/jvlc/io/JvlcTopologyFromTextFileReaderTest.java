@@ -4,8 +4,10 @@ import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistance
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
@@ -16,10 +18,16 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 public class JvlcTopologyFromTextFileReaderTest {
 
 	private static final double EPS_6 = 1e-6;
+	private Topology topology;
+
+	@Before
+	public void setup() {
+		this.topology = JvlcFactory.eINSTANCE.createTopology();
+	}
 
 	@Test
 	public void testWithTestgraph1() throws Exception {
-		final Topology topology = JvlcTopologyFromTextFileReader.readTopology(getPathToDistanceTestGraph(1));
+		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToDistanceTestGraph(1));
 
 		Assert.assertEquals(5, topology.getNodeCount());
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
@@ -36,7 +44,7 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgraph3() throws Exception {
-		final Topology topology = JvlcTopologyFromTextFileReader.readTopology(getPathToDistanceTestGraph(3));
+		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToDistanceTestGraph(3));
 
 		Assert.assertEquals(3, topology.getNodeCount());
 		Assert.assertEquals(2 * 3, topology.getEdgeCount());
@@ -47,7 +55,7 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgraph4() throws Exception {
-		final Topology topology = JvlcTopologyFromTextFileReader.readTopology(getPathToEnergyTestGraph(1));
+		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToEnergyTestGraph(1));
 
 		Assert.assertEquals(6, topology.getEdgeCount());
 		Assert.assertEquals(3, topology.getNodeCount());

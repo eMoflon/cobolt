@@ -20,7 +20,6 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
-import de.tudarmstadt.maki.modeling.jvlc.listener.AttributeValueSynchronizingContentAdapter;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
@@ -37,12 +36,24 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 public class JVLCFacade implements ITopologyControlFacade {
 
 	private Topology topology;
+	private IncrementalKTC algorithm;
 	private Graph graph;
 	private final List<ILinkActivationListener> linkActivationListeners;
 	private final Map<INodeID, KTCNode> nodeMappingSim2Jvlc;
 	private final Map<KTCNode, INodeID> nodeMappingJvlc2Sim;
 	private final Map<IEdge, KTCLink> edgeMappingSim2Jvlc;
 	private final Map<KTCLink, IEdge> edgeMappingJvlc2Sim;
+
+	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
+		switch (algorithmId) {
+		case ID_KTC:
+			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
+		case IE_KTC:
+			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
+		default:
+			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
+		}
+	}
 
 	/**
 	 * Default constructor.
@@ -54,6 +65,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.edgeMappingSim2Jvlc = new HashMap<>();
 		this.edgeMappingJvlc2Sim = new HashMap<>();
 		this.intializeGraph();
+	}
+
+	@Override
+	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
+		this.algorithm = getAlgorithmForID(algorithmID);
+		this.registerListeners();
 	}
 
 	/**
@@ -68,45 +85,37 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	public void loadAndSetTopologyFromFile(final File inputFile) throws FileNotFoundException {
+		if (!this.topology.getNodes().isEmpty()) {
+			throw new IllegalStateException("This method may only be called if the stored topology is still empty");
+		}
 		final JvlcTopologyFromTextFileReader reader = new JvlcTopologyFromTextFileReader();
-		this.topology = reader.read(new FileInputStream(inputFile));
-		this.registerListeners(this.topology);
+		reader.read(this.topology, new FileInputStream(inputFile));
 	}
 
-	private void registerListeners(final Topology graph) {
-		graph.eAdapters().add(new AttributeValueSynchronizingContentAdapter());
-		graph.eAdapters().add(new LinkActivationContentAdapter());
+	private void registerListeners() {
+		// TODO@rkluge: Sync manually - this will take too much time otherwise
+		// graph.eAdapters().add(new AttributeValueSynchronizingContentAdapter());
+		topology.eAdapters().clear();
+		topology.eAdapters().add(new LinkActivationContentAdapter());
+		// topology.eAdapters().add(new ContextEventHandlingAdapter(this.algorithm));
 	}
 
 	@Override
-	public void run(final TopologyControlAlgorithmID algorithmID, final TopologyControlAlgorithmParamters parameters) {
-		final IncrementalKTC algorithm = getAlgorithmForID(algorithmID);
+	public void run(final TopologyControlAlgorithmParamters parameters) {
 		algorithm.setK((Double) parameters.get(KTCConstants.K));
-		algorithm.run(getTopology());
+		algorithm.run(this.topology);
 	}
 
 	/**
 	 * Convenience method that is tailored to kTC.
 	 */
-	public void run(final TopologyControlAlgorithmID algorithm, final double k) {
-		this.run(algorithm, TopologyControlAlgorithmParamters.create(KTCConstants.K, k));
-	}
-
-	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
-		switch (algorithmId) {
-		case ID_KTC:
-			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
-		case IE_KTC:
-			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
-		default:
-			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
-		}
+	public void run(final double k) {
+		this.run(TopologyControlAlgorithmParamters.create(KTCConstants.K, k));
 	}
 
 	@Override
 	public Graph intializeGraph() {
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
-		registerListeners(topology);
 		this.graph = Graphs.createGraph();
 		return this.graph;
 	}
@@ -133,23 +142,33 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public <T> void updateAttribute(final IElement element, final GraphElementProperty<T> property) {
-		if (element instanceof IEdge) {
-			final IEdge simEdge = (IEdge) element;
-			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
-			if (KTCConstants.DISTANCE.equals(property)) {
-				ktcLink.setDistance((Double) element.getProperty(property));
-			} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
-				ktcLink.setRequiredTransmissionPower((Double) element.getProperty(property));
-			}
-		} else if (element instanceof INode) {
-			final INode simNode = (INode) element;
-			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
-			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
-				ktcNode.setRemainingEnergy((Double) element.getProperty(property));
-			}
-		} else {
-			throw new IllegalArgumentException("Unknown elment type: " + element.toString());
+	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
+		final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
+		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
+
+	}
+
+	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
+		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
+			ktcNode.setRemainingEnergy((Double) value);
+			this.algorithm.handleNodeAttributeModification(ktcNode);
+		}
+	}
+
+	@Override
+	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
+		final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
+		final Double value = (Double) simEdge.getProperty(property);
+		updateLinkAttribute(ktcLink, property, value);
+	}
+
+	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final Double value) {
+		if (KTCConstants.DISTANCE.equals(property)) {
+			ktcLink.setDistance(value);
+			this.algorithm.handleLinkAttributeModification(ktcLink);
+		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
+			ktcLink.setRequiredTransmissionPower(value);
+			this.algorithm.handleLinkAttributeModification(ktcLink);
 		}
 	}
 
