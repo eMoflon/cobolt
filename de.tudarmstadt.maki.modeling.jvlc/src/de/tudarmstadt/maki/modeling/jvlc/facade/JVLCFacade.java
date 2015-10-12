@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EAttribute;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.listener.GraphContentAdapter;
+import de.tudarmstadt.maki.modeling.jvlc.AttributeNames;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcPackage;
@@ -97,7 +98,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 		// graph.eAdapters().add(new AttributeValueSynchronizingContentAdapter());
 		topology.eAdapters().clear();
 		topology.eAdapters().add(new LinkActivationContentAdapter());
-		// topology.eAdapters().add(new ContextEventHandlingAdapter(this.algorithm));
 	}
 
 	@Override
@@ -124,6 +124,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	public INode addNode(final INodeID id, final double remainingEnergy) {
 		final INode simNode = this.graph.createNode(id);
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
+		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
 		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
 		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
 		return simNode;
@@ -136,6 +137,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 		simEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 		final KTCLink ktcLink = this.topology.addKTCLink(simEdge.getId().valueAsString(), this.nodeMappingSim2Jvlc.get(source),
 				this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+		ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
+		ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 		this.edgeMappingSim2Jvlc.put(simEdge, ktcLink);
 		this.edgeMappingJvlc2Sim.put(ktcLink, simEdge);
 		return simEdge;
@@ -151,6 +154,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
 		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
 			ktcNode.setRemainingEnergy((Double) value);
+			ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
 			this.algorithm.handleNodeAttributeModification(ktcNode);
 		}
 	}
@@ -158,16 +162,18 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
 		final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
-		final Double value = (Double) simEdge.getProperty(property);
+		final T value = simEdge.getProperty(property);
 		updateLinkAttribute(ktcLink, property, value);
 	}
 
-	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final Double value) {
+	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
 		if (KTCConstants.DISTANCE.equals(property)) {
-			ktcLink.setDistance(value);
+			ktcLink.setDistance((Double) value);
+			ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);
 			this.algorithm.handleLinkAttributeModification(ktcLink);
 		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
-			ktcLink.setRequiredTransmissionPower(value);
+			ktcLink.setRequiredTransmissionPower((Double) value);
+			ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, (Double) value);
 			this.algorithm.handleLinkAttributeModification(ktcLink);
 		}
 	}
