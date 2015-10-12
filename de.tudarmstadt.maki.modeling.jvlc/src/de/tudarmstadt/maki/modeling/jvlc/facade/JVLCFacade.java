@@ -36,7 +36,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class JVLCFacade implements ITopologyControlFacade {
 
-	private IncrementalKTC algorithm;
 	private Topology topology;
 	private Graph graph;
 	private final List<ILinkActivationListener> linkActivationListeners;
@@ -45,24 +44,16 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final Map<IEdge, KTCLink> edgeMappingSim2Jvlc;
 	private final Map<KTCLink, IEdge> edgeMappingJvlc2Sim;
 
-	private JVLCFacade(final IncrementalKTC algorithm) {
+	/**
+	 * Default constructor.
+	 */
+	public JVLCFacade() {
 		this.linkActivationListeners = new ArrayList<>();
 		this.nodeMappingSim2Jvlc = new HashMap<>();
 		this.nodeMappingJvlc2Sim = new HashMap<>();
 		this.edgeMappingSim2Jvlc = new HashMap<>();
 		this.edgeMappingJvlc2Sim = new HashMap<>();
-		this.algorithm = algorithm;
 		this.intializeGraph();
-	}
-
-	public static JVLCFacade createFacadeForIncrementalDistanceKTC() {
-		final JVLCFacade facade = new JVLCFacade(JvlcFactory.eINSTANCE.createIncrementalDistanceKTC());
-		return facade;
-	}
-
-	public static JVLCFacade createFacadeForIncrementalEnergyKTC() {
-		final JVLCFacade facade = new JVLCFacade(JvlcFactory.eINSTANCE.createIncrementalEnergyKTC());
-		return facade;
 	}
 
 	/**
@@ -70,16 +61,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 	 */
 	public Topology getTopology() {
 		return this.topology;
-	}
-
-	/**
-	 * Returns the algorithm instance. You should not use the returned instance to run the algorithm.
-	 * Use {@link #run(double)} instead.
-	 *
-	 * @return the algorithm of this facade
-	 */
-	public IncrementalKTC getAlgorithm() {
-		return this.algorithm;
 	}
 
 	public void loadAndSetTopologyFromFile(final String inputFilename) throws FileNotFoundException {
@@ -98,27 +79,27 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public void run(final TopologyControlAlgorithmID algorithm, final TopologyControlAlgorithmParamters parameters) {
-		this.configureAlgorithm(algorithm);
-		this.algorithm.setK((Double) parameters.get(KTCConstants.K));
-		this.algorithm.run(getTopology());
+	public void run(final TopologyControlAlgorithmID algorithmID, final TopologyControlAlgorithmParamters parameters) {
+		final IncrementalKTC algorithm = getAlgorithmForID(algorithmID);
+		algorithm.setK((Double) parameters.get(KTCConstants.K));
+		algorithm.run(getTopology());
 	}
 
-	public void run(final double k) {
-		this.algorithm.setK(k);
-		this.algorithm.run(getTopology());
+	/**
+	 * Convenience method that is tailored to kTC.
+	 */
+	public void run(final TopologyControlAlgorithmID algorithm, final double k) {
+		this.run(algorithm, TopologyControlAlgorithmParamters.create(KTCConstants.K, k));
 	}
 
-	private void configureAlgorithm(final TopologyControlAlgorithmID algorithmId) {
+	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 		switch (algorithmId) {
 		case ID_KTC:
-			this.algorithm = JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
-			break;
+			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
 		case IE_KTC:
-			this.algorithm = JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
-			break;
+			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
 		default:
-			throw new IllegalArgumentException("Unsupported algorithm: " + algorithmId);
+			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
 		}
 	}
 

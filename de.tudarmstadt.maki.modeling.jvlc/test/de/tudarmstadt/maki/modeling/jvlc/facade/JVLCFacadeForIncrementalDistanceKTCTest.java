@@ -13,6 +13,9 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
+import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 
 /**
  * Unit tests for {@link JVLCFacade}, using {@link IncrementalDistanceKTC}.
@@ -20,11 +23,11 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 	private JVLCFacade facade;
+	private static TopologyControlAlgorithmID ALGO_ID = TopologyControlAlgorithmID.ID_KTC;
 
 	@Before
 	public void setup() {
-
-		this.facade = JVLCFacade.createFacadeForIncrementalDistanceKTC();
+		this.facade = (JVLCFacade) TopologyControlFacadeFactory.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
 	}
 
 	@Test
@@ -66,7 +69,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		assertIsSymmetric(graph);
 
-		facade.run(1.41);
+		facade.run(ALGO_ID, 1.41);
 
 		assertIsActive(link12);
 		assertIsActive(link12.getReverseEdge());
@@ -75,12 +78,13 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertIsInactive(link23);
 		assertIsInactive(link23.getReverseEdge());
 		assertIsSymmetric(graph);
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
 	public void testFacadeWithTestgraph1() throws Exception {
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(1));
-		facade.run(1.1);
+		facade.run(ALGO_ID, 1.1);
 
 		final Topology topology = facade.getTopology();
 
@@ -93,6 +97,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertIsInactive(topology.getEdgeById("e15"));
 
 		assertIsSymmetric(topology);
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
@@ -100,7 +105,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 	{
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(3));
-		facade.run(1.5);
+		facade.run(ALGO_ID, 1.5);
 
 		final Topology topology = facade.getTopology();
 
@@ -110,7 +115,9 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertIsActive(topology.getEdgeById("e32"));
 		assertIsInactive(topology.getEdgeById("e13"));
 		assertIsInactive(topology.getEdgeById("e31"));
+
 		assertIsSymmetric(topology);
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
 	}
 
 	/*
