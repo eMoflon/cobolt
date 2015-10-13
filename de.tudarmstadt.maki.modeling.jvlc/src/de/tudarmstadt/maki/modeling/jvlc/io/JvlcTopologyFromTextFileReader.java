@@ -26,7 +26,7 @@ public class JvlcTopologyFromTextFileReader {
 		try {
 			scanner = new Scanner(stream);
 			String nmLine = scanner.nextLine();
-			while (nmLine.startsWith("#")) {
+			while (!isValidLine(nmLine)) {
 				nmLine = scanner.nextLine();
 			}
 			final int n = Integer.parseInt(nmLine.split("\\s+")[0]);
@@ -35,7 +35,7 @@ public class JvlcTopologyFromTextFileReader {
 			int readNodeLines = 0;
 			while (readNodeLines < n) {
 				final String line = scanner.nextLine();
-				if (!line.startsWith("#")) {
+				if (isValidLine(line)) {
 					final String[] splitLine = line.split("\\s+");
 					final String nodeId = splitLine[0];
 					final Double remainingEnergy;
@@ -52,7 +52,7 @@ public class JvlcTopologyFromTextFileReader {
 			int readEdgeLines = 0;
 			while (readEdgeLines < m) {
 				final String line = scanner.nextLine();
-				if (!line.startsWith("#")) {
+				if (isValidLine(line)) {
 					final String[] splitLine = line.split("\\s+");
 					final String edgeIdFwd = splitLine[0];
 					final String edgeIdBwd = splitLine[1];
@@ -76,6 +76,10 @@ public class JvlcTopologyFromTextFileReader {
 		} finally {
 			scanner.close();
 		}
+	}
+
+	private static boolean isValidLine(final String line) {
+		return !line.startsWith("#") && !line.trim().isEmpty();
 	}
 
 	/**

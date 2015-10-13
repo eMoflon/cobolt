@@ -43,6 +43,9 @@ public final class JvlcTestHelper {
 		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'", state, actualState);
 	}
 
+	/**
+	 * Asserts that the graph contains for each link its reverse link and that the attributes that should be symmetric (state, required transmission power, distance) are the same.
+	 */
 	public static void assertIsSymmetric(final Topology graph) {
 		for (final Edge edge : graph.getEdges()) {
 			Assert.assertNotNull("Link '" + edge.getId() + "' has no reverse edge", edge.getReverseEdge());
@@ -69,5 +72,9 @@ public final class JvlcTestHelper {
 
 	public static String getPathToEnergyTestGraph(final int i) {
 		return "instances/testgraph_E" + i + ".grapht";
+	}
+
+	public static void assertHasDistance(final Topology topology, final String id, final double distance) {
+		Assert.assertEquals(distance, topology.getKTCLinkById(id).getDistance(), EPS_0);
 	}
 }

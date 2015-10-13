@@ -1,7 +1,10 @@
+# n m
 3 3
+# nodes (no energy given)
 1
 2
 3
+# edge-id-fwd edge-id-bwd source-id target-id distance
 e12 e21 1 2 10
 e13 e31 1 3 20
 e23 e32 2 3 15
