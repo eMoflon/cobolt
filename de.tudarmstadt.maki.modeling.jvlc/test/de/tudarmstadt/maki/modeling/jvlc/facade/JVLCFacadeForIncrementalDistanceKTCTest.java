@@ -1,5 +1,7 @@
 package de.tudarmstadt.maki.modeling.jvlc.facade;
 
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptionsSymmetric;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertHasNoUnclassifiedLinks;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActive;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactive;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric;
@@ -83,19 +85,14 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	}
 
 	@Test
-	public void testFacadeWithTestgraph1() throws Exception {
+	public void testFacadeWithTestgraphD1() throws Exception {
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(1));
 		facade.run(1.1);
 
 		final Topology topology = facade.getTopology();
 
-		assertIsActive(topology.getEdgeById("e12"));
-		assertIsActive(topology.getEdgeById("e23"));
-		assertIsInactive(topology.getEdgeById("e13"));
-		assertIsActive(topology.getEdgeById("e34"));
-		assertIsInactive(topology.getEdgeById("e14"));
-		assertIsActive(topology.getEdgeById("e45"));
-		assertIsInactive(topology.getEdgeById("e15"));
+		assertIsActive(topology, "e12", "e23", "e34", "e45");
+		assertIsInactive(topology, "e13", "e14", "e15");
 
 		assertIsSymmetric(topology);
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
@@ -110,12 +107,8 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		final Topology topology = facade.getTopology();
 
-		assertIsActive(topology.getEdgeById("e12"));
-		assertIsActive(topology.getEdgeById("e21"));
-		assertIsActive(topology.getEdgeById("e23"));
-		assertIsActive(topology.getEdgeById("e32"));
-		assertIsInactive(topology.getEdgeById("e13"));
-		assertIsInactive(topology.getEdgeById("e31"));
+		assertIsActive(topology, "e12", "e21", "e23", "e32");
+		assertIsInactive(topology, "e13", "e31");
 
 		assertIsSymmetric(topology);
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
@@ -126,6 +119,15 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 * Incremental test cases
 	 * ##################
 	 */
+	@Test
+	public void testFacadeWithTestgraphD4() throws Exception {
+		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(4));
+		facade.run(2);
+
+		final Topology topology = facade.getTopology();
+		assertHasNoUnclassifiedLinks(topology);
+		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e2-5", "e2-6", "e3-9", "e3-11", "e9-11");
+	}
 	// TODO@rkluge: We need tests for incremental scenarios
 	/*
 	 *  Use cases:

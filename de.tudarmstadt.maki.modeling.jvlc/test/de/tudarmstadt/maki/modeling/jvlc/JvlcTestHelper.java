@@ -1,5 +1,9 @@
 package de.tudarmstadt.maki.modeling.jvlc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -43,6 +47,12 @@ public final class JvlcTestHelper {
 		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'", state, actualState);
 	}
 
+	public static void assertHasNoUnclassifiedLinks(final Topology topology) {
+		for (final Edge link : topology.getEdges()) {
+			Assert.assertNotSame(LinkState.UNCLASSIFIED, ((KTCLink) link).getState());
+		}
+	}
+
 	/**
 	 * Asserts that the graph contains for each link its reverse link and that the attributes that should be symmetric (state, required transmission power, distance) are the same.
 	 */
@@ -76,5 +86,23 @@ public final class JvlcTestHelper {
 
 	public static void assertHasDistance(final Topology topology, final String id, final double distance) {
 		Assert.assertEquals(distance, topology.getKTCLinkById(id).getDistance(), EPS_0);
+	}
+
+	public static void assertAllActiveWithExceptionsSymmetric(final Topology topology, final String... edgeIds) {
+		assertAllActiveWithExceptions(topology, true, edgeIds);
+	}
+
+	public static void assertAllActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges, final String... edgeIds) {
+		final List<String> sortedEdgeIds = new ArrayList<>(Arrays.asList(edgeIds));
+		Collections.sort(sortedEdgeIds);
+		for (final Edge edge : topology.getEdges()) {
+			if (Collections.binarySearch(sortedEdgeIds, edge.getId()) >= 0) {
+				assertIsInactive(edge);
+			} else if (assumeSymmetricEdges && Collections.binarySearch(sortedEdgeIds, edge.getReverseEdge().getId()) >= 0) {
+				assertIsInactive(edge);
+			} else {
+				assertIsActive(edge);
+			}
+		}
 	}
 }
