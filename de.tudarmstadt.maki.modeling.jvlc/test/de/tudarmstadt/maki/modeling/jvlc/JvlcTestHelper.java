@@ -3,12 +3,16 @@ package de.tudarmstadt.maki.modeling.jvlc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Assert;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
+import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 
 public final class JvlcTestHelper {
 	private JvlcTestHelper() {
@@ -18,33 +22,55 @@ public final class JvlcTestHelper {
 	public static final double EPS_0 = 0.0;
 	public static final double EPS_6 = 1e-6;
 
-	public static void assertIsUnclassified(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.UNCLASSIFIED);
-	}
-
-	public static void assertIsInactive(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.INACTIVE);
-	}
-
-	public static void assertIsActive(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.ACTIVE);
-	}
-
-	public static void assertIsActive(final Topology topology, final String... edgeIds) {
+	public static void assertHasState(final Topology topology, final LinkState state, final boolean checkSymmetry, final String... edgeIds) {
 		for (final String edgeId : edgeIds) {
-			JvlcTestHelper.assertHasState(topology.getEdgeById(edgeId), LinkState.ACTIVE);
-		}
-	}
-
-	public static void assertIsInactive(final Topology topology, final String... edgeIds) {
-		for (final String edgeId : edgeIds) {
-			JvlcTestHelper.assertHasState(topology.getEdgeById(edgeId), LinkState.INACTIVE);
+			final Edge link = topology.getEdgeById(edgeId);
+			JvlcTestHelper.assertHasState(link, state);
+			if (checkSymmetry) {
+				JvlcTestHelper.assertHasState(link.getReverseEdge(), state);
+			}
 		}
 	}
 
 	public static void assertHasState(final Edge link, final LinkState state) {
 		final LinkState actualState = ((KTCLink) link).getState();
 		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'", state, actualState);
+	}
+
+	public static void assertIsActive(final Edge link) {
+		JvlcTestHelper.assertHasState(link, LinkState.ACTIVE);
+	}
+
+	public static void assertIsInactive(final Edge link) {
+		JvlcTestHelper.assertHasState(link, LinkState.INACTIVE);
+	}
+
+	public static void assertIsUnclassified(final Edge link) {
+		JvlcTestHelper.assertHasState(link, LinkState.UNCLASSIFIED);
+	}
+
+	public static void assertIsActive(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.ACTIVE, false, edgeIds);
+	}
+
+	public static void assertIsInactive(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.INACTIVE, false, edgeIds);
+	}
+
+	public static void assertIsUnclassified(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.UNCLASSIFIED, false, edgeIds);
+	}
+
+	public static void assertIsActiveSymmetric(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.ACTIVE, true, edgeIds);
+	}
+
+	public static void assertIsInactiveSymmetric(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.INACTIVE, true, edgeIds);
+	}
+
+	public static void assertIsUnclassifiedSymmetric(final Topology topology, final String... edgeIds) {
+		assertHasState(topology, LinkState.UNCLASSIFIED, true, edgeIds);
 	}
 
 	public static void assertHasNoUnclassifiedLinks(final Topology topology) {
@@ -105,4 +131,37 @@ public final class JvlcTestHelper {
 			}
 		}
 	}
+
+	public static String formatEdgeStates(final Graph graph) {
+		final StringBuilder builder = new StringBuilder();
+		final List<String> edgeIds = new ArrayList<>();
+		final Set<String> processedIds = new HashSet<>();
+		for (final Edge edge : graph.getEdges()) {
+			edgeIds.add(edge.getId());
+		}
+		final Map<LinkState, Integer> stateCounts = new HashMap<>();
+		stateCounts.put(LinkState.ACTIVE, 0);
+		stateCounts.put(LinkState.INACTIVE, 0);
+		stateCounts.put(LinkState.UNCLASSIFIED, 0);
+		Collections.sort(edgeIds);
+		for (final String id : edgeIds) {
+			if (!processedIds.contains(id)) {
+				final KTCLink link = (KTCLink) graph.getEdgeById(id);
+				final KTCLink revLink = (KTCLink) link.getReverseEdge();
+				Assert.assertNotNull("Null reverse link of link " + link, revLink);
+				Assert.assertNotNull(revLink.getId());
+				builder.append(String.format("%6s", link.getId()) + " : " + link.getState().toString().substring(0, 1) + " || "
+						+ String.format("%6s", revLink.getId()) + " : " + revLink.getState().toString().substring(0, 1) + "\n");
+				processedIds.add(link.getId());
+				processedIds.add(revLink.getId());
+				stateCounts.put(link.getState(), stateCounts.get(link.getState()) + 1);
+				stateCounts.put(revLink.getState(), stateCounts.get(revLink.getState()) + 1);
+			}
+		}
+		builder.insert(0, String.format("#A : %d || #I : %d || #U : %d\n", stateCounts.get(LinkState.ACTIVE), stateCounts.get(LinkState.INACTIVE),
+				stateCounts.get(LinkState.UNCLASSIFIED)));
+		return builder.toString();
+
+	}
+
 }

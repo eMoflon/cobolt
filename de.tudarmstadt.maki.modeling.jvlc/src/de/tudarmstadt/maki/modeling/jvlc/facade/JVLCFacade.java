@@ -122,26 +122,56 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public INode addNode(final INodeID id, final double remainingEnergy) {
+
 		final INode simNode = this.graph.createNode(id);
+
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
 		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
+		this.algorithm.handleNodeAddition(ktcNode);
+
 		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
 		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
+
 		return simNode;
 	}
 
 	@Override
 	public IEdge addEdge(final INodeID source, final INodeID target, final double distance, final double requiredTransmissionPower) {
-		final IEdge simEdge = this.graph.createEdge(source, target);
-		simEdge.setProperty(KTCConstants.DISTANCE, distance);
-		simEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-		final KTCLink ktcLink = this.topology.addKTCLink(simEdge.getId().valueAsString(), this.nodeMappingSim2Jvlc.get(source),
-				this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+		final IEdge forwardEdge = Graphs.createDirectedEdge(source, target);
+		final IEdge backwardEdge = Graphs.createDirectedEdge(target, source);
+		forwardEdge.setProperty(KTCConstants.DISTANCE, distance);
+		forwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+		backwardEdge.setProperty(KTCConstants.DISTANCE, distance);
+		backwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+		if (!this.graph.containsEdge(forwardEdge)) {
+			this.graph.addEdge(forwardEdge);
+			this.graph.addEdge(backwardEdge);
+
+			final KTCLink forwardKtcLink = addSymmetricKTCLink(forwardEdge.getId().valueAsString(), backwardEdge.getId().valueAsString(),
+					this.nodeMappingSim2Jvlc.get(source), this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+
+			this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
+			this.edgeMappingJvlc2Sim.put(forwardKtcLink, backwardEdge);
+
+			return forwardEdge;
+		} else {
+			return graph.getEdge(forwardEdge.getId());
+		}
+	}
+
+	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId, final KTCNode sourceNode, final KTCNode targetNode,
+			final double distance, final double requiredTransmissionPower) {
+		final KTCLink ktcLink = this.topology.addUndirectedKTCLink(forwardEdgeId, backwardEdgeId, sourceNode, targetNode, distance,
+				requiredTransmissionPower);
+		// TODO@rkluge: better synchronization support
 		ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
 		ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-		this.edgeMappingSim2Jvlc.put(simEdge, ktcLink);
-		this.edgeMappingJvlc2Sim.put(ktcLink, simEdge);
-		return simEdge;
+		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
+		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+
+		this.algorithm.handleLinkAddition(ktcLink);
+
+		return ktcLink;
 	}
 
 	@Override
@@ -183,18 +213,28 @@ public class JVLCFacade implements ITopologyControlFacade {
 		if (element instanceof IEdge) {
 			final IEdge simEdge = (IEdge) element;
 			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
-			this.topology.removeEdge(ktcLink);
+			removeKTCLink(ktcLink);
 			this.edgeMappingJvlc2Sim.remove(ktcLink);
 			this.edgeMappingSim2Jvlc.remove(simEdge);
 		} else if (element instanceof INode) {
 			final INode simNode = (INode) element;
 			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
-			this.topology.removeNode(ktcNode);
+			removeKTCNode(ktcNode);
 			this.nodeMappingJvlc2Sim.remove(ktcNode);
 			this.nodeMappingSim2Jvlc.remove(simNode.getId());
 		} else {
 			throw new IllegalArgumentException("Unknown elment type: " + element.toString());
 		}
+	}
+
+	public void removeKTCNode(final KTCNode ktcNode) {
+		this.algorithm.handleNodeDeletion(ktcNode);
+		this.topology.removeNode(ktcNode);
+	}
+
+	public void removeKTCLink(final KTCLink ktcLink) {
+		this.algorithm.handleLinkDeletion(ktcLink);
+		this.topology.removeEdge(ktcLink);
 	}
 
 	@Override

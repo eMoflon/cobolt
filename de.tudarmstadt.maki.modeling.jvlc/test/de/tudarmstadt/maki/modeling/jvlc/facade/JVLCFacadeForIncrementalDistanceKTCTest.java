@@ -1,11 +1,12 @@
 package de.tudarmstadt.maki.modeling.jvlc.facade;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptionsSymmetric;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertHasNoUnclassifiedLinks;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActive;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactive;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActiveSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassifiedSymmetric;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,20 +67,15 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		final KTCNode n1 = graph.addKTCNode("n1", 20.0);
 		final KTCNode n2 = graph.addKTCNode("n2", 20.0);
 		final KTCNode n3 = graph.addKTCNode("n3", 20.0);
-		final KTCLink link12 = graph.addUndirectedKTCLink("e12", "e21", n1, n2, 100.0, 5.0);
-		final KTCLink link13 = graph.addUndirectedKTCLink("e13", "e31", n1, n3, 120.0, 5.0);
-		final KTCLink link23 = graph.addUndirectedKTCLink("e23", "e32", n2, n3, 150.0, 5.0);
+		graph.addUndirectedKTCLink("e12", "e21", n1, n2, 100.0, 5.0);
+		graph.addUndirectedKTCLink("e13", "e31", n1, n3, 120.0, 5.0);
+		graph.addUndirectedKTCLink("e23", "e32", n2, n3, 150.0, 5.0);
 
 		assertIsSymmetric(graph);
 
 		facade.run(1.41);
 
-		assertIsActive(link12);
-		assertIsActive(link12.getReverseEdge());
-		assertIsActive(link13);
-		assertIsActive(link13.getReverseEdge());
-		assertIsInactive(link23);
-		assertIsInactive(link23.getReverseEdge());
+		assertAllActiveWithExceptionsSymmetric(graph, "e23");
 		assertIsSymmetric(graph);
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
 	}
@@ -91,8 +87,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		final Topology topology = facade.getTopology();
 
-		assertIsActive(topology, "e12", "e23", "e34", "e45");
-		assertIsInactive(topology, "e13", "e14", "e15");
+		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e14", "e15");
 
 		assertIsSymmetric(topology);
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
@@ -107,9 +102,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		final Topology topology = facade.getTopology();
 
-		assertIsActive(topology, "e12", "e21", "e23", "e32");
-		assertIsInactive(topology, "e13", "e31");
-
+		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e31");
 		assertIsSymmetric(topology);
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
 	}
@@ -121,12 +114,32 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 */
 	@Test
 	public void testFacadeWithTestgraphD4() throws Exception {
+		final int k = 2;
+
 		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(4));
-		facade.run(2);
+
+		// TC(i)
+		facade.run(k);
 
 		final Topology topology = facade.getTopology();
-		assertHasNoUnclassifiedLinks(topology);
 		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e2-5", "e2-6", "e3-9", "e3-11", "e9-11");
+
+		// CE(i) - Add link e7-9
+		facade.addSymmetricKTCLink("e7-9", "e9-7", topology.getKTCNodeById("7"), topology.getKTCNodeById("9"), 10.0, 100.0);
+
+		assertIsUnclassified(topology, "e7-9");
+
+		// CE(i) - Remove node 10
+		facade.removeKTCNode(topology.getKTCNodeById("10"));
+		Assert.assertEquals(10, topology.getNodeCount());
+		Assert.assertEquals(34, topology.getEdgeCount());
+
+		assertIsUnclassifiedSymmetric(topology, "e3-9", "e3-11", "e9-11");
+		assertIsActiveSymmetric(topology, "e7-8", "e8-9", "e3-7");
+
+		// TC(ii)
+		facade.run(k);
+		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e2-5", "e2-6", "e3-9", "e7-8");
 	}
 	// TODO@rkluge: We need tests for incremental scenarios
 	/*
@@ -135,6 +148,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 *  * constraint violation (decrease distance of inactive link)
 	 *  * edge addition, node addition -> no problem
 	 *  * removing node -> setting incident edges of neighbors to unclassified
+	 *  * no handling necessary
 	 */
 
 }
