@@ -2,6 +2,7 @@ package de.tudarmstadt.maki.modeling.jvlc.facade;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptionsSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActiveSymmetric;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactiveSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassifiedSymmetric;
@@ -19,6 +20,7 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 /**
  * Unit tests for {@link JVLCFacade}, using {@link IncrementalDistanceKTC}.
@@ -140,6 +142,21 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		// TC(ii)
 		facade.run(k);
 		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e2-5", "e2-6", "e3-9", "e7-8");
+
+		// CE(ii)
+		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), KTCConstants.DISTANCE, 15.0);
+		assertIsUnclassifiedSymmetric(topology, "e2-6");
+		assertIsActiveSymmetric(topology, "e5-6");
+
+		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), KTCConstants.DISTANCE, 15.0);
+		assertIsUnclassifiedSymmetric(topology, "e2-5");
+		assertIsActiveSymmetric(topology, "e4-5");
+		assertIsInactiveSymmetric(topology, "e2-4");
+
+		// TC(iii)
+		facade.run(k);
+		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e3-9", "e4-5", "e5-6", "e7-8");
+
 	}
 	// TODO@rkluge: We need tests for incremental scenarios
 	/*

@@ -196,7 +196,15 @@ public class JVLCFacade implements ITopologyControlFacade {
 		updateLinkAttribute(ktcLink, property, value);
 	}
 
+	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+		updateLinkAttribute(ktcLink, property, value);
+		updateLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
+	}
+
 	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+		if (ktcLink == null) {
+			throw new NullPointerException();
+		}
 		if (KTCConstants.DISTANCE.equals(property)) {
 			ktcLink.setDistance((Double) value);
 			ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);

@@ -33,6 +33,7 @@ public final class JvlcTestHelper {
 	}
 
 	public static void assertHasState(final Edge link, final LinkState state) {
+		Assert.assertNotNull(link);
 		final LinkState actualState = ((KTCLink) link).getState();
 		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'", state, actualState);
 	}
