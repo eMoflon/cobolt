@@ -35,9 +35,9 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class JVLCFacade implements ITopologyControlFacade {
 
-	private Topology topology;
+	private final Topology topology;
 	private IncrementalKTC algorithm;
-	private Graph graph;
+	private final Graph graph;
 	private final List<ILinkActivationListener> linkActivationListeners;
 	private final Map<INodeID, KTCNode> nodeMappingSim2Jvlc;
 	private final Map<KTCNode, INodeID> nodeMappingJvlc2Sim;
@@ -64,7 +64,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.nodeMappingJvlc2Sim = new HashMap<>();
 		this.edgeMappingSim2Jvlc = new HashMap<>();
 		this.edgeMappingJvlc2Sim = new HashMap<>();
-		this.intializeGraph();
+		this.topology = JvlcFactory.eINSTANCE.createTopology();
+		this.graph = Graphs.createGraph();
 	}
 
 	@Override
@@ -113,9 +114,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public Graph intializeGraph() {
-		this.topology = JvlcFactory.eINSTANCE.createTopology();
-		this.graph = Graphs.createGraph();
+	public Graph getGraph() {
 		return this.graph;
 	}
 
@@ -258,7 +257,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public void registerLinkActivationListener(final ILinkActivationListener listener) {
+	public void addLinkActivationListener(final ILinkActivationListener listener) {
 		this.linkActivationListeners.add(listener);
 	}
 
@@ -273,7 +272,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 					if (LinkState.ACTIVE.equals(edge.eGet(attribute))) {
 						final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
 						listener.linkActivated(simEdge);
-					} else if (LinkState.ACTIVE.equals(edge.eGet(attribute))) {
+					} else if (LinkState.INACTIVE.equals(edge.eGet(attribute))) {
 						final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
 						listener.linkInactivated(simEdge);
 					}
