@@ -23,11 +23,10 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
+import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSType;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkActivationListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ITopologyControlFacade;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
@@ -149,9 +148,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 			final KTCLink forwardKtcLink = addSymmetricKTCLink(forwardEdge.getId().valueAsString(), backwardEdge.getId().valueAsString(),
 					this.nodeMappingSim2Jvlc.get(source), this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+			final KTCLink backwardKtcLink = (KTCLink) forwardKtcLink.getReverseEdge();
 
 			this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
-			this.edgeMappingJvlc2Sim.put(forwardKtcLink, backwardEdge);
+			this.edgeMappingJvlc2Sim.put(forwardKtcLink, forwardEdge);
+			this.edgeMappingSim2Jvlc.put(backwardEdge, backwardKtcLink);
+			this.edgeMappingJvlc2Sim.put(backwardKtcLink, backwardEdge);
 
 			return forwardEdge;
 		} else {
@@ -175,13 +177,13 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
+	public <T> void updateNodeAttribute(final INode simNode, final SiSType<T> property) {
 		final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
 		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
 	}
 
-	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateNodeAttribute(final KTCNode ktcNode, final SiSType<T> property, final T value) {
 		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
 			ktcNode.setRemainingEnergy((Double) value);
 			ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
@@ -190,18 +192,18 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
+	public <T> void updateEdgeAttribute(final IEdge simEdge, final SiSType<T> property) {
 		final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
 		final T value = simEdge.getProperty(property);
 		updateLinkAttribute(ktcLink, property, value);
 	}
 
-	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final SiSType<T> property, final T value) {
 		updateLinkAttribute(ktcLink, property, value);
 		updateLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
 	}
 
-	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateLinkAttribute(final KTCLink ktcLink, final SiSType<T> property, final T value) {
 		if (ktcLink == null) {
 			throw new NullPointerException();
 		}
@@ -217,21 +219,29 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public void removeElement(final IElement element) {
-		if (element instanceof IEdge) {
-			final IEdge simEdge = (IEdge) element;
-			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
-			removeKTCLink(ktcLink);
-			this.edgeMappingJvlc2Sim.remove(ktcLink);
-			this.edgeMappingSim2Jvlc.remove(simEdge);
-		} else if (element instanceof INode) {
-			final INode simNode = (INode) element;
-			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
-			removeKTCNode(ktcNode);
+	public void removeNode(final INodeID nodeId) {
+		if (this.nodeMappingSim2Jvlc.containsKey(nodeId)) {
+			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(nodeId);
 			this.nodeMappingJvlc2Sim.remove(ktcNode);
-			this.nodeMappingSim2Jvlc.remove(simNode.getId());
-		} else {
-			throw new IllegalArgumentException("Unknown elment type: " + element.toString());
+			this.nodeMappingSim2Jvlc.remove(nodeId);
+			this.graph.removeNode(nodeId);
+			removeKTCNode(ktcNode);
+		}
+	}
+
+	@Override
+	public void removeEdge(final IEdge simEdge) {
+		if (this.edgeMappingSim2Jvlc.containsKey(simEdge)) {
+			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
+			final KTCLink reverseKTCLink = (KTCLink) ktcLink.getReverseEdge();
+			final IEdge reverseSimEdge = this.edgeMappingJvlc2Sim.get(reverseKTCLink);
+			this.edgeMappingJvlc2Sim.remove(ktcLink);
+			this.edgeMappingJvlc2Sim.remove(reverseKTCLink);
+			this.edgeMappingSim2Jvlc.remove(simEdge);
+			this.edgeMappingSim2Jvlc.remove(reverseSimEdge);
+			this.graph.removeEdge(simEdge);
+			this.graph.removeEdge(reverseSimEdge);
+			removeKTCLink(ktcLink);
 		}
 	}
 
@@ -242,7 +252,9 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	public void removeKTCLink(final KTCLink ktcLink) {
 		this.algorithm.handleLinkDeletion(ktcLink);
+		final Edge reverseEdge = ktcLink.getReverseEdge();
 		this.topology.removeEdge(ktcLink);
+		this.topology.removeEdge(reverseEdge);
 	}
 
 	@Override
