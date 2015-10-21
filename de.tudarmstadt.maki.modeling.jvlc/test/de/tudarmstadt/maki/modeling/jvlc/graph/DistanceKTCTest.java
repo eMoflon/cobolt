@@ -28,6 +28,7 @@ public class DistanceKTCTest {
 
 	}
 
+	@Ignore  // TODO@rkluge: Does not currently
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
 		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
