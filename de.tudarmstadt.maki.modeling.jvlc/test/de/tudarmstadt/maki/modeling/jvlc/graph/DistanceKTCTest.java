@@ -1,6 +1,7 @@
 package de.tudarmstadt.maki.modeling.jvlc.graph;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Graph;
@@ -28,7 +29,7 @@ public class DistanceKTCTest {
 
 	}
 
-	@Ignore  // TODO@rkluge: Does not currently
+	@Ignore   // TODO@rkluge: Does not currently
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
 		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
