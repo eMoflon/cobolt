@@ -27,7 +27,6 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
-import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSType;
 import de.tudarmstadt.maki.simonstrator.tc.facade.IContextEventListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ITopologyControlFacade;
@@ -47,6 +46,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final Map<IEdge, KTCLink> edgeMappingSim2Jvlc;
 	private final Map<KTCLink, IEdge> edgeMappingJvlc2Sim;
 	private boolean isInsideContextEventSequence;
+	private TopologyControlAlgorithmID algorithmID;
 
 	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 		switch (algorithmId) {
@@ -79,6 +79,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
 		this.algorithm = getAlgorithmForID(algorithmID);
+		this.algorithmID = algorithmID;
 		this.registerEWFListeners();
 	}
 
@@ -102,8 +103,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	private void registerEWFListeners() {
-		// TODO@rkluge: Sync manually - this will take too much time otherwise
-		// graph.eAdapters().add(new AttributeValueSynchronizingContentAdapter());
 		topology.eAdapters().clear();
 		topology.eAdapters().add(new LinkActivationContentAdapter());
 	}
@@ -134,7 +133,11 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
 		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
-		this.algorithm.handleNodeAddition(ktcNode);
+		if (!isInsideContextEventSequence) {
+			this.algorithm.handleNodeAddition(ktcNode);
+		} else {
+			// TODO@rkluge defer
+		}
 
 		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
 		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
@@ -255,46 +258,73 @@ public class JVLCFacade implements ITopologyControlFacade {
 		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
 		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 
-		this.algorithm.handleLinkAddition(ktcLink);
+		if (!isInsideContextEventSequence) {
+			this.algorithm.handleLinkAddition(ktcLink);
+		} else {
+			// TODO@rkluge defer
+		}
 
 		return ktcLink;
 	}
 
-	public <T> void updateNodeAttribute(final KTCNode ktcNode, final SiSType<T> property, final T value) {
-		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
-			ktcNode.setRemainingEnergy((Double) value);
-			ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
-			this.algorithm.handleNodeAttributeModification(ktcNode);
+	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
+		if (TopologyControlAlgorithmID.requiresUpdatesOfProperty(this.algorithmID, property)) {
+			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
+				ktcNode.setRemainingEnergy((Double) value);
+				ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
+				if (!isInsideContextEventSequence) {
+					this.algorithm.handleNodeAttributeModification(ktcNode);
+				} else {
+					// TODO@rkluge defer
+				}
+			}
 		}
 	}
 
-	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final SiSType<T> property, final T value) {
+	/**
+	 * Calls {@link #updateLinkAttribute(KTCLink, GraphElementProperty, Object)} for the given link and its reverse link, setting the same value for the given property on both links.
+	 */
+	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
 		updateLinkAttribute(ktcLink, property, value);
 		updateLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
 	}
 
-	public <T> void updateLinkAttribute(final KTCLink ktcLink, final SiSType<T> property, final T value) {
-		if (ktcLink == null) {
-			throw new NullPointerException();
-		}
-		if (KTCConstants.DISTANCE.equals(property)) {
-			ktcLink.setDistance((Double) value);
-			ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);
-			this.algorithm.handleLinkAttributeModification(ktcLink);
-		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
-			ktcLink.setRequiredTransmissionPower((Double) value);
-			ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, (Double) value);
-			this.algorithm.handleLinkAttributeModification(ktcLink);
+	/**
+	 * Sets the property of the given link to the given value.
+	 */
+	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+		if (TopologyControlAlgorithmID.requiresUpdatesOfProperty(algorithmID, property)) {
+			if (ktcLink == null) {
+				throw new NullPointerException();
+			}
+			if (KTCConstants.DISTANCE.equals(property)) {
+				ktcLink.setDistance((Double) value);
+				ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);
+				this.algorithm.handleLinkAttributeModification(ktcLink);
+			} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
+				ktcLink.setRequiredTransmissionPower((Double) value);
+				ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, (Double) value);
+				this.algorithm.handleLinkAttributeModification(ktcLink);
+			}
 		}
 	}
 
 	public void removeKTCNode(final KTCNode ktcNode) {
-		this.algorithm.handleNodeDeletion(ktcNode);
+		if (!isInsideContextEventSequence) {
+			this.algorithm.handleNodeDeletion(ktcNode);
+		} else {
+			// TODO@rkluge defer
+		}
 		this.topology.removeNode(ktcNode);
 	}
 
 	public void removeKTCLink(final KTCLink ktcLink) {
-		this.algorithm.handleLinkDeletion(ktcLink);
+		if (!isInsideContextEventSequence) {
+			this.algorithm.handleLinkDeletion(ktcLink);
+		} else {
+			// TODO@rkluge defer
+		}
+
 		final Edge reverseEdge = ktcLink.getReverseEdge();
 		this.topology.removeEdge(ktcLink);
 		this.topology.removeEdge(reverseEdge);
