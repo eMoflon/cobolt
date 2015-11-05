@@ -46,6 +46,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final Map<KTCNode, INodeID> nodeMappingJvlc2Sim;
 	private final Map<IEdge, KTCLink> edgeMappingSim2Jvlc;
 	private final Map<KTCLink, IEdge> edgeMappingJvlc2Sim;
+	private boolean isInsideContextEventSequence;
 
 	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 		switch (algorithmId) {
@@ -72,6 +73,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.edgeMappingJvlc2Sim = new HashMap<>();
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
 		this.graph = Graphs.createGraph();
+		this.isInsideContextEventSequence = false;
 	}
 
 	@Override
@@ -236,12 +238,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void beginContextEventSequence() {
-		// TODO@rkluge implement
+		this.isInsideContextEventSequence = true;
 	}
 
 	@Override
 	public void endContextEventSequence() {
-		// TODO@rkluge implement
+		this.isInsideContextEventSequence = false;
 	}
 
 	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId, final KTCNode sourceNode, final KTCNode targetNode,
