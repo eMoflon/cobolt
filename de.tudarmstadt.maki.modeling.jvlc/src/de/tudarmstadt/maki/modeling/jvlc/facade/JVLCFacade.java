@@ -282,4 +282,14 @@ public class JVLCFacade implements ITopologyControlFacade {
 		}
 	}
 
+	@Override
+	public void beginContextEventSequence() {
+		// TODO@rkluge implement
+	}
+
+	@Override
+	public void endContextEventSequence() {
+		// TODO@rkluge implement
+	}
+
 }
