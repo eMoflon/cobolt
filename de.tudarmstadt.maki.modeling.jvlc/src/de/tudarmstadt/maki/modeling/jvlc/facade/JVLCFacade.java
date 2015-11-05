@@ -122,6 +122,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	public INode addNode(final INodeID id, final double remainingEnergy) {
 
 		final INode simNode = this.graph.createNode(id);
+		simNode.setProperty(KTCConstants.REMAINING_ENERGY, remainingEnergy);
 
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
 		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
