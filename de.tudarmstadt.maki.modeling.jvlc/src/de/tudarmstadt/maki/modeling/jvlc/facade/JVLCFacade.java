@@ -53,6 +53,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
 		case IE_KTC:
 			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
+		case NULL_TC:
+			return JvlcFactory.eINSTANCE.createNullkTC();
 		default:
 			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
 		}
