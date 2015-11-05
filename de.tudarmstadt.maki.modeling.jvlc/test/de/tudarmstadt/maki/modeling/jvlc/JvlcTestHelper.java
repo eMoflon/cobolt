@@ -165,4 +165,10 @@ public final class JvlcTestHelper {
 
 	}
 
+	public static void allUnclassified(final Topology topology) {
+		for (final Edge link : topology.getEdges()) {
+			assertIsUnclassified(link);
+		}
+	}
+
 }

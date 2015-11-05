@@ -24,6 +24,8 @@ public class JVLCFacadeForNullTCTest {
 	public void testWithTestgraphE1() throws Exception {
 		this.facade.loadAndSetTopologyFromFile(getPathToEnergyTestGraph(1));
 
+		JvlcTestHelper.allUnclassified(this.facade.getTopology());
+
 		this.facade.run(-1.0);
 
 		JvlcTestHelper.assertAllActiveWithExceptions(this.facade.getTopology(), true);
