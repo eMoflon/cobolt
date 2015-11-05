@@ -18,6 +18,7 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
@@ -26,7 +27,14 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
  * Unit tests for {@link JVLCFacade}, using {@link IncrementalDistanceKTC}.
  */
 public class JVLCFacadeForIncrementalDistanceKTCTest {
-
+	/*
+	 *  Use cases:
+	 *  * no constraint violation (e.g. increase distance of already inactive link)
+	 *  * constraint violation (decrease distance of inactive link)
+	 *  * edge addition, node addition -> no problem
+	 *  * removing node -> setting incident edges of neighbors to unclassified
+	 *  * no handling necessary
+	 */
 	private JVLCFacade facade;
 	private static TopologyControlAlgorithmID ALGO_ID = TopologyControlAlgorithmID.ID_KTC;
 
@@ -158,14 +166,16 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertAllActiveWithExceptionsSymmetric(topology, "e1-3", "e2-4", "e3-9", "e4-5", "e5-6", "e7-8");
 
 	}
-	// TODO@rkluge: We need tests for incremental scenarios
-	/*
-	 *  Use cases:
-	 *  * no constraint violation (e.g. increase distance of already inactive link)
-	 *  * constraint violation (decrease distance of inactive link)
-	 *  * edge addition, node addition -> no problem
-	 *  * removing node -> setting incident edges of neighbors to unclassified
-	 *  * no handling necessary
-	 */
+
+	@Test
+	public void testDeferredContextEventHandling() throws Exception {
+		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(4));
+		facade.beginContextEventSequence();
+		facade.removeNode(INodeID.get("5"));
+		facade.removeNode(INodeID.get("6"));
+		facade.addEdge(INodeID.get("4"), INodeID.get("11"), 20, 400);
+		facade.addEdge(INodeID.get("11"), INodeID.get("4"), 20, 400);
+		facade.endContextEventSequence();
+	}
 
 }
