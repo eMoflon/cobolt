@@ -23,6 +23,7 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
@@ -184,10 +185,10 @@ public class JVLCFacade implements ITopologyControlFacade {
 		final IEdge backwardEdge = Graphs.createDirectedEdge(backwardEdgeId, target, source);
 		forwardEdge.setProperty(KTCConstants.DISTANCE, distance);
 		forwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-		forwardEdge.setProperty(KTCConstants.REVERSE_EDGE, backwardEdge);
+		forwardEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, backwardEdge);
 		backwardEdge.setProperty(KTCConstants.DISTANCE, distance);
 		backwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-		backwardEdge.setProperty(KTCConstants.REVERSE_EDGE, forwardEdge);
+		backwardEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, forwardEdge);
 		if (!this.graph.containsEdge(forwardEdge)) {
 			this.graph.addEdge(forwardEdge);
 			this.graph.addEdge(backwardEdge);
