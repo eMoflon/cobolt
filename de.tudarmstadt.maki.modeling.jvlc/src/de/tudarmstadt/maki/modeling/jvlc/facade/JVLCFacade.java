@@ -293,7 +293,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
-		if (TopologyControlAlgorithmID.requiresUpdatesOfProperty(this.algorithmID, property)) {
+		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
 			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
 				ktcNode.setRemainingEnergy((Double) value);
 				ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
@@ -323,7 +323,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	 * Sets the property of the given link to the given value.
 	 */
 	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
-		if (TopologyControlAlgorithmID.requiresUpdatesOfProperty(algorithmID, property)) {
+		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
 			if (ktcLink == null) {
 				throw new NullPointerException();
 			}
