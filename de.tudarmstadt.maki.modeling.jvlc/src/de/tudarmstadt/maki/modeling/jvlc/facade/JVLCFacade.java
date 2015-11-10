@@ -34,6 +34,7 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ITopologyControlFacade;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class JVLCFacade implements ITopologyControlFacade {
@@ -183,12 +184,17 @@ public class JVLCFacade implements ITopologyControlFacade {
 			final double requiredTransmissionPower) {
 		final IEdge forwardEdge = Graphs.createDirectedEdge(forwardEdgeId, source, target);
 		final IEdge backwardEdge = Graphs.createDirectedEdge(backwardEdgeId, target, source);
+
 		forwardEdge.setProperty(KTCConstants.DISTANCE, distance);
 		forwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 		forwardEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, backwardEdge);
+		forwardEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
+
 		backwardEdge.setProperty(KTCConstants.DISTANCE, distance);
 		backwardEdge.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 		backwardEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, forwardEdge);
+		backwardEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
+
 		if (!this.graph.containsEdge(forwardEdge)) {
 			this.graph.addEdge(forwardEdge);
 			this.graph.addEdge(backwardEdge);
@@ -396,17 +402,23 @@ public class JVLCFacade implements ITopologyControlFacade {
 		protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
 			super.edgeAttributeChanged(edge, attribute, oldValue);
 
+			final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
+			// We may be in the initialization phase - no events should be triggered here.
+			if (simEdge == null) {
+				return;
+			}
+
 			switch (attribute.getFeatureID()) {
 			case JvlcPackage.KTC_LINK__STATE:
 				for (final ILinkStateListener listener : linkActivationListeners) {
 					if (LinkState.ACTIVE.equals(edge.eGet(attribute))) {
-						final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
+						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.ACTIVE);
 						listener.linkActivated(simEdge);
 					} else if (LinkState.INACTIVE.equals(edge.eGet(attribute))) {
-						final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
+						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.INACTIVE);
 						listener.linkInactivated(simEdge);
 					} else if (LinkState.UNCLASSIFIED.equals(edge.eGet(attribute))) {
-						final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
+						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
 						listener.linkUnclassified(simEdge);
 					}
 				}
