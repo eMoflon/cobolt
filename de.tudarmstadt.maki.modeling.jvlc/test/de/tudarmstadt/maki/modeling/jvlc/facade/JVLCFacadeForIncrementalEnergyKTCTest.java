@@ -1,6 +1,7 @@
 package de.tudarmstadt.maki.modeling.jvlc.facade;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.EPS_0;
+import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptions;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActive;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactive;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalEnergyKTC;
+import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
@@ -70,5 +72,19 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		assertIsActive(topology, "e21", "e31", "e12", "e23");
 
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+	}
+
+	/**
+	 * This test illustrates that in a triangle that contains two equally long 'longest' links (in terms of remaining lifetime), only the link with the larger ID ('e13'  in this case) is inactivated.
+	 */
+	@Test
+	public void testTriangleWithEquisecles() throws Exception {
+		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToEnergyTestGraph(2));
+		facade.run(1.1);
+
+		Assert.assertTrue(
+				facade.getTopology().getKTCLinkById("e12").hasSameEstimaedRemainingLifetimeAndSmallerID(facade.getTopology().getKTCLinkById("e13")));
+
+		assertAllActiveWithExceptions(facade.getTopology(), false, "e13");
 	}
 }
