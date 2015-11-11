@@ -252,7 +252,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public void addLinkActivationListener(final ILinkStateListener listener) {
+	public void addLinkStateListener(final ILinkStateListener listener) {
 		this.linkActivationListeners.add(listener);
 	}
 
