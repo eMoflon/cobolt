@@ -266,8 +266,18 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
+	public void removeLinkStateListener(final ILinkStateListener listener) {
+		this.linkActivationListeners.remove(listener);
+	}
+
+	@Override
 	public void addContextEventListener(final IContextEventListener listener) {
 		this.contextEventListeners.add(listener);
+	}
+
+	@Override
+	public void removeContextEventListener(final IContextEventListener listener) {
+		this.contextEventListeners.remove(listener);
 	}
 
 	@Override
