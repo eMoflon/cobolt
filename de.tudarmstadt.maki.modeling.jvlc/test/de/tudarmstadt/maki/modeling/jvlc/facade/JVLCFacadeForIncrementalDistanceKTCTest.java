@@ -2,7 +2,6 @@ package de.tudarmstadt.maki.modeling.jvlc.facade;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptionsSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActiveSymmetric;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactiveSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassifiedSymmetric;
@@ -159,7 +158,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), KTCConstants.DISTANCE, 15.0);
 		assertIsUnclassifiedSymmetric(topology, "e2-5");
 		assertIsActiveSymmetric(topology, "e4-5");
-		assertIsInactiveSymmetric(topology, "e2-4");
+		assertIsUnclassifiedSymmetric(topology, "e2-4");
 
 		// TC(iii)
 		facade.run(k);
