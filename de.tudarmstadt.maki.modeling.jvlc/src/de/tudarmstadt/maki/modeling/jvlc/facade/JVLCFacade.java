@@ -227,6 +227,10 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void removeEdge(final IEdge simEdge) {
 		if (this.edgeMappingSim2Jvlc.containsKey(simEdge)) {
+			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+				contextEventListener.preEdgeRemoved(simEdge);
+			}
+
 			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
 			final KTCLink reverseKTCLink = (KTCLink) ktcLink.getReverseEdge();
 			final IEdge reverseSimEdge = this.edgeMappingJvlc2Sim.get(reverseKTCLink);
