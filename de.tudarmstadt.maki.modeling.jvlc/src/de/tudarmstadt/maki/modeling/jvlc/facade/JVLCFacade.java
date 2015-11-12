@@ -162,6 +162,9 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void removeNode(final INodeID nodeId) {
 		if (this.nodeMappingSim2Jvlc.containsKey(nodeId)) {
+			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+				contextEventListener.preNodeRemoved(this.graph.getNode(nodeId));
+			}
 			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(nodeId);
 			this.nodeMappingJvlc2Sim.remove(ktcNode);
 			this.nodeMappingSim2Jvlc.remove(nodeId);
@@ -227,13 +230,15 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void removeEdge(final IEdge simEdge) {
 		if (this.edgeMappingSim2Jvlc.containsKey(simEdge)) {
-			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
-				contextEventListener.preEdgeRemoved(simEdge);
-			}
+
 
 			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
 			final KTCLink reverseKTCLink = (KTCLink) ktcLink.getReverseEdge();
 			final IEdge reverseSimEdge = this.edgeMappingJvlc2Sim.get(reverseKTCLink);
+			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+				contextEventListener.preEdgeRemoved(simEdge);
+				contextEventListener.preEdgeRemoved(reverseSimEdge);
+			}
 			this.edgeMappingJvlc2Sim.remove(ktcLink);
 			this.edgeMappingJvlc2Sim.remove(reverseKTCLink);
 			this.edgeMappingSim2Jvlc.remove(simEdge);
