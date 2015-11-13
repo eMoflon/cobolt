@@ -282,7 +282,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void beginContextEventSequence() {
-		this.isInsideContextEventSequence = true;
+		// TODO@rkluge This does not work properly because the affected elements are already removed
+		this.isInsideContextEventSequence = false;
 	}
 
 	@Override
