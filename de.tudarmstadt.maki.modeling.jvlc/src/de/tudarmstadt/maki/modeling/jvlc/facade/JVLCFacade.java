@@ -162,6 +162,13 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void removeNode(final INodeID nodeId) {
 		if (this.nodeMappingSim2Jvlc.containsKey(nodeId)) {
+			for (final IEdge outgoingEdge : new ArrayList<>(this.graph.getOutgoingEdges(nodeId))) {
+				removeEdge(outgoingEdge);
+			}
+			for (final IEdge incomingEdge : new ArrayList<>(this.graph.getIncomingEdges(nodeId))) {
+				removeEdge(incomingEdge);
+			}
+			
 			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 				contextEventListener.preNodeRemoved(this.graph.getNode(nodeId));
 			}
