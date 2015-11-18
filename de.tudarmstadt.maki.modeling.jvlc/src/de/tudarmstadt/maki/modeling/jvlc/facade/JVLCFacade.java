@@ -178,13 +178,15 @@ public class JVLCFacade implements ITopologyControlFacade {
 		final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
 		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
-		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
-			contextEventListener.postNodeAttributeUpdated(simNode, property);
+		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
+			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+				contextEventListener.postNodeAttributeUpdated(simNode, property);
+			}
 		}
 	}
 
-	public IEdge addEdge(final EdgeID forwardEdgeId, final EdgeID backwardEdgeId, final INodeID source, final INodeID target, final double distance,
-			final double requiredTransmissionPower) {
+	public IEdge addEdge(final EdgeID forwardEdgeId, final EdgeID backwardEdgeId, final INodeID source,
+			final INodeID target, final double distance, final double requiredTransmissionPower) {
 		final IEdge forwardEdge = Graphs.createDirectedEdge(forwardEdgeId, source, target);
 		final IEdge backwardEdge = Graphs.createDirectedEdge(backwardEdgeId, target, source);
 
@@ -202,8 +204,9 @@ public class JVLCFacade implements ITopologyControlFacade {
 			this.graph.addEdge(forwardEdge);
 			this.graph.addEdge(backwardEdge);
 
-			final KTCLink forwardKtcLink = addSymmetricKTCLink(forwardEdge.getId().valueAsString(), backwardEdge.getId().valueAsString(),
-					this.nodeMappingSim2Jvlc.get(source), this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+			final KTCLink forwardKtcLink = addSymmetricKTCLink(forwardEdge.getId().valueAsString(),
+					backwardEdge.getId().valueAsString(), this.nodeMappingSim2Jvlc.get(source),
+					this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
 			final KTCLink backwardKtcLink = (KTCLink) forwardKtcLink.getReverseEdge();
 
 			this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
@@ -223,14 +226,15 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public IEdge addEdge(final INodeID source, final INodeID target, final double distance, final double requiredTransmissionPower) {
-		return addEdge(EdgeID.get(source, target), EdgeID.get(target, source), source, target, distance, requiredTransmissionPower);
+	public IEdge addEdge(final INodeID source, final INodeID target, final double distance,
+			final double requiredTransmissionPower) {
+		return addEdge(EdgeID.get(source, target), EdgeID.get(target, source), source, target, distance,
+				requiredTransmissionPower);
 	}
 
 	@Override
 	public void removeEdge(final IEdge simEdge) {
 		if (this.edgeMappingSim2Jvlc.containsKey(simEdge)) {
-
 
 			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
 			final KTCLink reverseKTCLink = (KTCLink) ktcLink.getReverseEdge();
@@ -255,8 +259,10 @@ public class JVLCFacade implements ITopologyControlFacade {
 		final T value = simEdge.getProperty(property);
 		updateLinkAttribute(ktcLink, property, value);
 
-		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
-			contextEventListener.postEdgeAttributeUpdated(simEdge, property);
+		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
+			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+				contextEventListener.postEdgeAttributeUpdated(simEdge, property);
+			}
 		}
 	}
 
@@ -282,7 +288,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void beginContextEventSequence() {
-		// TODO@rkluge This does not work properly because the affected elements are already removed
+		// TODO@rkluge This does not work properly because the affected elements
+		// are already removed
 		this.isInsideContextEventSequence = false;
 	}
 
@@ -295,14 +302,16 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.deferredContextEvents.clear();
 	}
 
-	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId, final KTCNode sourceNode, final KTCNode targetNode,
-			final double distance, final double requiredTransmissionPower) {
-		final KTCLink ktcLink = this.topology.addUndirectedKTCLink(forwardEdgeId, backwardEdgeId, sourceNode, targetNode, distance,
-				requiredTransmissionPower);
+	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId,
+			final KTCNode sourceNode, final KTCNode targetNode, final double distance,
+			final double requiredTransmissionPower) {
+		final KTCLink ktcLink = this.topology.addUndirectedKTCLink(forwardEdgeId, backwardEdgeId, sourceNode,
+				targetNode, distance, requiredTransmissionPower);
 		ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
 		ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
-		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER,
+				requiredTransmissionPower);
 
 		if (!isInsideContextEventSequence) {
 			this.algorithm.handleLinkAddition(ktcLink);
@@ -338,9 +347,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	/**
-	 * Calls {@link #updateLinkAttribute(KTCLink, GraphElementProperty, Object)} for the given link and its reverse link, setting the same value for the given property on both links.
+	 * Calls {@link #updateLinkAttribute(KTCLink, GraphElementProperty, Object)}
+	 * for the given link and its reverse link, setting the same value for the
+	 * given property on both links.
 	 */
-	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property,
+			final T value) {
 		updateLinkAttribute(ktcLink, property, value);
 		updateLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
 	}
@@ -415,7 +427,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	/**
-	 * This content adapter listens for link state modifications and notifies the registered {@link ILinkStateListener}s.
+	 * This content adapter listens for link state modifications and notifies
+	 * the registered {@link ILinkStateListener}s.
 	 */
 	private class LinkActivationContentAdapter extends GraphContentAdapter {
 		@Override
@@ -423,7 +436,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 			super.edgeAttributeChanged(edge, attribute, oldValue);
 
 			final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
-			// We may be in the initialization phase - no events should be triggered here.
+			// We may be in the initialization phase - no events should be
+			// triggered here.
 			if (simEdge == null) {
 				return;
 			}
