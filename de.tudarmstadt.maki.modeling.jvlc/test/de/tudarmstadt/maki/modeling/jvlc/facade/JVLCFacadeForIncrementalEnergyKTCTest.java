@@ -26,7 +26,7 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 	private JVLCFacade facade;
-	private static TopologyControlAlgorithmID ALGO_ID = TopologyControlAlgorithmID.IE_KTC;
+	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.IE_KTC;
 
 	@Before
 	public void setup() {

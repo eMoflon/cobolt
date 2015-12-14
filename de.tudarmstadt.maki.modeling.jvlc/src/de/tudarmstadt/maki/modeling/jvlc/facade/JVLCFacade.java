@@ -53,16 +53,16 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final List<Runnable> deferredContextEvents;
 
 	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
-		switch (algorithmId) {
-		case ID_KTC:
+		
+		if (KTCConstants.ID_KTC.asString().equals(algorithmId.asString())) 
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
-		case IE_KTC:
+		else if (KTCConstants.IE_KTC.asString().equals(algorithmId.asString())) 
 			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
-		case NULL_TC:
+		else if (KTCConstants.NULL_TC.asString().equals(algorithmId.asString())) 
 			return JvlcFactory.eINSTANCE.createNullkTC();
-		default:
+		else
 			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
-		}
+
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 			for (final IEdge incomingEdge : new ArrayList<>(this.graph.getIncomingEdges(nodeId))) {
 				removeEdge(incomingEdge);
 			}
-			
+
 			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 				contextEventListener.preNodeRemoved(this.graph.getNode(nodeId));
 			}
@@ -392,15 +392,13 @@ public class JVLCFacade implements ITopologyControlFacade {
 					this.algorithm.handleLinkAttributeModification(ktcLink);
 				} else {
 					this.deferredContextEvents.add(new Runnable() {
-						@Override
-						public void run() {
-							JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
-						}
-					});
-				}
-			}
-		}
+
+	@Override
+	public void run() {
+		JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
 	}
+
+	});}}}}
 
 	public void removeKTCNode(final KTCNode ktcNode) {
 		if (!isInsideContextEventSequence) {

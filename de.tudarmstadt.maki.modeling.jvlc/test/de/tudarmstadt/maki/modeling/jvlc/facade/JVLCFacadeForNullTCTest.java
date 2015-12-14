@@ -8,10 +8,11 @@ import org.junit.Test;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class JVLCFacadeForNullTCTest {
 	private JVLCFacade facade;
-	private static TopologyControlAlgorithmID ALGO_ID = TopologyControlAlgorithmID.NULL_TC;
+	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.NULL_TC;
 
 	@Before
 	public void setup() {

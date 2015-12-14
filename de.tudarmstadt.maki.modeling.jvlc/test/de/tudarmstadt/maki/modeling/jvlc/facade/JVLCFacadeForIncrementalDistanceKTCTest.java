@@ -35,7 +35,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 *  * no handling necessary
 	 */
 	private JVLCFacade facade;
-	private static TopologyControlAlgorithmID ALGO_ID = TopologyControlAlgorithmID.ID_KTC;
+	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.ID_KTC;
 
 	@Before
 	public void setup() {
