@@ -27,6 +27,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProp
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.IContextEventListener;
@@ -53,12 +54,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final List<Runnable> deferredContextEvents;
 
 	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
-		
-		if (KTCConstants.ID_KTC.asString().equals(algorithmId.asString())) 
+
+		if (KTCConstants.ID_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
-		else if (KTCConstants.IE_KTC.asString().equals(algorithmId.asString())) 
+		else if (KTCConstants.IE_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
-		else if (KTCConstants.NULL_TC.asString().equals(algorithmId.asString())) 
+		else if (KTCConstants.NULL_TC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createNullkTC();
 		else
 			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
@@ -128,6 +129,39 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public Graph getGraph() {
 		return this.graph;
+	}
+
+	@Override
+	public INode addNode(INode prototype) {
+		final INode simNode = this.graph.createNode(prototype.getId());
+		final IElement prototype1 = prototype;
+		simNode.addPropertiesFrom(prototype1);
+
+		final KTCNode ktcNode = this.addKTCNode(simNode);
+		if (!isInsideContextEventSequence) {
+			this.algorithm.handleNodeAddition(ktcNode);
+		} else {
+			this.deferredContextEvents.add(new Runnable() {
+				@Override
+				public void run() {
+					JVLCFacade.this.algorithm.handleNodeAddition(ktcNode);
+				}
+			});
+		}
+
+		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
+		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
+
+		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+			contextEventListener.postNodeAdded(simNode);
+		}
+
+		return simNode;
+	}
+
+	private KTCNode addKTCNode(INode simNode) {
+		// TODO@rkluge: Implement me
+		return null;
 	}
 
 	@Override
@@ -233,6 +267,26 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
+	public IEdge addEdge(IEdge prototype) {
+
+		final IEdge forwardEdge = Graphs.createDirectedEdge(prototype.getId(), prototype.fromId(), prototype.toId());
+		forwardEdge.addPropertiesFrom(prototype);
+
+		this.graph.addEdge(forwardEdge);
+
+		final KTCLink forwardKtcLink = addKTCLink(forwardEdge);
+
+		this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
+		this.edgeMappingJvlc2Sim.put(forwardKtcLink, forwardEdge);
+
+		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
+			contextEventListener.postEdgeAdded(forwardEdge);
+		}
+
+		return forwardEdge;
+	}
+
+	@Override
 	public IEdge addEdge(final INodeID source, final INodeID target, final double distance,
 			final double requiredTransmissionPower) {
 		return addEdge(EdgeID.get(source, target), EdgeID.get(target, source), source, target, distance,
@@ -307,6 +361,11 @@ public class JVLCFacade implements ITopologyControlFacade {
 			runnable.run();
 		}
 		this.deferredContextEvents.clear();
+	}
+
+	private KTCLink addKTCLink(IEdge forwardEdge) {
+		// TODO@rkluge: Implement me
+		return null;
 	}
 
 	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId,
@@ -393,12 +452,16 @@ public class JVLCFacade implements ITopologyControlFacade {
 				} else {
 					this.deferredContextEvents.add(new Runnable() {
 
-	@Override
-	public void run() {
-		JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
-	}
+						@Override
+						public void run() {
+							JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
+						}
 
-	});}}}}
+					});
+				}
+			}
+		}
+	}
 
 	public void removeKTCNode(final KTCNode ktcNode) {
 		if (!isInsideContextEventSequence) {
