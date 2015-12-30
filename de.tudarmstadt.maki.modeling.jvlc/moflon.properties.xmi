@@ -5,5 +5,4 @@
   <metaModelProject MetaModelProjectName="de.tudarmstadt.maki.modeling.jvlc.specification"/>
   <replaceGenModel/>
   <sdmCodegeneratorHandlerId value="DEMOCLES_ATTRIBUTES"/>
-  <tGGBuildMode/>
 </MoflonPropertyContainer:MoflonPropertiesContainer>
