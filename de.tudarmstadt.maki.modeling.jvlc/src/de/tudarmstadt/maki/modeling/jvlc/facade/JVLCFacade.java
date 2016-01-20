@@ -27,7 +27,6 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProp
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.IContextEventListener;
@@ -134,8 +133,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public INode addNode(INode prototype) {
 		final INode simNode = this.graph.createNode(prototype.getId());
-		final IElement prototype1 = prototype;
-		simNode.addPropertiesFrom(prototype1);
+		simNode.addPropertiesFrom(prototype);
+		this.graph.addNode(simNode);
 
 		final KTCNode ktcNode = this.addKTCNode(simNode);
 		if (!isInsideContextEventSequence) {
@@ -169,6 +168,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 		final INode simNode = this.graph.createNode(id);
 		simNode.setProperty(KTCConstants.REMAINING_ENERGY, remainingEnergy);
+		this.graph.addNode(simNode);
 
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
 		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
