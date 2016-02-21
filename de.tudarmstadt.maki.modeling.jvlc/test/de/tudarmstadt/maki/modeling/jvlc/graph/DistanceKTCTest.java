@@ -8,6 +8,7 @@ import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
+import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
 
 public class DistanceKTCTest {
@@ -15,13 +16,13 @@ public class DistanceKTCTest {
 	@Test
 	public void testAlgorithmWithTestgraph1() throws Exception {
 
-		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
+		final Topology testGraph1 = TestGraphGenerator.produceTestTopology1();
 		final DistanceKTC distanceKTC = JvlcFactory.eINSTANCE.createDistanceKTC();
 		distanceKTC.setK(1.1);
 
 		// LoggingConstraintViolationEnumerator.getInstance().checkPredicate(testGraph1, distanceKTC);
 
-		distanceKTC.run(testGraph1);
+		distanceKTC.runOnTopology(testGraph1);
 
 		new AssertConstraintViolationEnumerator().checkPredicate(testGraph1, distanceKTC);
 		Assert.assertTrue(AssertConstraintViolationEnumerator.getInstance().checkConnectivityViaActiveLinks(testGraph1));
@@ -32,7 +33,7 @@ public class DistanceKTCTest {
 	@Ignore   // TODO@rkluge: Does not currently
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
-		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
+		final Graph testGraph1 = TestGraphGenerator.produceTestTopology1();
 		final DistanceKTC distanceKTC = JvlcFactory.eINSTANCE.createDistanceKTC();
 
 		final KTCLink e13 = getEdgeById(testGraph1, "n_1->n_3");

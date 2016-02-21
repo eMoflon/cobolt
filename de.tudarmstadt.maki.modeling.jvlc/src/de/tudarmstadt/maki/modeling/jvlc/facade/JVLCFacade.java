@@ -115,7 +115,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	@Override
 	public void run(final TopologyControlAlgorithmParamters parameters) {
 		algorithm.setK((Double) parameters.get(KTCConstants.K));
-		algorithm.run(this.topology);
+		algorithm.runOnTopology(this.topology);
 	}
 
 	/**

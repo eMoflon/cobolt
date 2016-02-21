@@ -16,7 +16,7 @@ public class AttributeValueSynchronizationContentAdapterTest {
 
 	@Test
 	public void testForwardSynchronization() throws Exception {
-		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
+		final Graph testGraph1 = TestGraphGenerator.produceTestTopology1();
 		final KTCNode node = (KTCNode) testGraph1.getNodes().get(0);
 		final KTCLink link = (KTCLink) testGraph1.getEdges().get(0);
 		link.setState(LinkState.ACTIVE);
@@ -42,7 +42,7 @@ public class AttributeValueSynchronizationContentAdapterTest {
 	@Test
 	public void testBackwardSynchronization() throws Exception {
 
-		final Graph testGraph1 = TestGraphGenerator.produceTestGraph1();
+		final Graph testGraph1 = TestGraphGenerator.produceTestTopology1();
 		testGraph1.eAdapters().add(new AttributeValueSynchronizingContentAdapter());
 		final KTCNode node = (KTCNode) testGraph1.getNodes().get(0);
 		final KTCLink link = (KTCLink) testGraph1.getEdges().get(0);

@@ -14,6 +14,7 @@ import de.tudarmstadt.maki.modeling.graphmodel.GraphmodelFactory;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
+import de.tudarmstadt.maki.modeling.jvlc.Topology;
 
 public class TestGraphGenerator {
 	public static void saveGraph(final Graph graph, final String filename) throws IOException {
@@ -23,8 +24,8 @@ public class TestGraphGenerator {
 		resource.save(null);
 	}
 
-	public static Graph produceTestGraph1() {
-		final Graph graph = createEmptyGraph();
+	public static Topology produceTestTopology1() {
+		final Topology graph = createEmptyGraph();
 		final List<KTCNode> nodes = createNodes(graph, 5);
 		createSymmetricLinksWithDistances(nodes,                             //
 				1, 2, 15.0,                              //
@@ -88,7 +89,7 @@ public class TestGraphGenerator {
 		return node;
 	}
 
-	private static Graph createEmptyGraph() {
-		return GraphmodelFactory.eINSTANCE.createGraph();
+	private static Topology createEmptyGraph() {
+		return JvlcFactory.eINSTANCE.createTopology();
 	}
 }
