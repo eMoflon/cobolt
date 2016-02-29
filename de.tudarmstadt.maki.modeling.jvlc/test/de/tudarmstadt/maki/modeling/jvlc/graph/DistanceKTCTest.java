@@ -30,7 +30,6 @@ public class DistanceKTCTest {
 
 	}
 
-	@Ignore //TODO@rkluge: Check me
 	@Test
 	public void testAlgorithmWithTestgraph1NodeBased() throws Exception {
 
