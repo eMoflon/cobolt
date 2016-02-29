@@ -28,7 +28,7 @@ public class TestGraphGenerator {
 		final Topology graph = createEmptyGraph();
 		final List<KTCNode> nodes = createNodes(graph, 5);
 		createSymmetricLinksWithDistances(nodes,                             //
-				1, 2, 15.0,                              //
+				1, 2, 15.0,                              // 
 				1, 3, 20.0,                              //
 				2, 3, 17.0,                             //
 				1, 4, 25.0,                             //
