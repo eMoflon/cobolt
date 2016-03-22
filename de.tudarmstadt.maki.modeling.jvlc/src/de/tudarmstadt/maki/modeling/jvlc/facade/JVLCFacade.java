@@ -44,13 +44,11 @@ public class JVLCFacade implements ITopologyControlFacade {
 	private final Graph graph;
 	private final List<ILinkStateListener> linkActivationListeners;
 	private final List<IContextEventListener> contextEventListeners;
-	private final Map<INodeID, KTCNode> nodeMappingSim2Jvlc;
-	private final Map<KTCNode, INodeID> nodeMappingJvlc2Sim;
-	private final Map<IEdge, KTCLink> edgeMappingSim2Jvlc;
-	private final Map<KTCLink, IEdge> edgeMappingJvlc2Sim;
+	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
+	private final Map<KTCNode, INodeID> modelNodeToSimonstratorNode;
+	private final Map<IEdge, KTCLink> simonstratorEdgeToModelLink;
+	private final Map<KTCLink, IEdge> modelLinkToSimonstratorLink;
 	private TopologyControlAlgorithmID algorithmID;
-	private boolean isInsideContextEventSequence;
-	private final List<Runnable> deferredContextEvents;
 
 	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 
@@ -71,14 +69,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 	public JVLCFacade() {
 		this.linkActivationListeners = new ArrayList<>();
 		this.contextEventListeners = new ArrayList<>();
-		this.nodeMappingSim2Jvlc = new HashMap<>();
-		this.nodeMappingJvlc2Sim = new HashMap<>();
-		this.edgeMappingSim2Jvlc = new HashMap<>();
-		this.edgeMappingJvlc2Sim = new HashMap<>();
+		this.simonstratorNodeToModelNode = new HashMap<>();
+		this.modelNodeToSimonstratorNode = new HashMap<>();
+		this.simonstratorEdgeToModelLink = new HashMap<>();
+		this.modelLinkToSimonstratorLink = new HashMap<>();
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
 		this.graph = Graphs.createGraph();
-		this.isInsideContextEventSequence = false;
-		this.deferredContextEvents = new ArrayList<>();
 	}
 
 	@Override
@@ -137,19 +133,10 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.graph.addNode(simNode);
 
 		final KTCNode ktcNode = this.addKTCNode(simNode);
-		if (!isInsideContextEventSequence) {
-			this.algorithm.handleNodeAddition(ktcNode);
-		} else {
-			this.deferredContextEvents.add(new Runnable() {
-				@Override
-				public void run() {
-					JVLCFacade.this.algorithm.handleNodeAddition(ktcNode);
-				}
-			});
-		}
+		this.algorithm.handleNodeAddition(ktcNode);
 
-		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
-		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
+		this.simonstratorNodeToModelNode.put(simNode.getId(), ktcNode);
+		this.modelNodeToSimonstratorNode.put(ktcNode, simNode.getId());
 
 		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 			contextEventListener.postNodeAdded(simNode);
@@ -172,19 +159,10 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
 		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
-		if (!isInsideContextEventSequence) {
-			this.algorithm.handleNodeAddition(ktcNode);
-		} else {
-			this.deferredContextEvents.add(new Runnable() {
-				@Override
-				public void run() {
-					JVLCFacade.this.algorithm.handleNodeAddition(ktcNode);
-				}
-			});
-		}
+		this.algorithm.handleNodeAddition(ktcNode);
 
-		this.nodeMappingSim2Jvlc.put(simNode.getId(), ktcNode);
-		this.nodeMappingJvlc2Sim.put(ktcNode, simNode.getId());
+		this.simonstratorNodeToModelNode.put(simNode.getId(), ktcNode);
+		this.modelNodeToSimonstratorNode.put(ktcNode, simNode.getId());
 
 		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 			contextEventListener.postNodeAdded(simNode);
@@ -195,7 +173,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void removeNode(final INodeID nodeId) {
-		if (this.nodeMappingSim2Jvlc.containsKey(nodeId)) {
+		if (this.simonstratorNodeToModelNode.containsKey(nodeId)) {
 			for (final IEdge outgoingEdge : new ArrayList<>(this.graph.getOutgoingEdges(nodeId))) {
 				removeEdge(outgoingEdge);
 			}
@@ -206,9 +184,9 @@ public class JVLCFacade implements ITopologyControlFacade {
 			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 				contextEventListener.preNodeRemoved(this.graph.getNode(nodeId));
 			}
-			final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(nodeId);
-			this.nodeMappingJvlc2Sim.remove(ktcNode);
-			this.nodeMappingSim2Jvlc.remove(nodeId);
+			final KTCNode ktcNode = this.simonstratorNodeToModelNode.get(nodeId);
+			this.modelNodeToSimonstratorNode.remove(ktcNode);
+			this.simonstratorNodeToModelNode.remove(nodeId);
 			this.graph.removeNode(nodeId);
 			removeKTCNode(ktcNode);
 		}
@@ -216,7 +194,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
-		final KTCNode ktcNode = this.nodeMappingSim2Jvlc.get(simNode.getId());
+		final KTCNode ktcNode = this.simonstratorNodeToModelNode.get(simNode.getId());
 		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
 		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
@@ -246,14 +224,14 @@ public class JVLCFacade implements ITopologyControlFacade {
 			this.graph.addEdge(backwardEdge);
 
 			final KTCLink forwardKtcLink = addSymmetricKTCLink(forwardEdge.getId().valueAsString(),
-					backwardEdge.getId().valueAsString(), this.nodeMappingSim2Jvlc.get(source),
-					this.nodeMappingSim2Jvlc.get(target), distance, requiredTransmissionPower);
+					backwardEdge.getId().valueAsString(), this.simonstratorNodeToModelNode.get(source),
+					this.simonstratorNodeToModelNode.get(target), distance, requiredTransmissionPower);
 			final KTCLink backwardKtcLink = (KTCLink) forwardKtcLink.getReverseEdge();
 
-			this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
-			this.edgeMappingJvlc2Sim.put(forwardKtcLink, forwardEdge);
-			this.edgeMappingSim2Jvlc.put(backwardEdge, backwardKtcLink);
-			this.edgeMappingJvlc2Sim.put(backwardKtcLink, backwardEdge);
+			this.simonstratorEdgeToModelLink.put(forwardEdge, forwardKtcLink);
+			this.modelLinkToSimonstratorLink.put(forwardKtcLink, forwardEdge);
+			this.simonstratorEdgeToModelLink.put(backwardEdge, backwardKtcLink);
+			this.modelLinkToSimonstratorLink.put(backwardKtcLink, backwardEdge);
 
 			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 				contextEventListener.postEdgeAdded(forwardEdge);
@@ -276,8 +254,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 		final KTCLink forwardKtcLink = addKTCLink(forwardEdge);
 
-		this.edgeMappingSim2Jvlc.put(forwardEdge, forwardKtcLink);
-		this.edgeMappingJvlc2Sim.put(forwardKtcLink, forwardEdge);
+		this.simonstratorEdgeToModelLink.put(forwardEdge, forwardKtcLink);
+		this.modelLinkToSimonstratorLink.put(forwardKtcLink, forwardEdge);
 
 		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 			contextEventListener.postEdgeAdded(forwardEdge);
@@ -295,19 +273,19 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void removeEdge(final IEdge simEdge) {
-		if (this.edgeMappingSim2Jvlc.containsKey(simEdge)) {
+		if (this.simonstratorEdgeToModelLink.containsKey(simEdge)) {
 
-			final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
+			final KTCLink ktcLink = this.simonstratorEdgeToModelLink.get(simEdge);
 			final KTCLink reverseKTCLink = (KTCLink) ktcLink.getReverseEdge();
-			final IEdge reverseSimEdge = this.edgeMappingJvlc2Sim.get(reverseKTCLink);
+			final IEdge reverseSimEdge = this.modelLinkToSimonstratorLink.get(reverseKTCLink);
 			for (final IContextEventListener contextEventListener : this.contextEventListeners) {
 				contextEventListener.preEdgeRemoved(simEdge);
 				contextEventListener.preEdgeRemoved(reverseSimEdge);
 			}
-			this.edgeMappingJvlc2Sim.remove(ktcLink);
-			this.edgeMappingJvlc2Sim.remove(reverseKTCLink);
-			this.edgeMappingSim2Jvlc.remove(simEdge);
-			this.edgeMappingSim2Jvlc.remove(reverseSimEdge);
+			this.modelLinkToSimonstratorLink.remove(ktcLink);
+			this.modelLinkToSimonstratorLink.remove(reverseKTCLink);
+			this.simonstratorEdgeToModelLink.remove(simEdge);
+			this.simonstratorEdgeToModelLink.remove(reverseSimEdge);
 			this.graph.removeEdge(simEdge);
 			this.graph.removeEdge(reverseSimEdge);
 			removeKTCLink(ktcLink);
@@ -316,7 +294,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
-		final KTCLink ktcLink = this.edgeMappingSim2Jvlc.get(simEdge);
+		final KTCLink ktcLink = this.simonstratorEdgeToModelLink.get(simEdge);
 		final T value = simEdge.getProperty(property);
 		updateLinkAttribute(ktcLink, property, value);
 
@@ -349,18 +327,12 @@ public class JVLCFacade implements ITopologyControlFacade {
 
 	@Override
 	public void beginContextEventSequence() {
-		// TODO@rkluge This does not work properly because the affected elements
-		// are already removed
-		this.isInsideContextEventSequence = false;
+		// nop
 	}
 
 	@Override
 	public void endContextEventSequence() {
-		this.isInsideContextEventSequence = false;
-		for (final Runnable runnable : this.deferredContextEvents) {
-			runnable.run();
-		}
-		this.deferredContextEvents.clear();
+		// nop
 	}
 
 	private KTCLink addKTCLink(IEdge forwardEdge) {
@@ -379,16 +351,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER,
 				requiredTransmissionPower);
 
-		if (!isInsideContextEventSequence) {
-			this.algorithm.handleLinkAddition(ktcLink);
-		} else {
-			this.deferredContextEvents.add(new Runnable() {
-				@Override
-				public void run() {
-					JVLCFacade.this.algorithm.handleLinkAddition(ktcLink);
-				}
-			});
-		}
+		this.algorithm.handleLinkAddition(ktcLink);
 
 		return ktcLink;
 	}
@@ -398,16 +361,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
 				ktcNode.setRemainingEnergy((Double) value);
 				ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
-				if (!isInsideContextEventSequence) {
-					this.algorithm.handleNodeAttributeModification(ktcNode);
-				} else {
-					this.deferredContextEvents.add(new Runnable() {
-						@Override
-						public void run() {
-							JVLCFacade.this.algorithm.handleNodeAttributeModification(ktcNode);
-						}
-					});
-				}
+				this.algorithm.handleNodeAttributeModification(ktcNode);
 			}
 		}
 	}
@@ -434,60 +388,22 @@ public class JVLCFacade implements ITopologyControlFacade {
 			if (KTCConstants.DISTANCE.equals(property)) {
 				ktcLink.setDistance((Double) value);
 				ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);
-				if (!isInsideContextEventSequence) {
-					this.algorithm.handleLinkAttributeModification(ktcLink);
-				} else {
-					this.deferredContextEvents.add(new Runnable() {
-						@Override
-						public void run() {
-							JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
-						}
-					});
-				}
+				this.algorithm.handleLinkAttributeModification(ktcLink);
 			} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
 				ktcLink.setRequiredTransmissionPower((Double) value);
 				ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, (Double) value);
-				if (!isInsideContextEventSequence) {
-					this.algorithm.handleLinkAttributeModification(ktcLink);
-				} else {
-					this.deferredContextEvents.add(new Runnable() {
-
-						@Override
-						public void run() {
-							JVLCFacade.this.algorithm.handleLinkAttributeModification(ktcLink);
-						}
-
-					});
-				}
+				this.algorithm.handleLinkAttributeModification(ktcLink);
 			}
 		}
 	}
 
 	public void removeKTCNode(final KTCNode ktcNode) {
-		if (!isInsideContextEventSequence) {
-			this.algorithm.handleNodeDeletion(ktcNode);
-		} else {
-			this.deferredContextEvents.add(new Runnable() {
-				@Override
-				public void run() {
-					JVLCFacade.this.algorithm.handleNodeDeletion(ktcNode);
-				}
-			});
-		}
+		this.algorithm.handleNodeDeletion(ktcNode);
 		this.topology.removeNode(ktcNode);
 	}
 
 	public void removeKTCLink(final KTCLink ktcLink) {
-		if (!isInsideContextEventSequence) {
-			this.algorithm.handleLinkDeletion(ktcLink);
-		} else {
-			this.deferredContextEvents.add(new Runnable() {
-				@Override
-				public void run() {
-					JVLCFacade.this.algorithm.handleLinkDeletion(ktcLink);
-				}
-			});
-		}
+		this.algorithm.handleLinkDeletion(ktcLink);
 
 		final Edge reverseEdge = ktcLink.getReverseEdge();
 		this.topology.removeEdge(ktcLink);
@@ -503,7 +419,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 		protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
 			super.edgeAttributeChanged(edge, attribute, oldValue);
 
-			final IEdge simEdge = edgeMappingJvlc2Sim.get(edge);
+			final IEdge simEdge = modelLinkToSimonstratorLink.get(edge);
 			// We may be in the initialization phase - no events should be
 			// triggered here.
 			if (simEdge == null) {
