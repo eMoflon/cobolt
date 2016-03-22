@@ -85,7 +85,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
 		this.algorithm = getAlgorithmForID(algorithmID);
 		this.algorithmID = algorithmID;
-		this.registerEWFListeners();
+		this.registerEMFListeners();
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class JVLCFacade implements ITopologyControlFacade {
 		reader.read(this, new FileInputStream(inputFile));
 	}
 
-	private void registerEWFListeners() {
+	private void registerEMFListeners() {
 		topology.eAdapters().clear();
 		topology.eAdapters().add(new LinkActivationContentAdapter());
 	}
