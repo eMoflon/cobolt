@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EAttribute;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.listener.GraphContentAdapter;
-import de.tudarmstadt.maki.modeling.jvlc.AttributeNames;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcPackage;
@@ -24,24 +23,22 @@ import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.IContextEventListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
-import de.tudarmstadt.maki.simonstrator.tc.facade.ITopologyControlFacade;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
-public class JVLCFacade implements ITopologyControlFacade {
+public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private final Topology topology;
 	private IncrementalKTC algorithm;
-	private final Graph graph;
 	private final List<ILinkStateListener> linkActivationListeners;
 	private final List<IContextEventListener> contextEventListeners;
 	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
@@ -74,7 +71,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.simonstratorEdgeToModelLink = new HashMap<>();
 		this.modelLinkToSimonstratorLink = new HashMap<>();
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
-		this.graph = Graphs.createGraph();
 	}
 
 	@Override
@@ -122,15 +118,8 @@ public class JVLCFacade implements ITopologyControlFacade {
 	}
 
 	@Override
-	public Graph getGraph() {
-		return this.graph;
-	}
-
-	@Override
 	public INode addNode(INode prototype) {
-		final INode simNode = this.graph.createNode(prototype.getId());
-		simNode.addPropertiesFrom(prototype);
-		this.graph.addNode(simNode);
+		final INode simNode = super.addNode(prototype);
 
 		final KTCNode ktcNode = this.addKTCNode(simNode);
 		this.algorithm.handleNodeAddition(ktcNode);
@@ -158,7 +147,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 		this.graph.addNode(simNode);
 
 		final KTCNode ktcNode = this.topology.addKTCNode(id.valueAsString(), remainingEnergy);
-		ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, remainingEnergy);
 		this.algorithm.handleNodeAddition(ktcNode);
 
 		this.simonstratorNodeToModelNode.put(simNode.getId(), ktcNode);
@@ -345,11 +333,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 			final double requiredTransmissionPower) {
 		final KTCLink ktcLink = this.topology.addUndirectedKTCLink(forwardEdgeId, backwardEdgeId, sourceNode,
 				targetNode, distance, requiredTransmissionPower);
-		ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
-		ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_DISTANCE, distance);
-		ktcLink.getReverseEdge().setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER,
-				requiredTransmissionPower);
 
 		this.algorithm.handleLinkAddition(ktcLink);
 
@@ -360,7 +343,6 @@ public class JVLCFacade implements ITopologyControlFacade {
 		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
 			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
 				ktcNode.setRemainingEnergy((Double) value);
-				ktcNode.setDoubleAttribute(AttributeNames.ATTR_REMAINING_ENERGY, (Double) value);
 				this.algorithm.handleNodeAttributeModification(ktcNode);
 			}
 		}
@@ -387,11 +369,9 @@ public class JVLCFacade implements ITopologyControlFacade {
 			}
 			if (KTCConstants.DISTANCE.equals(property)) {
 				ktcLink.setDistance((Double) value);
-				ktcLink.setDoubleAttribute(AttributeNames.ATTR_DISTANCE, (Double) value);
 				this.algorithm.handleLinkAttributeModification(ktcLink);
 			} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
 				ktcLink.setRequiredTransmissionPower((Double) value);
-				ktcLink.setDoubleAttribute(AttributeNames.ATTR_REQUIRED_TRANSMISSION_POWER, (Double) value);
 				this.algorithm.handleLinkAttributeModification(ktcLink);
 			}
 		}
