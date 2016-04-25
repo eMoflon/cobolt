@@ -5,19 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.ecore.EAttribute;
-
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
-import de.tudarmstadt.maki.modeling.graphmodel.listener.GraphContentAdapter;
+import de.tudarmstadt.maki.modeling.graphmodel.Node;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
-import de.tudarmstadt.maki.modeling.jvlc.JvlcPackage;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
-import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
@@ -28,7 +23,6 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.IContextEventListener;
-import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
@@ -39,15 +33,13 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private final Topology topology;
 	private IncrementalKTC algorithm;
-	private final List<ILinkStateListener> linkActivationListeners;
-	private final List<IContextEventListener> contextEventListeners;
 	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
 	private final Map<KTCNode, INodeID> modelNodeToSimonstratorNode;
 	private final Map<IEdge, KTCLink> simonstratorEdgeToModelLink;
 	private final Map<KTCLink, IEdge> modelLinkToSimonstratorLink;
 	private TopologyControlAlgorithmID algorithmID;
 
-	public static IncrementalKTC getAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
+	public static IncrementalKTC createAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 
 		if (KTCConstants.ID_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
@@ -64,8 +56,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	 * Default constructor.
 	 */
 	public JVLCFacade() {
-		this.linkActivationListeners = new ArrayList<>();
-		this.contextEventListeners = new ArrayList<>();
 		this.simonstratorNodeToModelNode = new HashMap<>();
 		this.modelNodeToSimonstratorNode = new HashMap<>();
 		this.simonstratorEdgeToModelLink = new HashMap<>();
@@ -75,33 +65,9 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
-		this.algorithm = getAlgorithmForID(algorithmID);
+		this.algorithm = createAlgorithmForID(algorithmID);
 		this.algorithmID = algorithmID;
 		this.registerEMFListeners();
-	}
-
-	/**
-	 * Returns the graph of this facade.
-	 */
-	public Topology getTopology() {
-		return this.topology;
-	}
-
-	public void loadAndSetTopologyFromFile(final String inputFilename) throws FileNotFoundException {
-		loadAndSetTopologyFromFile(new File(inputFilename));
-	}
-
-	public void loadAndSetTopologyFromFile(final File inputFile) throws FileNotFoundException {
-		if (!this.topology.getNodes().isEmpty()) {
-			throw new IllegalStateException("This method may only be called if the stored topology is still empty");
-		}
-		final JvlcTopologyFromTextFileReader reader = new JvlcTopologyFromTextFileReader();
-		reader.read(this, new FileInputStream(inputFile));
-	}
-
-	private void registerEMFListeners() {
-		topology.eAdapters().clear();
-		topology.eAdapters().add(new LinkActivationContentAdapter());
 	}
 
 	@Override
@@ -119,24 +85,22 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public INode addNode(INode prototype) {
-		final INode simNode = super.addNode(prototype);
-
-		final KTCNode ktcNode = this.addKTCNode(simNode);
-		this.algorithm.handleNodeAddition(ktcNode);
-
-		this.simonstratorNodeToModelNode.put(simNode.getId(), ktcNode);
-		this.modelNodeToSimonstratorNode.put(ktcNode, simNode.getId());
-
-		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
-			contextEventListener.postNodeAdded(simNode);
-		}
-
-		return simNode;
-	}
-
-	private KTCNode addKTCNode(INode simNode) {
-		// TODO@rkluge: Implement me
-		return null;
+		// TODO@rkluge Implement me
+		throw new UnsupportedOperationException("Not fully implemented yet");
+		// final INode simNode = super.addNode(prototype);
+		//
+		// final KTCNode ktcNode = this.addKTCNode(simNode);
+		// this.algorithm.handleNodeAddition(ktcNode);
+		//
+		// this.simonstratorNodeToModelNode.put(simNode.getId(), ktcNode);
+		// this.modelNodeToSimonstratorNode.put(ktcNode, simNode.getId());
+		//
+		// for (final IContextEventListener contextEventListener :
+		// this.contextEventListeners) {
+		// contextEventListener.postNodeAdded(simNode);
+		// }
+		//
+		// return simNode;
 	}
 
 	@Override
@@ -235,21 +199,26 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public IEdge addEdge(IEdge prototype) {
 
-		final IEdge forwardEdge = Graphs.createDirectedEdge(prototype.getId(), prototype.fromId(), prototype.toId());
-		forwardEdge.addPropertiesFrom(prototype);
-
-		this.graph.addEdge(forwardEdge);
-
-		final KTCLink forwardKtcLink = addKTCLink(forwardEdge);
-
-		this.simonstratorEdgeToModelLink.put(forwardEdge, forwardKtcLink);
-		this.modelLinkToSimonstratorLink.put(forwardKtcLink, forwardEdge);
-
-		for (final IContextEventListener contextEventListener : this.contextEventListeners) {
-			contextEventListener.postEdgeAdded(forwardEdge);
-		}
-
-		return forwardEdge;
+		// TODO@rkluge implement me
+		throw new UnsupportedOperationException("Not implemented yet");
+		// final IEdge forwardEdge =
+		// Graphs.createDirectedEdge(prototype.getId(), prototype.fromId(),
+		// prototype.toId());
+		// forwardEdge.addPropertiesFrom(prototype);
+		//
+		// this.graph.addEdge(forwardEdge);
+		//
+		// final KTCLink forwardKtcLink = addKTCLink(forwardEdge);
+		//
+		// this.simonstratorEdgeToModelLink.put(forwardEdge, forwardKtcLink);
+		// this.modelLinkToSimonstratorLink.put(forwardKtcLink, forwardEdge);
+		//
+		// for (final IContextEventListener contextEventListener :
+		// this.contextEventListeners) {
+		// contextEventListener.postEdgeAdded(forwardEdge);
+		// }
+		//
+		// return forwardEdge;
 	}
 
 	@Override
@@ -291,41 +260,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 				contextEventListener.postEdgeAttributeUpdated(simEdge, property);
 			}
 		}
-	}
-
-	@Override
-	public void addLinkStateListener(final ILinkStateListener listener) {
-		this.linkActivationListeners.add(listener);
-	}
-
-	@Override
-	public void removeLinkStateListener(final ILinkStateListener listener) {
-		this.linkActivationListeners.remove(listener);
-	}
-
-	@Override
-	public void addContextEventListener(final IContextEventListener listener) {
-		this.contextEventListeners.add(listener);
-	}
-
-	@Override
-	public void removeContextEventListener(final IContextEventListener listener) {
-		this.contextEventListeners.remove(listener);
-	}
-
-	@Override
-	public void beginContextEventSequence() {
-		// nop
-	}
-
-	@Override
-	public void endContextEventSequence() {
-		// nop
-	}
-
-	private KTCLink addKTCLink(IEdge forwardEdge) {
-		// TODO@rkluge: Implement me
-		return null;
 	}
 
 	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId,
@@ -390,39 +324,36 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.topology.removeEdge(reverseEdge);
 	}
 
+	public IEdge getSimonstratorLinkForTopologyModelLink(final Edge edge) {
+		return modelLinkToSimonstratorLink.get(edge);
+	}
+
+	public INodeID getSimonstratorNodeForTopologyModelNode(final Node node) {
+		return modelNodeToSimonstratorNode.get(node);
+	}
+
 	/**
-	 * This content adapter listens for link state modifications and notifies
-	 * the registered {@link ILinkStateListener}s.
+	 * Returns the graph of this facade.
 	 */
-	private class LinkActivationContentAdapter extends GraphContentAdapter {
-		@Override
-		protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
-			super.edgeAttributeChanged(edge, attribute, oldValue);
+	public Topology getTopology() {
+		return this.topology;
+	}
 
-			final IEdge simEdge = modelLinkToSimonstratorLink.get(edge);
-			// We may be in the initialization phase - no events should be
-			// triggered here.
-			if (simEdge == null) {
-				return;
-			}
+	public void loadAndSetTopologyFromFile(final String inputFilename) throws FileNotFoundException {
+		loadAndSetTopologyFromFile(new File(inputFilename));
+	}
 
-			switch (attribute.getFeatureID()) {
-			case JvlcPackage.KTC_LINK__STATE:
-				for (final ILinkStateListener listener : linkActivationListeners) {
-					if (LinkState.ACTIVE.equals(edge.eGet(attribute))) {
-						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.ACTIVE);
-						listener.linkActivated(simEdge);
-					} else if (LinkState.INACTIVE.equals(edge.eGet(attribute))) {
-						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.INACTIVE);
-						listener.linkInactivated(simEdge);
-					} else if (LinkState.UNCLASSIFIED.equals(edge.eGet(attribute))) {
-						simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
-						listener.linkUnclassified(simEdge);
-					}
-				}
-				break;
-			}
+	public void loadAndSetTopologyFromFile(final File inputFile) throws FileNotFoundException {
+		if (!this.topology.getNodes().isEmpty()) {
+			throw new IllegalStateException("This method may only be called if the stored topology is still empty");
 		}
+		final JvlcTopologyFromTextFileReader reader = new JvlcTopologyFromTextFileReader();
+		reader.read(this, new FileInputStream(inputFile));
+	}
+
+	private void registerEMFListeners() {
+		topology.eAdapters().clear();
+		topology.eAdapters().add(new LinkActivationContentAdapter(this));
 	}
 
 }

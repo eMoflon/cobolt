@@ -45,7 +45,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		assertIsInactive(topology, "e13");
 		assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
 
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		assertIsInactive(topology, "e13", "e32");
 		assertIsActive(topology, "e21", "e31", "e12", "e23");
 
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
 	}
 
 	/**

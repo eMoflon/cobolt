@@ -86,7 +86,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		assertAllActiveWithExceptionsSymmetric(graph, "e23");
 		assertIsSymmetric(graph);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e14", "e15");
 
 		assertIsSymmetric(topology);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e31");
 		assertIsSymmetric(topology);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.getAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
 	}
 
 	/*
