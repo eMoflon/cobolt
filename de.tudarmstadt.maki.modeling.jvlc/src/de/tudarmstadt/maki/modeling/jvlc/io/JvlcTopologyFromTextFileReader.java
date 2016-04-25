@@ -136,7 +136,7 @@ public class JvlcTopologyFromTextFileReader {
 					} else {
 						requiredTransmissionPower = Double.NaN;
 					}
-					facade.addEdge(EdgeID.get(edgeIdFwd), EdgeID.get(edgeIdBwd), INodeID.get(sourceId), INodeID.get(targetId), distance,
+					facade.addBidirectionalEdge(EdgeID.get(edgeIdFwd), EdgeID.get(edgeIdBwd), INodeID.get(sourceId), INodeID.get(targetId), distance,
 							requiredTransmissionPower);
 
 					readEdgeLines++;

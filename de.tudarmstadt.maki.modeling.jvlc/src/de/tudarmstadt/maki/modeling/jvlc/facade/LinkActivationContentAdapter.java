@@ -12,8 +12,8 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 /**
- * This content adapter listens for link state modifications and notifies
- * the registered {@link ILinkStateListener}s.
+ * This content adapter listens for link state modifications and notifies the
+ * registered {@link ILinkStateListener}s.
  */
 class LinkActivationContentAdapter extends GraphContentAdapter {
 	private final JVLCFacade facade;
@@ -41,13 +41,19 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 			for (final ILinkStateListener listener : facade.getLinkStateListeners()) {
 				if (LinkState.ACTIVE.equals(edge.eGet(attribute))) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.ACTIVE);
-					listener.linkActivated(simEdge);
+					if (!facade.areLinkStateModificationListenersMuted()) {
+						listener.linkActivated(simEdge);
+					}
 				} else if (LinkState.INACTIVE.equals(edge.eGet(attribute))) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.INACTIVE);
-					listener.linkInactivated(simEdge);
+					if (!facade.areLinkStateModificationListenersMuted()) {
+						listener.linkInactivated(simEdge);
+					}
 				} else if (LinkState.UNCLASSIFIED.equals(edge.eGet(attribute))) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
-					listener.linkUnclassified(simEdge);
+					if (!facade.areLinkStateModificationListenersMuted()) {
+						listener.linkUnclassified(simEdge);
+					}
 				}
 			}
 			break;
