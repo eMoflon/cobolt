@@ -112,7 +112,7 @@ public final class JvlcTestHelper {
 	}
 
 	public static void assertHasDistance(final Topology topology, final String id, final double distance) {
-		Assert.assertEquals(distance, topology.getKTCLinkById(id).getDistance(), EPS_0);
+		Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getKTCLinkById(id).getDistance(), EPS_0);
 	}
 
 	public static void assertAllActiveWithExceptionsSymmetric(final Topology topology, final String... edgeIds) {

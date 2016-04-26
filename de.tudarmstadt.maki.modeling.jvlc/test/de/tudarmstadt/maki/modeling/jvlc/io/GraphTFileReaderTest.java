@@ -15,9 +15,9 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 
 /**
- * Unit tests for {@link JvlcTopologyFromTextFileReader}
+ * Unit tests for {@link GraphTFileReader}
  */
-public class JvlcTopologyFromTextFileReaderTest {
+public class GraphTFileReaderTest {
 
 	private static final double EPS_6 = 1e-6;
 	private Topology topology;
@@ -29,7 +29,7 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgraphD1() throws Exception {
-		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToDistanceTestGraph(1));
+		GraphTFileReader.readTopology(this.topology, getPathToDistanceTestGraph(1));
 
 		Assert.assertEquals(5, topology.getNodeCount());
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
@@ -47,7 +47,7 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgraphD3() throws Exception {
-		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToDistanceTestGraph(3));
+		GraphTFileReader.readTopology(this.topology, getPathToDistanceTestGraph(3));
 
 		Assert.assertEquals(3, topology.getNodeCount());
 		Assert.assertEquals(2 * 3, topology.getEdgeCount());
@@ -59,7 +59,7 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgraphE1() throws Exception {
-		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToEnergyTestGraph(1));
+		GraphTFileReader.readTopology(this.topology, getPathToEnergyTestGraph(1));
 
 		Assert.assertEquals(6, topology.getEdgeCount());
 		Assert.assertEquals(3, topology.getNodeCount());
@@ -80,12 +80,28 @@ public class JvlcTopologyFromTextFileReaderTest {
 
 	@Test
 	public void testWithTestgrahpD4() throws Exception {
-		JvlcTopologyFromTextFileReader.readTopology(this.topology, getPathToDistanceTestGraph(4));
+		GraphTFileReader.readTopology(this.topology, getPathToDistanceTestGraph(4));
 
 		assertHasDistance(topology, "e1-2", 10.0);
 		assertHasDistance(topology, "e1-3", 20.0);
 		assertHasDistance(topology, "e1-7", 10.0);
 		assertHasDistance(topology, "e1-7", 10.0);
+
+		assertIsSymmetric(topology);
+
+	}
+
+	@Test
+	public void testWithTestgrahpD5() throws Exception {
+		GraphTFileReader.readTopology(this.topology, getPathToDistanceTestGraph(5));
+
+		assertHasDistance(topology, "e1-2", 15.0);
+		assertHasDistance(topology, "e1-3", 20.0);
+		assertHasDistance(topology, "e1-4", 25.0);
+		assertHasDistance(topology, "e1-5", 30.0);
+		assertHasDistance(topology, "e2-3", 17.0);
+		assertHasDistance(topology, "e3-4", 22.0);
+		assertHasDistance(topology, "e4-5", 27.0);
 
 		assertIsSymmetric(topology);
 

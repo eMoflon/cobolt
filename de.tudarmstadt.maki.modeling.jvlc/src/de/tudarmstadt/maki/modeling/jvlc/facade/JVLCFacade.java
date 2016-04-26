@@ -17,7 +17,7 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.CollectionConstraintViolationEnumerator;
-import de.tudarmstadt.maki.modeling.jvlc.io.JvlcTopologyFromTextFileReader;
+import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
@@ -405,7 +405,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		if (!this.topology.getNodes().isEmpty()) {
 			throw new IllegalStateException("This method may only be called if the stored topology is still empty");
 		}
-		final JvlcTopologyFromTextFileReader reader = new JvlcTopologyFromTextFileReader();
+		final GraphTFileReader reader = new GraphTFileReader();
 		reader.read(this, new FileInputStream(inputFile));
 	}
 

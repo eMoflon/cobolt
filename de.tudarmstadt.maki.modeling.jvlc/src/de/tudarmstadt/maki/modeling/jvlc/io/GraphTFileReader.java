@@ -13,7 +13,7 @@ import de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 
-public class JvlcTopologyFromTextFileReader {
+public class GraphTFileReader {
 
 	public void read(final Topology topology, final String filename) throws FileNotFoundException {
 		this.read(topology, new File(filename));
@@ -89,7 +89,7 @@ public class JvlcTopologyFromTextFileReader {
 	 * Utility function that creates a reader and reads a topology from the file described by the given filename.
 	 */
 	public static void readTopology(final Topology topology, final String filename) throws FileNotFoundException {
-		final JvlcTopologyFromTextFileReader reader = new JvlcTopologyFromTextFileReader();
+		final GraphTFileReader reader = new GraphTFileReader();
 		reader.read(topology, new FileInputStream(filename));
 	}
 

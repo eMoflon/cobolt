@@ -1,4 +1,4 @@
-package de.tudarmstadt.maki.modeling.jvlc.graph;
+package de.tudarmstadt.maki.modeling.jvlc.algorithms;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -12,6 +12,7 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
+import de.tudarmstadt.maki.modeling.jvlc.graph.TestGraphGenerator;
 
 public class DistanceKTCTest {
 
@@ -33,7 +34,6 @@ public class DistanceKTCTest {
 
 	}
 
-	@Ignore //FIXME@rkluge
 	@Test
 	public void testAlgorithmWithTestgraph1NodeBased() throws Exception {
 
