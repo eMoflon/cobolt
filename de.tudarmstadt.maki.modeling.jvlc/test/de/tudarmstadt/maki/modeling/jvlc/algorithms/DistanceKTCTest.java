@@ -4,13 +4,13 @@ import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistance
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
+import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
@@ -23,62 +23,61 @@ public class DistanceKTCTest {
 			.getInstance();
 
 	private Topology graph;
-	
+
+	private DistanceKTC algorithm;
+
 	@Before
 	public void setUp() {
 		this.graph = JvlcFactory.eINSTANCE.createTopology();
+		this.algorithm = JvlcFactory.eINSTANCE.createDistanceKTC();
 	}
-	
+
 	@Test
-	public void testAlgorithmWithTestgraph1() throws Exception {
+	public void testAlgorithmWithTestgraph1TopologyBased() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
-		final DistanceKTC distanceKTC = JvlcFactory.eINSTANCE.createDistanceKTC();
-		distanceKTC.setK(1.1);
+		algorithm.setK(1.1);
 
-		distanceKTC.runOnTopology(graph);
+		algorithm.runOnTopology(graph);
 
-		constraintChecker.checkPredicate(graph, distanceKTC);
-		Assert.assertTrue(constraintChecker.checkConnectivityViaActiveLinks(graph));
+		System.out.println(JvlcTestHelper.formatEdgeStates(graph));
+
+		constraintChecker.checkPredicate(graph, algorithm);
 		Assert.assertTrue(constraintChecker.checkThatNoUnclassifiedLinksExist(graph));
+		Assert.assertTrue(constraintChecker.checkConnectivityViaActiveLinks(graph));
 
 	}
 
 	@Test
 	public void testAlgorithmWithTestgraph1NodeBased() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
-		final DistanceKTC distanceKTC = JvlcFactory.eINSTANCE.createDistanceKTC();
-		distanceKTC.setK(1.1);
+		algorithm.setK(1.1);
 
 		for (final Node node : graph.getNodes()) {
-			distanceKTC.runOnNode((KTCNode) node);
+			algorithm.runOnNode((KTCNode) node);
 		}
 
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(graph, distanceKTC);
-		Assert.assertTrue(
-				AssertConstraintViolationEnumerator.getInstance().checkConnectivityViaActiveLinks(graph));
-		Assert.assertTrue(
-				AssertConstraintViolationEnumerator.getInstance().checkThatNoUnclassifiedLinksExist(graph));
+		constraintChecker.checkPredicate(graph, algorithm);
+		Assert.assertTrue(constraintChecker.checkThatNoUnclassifiedLinksExist(graph));
+		Assert.assertTrue(constraintChecker.checkConnectivityViaActiveLinks(graph));
 
 	}
 
-	@Ignore // TODO@rkluge: Check me
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
-		final DistanceKTC distanceKTC = JvlcFactory.eINSTANCE.createDistanceKTC();
 
-		final KTCLink e13 = getEdgeById(graph, "n_1->n_3");
-		final KTCLink e12 = getEdgeById(graph, "n_1->n_2");
-		final KTCLink e23 = getEdgeById(graph, "n_2->n_3");
+		final KTCLink e13 = getEdgeById(graph, "e1-3");
+		final KTCLink e12 = getEdgeById(graph, "e1-2");
+		final KTCLink e23 = getEdgeById(graph, "e2-3");
 
-		distanceKTC.setK(1.3);
-		Assert.assertTrue(distanceKTC.checkPredicate(e13, e12, e23));
-		Assert.assertTrue(distanceKTC.checkPredicate(e13, e23, e12));
-		Assert.assertFalse(distanceKTC.checkPredicate(e23, e13, e12));
+		algorithm.setK(1.3);
+		Assert.assertTrue(algorithm.checkPredicate(e13, e12, e23));
+		Assert.assertTrue(algorithm.checkPredicate(e13, e23, e12));
+		Assert.assertFalse(algorithm.checkPredicate(e23, e13, e12));
 
-		distanceKTC.setK(1.5);
-		Assert.assertFalse(distanceKTC.checkPredicate(e13, e12, e23));
-		Assert.assertFalse(distanceKTC.checkPredicate(e13, e23, e12));
+		algorithm.setK(1.5);
+		Assert.assertFalse(algorithm.checkPredicate(e13, e12, e23));
+		Assert.assertFalse(algorithm.checkPredicate(e13, e23, e12));
 	}
 
 	private KTCLink getEdgeById(final Graph testGraph, final String edgeId) {
