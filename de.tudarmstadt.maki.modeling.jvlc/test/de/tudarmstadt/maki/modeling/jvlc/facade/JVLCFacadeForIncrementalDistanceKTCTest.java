@@ -6,6 +6,9 @@ import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassifiedSymmetric;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,8 +19,9 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
+import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
+import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
@@ -36,11 +40,13 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 */
 	private JVLCFacade facade;
 	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.ID_KTC;
+	private GraphTFileReader reader;
 
 	@Before
 	public void setup() {
 		this.facade = (JVLCFacade) TopologyControlFacadeFactory.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
 		this.facade.configureAlgorithm(ALGO_ID);
+		this.reader = new GraphTFileReader();
 	}
 
 	@Test
@@ -86,12 +92,13 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		assertAllActiveWithExceptionsSymmetric(graph, "e23");
 		assertIsSymmetric(graph);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
 	public void testFacadeWithTestgraphD1() throws Exception {
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(1));
+		
+		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(1))));
 		facade.run(1.1);
 
 		final Topology topology = facade.getTopology();
@@ -99,21 +106,21 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e14", "e15");
 
 		assertIsSymmetric(topology);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
 	public void testFacadeWithTestgraph3() throws Exception
-
 	{
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(3));
+		
+		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(3))));
 		facade.run(1.5);
 
 		final Topology topology = facade.getTopology();
 
 		assertAllActiveWithExceptionsSymmetric(topology, "e13", "e31");
 		assertIsSymmetric(topology);
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
 
 	/*
@@ -124,8 +131,8 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	@Test
 	public void testFacadeWithTestgraphD4() throws Exception {
 		final int k = 2;
-
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(4));
+		
+		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(4))));
 
 		// TC(i)
 		facade.run(k);
@@ -166,23 +173,12 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 	}
 
-	@Test
-	public void testDeferredContextEventHandling() throws Exception {
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(4));
-		facade.beginContextEventSequence();
-		facade.removeNode(INodeID.get("5"));
-		facade.removeNode(INodeID.get("6"));
-		facade.addEdge(INodeID.get("4"), INodeID.get("11"), 20, 400);
-		facade.addEdge(INodeID.get("11"), INodeID.get("4"), 20, 400);
-		facade.endContextEventSequence();
-	}
-
 	/**
 	 * This test illustrates that in a triangle that contains two equally long 'longest' links (in terms of distance), only the link with the larger ID ('e23'  in this case) is inactivated.
 	 */
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToDistanceTestGraph(2));
+		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(2))));
 		facade.run(1.1);
 
 		Assert.assertTrue(facade.getTopology().getKTCLinkById("e21").hasSameDistanceAndSmallerID(facade.getTopology().getKTCLinkById("e23")));

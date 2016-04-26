@@ -7,6 +7,9 @@ import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactive;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +18,9 @@ import de.tudarmstadt.maki.modeling.jvlc.IncrementalEnergyKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
+import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
+import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
@@ -26,6 +31,7 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 	private JVLCFacade facade;
+	private GraphTFileReader reader;
 	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.IE_KTC;
 
 	@Before
@@ -33,11 +39,12 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 		this.facade = (JVLCFacade) TopologyControlFacadeFactory.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
 		this.facade.configureAlgorithm(ALGO_ID);
+		this.reader = new GraphTFileReader();
 	}
 
 	@Test
 	public void testWithTestgraphE1() throws Exception {
-		this.facade.loadAndSetTopologyFromFile(getPathToEnergyTestGraph(1));
+		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
 
 		this.facade.run(1.5);
 
@@ -45,12 +52,12 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		assertIsInactive(topology, "e13");
 		assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
 
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
 
 	@Test
 	public void testWithTestgraphE1_OneContextEvent() throws Exception {
-		this.facade.loadAndSetTopologyFromFile(getPathToEnergyTestGraph(1));
+		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
 
 		this.facade.run(1.5);
 
@@ -71,7 +78,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		assertIsInactive(topology, "e13", "e32");
 		assertIsActive(topology, "e21", "e31", "e12", "e23");
 
-		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), JVLCFacade.createAlgorithmForID(ALGO_ID));
+		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
 
 	/**
@@ -79,7 +86,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 	 */
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
-		facade.loadAndSetTopologyFromFile(JvlcTestHelper.getPathToEnergyTestGraph(2));
+		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToEnergyTestGraph(2))));
 		facade.run(1.1);
 
 		Assert.assertTrue(

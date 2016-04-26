@@ -10,7 +10,6 @@ import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
-import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
@@ -38,8 +37,6 @@ public class DistanceKTCTest {
 		algorithm.setK(1.1);
 
 		algorithm.runOnTopology(graph);
-
-		System.out.println(JvlcTestHelper.formatEdgeStates(graph));
 
 		constraintChecker.checkPredicate(graph, algorithm);
 		Assert.assertTrue(constraintChecker.checkThatNoUnclassifiedLinksExist(graph));

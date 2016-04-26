@@ -10,8 +10,14 @@ import java.util.Scanner;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade;
+import de.tudarmstadt.maki.simonstrator.api.Graphs;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.DirectedEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.Node;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class GraphTFileReader {
 
@@ -68,8 +74,8 @@ public class GraphTFileReader {
 					} else {
 						requiredTransmissionPower = Double.NaN;
 					}
-					topology.addUndirectedKTCLink(edgeIdFwd, edgeIdBwd, idToNode.get(sourceId), idToNode.get(targetId), distance,
-							requiredTransmissionPower);
+					topology.addUndirectedKTCLink(edgeIdFwd, edgeIdBwd, idToNode.get(sourceId), idToNode.get(targetId),
+							distance, requiredTransmissionPower);
 
 					readEdgeLines++;
 				}
@@ -86,7 +92,8 @@ public class GraphTFileReader {
 	}
 
 	/**
-	 * Utility function that creates a reader and reads a topology from the file described by the given filename.
+	 * Utility function that creates a reader and reads a topology from the file
+	 * described by the given filename.
 	 */
 	public static void readTopology(final Topology topology, final String filename) throws FileNotFoundException {
 		final GraphTFileReader reader = new GraphTFileReader();
@@ -116,7 +123,9 @@ public class GraphTFileReader {
 					} else {
 						remainingEnergy = Double.NaN;
 					}
-					facade.addNode(INodeID.get(nodeId), remainingEnergy);
+					Node node = Graphs.createNode(nodeId);
+					node.setProperty(KTCConstants.REMAINING_ENERGY, remainingEnergy);
+					facade.addNode(node);
 					readNodeLines++;
 				}
 			}
@@ -136,9 +145,19 @@ public class GraphTFileReader {
 					} else {
 						requiredTransmissionPower = Double.NaN;
 					}
-					facade.addBidirectionalEdge(EdgeID.get(edgeIdFwd), EdgeID.get(edgeIdBwd), INodeID.get(sourceId), INodeID.get(targetId), distance,
-							requiredTransmissionPower);
-
+					final IEdge forwardPrototype = new DirectedEdge(INodeID.get(sourceId), INodeID.get(targetId), EdgeID.get(edgeIdFwd));
+					final IEdge backwardPrototype = new DirectedEdge(INodeID.get(targetId), INodeID.get(sourceId), EdgeID.get(edgeIdBwd));
+					forwardPrototype.setProperty(KTCConstants.DISTANCE, distance);
+					backwardPrototype.setProperty(KTCConstants.DISTANCE, distance);
+					forwardPrototype.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+					backwardPrototype.setProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+					
+					final IEdge fwdEdge = facade.addEdge(forwardPrototype);
+					final IEdge bwdEdge = facade.addEdge(backwardPrototype);
+					fwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, bwdEdge);
+					bwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, fwdEdge);
+					facade.connectOppositeEdges(fwdEdge, bwdEdge);
+					
 					readEdgeLines++;
 				}
 			}
