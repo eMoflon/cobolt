@@ -12,7 +12,7 @@ import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
-import de.tudarmstadt.maki.modeling.jvlc.LinkState;
+import de.tudarmstadt.maki.modeling.jvlc.EdgeState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.CollectionConstraintViolationEnumerator;
@@ -283,7 +283,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 				ktcLink.setRequiredTransmissionPower((Double) value);
 				this.algorithm.handleLinkAttributeModification(ktcLink);
 			} else if (KTCConstants.EDGE_STATE.equals(property)) {
-				ktcLink.setState(LinkState.UNCLASSIFIED);
+				ktcLink.setState(EdgeState.UNCLASSIFIED);
 				this.algorithm.handleLinkAttributeModification(ktcLink);
 			}
 		}

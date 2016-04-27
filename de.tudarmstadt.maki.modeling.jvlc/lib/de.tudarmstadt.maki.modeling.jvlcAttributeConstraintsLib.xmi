@@ -47,6 +47,15 @@
     <parameterIDs
         identifier="b"/>
   </operationSpecifications>
+  <operationSpecifications
+      constraintSpecifications="//@constraintSpecifications.3"
+      operationIdentifier="eq">
+    <operationSpecifications
+        specification="&quot;FOOO&quot;"
+        adornmentString="F"/>
+    <parameterIDs
+        identifier="a"/>
+  </operationSpecifications>
   <constraintSpecifications
       operationSpecificationGroup="//@operationSpecifications.0"
       symbol="max">
@@ -91,12 +100,21 @@
     <parameterTypes>
       <type
           xsi:type="ecore:EEnum"
-          href="../model/Jvlc.ecore#//LinkState"/>
+          href="../../de.tudarmstadt.maki.modeling.graphmodel/model/Graphmodel.ecore#//EdgeState"/>
     </parameterTypes>
     <parameterTypes>
       <type
           xsi:type="ecore:EEnum"
-          href="../model/Jvlc.ecore#//LinkState"/>
+          href="../../de.tudarmstadt.maki.modeling.graphmodel/model/Graphmodel.ecore#//EdgeState"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications
+      operationSpecificationGroup="//@operationSpecifications.3"
+      symbol="=">
+    <parameterTypes>
+      <type
+          xsi:type="ecore:EEnum"
+          href="../../../plugin/de.tudarmstadt.maki.modeling.graphmodel/model/Graphmodel.ecore#//EdgeState"/>
     </parameterTypes>
   </constraintSpecifications>
 </org.moflon.sdm.constraints.operationspecification:AttributeConstraintLibrary>
