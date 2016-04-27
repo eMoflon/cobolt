@@ -22,7 +22,8 @@ public final class JvlcTestHelper {
 	public static final double EPS_0 = 0.0;
 	public static final double EPS_6 = 1e-6;
 
-	public static void assertHasState(final Topology topology, final LinkState state, final boolean checkSymmetry, final String... edgeIds) {
+	public static void assertHasState(final Topology topology, final LinkState state, final boolean checkSymmetry,
+			final String... edgeIds) {
 		for (final String edgeId : edgeIds) {
 			final Edge link = topology.getEdgeById(edgeId);
 			JvlcTestHelper.assertHasState(link, state);
@@ -35,7 +36,8 @@ public final class JvlcTestHelper {
 	public static void assertHasState(final Edge link, final LinkState state) {
 		Assert.assertNotNull(link);
 		final LinkState actualState = ((KTCLink) link).getState();
-		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'", state, actualState);
+		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'",
+				state, actualState);
 	}
 
 	public static void assertIsActive(final Edge link) {
@@ -81,13 +83,17 @@ public final class JvlcTestHelper {
 	}
 
 	/**
-	 * Asserts that the graph contains for each link its reverse link and that the attributes that should be symmetric (state, required transmission power, distance) are the same.
+	 * Asserts that the graph contains for each link its reverse link and that
+	 * the attributes that should be symmetric (state, required transmission
+	 * power, distance) are the same.
 	 */
 	public static void assertIsSymmetric(final Topology graph) {
 		for (final Edge edge : graph.getEdges()) {
 			Assert.assertNotNull("Link '" + edge.getId() + "' has no reverse edge", edge.getReverseEdge());
-			Assert.assertSame("Reverse edge of reverse edge of '" + edge.getId() + "' is '" + edge.getReverseEdge().getReverseEdge() + "'.", edge,
-					edge.getReverseEdge().getReverseEdge());
+			Assert.assertSame(
+					"Reverse edge of reverse edge of '" + edge.getId() + "' is '"
+							+ edge.getReverseEdge().getReverseEdge() + "'.",
+					edge, edge.getReverseEdge().getReverseEdge());
 
 			final KTCLink link = (KTCLink) edge;
 			final KTCLink reverseLink = (KTCLink) link.getReverseEdge();
@@ -112,28 +118,15 @@ public final class JvlcTestHelper {
 	}
 
 	public static void assertHasDistance(final Topology topology, final String id, final double distance) {
-		Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getKTCLinkById(id).getDistance(), EPS_0);
+		Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getKTCLinkById(id).getDistance(),
+				EPS_0);
 	}
 
 	public static void assertAllActiveWithExceptionsSymmetric(final Topology topology, final String... edgeIds) {
 		assertAllActiveWithExceptions(topology, true, edgeIds);
 	}
 
-	public static void assertAllActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges, final String... edgeIds) {
-		final List<String> sortedEdgeIds = new ArrayList<>(Arrays.asList(edgeIds));
-		Collections.sort(sortedEdgeIds);
-		for (final Edge edge : topology.getEdges()) {
-			if (Collections.binarySearch(sortedEdgeIds, edge.getId()) >= 0) {
-				assertIsInactive(edge);
-			} else if (assumeSymmetricEdges && Collections.binarySearch(sortedEdgeIds, edge.getReverseEdge().getId()) >= 0) {
-				assertIsInactive(edge);
-			} else {
-				assertIsActive(edge);
-			}
-		}
-	}
-
-	public static String formatEdgeStates(final Graph graph) {
+	public static String format(final Graph graph) {
 		final StringBuilder builder = new StringBuilder();
 		final List<String> edgeIds = new ArrayList<>();
 		final Set<String> processedIds = new HashSet<>();
@@ -151,18 +144,35 @@ public final class JvlcTestHelper {
 				final KTCLink revLink = (KTCLink) link.getReverseEdge();
 				Assert.assertNotNull("Null reverse link of link " + link, revLink);
 				Assert.assertNotNull(revLink.getId());
-				builder.append(String.format("%6s", link.getId()) + " : " + link.getState().toString().substring(0, 1) + " || "
-						+ String.format("%6s", revLink.getId()) + " : " + revLink.getState().toString().substring(0, 1) + "\n");
+				builder.append(String.format("%6s", link.getId()) + " : " + link.getState().toString().substring(0, 1)
+						+ " || " + String.format("%6s", revLink.getId()) + " : "
+						+ revLink.getState().toString().substring(0, 1) + "\n");
 				processedIds.add(link.getId());
 				processedIds.add(revLink.getId());
 				stateCounts.put(link.getState(), stateCounts.get(link.getState()) + 1);
 				stateCounts.put(revLink.getState(), stateCounts.get(revLink.getState()) + 1);
 			}
 		}
-		builder.insert(0, String.format("#A : %d || #I : %d || #U : %d\n", stateCounts.get(LinkState.ACTIVE), stateCounts.get(LinkState.INACTIVE),
-				stateCounts.get(LinkState.UNCLASSIFIED)));
+		builder.insert(0, String.format("#A : %d || #I : %d || #U : %d\n", stateCounts.get(LinkState.ACTIVE),
+				stateCounts.get(LinkState.INACTIVE), stateCounts.get(LinkState.UNCLASSIFIED)));
 		return builder.toString();
 
+	}
+
+	public static void assertAllActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges,
+			final String... edgeIds) {
+		final List<String> sortedEdgeIds = new ArrayList<>(Arrays.asList(edgeIds));
+		Collections.sort(sortedEdgeIds);
+		for (final Edge edge : topology.getEdges()) {
+			if (Collections.binarySearch(sortedEdgeIds, edge.getId()) >= 0) {
+				assertIsInactive(edge);
+			} else if (assumeSymmetricEdges
+					&& Collections.binarySearch(sortedEdgeIds, edge.getReverseEdge().getId()) >= 0) {
+				assertIsInactive(edge);
+			} else {
+				assertIsActive(edge);
+			}
+		}
 	}
 
 	public static void allUnclassified(final Topology topology) {

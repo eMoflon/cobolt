@@ -18,6 +18,7 @@ import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.CollectionConstraintViolationEnumerator;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
@@ -33,8 +34,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	private IncrementalKTC algorithm;
 	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
 	private final Map<KTCNode, INodeID> modelNodeToSimonstratorNode;
-	private final Map<IEdge, KTCLink> simonstratorEdgeToModelLink;
-	private final Map<KTCLink, IEdge> modelLinkToSimonstratorLink;
+	private final Map<EdgeID, KTCLink> simonstratorEdgeToModelLink;
+	private final Map<KTCLink, EdgeID> modelLinkToSimonstratorLink;
 	private TopologyControlAlgorithmID algorithmID;
 	private int constraintViolationCounter;
 
@@ -306,11 +307,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private KTCLink getModelLinkForSimonstratorEdge(final IEdge simEdge) {
-		return this.simonstratorEdgeToModelLink.get(simEdge);
+		return this.simonstratorEdgeToModelLink.get(simEdge.getId());
 	}
 
-	public IEdge getSimonstratorLinkForTopologyModelLink(final Edge edge) {
-		return modelLinkToSimonstratorLink.get(edge);
+	public IEdge getSimonstratorLinkForTopologyModelLink(final KTCLink edge) {
+		return getGraph().getEdge(modelLinkToSimonstratorLink.get(edge));
 	}
 
 	public INodeID getSimonstratorNodeForTopologyModelNode(final Node node) {
@@ -323,12 +324,12 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private void establishLinkMapping(final IEdge simonstratorEdge, final KTCLink modelLink) {
-		this.simonstratorEdgeToModelLink.put(simonstratorEdge, modelLink);
-		this.modelLinkToSimonstratorLink.put(modelLink, simonstratorEdge);
+		this.simonstratorEdgeToModelLink.put(simonstratorEdge.getId(), modelLink);
+		this.modelLinkToSimonstratorLink.put(modelLink, simonstratorEdge.getId());
 	}
 
 	private void removeLinkMapping(final IEdge simonstratorEdge, final KTCLink modelLink) {
-		this.modelLinkToSimonstratorLink.remove(modelLink);
+		this.modelLinkToSimonstratorLink.remove(modelLink.getId());
 		this.simonstratorEdgeToModelLink.remove(simonstratorEdge);
 	}
 
