@@ -13,11 +13,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalDistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
-import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
@@ -55,11 +55,11 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		final Topology topology = facade.getTopology();
 		final KTCNode n1 = topology.addKTCNode("n1", 10.0);
 		final KTCNode n2 = topology.addKTCNode("n2", 10.0);
-		final KTCLink link1 = topology.addKTCLink("e12", n1, n2, 150.0, 5.0, LinkState.UNCLASSIFIED);
-		final KTCLink link2 = topology.addKTCLink("e21", n1, n2, 150.0, 5.0, LinkState.UNCLASSIFIED);
+		final KTCLink link1 = topology.addKTCLink("e12", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
+		final KTCLink link2 = topology.addKTCLink("e21", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
 
 		n1.setRemainingEnergy(2.0);
-		link1.setState(LinkState.ACTIVE);
+		link1.setState(EdgeState.ACTIVE);
 		link1.setRequiredTransmissionPower(1.1);
 		link1.setDistance(150);
 		topology.removeEdge(link1);

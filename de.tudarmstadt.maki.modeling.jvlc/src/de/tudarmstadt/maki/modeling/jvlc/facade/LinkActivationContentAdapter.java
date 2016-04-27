@@ -6,7 +6,6 @@ import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.listener.GraphContentAdapter;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcPackage;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
-import de.tudarmstadt.maki.modeling.jvlc.LinkState;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
@@ -44,17 +43,17 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 		case JvlcPackage.KTC_LINK__STATE:
 			for (final ILinkStateListener listener : facade.getLinkStateListeners()) {
 				Object newAttributeValue = edge.eGet(attribute);
-				if (LinkState.ACTIVE.equals(newAttributeValue)) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.ACTIVE);
+				if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE.equals(newAttributeValue)) {
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkActivated(simEdge);
 					}
-				} else if (LinkState.INACTIVE.equals(newAttributeValue)) {
+				} else if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE.equals(newAttributeValue)) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.INACTIVE);
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkInactivated(simEdge);
 					}
-				} else if (LinkState.UNCLASSIFIED.equals(newAttributeValue)) {
+				} else if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED.equals(newAttributeValue)) {
 					simEdge.setProperty(KTCConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkUnclassified(simEdge);

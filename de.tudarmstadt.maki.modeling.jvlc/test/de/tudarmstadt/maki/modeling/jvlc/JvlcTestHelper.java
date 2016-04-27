@@ -22,7 +22,8 @@ public final class JvlcTestHelper {
 	public static final double EPS_0 = 0.0;
 	public static final double EPS_6 = 1e-6;
 
-	public static void assertHasState(final Topology topology, final LinkState state, final boolean checkSymmetry,
+	public static void assertHasState(final Topology topology,
+			final de.tudarmstadt.maki.modeling.graphmodel.EdgeState state, final boolean checkSymmetry,
 			final String... edgeIds) {
 		for (final String edgeId : edgeIds) {
 			final Edge link = topology.getEdgeById(edgeId);
@@ -33,52 +34,53 @@ public final class JvlcTestHelper {
 		}
 	}
 
-	public static void assertHasState(final Edge link, final LinkState state) {
+	public static void assertHasState(final Edge link, final de.tudarmstadt.maki.modeling.graphmodel.EdgeState state) {
 		Assert.assertNotNull(link);
-		final LinkState actualState = ((KTCLink) link).getState();
+		final de.tudarmstadt.maki.modeling.graphmodel.EdgeState actualState = ((KTCLink) link).getState();
 		Assert.assertSame("Expected link '" + link.getId() + "' to be '" + state + "' but was '" + actualState + "'",
 				state, actualState);
 	}
 
 	public static void assertIsActive(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.ACTIVE);
+		JvlcTestHelper.assertHasState(link, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE);
 	}
 
 	public static void assertIsInactive(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.INACTIVE);
+		JvlcTestHelper.assertHasState(link, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE);
 	}
 
 	public static void assertIsUnclassified(final Edge link) {
-		JvlcTestHelper.assertHasState(link, LinkState.UNCLASSIFIED);
+		JvlcTestHelper.assertHasState(link, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
 	}
 
 	public static void assertIsActive(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.ACTIVE, false, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE, false, edgeIds);
 	}
 
 	public static void assertIsInactive(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.INACTIVE, false, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE, false, edgeIds);
 	}
 
 	public static void assertIsUnclassified(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.UNCLASSIFIED, false, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED, false, edgeIds);
 	}
 
 	public static void assertIsActiveSymmetric(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.ACTIVE, true, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE, true, edgeIds);
 	}
 
 	public static void assertIsInactiveSymmetric(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.INACTIVE, true, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE, true, edgeIds);
 	}
 
 	public static void assertIsUnclassifiedSymmetric(final Topology topology, final String... edgeIds) {
-		assertHasState(topology, LinkState.UNCLASSIFIED, true, edgeIds);
+		assertHasState(topology, de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED, true, edgeIds);
 	}
 
 	public static void assertHasNoUnclassifiedLinks(final Topology topology) {
 		for (final Edge link : topology.getEdges()) {
-			Assert.assertNotSame(LinkState.UNCLASSIFIED, ((KTCLink) link).getState());
+			Assert.assertNotSame(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED,
+					((KTCLink) link).getState());
 		}
 	}
 
@@ -103,7 +105,8 @@ public final class JvlcTestHelper {
 		}
 	}
 
-	public static void assertHasState(final Map<KTCLink, LinkState> expectedStateMap) {
+	public static void assertHasState(
+			final Map<KTCLink, de.tudarmstadt.maki.modeling.graphmodel.EdgeState> expectedStateMap) {
 		for (final KTCLink link : expectedStateMap.keySet()) {
 			assertHasState(link, expectedStateMap.get(link));
 		}
@@ -133,10 +136,10 @@ public final class JvlcTestHelper {
 		for (final Edge edge : graph.getEdges()) {
 			edgeIds.add(edge.getId());
 		}
-		final Map<LinkState, Integer> stateCounts = new HashMap<>();
-		stateCounts.put(LinkState.ACTIVE, 0);
-		stateCounts.put(LinkState.INACTIVE, 0);
-		stateCounts.put(LinkState.UNCLASSIFIED, 0);
+		final Map<de.tudarmstadt.maki.modeling.graphmodel.EdgeState, Integer> stateCounts = new HashMap<>();
+		stateCounts.put(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE, 0);
+		stateCounts.put(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE, 0);
+		stateCounts.put(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED, 0);
 		Collections.sort(edgeIds);
 		for (final String id : edgeIds) {
 			if (!processedIds.contains(id)) {
@@ -153,8 +156,11 @@ public final class JvlcTestHelper {
 				stateCounts.put(revLink.getState(), stateCounts.get(revLink.getState()) + 1);
 			}
 		}
-		builder.insert(0, String.format("#A : %d || #I : %d || #U : %d\n", stateCounts.get(LinkState.ACTIVE),
-				stateCounts.get(LinkState.INACTIVE), stateCounts.get(LinkState.UNCLASSIFIED)));
+		builder.insert(0,
+				String.format("#A : %d || #I : %d || #U : %d\n",
+						stateCounts.get(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE),
+						stateCounts.get(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE),
+						stateCounts.get(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED)));
 		return builder.toString();
 
 	}
