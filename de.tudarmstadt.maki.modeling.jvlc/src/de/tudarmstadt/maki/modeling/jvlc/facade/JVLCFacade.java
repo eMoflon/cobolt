@@ -7,7 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
+import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationReport;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
@@ -53,7 +58,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.algorithmID = algorithmID;
 		this.registerEMFListeners();
 	}
-	
+
 	@Override
 	public Collection<String> getExpectedParameters() {
 		return Arrays.asList(KTCConstants.K);
@@ -63,8 +68,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	public void run(final TopologyControlAlgorithmParamters parameters) {
 		algorithm.setK((Double) parameters.get(KTCConstants.K));
 		algorithm.runOnTopology(this.topology);
-
-		this.checkConstraintsAfterTopologyControl();
 	}
 
 	/**
@@ -94,8 +97,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 		this.firePostNodeAdded(simNode);
 
-		this.checkConstraintsAfterContextEvent();
-
 		return simNode;
 	}
 
@@ -120,8 +121,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			removeKTCNode(ktcNode);
 
 			super.removeNode(nodeId);
-
-			this.checkConstraintsAfterContextEvent();
 		}
 	}
 
@@ -135,7 +134,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 			this.firePostNodeAttributeUpdated(simNode, property);
 
-			this.checkConstraintsAfterContextEvent();
 		}
 	}
 
@@ -162,8 +160,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		} else {
 			newEdge = this.simonstratorGraph.getEdge(prototype.getId());
 		}
-
-		this.checkConstraintsAfterContextEvent();
 
 		return newEdge;
 	}
@@ -208,7 +204,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public void checkConstraintsAfterContextEvent() {
 		CollectionConstraintViolationEnumerator violationEnumerator = new CollectionConstraintViolationEnumerator();
-		violationEnumerator.checkPredicate(this.topology, algorithm);
+		// violationEnumerator.checkPredicate(this.topology, algorithm);
 		Collection<String> violationsList = violationEnumerator.getConstraintViolationList();
 		if (!violationsList.isEmpty()) {
 			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violationsList.size(),
@@ -221,10 +217,28 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void checkConstraintsAfterTopologyControl() {
+		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+
+		GraphConstraint noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE
+				.createNoUnclassifiedLinksConstraint();
+		EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint = ConstraintsFactory.eINSTANCE
+				.createEdgeStateBasedConnectivityConstraint();
+		physicalConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
+		physicalConnectivityConstraint.getStates().add(EdgeState.INACTIVE);
+		physicalConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
+		EdgeStateBasedConnectivityConstraint activeLinkConnectivityConstraint = ConstraintsFactory.eINSTANCE
+				.createEdgeStateBasedConnectivityConstraint();
+		activeLinkConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
+
 		final CollectionConstraintViolationEnumerator violationEnumerator = new CollectionConstraintViolationEnumerator();
-		violationEnumerator.checkPredicate(this.topology, this.algorithm);
-		violationEnumerator.checkThatNoUnclassifiedLinksExist(this.topology);
-		violationEnumerator.checkConnectivityViaActiveLinks(this.topology);
+		// violationEnumerator.checkPredicate(this.topology, this.algorithm);
+		// TODO@rkluge: Implement KTC Constraint
+		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
+		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
+		if (tempReport.getViolations().size() == 0) {
+			activeLinkConnectivityConstraint.checkOnGraph(this.topology, report);
+		}
 
 		Collection<String> violationsList = violationEnumerator.getConstraintViolationList();
 		if (!violationsList.isEmpty()) {
