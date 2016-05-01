@@ -16,6 +16,7 @@ import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationRe
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
+import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
@@ -44,6 +45,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	private final Map<KTCLink, EdgeID> modelLinkToSimonstratorLink;
 	private TopologyControlAlgorithmID algorithmID;
 	private int constraintViolationCounter;
+	private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
+	private EdgeStateBasedConnectivityConstraint activeLinkConnectivityConstraint;
+	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
+	private GraphConstraint noUnclassifiedLinksConstraint;
+	private DistanceKTCConstraint ktcConstraint;
 
 	public JVLCFacade() {
 		this.simonstratorNodeToModelNode = new HashMap<>();
@@ -52,6 +58,22 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.modelLinkToSimonstratorLink = new HashMap<>();
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
 		this.constraintViolationCounter = 0;
+
+		physicalConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+		physicalConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
+		physicalConnectivityConstraint.getStates().add(EdgeState.INACTIVE);
+		physicalConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
+
+		weakConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+		weakConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
+		weakConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
+
+		activeLinkConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+		activeLinkConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
+
+		noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
+
+		ktcConstraint = JvlcFactory.eINSTANCE.createDistanceKTCConstraint();
 	}
 
 	@Override
@@ -68,8 +90,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void run(final TopologyControlAlgorithmParamters parameters) {
-		algorithm.setK((Double) parameters.get(KTCConstants.K));
-		algorithm.runOnTopology(this.topology);
+		final Double k = (Double) parameters.get(KTCConstants.K);
+		this.algorithm.setK(k);
+		this.ktcConstraint.setK(k);
+		this.algorithm.runOnTopology(this.topology);
 	}
 
 	/**
@@ -205,16 +229,16 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void checkConstraintsAfterContextEvent() {
-		// violationEnumerator.checkPredicate(this.topology, algorithm);
-		// if (!violationsList.isEmpty()) {
-		// Monitor.log(getClass(), Level.ERROR, "%d constraint violations
-		// detected: %s", violationsList.size(),
-		// violationsList);
-		// this.constraintViolationCounter += violationsList.size();
-		// } else {
-		// Monitor.log(getClass(), Level.DEBUG, "No constraint violations
-		// found");
-		// }
+		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		ktcConstraint.checkOnGraph(topology, report);
+
+		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
+		if (tempReport.getViolations().size() == 0) {
+			weakConnectivityConstraint.checkOnGraph(this.topology, report);
+		}
+
+		reportConstraintViolations(report);
 	}
 
 	@Override
@@ -222,33 +246,14 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
-		GraphConstraint noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE
-				.createNoUnclassifiedLinksConstraint();
-		EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint = ConstraintsFactory.eINSTANCE
-				.createEdgeStateBasedConnectivityConstraint();
-		physicalConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
-		physicalConnectivityConstraint.getStates().add(EdgeState.INACTIVE);
-		physicalConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
-		EdgeStateBasedConnectivityConstraint activeLinkConnectivityConstraint = ConstraintsFactory.eINSTANCE
-				.createEdgeStateBasedConnectivityConstraint();
-		activeLinkConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
-
-		// violationEnumerator.checkPredicate(this.topology, this.algorithm);
-		// TODO@rkluge: Implement KTC Constraint
+		ktcConstraint.checkOnGraph(topology, report);
 		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
 		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
 		if (tempReport.getViolations().size() == 0) {
 			activeLinkConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
-		final EList<ConstraintViolation> violations = report.getViolations();
-		if (!violations.isEmpty()) {
-			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violations.size(),
-					violations);
-			this.constraintViolationCounter += violations.size();
-		} else {
-			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
-		}
+		reportConstraintViolations(report);
 	}
 
 	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId,
@@ -314,6 +319,17 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		final Edge reverseEdge = ktcLink.getReverseEdge();
 		this.topology.removeEdge(ktcLink);
 		this.topology.removeEdge(reverseEdge);
+	}
+
+	private void reportConstraintViolations(ConstraintViolationReport report) {
+		final EList<ConstraintViolation> violations = report.getViolations();
+		if (!violations.isEmpty()) {
+			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violations.size(),
+					violations);
+			this.constraintViolationCounter += violations.size();
+		} else {
+			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
+		}
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {
