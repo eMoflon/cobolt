@@ -6,9 +6,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.EList;
+
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolation;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
@@ -19,7 +22,6 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
-import de.tudarmstadt.maki.modeling.jvlc.constraints.CollectionConstraintViolationEnumerator;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
@@ -203,16 +205,16 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void checkConstraintsAfterContextEvent() {
-		CollectionConstraintViolationEnumerator violationEnumerator = new CollectionConstraintViolationEnumerator();
 		// violationEnumerator.checkPredicate(this.topology, algorithm);
-		Collection<String> violationsList = violationEnumerator.getConstraintViolationList();
-		if (!violationsList.isEmpty()) {
-			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violationsList.size(),
-					violationsList);
-			this.constraintViolationCounter += violationsList.size();
-		} else {
-			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
-		}
+		// if (!violationsList.isEmpty()) {
+		// Monitor.log(getClass(), Level.ERROR, "%d constraint violations
+		// detected: %s", violationsList.size(),
+		// violationsList);
+		// this.constraintViolationCounter += violationsList.size();
+		// } else {
+		// Monitor.log(getClass(), Level.DEBUG, "No constraint violations
+		// found");
+		// }
 	}
 
 	@Override
@@ -231,7 +233,6 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 				.createEdgeStateBasedConnectivityConstraint();
 		activeLinkConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
 
-		final CollectionConstraintViolationEnumerator violationEnumerator = new CollectionConstraintViolationEnumerator();
 		// violationEnumerator.checkPredicate(this.topology, this.algorithm);
 		// TODO@rkluge: Implement KTC Constraint
 		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
@@ -240,11 +241,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			activeLinkConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
-		Collection<String> violationsList = violationEnumerator.getConstraintViolationList();
-		if (!violationsList.isEmpty()) {
-			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violationsList.size(),
-					violationsList);
-			this.constraintViolationCounter += violationsList.size();
+		final EList<ConstraintViolation> violations = report.getViolations();
+		if (!violations.isEmpty()) {
+			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violations.size(),
+					violations);
+			this.constraintViolationCounter += violations.size();
 		} else {
 			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
 		}
