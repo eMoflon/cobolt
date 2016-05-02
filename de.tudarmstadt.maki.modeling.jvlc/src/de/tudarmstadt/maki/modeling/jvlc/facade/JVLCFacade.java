@@ -3,13 +3,19 @@ package de.tudarmstadt.maki.modeling.jvlc.facade;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
+import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolation;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationReport;
@@ -96,6 +102,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		final Double k = (Double) parameters.get(KTCConstants.K);
 		this.algorithm.setK(k);
 		this.inactiveLinkKTCConstraint.setK(k);
+		this.activeLinkKTCConstraint.setK(k);
+
 		this.algorithm.runOnTopology(this.topology);
 	}
 
@@ -156,13 +164,13 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
 		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
+			super.updateNodeAttribute(simNode, property);
 
 			final KTCNode ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
 
 			this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
 			this.firePostNodeAttributeUpdated(simNode, property);
-
 		}
 	}
 
@@ -212,6 +220,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
 		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
+			super.updateEdgeAttribute(simEdge, property);
 			final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
 			final T value = simEdge.getProperty(property);
 
@@ -344,20 +353,36 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private String formatHistogramOfViolations(ConstraintViolationReport report) {
 		Map<String, Integer> histogramm = new HashMap<String, Integer>();
+		Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
 		for (final ConstraintViolation violation : report.getViolations()) {
 			final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
-			if (!histogramm.containsKey(simpleName))
+			if (!histogramm.containsKey(simpleName)) {
 				histogramm.put(simpleName, 0);
+				bytype.put(simpleName, new ArrayList<>());
+			}
 			histogramm.put(simpleName, histogramm.get(simpleName) + 1);
+			bytype.get(simpleName).add(violation);
 		}
 		final StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (final String key : histogramm.keySet()) {
-			sb.append(String.format("%s : %d,", key, histogramm.get(key)));
+			sb.append(String.format("%s : %d\n", key, histogramm.get(key)));
+			for (final ConstraintViolation violation : bytype.get(key)) {
+				sb.append("\n\t[");
+				sb.append(violation.getAffectedEdges().stream().map(JVLCFacade::formatEdge)
+						.collect(Collectors.joining(",")));
+				sb.append("]\n");
+			}
+			sb.append("\n");
 		}
 		sb.append("]");
 
 		return sb.toString();
+	}
+
+	private static String formatEdge(final Edge edge) {
+		final KTCLink link = (KTCLink) edge;
+		return String.format("%s (s=%s, d=%.3f)", link.getId(), link.getState(), link.getDistance());
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {
@@ -419,4 +444,51 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		bwdModelLink.setReverseEdge(fwdModelLink);
 	}
 
+	public static String formatEdgeStateReport(final Graph graph) {
+		final StringBuilder builder = new StringBuilder();
+		final List<String> edgeIds = new ArrayList<>();
+		final Set<String> processedIds = new HashSet<>();
+		for (final Edge edge : graph.getEdges()) {
+			edgeIds.add(edge.getId());
+		}
+		final Map<EdgeState, Integer> stateCounts = new HashMap<>();
+		stateCounts.put(EdgeState.ACTIVE, 0);
+		stateCounts.put(EdgeState.INACTIVE, 0);
+		stateCounts.put(EdgeState.UNCLASSIFIED, 0);
+		Collections.sort(edgeIds);
+
+		for (final String id : edgeIds) {
+			if (!processedIds.contains(id)) {
+				final KTCLink link = (KTCLink) graph.getEdgeById(id);
+				EdgeState linkState = link.getState();
+				builder.append(String.format("%6s [%.3f]", link.getId() + " : " + linkState.toString().substring(0, 1),
+						link.getDistance()));
+				processedIds.add(link.getId());
+				stateCounts.put(linkState, stateCounts.get(linkState) + 1);
+
+				if (link.getReverseEdge() != null) {
+					KTCLink revLink = (KTCLink) link.getReverseEdge();
+					EdgeState revLinkState = revLink.getState();
+					builder.append(String.format("%6s [%.3f]",
+							revLink.getId() + " : " + revLinkState.toString().substring(0, 1), revLink.getDistance()));
+					processedIds.add(revLink.getId());
+					stateCounts.put(revLinkState, stateCounts.get(revLinkState) + 1);
+				}
+
+				builder.append("\n");
+			}
+		}
+
+		builder.insert(0,
+				String.format("#A : %d || #I : %d || #U : %d\n || Sum : %d", //
+						stateCounts.get(EdgeState.ACTIVE), //
+						stateCounts.get(EdgeState.INACTIVE), //
+						stateCounts.get(EdgeState.UNCLASSIFIED), //
+						stateCounts.get(EdgeState.ACTIVE) + stateCounts.get(EdgeState.INACTIVE)
+								+ stateCounts.get(EdgeState.UNCLASSIFIED)//
+		));
+
+		return builder.toString().trim();
+
+	}
 }
