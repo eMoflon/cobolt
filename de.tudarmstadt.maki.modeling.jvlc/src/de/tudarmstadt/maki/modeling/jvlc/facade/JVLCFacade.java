@@ -16,7 +16,8 @@ import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationRe
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCConstraint;
+import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCActiveLinkConstraint;
+import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
@@ -49,7 +50,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	private EdgeStateBasedConnectivityConstraint activeLinkConnectivityConstraint;
 	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
 	private GraphConstraint noUnclassifiedLinksConstraint;
-	private DistanceKTCConstraint ktcConstraint;
+	private DistanceKTCInactiveLinkConstraint inactiveLinkKTCConstraint;
+	private DistanceKTCActiveLinkConstraint activeLinkKTCConstraint;
 
 	public JVLCFacade() {
 		this.simonstratorNodeToModelNode = new HashMap<>();
@@ -73,7 +75,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 		noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
 
-		ktcConstraint = JvlcFactory.eINSTANCE.createDistanceKTCConstraint();
+		inactiveLinkKTCConstraint = JvlcFactory.eINSTANCE.createDistanceKTCInactiveLinkConstraint();
+		activeLinkKTCConstraint = JvlcFactory.eINSTANCE.createDistanceKTCActiveLinkConstraint();
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	public void run(final TopologyControlAlgorithmParamters parameters) {
 		final Double k = (Double) parameters.get(KTCConstants.K);
 		this.algorithm.setK(k);
-		this.ktcConstraint.setK(k);
+		this.inactiveLinkKTCConstraint.setK(k);
 		this.algorithm.runOnTopology(this.topology);
 	}
 
@@ -229,31 +232,37 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void checkConstraintsAfterContextEvent() {
-		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		ktcConstraint.checkOnGraph(topology, report);
 
-		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
-		if (tempReport.getViolations().size() == 0) {
+		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		inactiveLinkKTCConstraint.checkOnGraph(this.topology, report);
+		activeLinkKTCConstraint.checkOnGraph(this.topology, report);
+
+		if (isTopologyPhysicallyConnected()) {
 			weakConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
-		reportConstraintViolations(report);
+		// reportConstraintViolations(report);
 	}
 
 	@Override
 	public void checkConstraintsAfterTopologyControl() {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
-		ktcConstraint.checkOnGraph(topology, report);
+		inactiveLinkKTCConstraint.checkOnGraph(topology, report);
+		activeLinkKTCConstraint.checkOnGraph(topology, report);
 		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
-		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
-		if (tempReport.getViolations().size() == 0) {
+		if (isTopologyPhysicallyConnected()) {
 			activeLinkConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
 		reportConstraintViolations(report);
+	}
+
+	private boolean isTopologyPhysicallyConnected() {
+		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
+		boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
+		return isPhysicallyConnected;
 	}
 
 	public KTCLink addSymmetricKTCLink(final String forwardEdgeId, final String backwardEdgeId,
@@ -323,13 +332,32 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private void reportConstraintViolations(ConstraintViolationReport report) {
 		final EList<ConstraintViolation> violations = report.getViolations();
+		final int violationCount = violations.size();
 		if (!violations.isEmpty()) {
-			Monitor.log(getClass(), Level.ERROR, "%d constraint violations detected: %s", violations.size(),
-					violations);
-			this.constraintViolationCounter += violations.size();
+			Monitor.log(getClass(), Level.ERROR, "%3d constraint violations detected for %6s: %s", violations.size(),
+					this.algorithmID, formatHistogramOfViolations(report));
+			this.constraintViolationCounter += violationCount;
 		} else {
 			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
 		}
+	}
+
+	private String formatHistogramOfViolations(ConstraintViolationReport report) {
+		Map<String, Integer> histogramm = new HashMap<String, Integer>();
+		for (final ConstraintViolation violation : report.getViolations()) {
+			final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
+			if (!histogramm.containsKey(simpleName))
+				histogramm.put(simpleName, 0);
+			histogramm.put(simpleName, histogramm.get(simpleName) + 1);
+		}
+		final StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (final String key : histogramm.keySet()) {
+			sb.append(String.format("%s : %d,", key, histogramm.get(key)));
+		}
+		sb.append("]");
+
+		return sb.toString();
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {
