@@ -250,7 +250,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			weakConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
-		// reportConstraintViolations(report);
+		reportConstraintViolations(report);
 	}
 
 	@Override
