@@ -10,6 +10,7 @@ import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
  */
 public class DistanceKTCInactiveLinkConstraintTest {
 
+	@SuppressWarnings("unused")
 	private DistanceKTCInactiveLinkConstraint constraint;
 
 	@Before

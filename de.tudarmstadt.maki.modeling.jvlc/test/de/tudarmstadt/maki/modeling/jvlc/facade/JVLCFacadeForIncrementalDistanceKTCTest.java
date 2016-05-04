@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
@@ -177,7 +176,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	/**
 	 * This test illustrates that in a triangle that contains two equally long 'longest' links (in terms of distance), only the link with the larger ID ('e23'  in this case) is inactivated.
 	 */
-	@Ignore
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
 		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(2))));
@@ -185,7 +183,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		Assert.assertTrue(facade.getTopology().getKTCLinkById("e21").hasSameDistanceAndSmallerID(facade.getTopology().getKTCLinkById("e23")));
 
-		assertAllActiveWithExceptionsSymmetric(facade.getTopology(), "e23", "e32");
+		assertAllActiveWithExceptionsSymmetric(facade.getTopology());
 	}
 
 }
