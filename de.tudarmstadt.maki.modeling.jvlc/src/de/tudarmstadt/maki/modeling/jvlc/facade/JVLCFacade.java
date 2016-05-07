@@ -443,6 +443,15 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		fwdModelLink.setReverseEdge(bwdModelLink);
 		bwdModelLink.setReverseEdge(fwdModelLink);
 	}
+	
+	@Override
+	public void unclassifyAllLinks() {
+		super.unclassifyAllLinks();
+		for (final Edge edge : this.getTopology().getEdges())
+		{
+			edge.setState(EdgeState.UNCLASSIFIED);
+		}
+	}
 
 	public static String formatEdgeStateReport(final Graph graph) {
 		final StringBuilder builder = new StringBuilder();
