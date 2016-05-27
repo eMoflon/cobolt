@@ -12,31 +12,5 @@ partial class KTCConstraintViolationEnumeratorImpl {
 		// Empty default implementation
 -->
 
-@model checkConnectivityViaActiveLinks (Graph graph) <--
-		if (graph.getNodeCount() == 0) {
-			return true;
-		}
-
-		final Node node = graph.getNodes().get(0);
-		final Set<String> visited = new HashSet<>();
-		final Deque<Node> toBeVisited = new LinkedList<>();
-		toBeVisited.add(node);
-
-		while (!toBeVisited.isEmpty()) {
-			final Node currentNode = toBeVisited.pop();
-			visited.add(currentNode.getId());
-			for (final Edge edge : currentNode.getOutgoingEdges()) {
-				if (((KTCLink) edge).getState() == EdgeState.ACTIVE && !visited.contains(edge.getTarget().getId())) {
-					toBeVisited.add(edge.getTarget());
-				}
-			}
-			for (final Edge edge : currentNode.getIncomingEdges()) {
-				if (((KTCLink) edge).getState() == EdgeState.ACTIVE && !visited.contains(edge.getSource().getId())) {
-					toBeVisited.add(edge.getSource());
-				}
-			}
-		}
-		return visited.size() == graph.getNodeCount();
--->
 
 }

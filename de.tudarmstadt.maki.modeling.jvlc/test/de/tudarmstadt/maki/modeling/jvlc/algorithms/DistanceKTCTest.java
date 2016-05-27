@@ -2,6 +2,8 @@ package de.tudarmstadt.maki.modeling.jvlc.algorithms;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistanceTestGraph;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,27 +11,30 @@ import org.junit.Test;
 import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
-import de.tudarmstadt.maki.modeling.jvlc.constraints.AssertConstraintViolationEnumerator;
+import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
 public class DistanceKTCTest {
-
-	private static final AssertConstraintViolationEnumerator constraintChecker = AssertConstraintViolationEnumerator
-			.getInstance();
 
 	private Topology graph;
 
 	private DistanceKTC algorithm;
 
+	private List<GraphConstraint> strongConsistencyConstraints;
+
 	@Before
 	public void setUp() {
 		this.graph = JvlcFactory.eINSTANCE.createTopology();
 		this.algorithm = JvlcFactory.eINSTANCE.createDistanceKTC();
+
+		this.strongConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfStrongConsistency(KTCConstants.D_KTC);
 	}
 
 	@Test
@@ -39,9 +44,7 @@ public class DistanceKTCTest {
 
 		algorithm.runOnTopology(graph);
 
-		constraintChecker.checkPredicate(graph, algorithm);
-		GraphModelTestHelper.assertHasNoUnclassifiedLinks(graph);
-		GraphModelTestHelper.assertConnectivityViaActiveOrUnclassifiedEdges(graph);
+		GraphModelTestHelper.assertGraphConstraints(graph, strongConsistencyConstraints);
 	}
 
 	@Test
@@ -53,9 +56,7 @@ public class DistanceKTCTest {
 			algorithm.runOnNode((KTCNode) node);
 		}
 
-		constraintChecker.checkPredicate(graph, algorithm);
-		GraphModelTestHelper.assertHasNoUnclassifiedLinks(graph);
-		GraphModelTestHelper.assertConnectivityViaActiveOrUnclassifiedEdges(graph);
+		GraphModelTestHelper.assertGraphConstraints(graph, strongConsistencyConstraints);
 
 	}
 

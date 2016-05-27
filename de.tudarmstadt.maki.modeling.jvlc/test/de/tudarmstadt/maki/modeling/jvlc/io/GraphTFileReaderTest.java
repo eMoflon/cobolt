@@ -42,7 +42,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals("e43", revLink34.getId());
 
 		Assert.assertSame(link34, revLink34.getReverseEdge());
-		GraphModelTestHelper.assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class GraphTFileReaderTest {
 
 		final KTCLink link13 = (KTCLink) topology.getEdgeById("e13");
 		Assert.assertEquals(20.0, link13.getDistance(), 0.0);
-		GraphModelTestHelper.assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(2, ((KTCLink) topology.getEdgeById("e23")).calculateEstimatedRemainingLifetime(), EPS_6);
 		Assert.assertEquals(4, ((KTCLink) topology.getEdgeById("e32")).calculateEstimatedRemainingLifetime(), EPS_6);
 
-		GraphModelTestHelper.assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 
 	}
 
@@ -87,7 +87,7 @@ public class GraphTFileReaderTest {
 		assertHasDistance(topology, "e1-7", 10.0);
 		assertHasDistance(topology, "e1-7", 10.0);
 
-		GraphModelTestHelper.assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 
 	}
 
@@ -103,7 +103,7 @@ public class GraphTFileReaderTest {
 		assertHasDistance(topology, "e3-4", 22.0);
 		assertHasDistance(topology, "e4-5", 27.0);
 
-		GraphModelTestHelper.assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 
 	}
 
