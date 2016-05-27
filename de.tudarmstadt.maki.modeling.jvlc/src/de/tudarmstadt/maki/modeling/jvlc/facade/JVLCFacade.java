@@ -178,7 +178,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		if (!this.simonstratorGraph.containsEdge(prototype)) {
 			newEdge = super.addEdge(prototype);
 
-			Double distance = prototype.getProperty(KTCConstants.DISTANCE);
+			Double distance = prototype.getProperty(KTCConstants.WEIGHT);
 			if (distance == null)
 				distance = Double.NaN;
 
@@ -319,7 +319,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		}
 
 		boolean modified = false;
-		if (KTCConstants.DISTANCE.equals(property)) {
+		if (KTCConstants.WEIGHT.equals(property)) {
 			ktcLink.setDistance((Double) value);
 			modified = true;
 		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
