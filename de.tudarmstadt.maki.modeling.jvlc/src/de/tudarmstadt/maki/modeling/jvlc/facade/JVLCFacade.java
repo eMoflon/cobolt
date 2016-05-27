@@ -163,15 +163,13 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
-		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
-			super.updateNodeAttribute(simNode, property);
+		super.updateNodeAttribute(simNode, property);
 
-			final KTCNode ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
+		final KTCNode ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
 
-			this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
+		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
-			this.firePostNodeAttributeUpdated(simNode, property);
-		}
+		this.firePostNodeAttributeUpdated(simNode, property);
 	}
 
 	@Override
@@ -219,14 +217,13 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
-		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
-			super.updateEdgeAttribute(simEdge, property);
-			final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
-			final T value = simEdge.getProperty(property);
+		super.updateEdgeAttribute(simEdge, property);
+		final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
+		final T value = simEdge.getProperty(property);
 
-			this.updateLinkAttribute(ktcLink, property, value);
-			this.firePostEdgeAttributeUpdated(simEdge, property);
-		}
+		this.updateLinkAttribute(ktcLink, property, value);
+
+		this.firePostEdgeAttributeUpdated(simEdge, property);
 	}
 
 	@Override
@@ -286,11 +283,15 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
-		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
-			if (KTCConstants.REMAINING_ENERGY.equals(property)) {
-				ktcNode.setRemainingEnergy((Double) value);
-				this.algorithm.handleNodeAttributeModification(ktcNode);
-			}
+
+		boolean modified = false;
+		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
+			ktcNode.setRemainingEnergy((Double) value);
+			modified = true;
+		}
+
+		if (modified && this.algorithmID.requiresUpdatesOfProperty(property)) {
+			this.algorithm.handleNodeAttributeModification(ktcNode);
 		}
 	}
 
@@ -307,22 +308,30 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	/**
 	 * Sets the property of the given link to the given value.
+	 * 
+	 * <p>
+	 * This method also handles the notification of the CE handlers.
+	 * </p>
 	 */
 	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
-		if (this.algorithmID.requiresUpdatesOfProperty(property)) {
-			if (ktcLink == null) {
-				throw new NullPointerException();
-			}
-			if (KTCConstants.DISTANCE.equals(property)) {
-				ktcLink.setDistance((Double) value);
-				this.algorithm.handleLinkAttributeModification(ktcLink);
-			} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
-				ktcLink.setRequiredTransmissionPower((Double) value);
-				this.algorithm.handleLinkAttributeModification(ktcLink);
-			} else if (KTCConstants.EDGE_STATE.equals(property)) {
-				ktcLink.setState(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
-				this.algorithm.handleLinkAttributeModification(ktcLink);
-			}
+		if (ktcLink == null) {
+			throw new NullPointerException();
+		}
+
+		boolean modified = false;
+		if (KTCConstants.DISTANCE.equals(property)) {
+			ktcLink.setDistance((Double) value);
+			modified = true;
+		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
+			ktcLink.setRequiredTransmissionPower((Double) value);
+			modified = true;
+		} else if (KTCConstants.EDGE_STATE.equals(property)) {
+			ktcLink.setState(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
+			modified = true;
+		}
+
+		if (modified && this.algorithmID.requiresUpdatesOfProperty(property)) {
+			this.algorithm.handleLinkAttributeModification(ktcLink);
 		}
 	}
 
@@ -443,12 +452,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		fwdModelLink.setReverseEdge(bwdModelLink);
 		bwdModelLink.setReverseEdge(fwdModelLink);
 	}
-	
+
 	@Override
 	public void unclassifyAllLinks() {
 		super.unclassifyAllLinks();
-		for (final Edge edge : this.getTopology().getEdges())
-		{
+		for (final Edge edge : this.getTopology().getEdges()) {
 			edge.setState(EdgeState.UNCLASSIFIED);
 		}
 	}
@@ -495,7 +503,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 						stateCounts.get(EdgeState.UNCLASSIFIED), //
 						stateCounts.get(EdgeState.ACTIVE) + stateCounts.get(EdgeState.INACTIVE)
 								+ stateCounts.get(EdgeState.UNCLASSIFIED)//
-		));
+				));
 
 		return builder.toString().trim();
 
