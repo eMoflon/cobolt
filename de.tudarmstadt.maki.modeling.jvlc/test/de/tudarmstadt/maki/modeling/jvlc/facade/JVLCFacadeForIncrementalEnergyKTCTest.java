@@ -89,6 +89,6 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		Assert.assertTrue(
 				facade.getTopology().getKTCLinkById("e12").hasSameEstimaedRemainingLifetimeAndSmallerID(facade.getTopology().getKTCLinkById("e13")));
 
-		GraphModelTestHelper.assertAllActiveWithExceptions(facade.getTopology(), false, "e13");
+		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptions(facade.getTopology(), false, "e13");
 	}
 }

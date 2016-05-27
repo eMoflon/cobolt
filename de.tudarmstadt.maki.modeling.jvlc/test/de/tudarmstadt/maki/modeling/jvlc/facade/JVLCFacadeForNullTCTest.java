@@ -35,6 +35,6 @@ public class JVLCFacadeForNullTCTest {
 
 		this.facade.run(-1.0);
 
-		GraphModelTestHelper.assertAllActiveWithExceptions(this.facade.getTopology(), true);
+		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptions(this.facade.getTopology(), true);
 	}
 }

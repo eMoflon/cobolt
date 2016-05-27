@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.Graph;
+import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
@@ -39,9 +40,8 @@ public class DistanceKTCTest {
 		algorithm.runOnTopology(graph);
 
 		constraintChecker.checkPredicate(graph, algorithm);
-		Assert.assertTrue(constraintChecker.checkThatNoUnclassifiedLinksExist(graph));
-		Assert.assertTrue(constraintChecker.checkConnectivityViaActiveLinks(graph));
-
+		GraphModelTestHelper.assertHasNoUnclassifiedLinks(graph);
+		GraphModelTestHelper.assertConnectivityViaActiveOrUnclassifiedEdges(graph);
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class DistanceKTCTest {
 		}
 
 		constraintChecker.checkPredicate(graph, algorithm);
-		Assert.assertTrue(constraintChecker.checkThatNoUnclassifiedLinksExist(graph));
-		Assert.assertTrue(constraintChecker.checkConnectivityViaActiveLinks(graph));
+		GraphModelTestHelper.assertHasNoUnclassifiedLinks(graph);
+		GraphModelTestHelper.assertConnectivityViaActiveOrUnclassifiedEdges(graph);
 
 	}
 
@@ -63,9 +63,9 @@ public class DistanceKTCTest {
 	public void testPredicateWithTestgraph1() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
 
-		final KTCLink e13 = getEdgeById(graph, "e1-3");
-		final KTCLink e12 = getEdgeById(graph, "e1-2");
-		final KTCLink e23 = getEdgeById(graph, "e2-3");
+		final KTCLink e13 = getKTCLinkById(graph, "e1-3");
+		final KTCLink e12 = getKTCLinkById(graph, "e1-2");
+		final KTCLink e23 = getKTCLinkById(graph, "e2-3");
 
 		algorithm.setK(1.3);
 		Assert.assertTrue(algorithm.checkPredicate(e13, e12, e23));
@@ -77,7 +77,7 @@ public class DistanceKTCTest {
 		Assert.assertFalse(algorithm.checkPredicate(e13, e23, e12));
 	}
 
-	private KTCLink getEdgeById(final Graph testGraph, final String edgeId) {
+	private KTCLink getKTCLinkById(final Graph testGraph, final String edgeId) {
 		return (KTCLink) testGraph.getEdgeById(edgeId);
 	}
 
