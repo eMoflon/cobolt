@@ -1,10 +1,6 @@
 package de.tudarmstadt.maki.modeling.jvlc.facade;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.EPS_0;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertAllActiveWithExceptions;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsActive;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsInactive;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsUnclassified;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
 
 import java.io.File;
@@ -14,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalEnergyKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
@@ -49,8 +46,8 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		this.facade.run(1.5);
 
 		final Topology topology = this.facade.getTopology();
-		assertIsInactive(topology, "e13");
-		assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
+		GraphModelTestHelper.assertIsInactive(topology, "e13");
+		GraphModelTestHelper.assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
 
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
@@ -62,21 +59,21 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		this.facade.run(1.5);
 
 		final Topology topology = this.facade.getTopology();
-		assertIsInactive(topology.getEdgeById("e13"));
-		assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
+		GraphModelTestHelper.assertIsInactive(topology.getEdgeById("e13"));
+		GraphModelTestHelper.assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
 
 		final KTCNode n3 = topology.getKTCNodeById("n3");
 		Assert.assertEquals(60, n3.getRemainingEnergy(), EPS_0);
 		this.facade.updateNodeAttribute(n3, KTCConstants.REMAINING_ENERGY, 15.0);
 		Assert.assertEquals(15, topology.getKTCNodeById("n3").getRemainingEnergy(), EPS_0);
 
-		assertIsUnclassified(topology.getKTCLinkById("e31"));
-		assertIsUnclassified(topology.getKTCLinkById("e32"));
+		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e31"));
+		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e32"));
 
 		this.facade.run(1.5);
 
-		assertIsInactive(topology, "e13", "e32");
-		assertIsActive(topology, "e21", "e31", "e12", "e23");
+		GraphModelTestHelper.assertIsInactive(topology, "e13", "e32");
+		GraphModelTestHelper.assertIsActive(topology, "e21", "e31", "e12", "e23");
 
 		AssertConstraintViolationEnumerator.getInstance().checkPredicate(this.facade.getTopology(), AlgorithmHelper.createAlgorithmForID(ALGO_ID));
 	}
@@ -92,6 +89,6 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		Assert.assertTrue(
 				facade.getTopology().getKTCLinkById("e12").hasSameEstimaedRemainingLifetimeAndSmallerID(facade.getTopology().getKTCLinkById("e13")));
 
-		assertAllActiveWithExceptions(facade.getTopology(), false, "e13");
+		GraphModelTestHelper.assertAllActiveWithExceptions(facade.getTopology(), false, "e13");
 	}
 }

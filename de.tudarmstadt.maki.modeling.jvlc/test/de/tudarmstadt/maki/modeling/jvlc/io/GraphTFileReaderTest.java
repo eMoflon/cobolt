@@ -1,7 +1,6 @@
 package de.tudarmstadt.maki.modeling.jvlc.io;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertHasDistance;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertIsSymmetric;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistanceTestGraph;
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
 
@@ -9,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
@@ -42,7 +42,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals("e43", revLink34.getId());
 
 		Assert.assertSame(link34, revLink34.getReverseEdge());
-		assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetric(topology);
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class GraphTFileReaderTest {
 
 		final KTCLink link13 = (KTCLink) topology.getEdgeById("e13");
 		Assert.assertEquals(20.0, link13.getDistance(), 0.0);
-		assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetric(topology);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(2, ((KTCLink) topology.getEdgeById("e23")).calculateEstimatedRemainingLifetime(), EPS_6);
 		Assert.assertEquals(4, ((KTCLink) topology.getEdgeById("e32")).calculateEstimatedRemainingLifetime(), EPS_6);
 
-		assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetric(topology);
 
 	}
 
@@ -87,7 +87,7 @@ public class GraphTFileReaderTest {
 		assertHasDistance(topology, "e1-7", 10.0);
 		assertHasDistance(topology, "e1-7", 10.0);
 
-		assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetric(topology);
 
 	}
 
@@ -103,7 +103,7 @@ public class GraphTFileReaderTest {
 		assertHasDistance(topology, "e3-4", 22.0);
 		assertHasDistance(topology, "e4-5", 27.0);
 
-		assertIsSymmetric(topology);
+		GraphModelTestHelper.assertIsSymmetric(topology);
 
 	}
 

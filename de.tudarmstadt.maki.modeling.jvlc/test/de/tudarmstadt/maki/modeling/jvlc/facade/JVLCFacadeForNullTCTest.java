@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
+import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
@@ -31,10 +31,10 @@ public class JVLCFacadeForNullTCTest {
 	public void testWithTestgraphE1() throws Exception {
 		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
 
-		JvlcTestHelper.allUnclassified(this.facade.getTopology());
+		GraphModelTestHelper.assertThatAllLinksAreUnclassified(this.facade.getTopology());
 
 		this.facade.run(-1.0);
 
-		JvlcTestHelper.assertAllActiveWithExceptions(this.facade.getTopology(), true);
+		GraphModelTestHelper.assertAllActiveWithExceptions(this.facade.getTopology(), true);
 	}
 }
