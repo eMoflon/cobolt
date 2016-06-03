@@ -4,9 +4,8 @@ partial class IncrementalKTCImpl {
 
 
 @model runOnNodePreprocessing (KTCNode node) <--
-
 		final long ticMillis = System.currentTimeMillis();
-		ECollections.sort(node.getOutgoingEdges(), new Comparator<Edge>() {
+		org.eclipse.emf.common.util.ECollections.sort(node.getOutgoingEdges(), new java.util.Comparator<Edge>() {
 			@Override
 			public int compare(Edge o1, Edge o2) {
 				final KTCLink link1 = (KTCLink) o1;
@@ -17,7 +16,8 @@ partial class IncrementalKTCImpl {
 		});
 		final long tocMillis = System.currentTimeMillis();
 		final long durationInMillis = tocMillis - ticMillis;
-		Monitor.log(getClass(), Level.DEBUG,
+		de.tudarmstadt.maki.simonstrator.api.Monitor.log(getClass(),
+				de.tudarmstadt.maki.simonstrator.api.Monitor.Level.DEBUG,
 				"Sorting during preprocessing of unclassified link identification took %dms", durationInMillis);
 -->
 
