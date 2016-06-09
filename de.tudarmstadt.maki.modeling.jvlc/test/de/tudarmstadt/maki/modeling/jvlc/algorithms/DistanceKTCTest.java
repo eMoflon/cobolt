@@ -19,7 +19,7 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class DistanceKTCTest {
 
@@ -34,7 +34,7 @@ public class DistanceKTCTest {
 		this.graph = JvlcFactory.eINSTANCE.createTopology();
 		this.algorithm = JvlcFactory.eINSTANCE.createDistanceKTC();
 
-		this.strongConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfStrongConsistency(KTCConstants.D_KTC);
+		this.strongConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfStrongConsistency(UnderlayTopologyControlConstants.D_KTC);
 	}
 
 	@Test

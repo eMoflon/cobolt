@@ -18,7 +18,7 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
  * Unit tests for {@link JVLCFacade}, using {@link IncrementalEnergyKTC}.
@@ -27,7 +27,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 	private JVLCFacade facade;
 	private GraphTFileReader reader;
-	private TopologyControlAlgorithmID algorithmID = KTCConstants.IE_KTC;
+	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlConstants.IE_KTC;
 
 	@Before
 	public void setup() {
@@ -65,7 +65,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 		final KTCNode n3 = topology.getKTCNodeById("n3");
 		Assert.assertEquals(60, n3.getEnergyLevel(), EPS_0);
-		this.facade.updateNodeAttribute(n3, KTCConstants.REMAINING_ENERGY, 15.0);
+		this.facade.updateNodeAttribute(n3, UnderlayTopologyControlConstants.REMAINING_ENERGY, 15.0);
 		Assert.assertEquals(15, topology.getKTCNodeById("n3").getEnergyLevel(), EPS_0);
 
 		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e31"));

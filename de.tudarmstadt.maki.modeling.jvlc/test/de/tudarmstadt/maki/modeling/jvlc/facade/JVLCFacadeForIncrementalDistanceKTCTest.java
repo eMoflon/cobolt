@@ -25,7 +25,7 @@ import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
  * Unit tests for {@link JVLCFacade}, using {@link IncrementalDistanceKTC}.
@@ -39,7 +39,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 * necessary
 	 */
 	private JVLCFacade facade;
-	private TopologyControlAlgorithmID algorithmID = KTCConstants.ID_KTC;
+	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlConstants.ID_KTC;
 	private GraphTFileReader reader;
 	private List<GraphConstraint> weakConsistencyConstraints;
 	private List<GraphConstraint> strongConsistencyConstraints;
@@ -169,11 +169,11 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 				"e2-6", "e3-9", "e7-8");
 
 		// CE(ii)
-		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), KTCConstants.WEIGHT, 15.0);
+		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), UnderlayTopologyControlConstants.WEIGHT, 15.0);
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-6");
 		GraphModelTestHelper.assertIsActiveSymmetric(topology, "e5-6");
 
-		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), KTCConstants.WEIGHT, 15.0);
+		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), UnderlayTopologyControlConstants.WEIGHT, 15.0);
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-5");
 		GraphModelTestHelper.assertIsActiveSymmetric(topology, "e4-5");
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-4");

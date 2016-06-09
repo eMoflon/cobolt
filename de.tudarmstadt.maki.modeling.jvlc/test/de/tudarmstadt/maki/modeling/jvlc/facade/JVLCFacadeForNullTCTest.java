@@ -12,12 +12,12 @@ import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class JVLCFacadeForNullTCTest {
 	private JVLCFacade facade;
 	private GraphTFileReader reader;
-	private static TopologyControlAlgorithmID ALGO_ID = KTCConstants.NULL_TC;
+	private static TopologyControlAlgorithmID ALGO_ID = UnderlayTopologyControlConstants.NULL_TC;
 
 	@Before
 	public void setup() {

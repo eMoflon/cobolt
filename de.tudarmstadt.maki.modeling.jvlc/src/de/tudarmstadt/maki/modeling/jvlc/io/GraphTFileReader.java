@@ -17,7 +17,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProp
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Node;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class GraphTFileReader {
 
@@ -124,7 +124,7 @@ public class GraphTFileReader {
 						remainingEnergy = Double.NaN;
 					}
 					Node node = Graphs.createNode(nodeId);
-					node.setProperty(KTCConstants.REMAINING_ENERGY, remainingEnergy);
+					node.setProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY, remainingEnergy);
 					facade.addNode(node);
 					readNodeLines++;
 				}
@@ -147,10 +147,10 @@ public class GraphTFileReader {
 					}
 					final IEdge forwardPrototype = new DirectedEdge(INodeID.get(sourceId), INodeID.get(targetId), EdgeID.get(edgeIdFwd));
 					final IEdge backwardPrototype = new DirectedEdge(INodeID.get(targetId), INodeID.get(sourceId), EdgeID.get(edgeIdBwd));
-					forwardPrototype.setProperty(KTCConstants.WEIGHT, distance);
-					backwardPrototype.setProperty(KTCConstants.WEIGHT, distance);
-					forwardPrototype.setProperty(KTCConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
-					backwardPrototype.setProperty(KTCConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
 					
 					final IEdge fwdEdge = facade.addEdge(forwardPrototype);
 					final IEdge bwdEdge = facade.addEdge(backwardPrototype);

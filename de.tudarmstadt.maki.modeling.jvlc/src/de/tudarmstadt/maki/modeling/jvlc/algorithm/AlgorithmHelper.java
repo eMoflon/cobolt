@@ -12,19 +12,19 @@ import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class AlgorithmHelper {
 
 	public static IncrementalKTC createAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 
-		if (KTCConstants.ID_KTC.asString().equals(algorithmId.asString()))
+		if (UnderlayTopologyControlConstants.ID_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
-		else if (KTCConstants.IE_KTC.asString().equals(algorithmId.asString()))
+		else if (UnderlayTopologyControlConstants.IE_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
-		else if (KTCConstants.NULL_TC.asString().equals(algorithmId.asString()))
+		else if (UnderlayTopologyControlConstants.NULL_TC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createNullkTC();
-		else if (KTCConstants.D_KTC.asString().equals(algorithmId.asString()))
+		else if (UnderlayTopologyControlConstants.D_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createDistanceKTC();
 		else
 			throw new IllegalArgumentException("Unsupported algorithm ID: " + algorithmId);
@@ -33,7 +33,7 @@ public class AlgorithmHelper {
 	public static List<GraphConstraint> getGraphConstraintsOfWeakConsistency(
 			final TopologyControlAlgorithmID algorithmID) {
 
-		if (Arrays.asList(KTCConstants.ID_KTC, KTCConstants.D_KTC).contains(algorithmID)) {
+		if (Arrays.asList(UnderlayTopologyControlConstants.ID_KTC, UnderlayTopologyControlConstants.D_KTC).contains(algorithmID)) {
 			EdgeStateBasedConnectivityConstraint weakConnectivityConstraint = ConstraintsFactory.eINSTANCE
 					.createEdgeStateBasedConnectivityConstraint();
 			weakConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
@@ -54,7 +54,7 @@ public class AlgorithmHelper {
 	}
 
 	public static List<GraphConstraint> getGraphConstraintsOfStrongConsistency(TopologyControlAlgorithmID algorithmID) {
-		if (Arrays.asList(KTCConstants.ID_KTC, KTCConstants.D_KTC).contains(algorithmID)) {
+		if (Arrays.asList(UnderlayTopologyControlConstants.ID_KTC, UnderlayTopologyControlConstants.D_KTC).contains(algorithmID)) {
 			EdgeStateBasedConnectivityConstraint strongConnectivityConstraint = ConstraintsFactory.eINSTANCE
 					.createEdgeStateBasedConnectivityConstraint();
 			strongConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
