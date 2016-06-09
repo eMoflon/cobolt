@@ -48,7 +48,7 @@ public class EMFPerformanceTest {
 				public int compare(Edge o1, Edge o2) {
 					final KTCLink link1 = (KTCLink) o1;
 					final KTCLink link2 = (KTCLink) o2;
-					return Double.compare(link1.getDistance(), link2.getDistance());
+					return Double.compare(link1.getWeight(), link2.getWeight());
 				}
 
 			});
@@ -68,7 +68,7 @@ public class EMFPerformanceTest {
 				public int compare(Edge o1, Edge o2) {
 					final KTCLink link1 = (KTCLink) o1;
 					final KTCLink link2 = (KTCLink) o2;
-					return Double.compare(link1.getDistance(), link2.getDistance());
+					return Double.compare(link1.getWeight(), link2.getWeight());
 				}
 
 			});

@@ -64,9 +64,9 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		GraphModelTestHelper.assertIsActive(topology, "e32", "e21", "e31", "e12", "e23");
 
 		final KTCNode n3 = topology.getKTCNodeById("n3");
-		Assert.assertEquals(60, n3.getRemainingEnergy(), EPS_0);
+		Assert.assertEquals(60, n3.getEnergyLevel(), EPS_0);
 		this.facade.updateNodeAttribute(n3, KTCConstants.REMAINING_ENERGY, 15.0);
-		Assert.assertEquals(15, topology.getKTCNodeById("n3").getRemainingEnergy(), EPS_0);
+		Assert.assertEquals(15, topology.getKTCNodeById("n3").getEnergyLevel(), EPS_0);
 
 		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e31"));
 		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e32"));
@@ -90,9 +90,6 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 	public void testTriangleWithEquisecles() throws Exception {
 		readTestCase(2);
 		facade.run(1.1);
-
-		Assert.assertTrue(facade.getTopology().getKTCLinkById("e12")
-				.hasSameEstimaedRemainingLifetimeAndSmallerID(facade.getTopology().getKTCLinkById("e13")));
 
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptions(facade.getTopology(), false, "e13");
 	}

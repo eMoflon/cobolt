@@ -35,10 +35,10 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
 
 		final KTCLink link34 = (KTCLink) topology.getEdgeById("e34");
-		Assert.assertEquals(22.0, link34.getDistance(), 0.0);
+		Assert.assertEquals(22.0, link34.getWeight(), 0.0);
 
 		final KTCLink revLink34 = ((KTCLink) link34.getReverseEdge());
-		Assert.assertEquals(22.0, revLink34.getDistance(), 0.0);
+		Assert.assertEquals(22.0, revLink34.getWeight(), 0.0);
 		Assert.assertEquals("e43", revLink34.getId());
 
 		Assert.assertSame(link34, revLink34.getReverseEdge());
@@ -53,7 +53,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(2 * 3, topology.getEdgeCount());
 
 		final KTCLink link13 = (KTCLink) topology.getEdgeById("e13");
-		Assert.assertEquals(20.0, link13.getDistance(), 0.0);
+		Assert.assertEquals(20.0, link13.getWeight(), 0.0);
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 	}
 
@@ -64,15 +64,8 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(6, topology.getEdgeCount());
 		Assert.assertEquals(3, topology.getNodeCount());
 
-		Assert.assertEquals(10, ((KTCNode) topology.getNodeById("n1")).getRemainingEnergy(), EPS_6);
-		Assert.assertEquals(5, ((KTCLink) topology.getEdgeById("e12")).getRequiredTransmissionPower(), EPS_6);
-
-		Assert.assertEquals(2, ((KTCLink) topology.getEdgeById("e12")).calculateEstimatedRemainingLifetime(), EPS_6);
-		Assert.assertEquals(6, ((KTCLink) topology.getEdgeById("e21")).calculateEstimatedRemainingLifetime(), EPS_6);
-		Assert.assertEquals(1, ((KTCLink) topology.getEdgeById("e13")).calculateEstimatedRemainingLifetime(), EPS_6);
-		Assert.assertEquals(6, ((KTCLink) topology.getEdgeById("e31")).calculateEstimatedRemainingLifetime(), EPS_6);
-		Assert.assertEquals(2, ((KTCLink) topology.getEdgeById("e23")).calculateEstimatedRemainingLifetime(), EPS_6);
-		Assert.assertEquals(4, ((KTCLink) topology.getEdgeById("e32")).calculateEstimatedRemainingLifetime(), EPS_6);
+		Assert.assertEquals(10, ((KTCNode) topology.getNodeById("n1")).getEnergyLevel(), EPS_6);
+		Assert.assertEquals(5, ((KTCLink) topology.getEdgeById("e12")).getExpectedRemainingLifetime(), EPS_6);
 
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 

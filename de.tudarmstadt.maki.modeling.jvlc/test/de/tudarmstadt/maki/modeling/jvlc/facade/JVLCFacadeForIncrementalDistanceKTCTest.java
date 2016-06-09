@@ -63,10 +63,10 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		final KTCLink link1 = topology.addKTCLink("e12", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
 		final KTCLink link2 = topology.addKTCLink("e21", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
 
-		n1.setRemainingEnergy(2.0);
+		n1.setEnergyLevel(2.0);
 		link1.setState(EdgeState.ACTIVE);
-		link1.setRequiredTransmissionPower(1.1);
-		link1.setDistance(150);
+		link1.setExpectedRemainingLifetime(1.1);
+		link1.setWeight(150);
 		topology.removeEdge(link1);
 		topology.removeEdgeById("e21");
 		topology.removeEdgeById("e21"); // edge does not exist -> nop :-)
@@ -196,9 +196,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		final double k = 1.1;
 		facade.run(k);
 		this.updateKParamterInConstraints(k);
-
-		Assert.assertTrue(facade.getTopology().getKTCLinkById("e21")
-				.hasSameDistanceAndSmallerID(facade.getTopology().getKTCLinkById("e23")));
 
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(facade.getTopology());
 	}

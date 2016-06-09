@@ -42,6 +42,32 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamt
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
 
+/**
+ * TODO@rkluge XTC impl.
+ * 
+ * TODO@rkluge Yao impl.
+ * 
+ * TODO@rkluge (- ekTC impl.)
+ * 
+ * TODO@rkluge- l-kTC impl.
+ * 
+ * TODO@rkluge- Primitive routing impl.
+ * 
+ * TODO@rkluge- GG impl.
+ * 
+ * TODO@rkluge- Refactor "is interested in attributes"
+ * 
+ * TODO@rkluge- Model new attributes (hop count,
+ * 
+ * TODO@rkluge - KTCLink::distance -> weight
+ * 
+ * TODO@rkluge - KTCNode::remainingEnergy -> energy
+ * 
+ * TODO@rkluge- Introduce batch / incremental switch
+ * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
+ * 
+ * TODO@rkluge Move TopologyUtils to Graph Model
+ */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private final Topology topology;
@@ -182,7 +208,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			if (distance == null)
 				distance = Double.NaN;
 
-			Double requiredTransmissionPower = prototype.getProperty(KTCConstants.REQUIRED_TRANSMISSION_POWER);
+			Double requiredTransmissionPower = prototype.getProperty(KTCConstants.EXPECTED_REMAINING_LIFETIME);
 
 			final KTCLink modelLink = this.topology.addKTCLink(prototype.getId().valueAsString(),
 					getModelNodeForSimonstratorNode(prototype.fromId()),
@@ -286,7 +312,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 		boolean modified = false;
 		if (KTCConstants.REMAINING_ENERGY.equals(property)) {
-			ktcNode.setRemainingEnergy((Double) value);
+			ktcNode.setEnergyLevel((Double) value);
 			modified = true;
 		}
 
@@ -320,10 +346,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 		boolean modified = false;
 		if (KTCConstants.WEIGHT.equals(property)) {
-			ktcLink.setDistance((Double) value);
+			ktcLink.setWeight((Double) value);
 			modified = true;
-		} else if (KTCConstants.REQUIRED_TRANSMISSION_POWER.equals(property)) {
-			ktcLink.setRequiredTransmissionPower((Double) value);
+		} else if (KTCConstants.EXPECTED_REMAINING_LIFETIME.equals(property)) {
+			ktcLink.setExpectedRemainingLifetime((Double) value);
 			modified = true;
 		} else if (KTCConstants.EDGE_STATE.equals(property)) {
 			ktcLink.setState(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
@@ -391,7 +417,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private static String formatEdge(final Edge edge) {
 		final KTCLink link = (KTCLink) edge;
-		return String.format("%s (s=%s, d=%.3f)", link.getId(), link.getState(), link.getDistance());
+		return String.format("%s (s=%s, d=%.3f)", link.getId(), link.getState(), link.getWeight());
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {
@@ -479,7 +505,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 				final KTCLink link = (KTCLink) graph.getEdgeById(id);
 				EdgeState linkState = link.getState();
 				builder.append(String.format("%6s [%.3f]", link.getId() + " : " + linkState.toString().substring(0, 1),
-						link.getDistance()));
+						link.getWeight()));
 				processedIds.add(link.getId());
 				stateCounts.put(linkState, stateCounts.get(linkState) + 1);
 
@@ -487,7 +513,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 					KTCLink revLink = (KTCLink) link.getReverseEdge();
 					EdgeState revLinkState = revLink.getState();
 					builder.append(String.format("%6s [%.3f]",
-							revLink.getId() + " : " + revLinkState.toString().substring(0, 1), revLink.getDistance()));
+							revLink.getId() + " : " + revLinkState.toString().substring(0, 1), revLink.getWeight()));
 					processedIds.add(revLink.getId());
 					stateCounts.put(revLinkState, stateCounts.get(revLinkState) + 1);
 				}
