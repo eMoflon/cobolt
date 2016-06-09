@@ -57,12 +57,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.KTCConstants;
  * 
  * TODO@rkluge- Refactor "is interested in attributes"
  * 
- * TODO@rkluge- Model new attributes (hop count,
- * 
- * TODO@rkluge - KTCLink::distance -> weight
- * 
- * TODO@rkluge - KTCNode::remainingEnergy -> energy
- * 
  * TODO@rkluge- Introduce batch / incremental switch
  * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
  * 
