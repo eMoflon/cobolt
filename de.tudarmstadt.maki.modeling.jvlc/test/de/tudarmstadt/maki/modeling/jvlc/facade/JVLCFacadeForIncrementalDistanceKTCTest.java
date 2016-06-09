@@ -65,7 +65,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		n1.setEnergyLevel(2.0);
 		link1.setState(EdgeState.ACTIVE);
-		link1.setExpectedRemainingLifetime(1.1);
+		link1.setExpectedLifetime(1.1);
 		link1.setWeight(150);
 		topology.removeEdge(link1);
 		topology.removeEdgeById("e21");

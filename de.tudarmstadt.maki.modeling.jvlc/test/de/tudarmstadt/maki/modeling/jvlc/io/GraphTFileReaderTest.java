@@ -65,7 +65,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(3, topology.getNodeCount());
 
 		Assert.assertEquals(10, ((KTCNode) topology.getNodeById("n1")).getEnergyLevel(), EPS_6);
-		Assert.assertEquals(5, ((KTCLink) topology.getEdgeById("e12")).getExpectedRemainingLifetime(), EPS_6);
+		Assert.assertEquals(5, ((KTCLink) topology.getEdgeById("e12")).getExpectedLifetime(), EPS_6);
 
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 

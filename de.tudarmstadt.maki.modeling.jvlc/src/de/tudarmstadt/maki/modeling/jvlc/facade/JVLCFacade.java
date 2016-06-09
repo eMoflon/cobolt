@@ -22,9 +22,10 @@ import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintViolationRe
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
+import de.tudarmstadt.maki.modeling.jvlc.AbstractKTC;
+import de.tudarmstadt.maki.modeling.jvlc.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCActiveLinkConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
@@ -65,7 +66,7 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private final Topology topology;
-	private IncrementalKTC algorithm;
+	private AbstractTopologyControlAlgorithm algorithm;
 	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
 	private final Map<KTCNode, INodeID> modelNodeToSimonstratorNode;
 	private final Map<EdgeID, KTCLink> simonstratorEdgeToModelLink;
@@ -120,7 +121,9 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public void run(final TopologyControlAlgorithmParamters parameters) {
 		final Double k = (Double) parameters.get(UnderlayTopologyControlConstants.K);
-		this.algorithm.setK(k);
+		if (this.algorithm instanceof AbstractKTC) {
+			((AbstractKTC) this.algorithm).setK(k);
+		}
 		this.inactiveLinkKTCConstraint.setK(k);
 		this.activeLinkKTCConstraint.setK(k);
 
@@ -304,14 +307,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
 
-		boolean modified = false;
 		if (UnderlayTopologyControlConstants.REMAINING_ENERGY.equals(property)) {
+			double oldEnergyLevel = ktcNode.getEnergyLevel();
 			ktcNode.setEnergyLevel((Double) value);
-			modified = true;
-		}
-
-		if (modified && this.algorithmID.requiresUpdatesOfProperty(property)) {
-			this.algorithm.handleNodeAttributeModification(ktcNode);
+			this.algorithm.handleNodeEnergyLevelModification(ktcNode, oldEnergyLevel);
 		}
 	}
 
@@ -338,20 +337,17 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			throw new NullPointerException();
 		}
 
-		boolean modified = false;
 		if (UnderlayTopologyControlConstants.WEIGHT.equals(property)) {
+			final double oldWeight = ktcLink.getWeight();
 			ktcLink.setWeight((Double) value);
-			modified = true;
+			this.algorithm.handleLinkWeightModification(ktcLink, oldWeight);
 		} else if (UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME.equals(property)) {
-			ktcLink.setExpectedRemainingLifetime((Double) value);
-			modified = true;
+			double oldExpectedLifetime = ktcLink.getExpectedLifetime();
+			ktcLink.setExpectedLifetime((Double) value);
+			this.algorithm.handleLinkExpectedLifetimeModification(ktcLink, oldExpectedLifetime);
 		} else if (UnderlayTopologyControlConstants.EDGE_STATE.equals(property)) {
 			ktcLink.setState(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
-			modified = true;
-		}
-
-		if (modified && this.algorithmID.requiresUpdatesOfProperty(property)) {
-			this.algorithm.handleLinkAttributeModification(ktcLink);
+			this.algorithm.handleLinkUnclassification(ktcLink);
 		}
 	}
 

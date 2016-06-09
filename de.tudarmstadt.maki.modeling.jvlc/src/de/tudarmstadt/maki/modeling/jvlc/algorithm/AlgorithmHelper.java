@@ -7,23 +7,23 @@ import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
+import de.tudarmstadt.maki.modeling.jvlc.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCActiveLinkConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.IncrementalKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class AlgorithmHelper {
 
-	public static IncrementalKTC createAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
+	public static AbstractTopologyControlAlgorithm createAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 
 		if (UnderlayTopologyControlConstants.ID_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalDistanceKTC();
 		else if (UnderlayTopologyControlConstants.IE_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createIncrementalEnergyKTC();
 		else if (UnderlayTopologyControlConstants.NULL_TC.asString().equals(algorithmId.asString()))
-			return JvlcFactory.eINSTANCE.createNullkTC();
+			return JvlcFactory.eINSTANCE.createNullTopologyControlAlgorithm();
 		else if (UnderlayTopologyControlConstants.D_KTC.asString().equals(algorithmId.asString()))
 			return JvlcFactory.eINSTANCE.createDistanceKTC();
 		else

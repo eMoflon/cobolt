@@ -5,9 +5,9 @@ partial class IncrementalKTCImpl {
 
 @model runOnNodePreprocessing (KTCNode node) <--
 		/*
-				 * This preprocessing method sorts the links increasingly by distance, which should yield better 
-				 * performance. 
-				 */
+						 * This preprocessing method sorts the links increasingly by distance, which should yield better 
+						 * performance. 
+						 */
 		final long ticMillis = System.currentTimeMillis();
 		org.eclipse.emf.common.util.ECollections.sort(node.getOutgoingEdges(), new java.util.Comparator<Edge>() {
 			@Override
