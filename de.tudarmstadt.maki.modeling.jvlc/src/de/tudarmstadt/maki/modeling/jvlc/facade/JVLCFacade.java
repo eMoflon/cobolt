@@ -50,9 +50,9 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * 
  * TODO@rkluge (- ekTC impl.)
  * 
- * TODO@rkluge- l-kTC impl.
+ * TODO@rkluge: Extract hop count from routing
  * 
- * TODO@rkluge- Primitive routing impl.
+ * TODO@rkluge- l-kTC impl.
  * 
  * TODO@rkluge- GG impl.
  * 
@@ -62,6 +62,8 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
  * 
  * TODO@rkluge Move TopologyUtils to Graph Model
+ * 
+ * TODO@rkluge Write out energy consumption statistics periodically
  */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
