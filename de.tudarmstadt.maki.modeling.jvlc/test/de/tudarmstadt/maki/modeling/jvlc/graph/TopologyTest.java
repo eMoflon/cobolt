@@ -7,12 +7,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.graphmodel.Edge;
 import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
-import de.tudarmstadt.maki.modeling.jvlc.TopologyUtils;
 
 public class TopologyTest {
 
@@ -49,9 +49,10 @@ public class TopologyTest {
 			}
 
 			for (int runs = 0; runs <= 10; ++runs) {
-				final TopologyUtils topologyUtils = JvlcFactory.eINSTANCE.createTopologyUtils();
 				final long tic = System.currentTimeMillis();
-				topologyUtils.unclassifyAllLinks(topology);
+				for (final Edge edge : topology.getEdges()) {
+					edge.setState(EdgeState.UNCLASSIFIED);
+				}
 				final long toc = System.currentTimeMillis();
 
 				final int graphSize = topology.getEdgeCount();

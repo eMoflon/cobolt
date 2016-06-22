@@ -44,6 +44,10 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
+ * TODO@rkluge Fairness
+ * 
+ * TODO@rkluge Integrate Min-weight optimization
+ * 
  * TODO@rkluge XTC impl.
  * 
  * TODO@rkluge Yao impl.
@@ -60,10 +64,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * 
  * TODO@rkluge- Introduce batch / incremental switch
  * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
- * 
- * TODO@rkluge Move TopologyUtils to Graph Model
- * 
- * TODO@rkluge Write out energy consumption statistics periodically
  */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
