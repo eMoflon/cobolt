@@ -215,7 +215,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	@Override
-	public <T> void updateNodeAttribute(final INode simNode, final GraphElementProperty<T> property) {
+	public <T> void updateNodeAttribute(final INode simNode, final NodeProperty<T> property) {
 		super.updateNodeAttribute(simNode, property);
 
 		final KTCNode ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
@@ -275,7 +275,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	@Override
-	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
+	public <T> void updateEdgeAttribute(final IEdge simEdge, final EdgeProperty<T> property) {
 		super.updateEdgeAttribute(simEdge, property);
 
 		if (!EdgeFilters.shallRetainEdge(simEdge, getEdgeFilters())) {

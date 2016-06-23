@@ -14,9 +14,12 @@ import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.EnergyAwareKTC;
-import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
@@ -57,11 +60,19 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		this.facade.run(1.5);
 		this.facade.checkConstraintsAfterTopologyControl();
 
+		final Graph graph = this.facade.getGraph();
 		final Topology topology = this.facade.getTopology();
 
-		final KTCNode n3 = topology.getKTCNodeById("n3");
-		Assert.assertEquals(60, n3.getEnergyLevel(), EPS_0);
-		this.facade.updateNodeAttribute(n3, UnderlayTopologyControlConstants.REMAINING_ENERGY, 15.0);
+		final INode n3 = graph.getNode(INodeID.get("n3"));
+		Assert.assertEquals(60, n3.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY), EPS_0);
+		n3.setProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY, 15.0);
+		this.facade.updateNodeAttribute(n3, UnderlayTopologyControlConstants.REMAINING_ENERGY);
+		for (final IEdge edge : graph.getOutgoingEdges(n3.getId())) {
+			final double newExpectedLifetime = n3.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
+					/ edge.getProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER);
+			edge.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE, newExpectedLifetime);
+			this.facade.updateEdgeAttribute(edge, UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE);
+		}
 		Assert.assertEquals(15, topology.getKTCNodeById("n3").getEnergyLevel(), EPS_0);
 
 		GraphModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e31"));
