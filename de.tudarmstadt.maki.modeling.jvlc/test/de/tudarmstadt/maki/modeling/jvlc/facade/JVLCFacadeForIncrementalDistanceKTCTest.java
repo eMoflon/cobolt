@@ -19,6 +19,7 @@ import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
@@ -40,6 +41,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	public void setup() {
 		this.facade = (JVLCFacade) TopologyControlFacadeFactory
 				.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
+		this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
 		this.facade.configureAlgorithm(algorithmID);
 		this.reader = new GraphTFileReader();
 	}

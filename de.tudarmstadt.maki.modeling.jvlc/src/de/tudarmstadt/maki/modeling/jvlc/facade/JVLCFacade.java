@@ -102,8 +102,21 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
 		this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
+		this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
 		this.algorithmID = algorithmID;
 		this.registerEMFListeners();
+	}
+
+	private TopologyControlOperationMode mapOperationMode(
+			de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode) {
+		switch (operationMode) {
+		case BATCH:
+			return TopologyControlOperationMode.BATCH;
+		case INCREMENTAL:
+			return TopologyControlOperationMode.INCREMENTAL;
+		default:
+			throw new IllegalArgumentException("Unsupported mode: " + operationMode);
+		}
 	}
 
 	@Override
@@ -339,7 +352,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			final double oldWeight = ktcLink.getWeight();
 			ktcLink.setWeight((Double) value);
 			this.algorithm.handleLinkWeightModification(ktcLink, oldWeight);
-		} else if (UnderlayTopologyControlConstants.EXPECTED_LIFETIME.equals(property)) {
+		} else if (UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
 			double oldExpectedLifetime = ktcLink.getExpectedLifetime();
 			ktcLink.setExpectedLifetime((Double) value);
 			this.algorithm.handleLinkExpectedLifetimeModification(ktcLink, oldExpectedLifetime);
@@ -405,7 +418,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private static String formatEdge(final Edge edge) {
 		final KTCLink link = (KTCLink) edge;
-		return String.format("%s (s=%s, d=%.3f)", link.getId(), link.getState(), link.getWeight());
+		return String.format("%s (s=%s, w=%.3f)", link.getId(), link.getState(), link.getWeight());
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {

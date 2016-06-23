@@ -60,11 +60,13 @@ public class DistanceKTCTest {
 		algorithm.setK(1.1);
 		algorithm.initializeConstraints();
 
-		for (final Node node : graph.getNodes()) {
-			algorithm.runOnNode((KTCNode) node);
-			System.out.println(TopologyUtils.formatEdgeStateReport(graph));
+		while (TopologyUtils.containsUnclassifiedEdges(graph)) {
+			for (final Node node : graph.getNodes()) {
+				System.out.println("===" + node + "===");
+				algorithm.runOnNode((KTCNode) node);
+				System.out.println(TopologyUtils.formatEdgeStateReport(graph));
+			}
 		}
-
 
 		GraphModelTestHelper.assertGraphConstraints(graph, algorithm.getAlgorithmSpecificConstraints());
 		GraphModelTestHelper.assertGraphConstraint(graph, noUnclasifiedLinksConstraint);
