@@ -15,6 +15,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.DirectedEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Node;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
@@ -136,8 +137,8 @@ public class GraphTFileReader {
 					final String[] splitLine = line.split("\\s+");
 					final String edgeIdFwd = splitLine[0];
 					final String edgeIdBwd = splitLine[1];
-					final String sourceId = splitLine[2];
-					final String targetId = splitLine[3];
+					final String sourceIdStr = splitLine[2];
+					final String targetIdStr = splitLine[3];
 					final Double distance = Double.parseDouble(splitLine[4]);
 					final Double requiredTransmissionPower;
 					if (splitLine.length > 5) {
@@ -145,19 +146,33 @@ public class GraphTFileReader {
 					} else {
 						requiredTransmissionPower = Double.NaN;
 					}
-					final IEdge forwardPrototype = new DirectedEdge(INodeID.get(sourceId), INodeID.get(targetId), EdgeID.get(edgeIdFwd));
-					final IEdge backwardPrototype = new DirectedEdge(INodeID.get(targetId), INodeID.get(sourceId), EdgeID.get(edgeIdBwd));
+					final INodeID srcId = INodeID.get(sourceIdStr);
+					final INode source = facade.getGraph().getNode(srcId);
+					final INodeID targetId = INodeID.get(targetIdStr);
+					final INode target = facade.getGraph().getNode(targetId);
+					final IEdge forwardPrototype = new DirectedEdge(srcId, targetId, EdgeID.get(edgeIdFwd));
+					final IEdge backwardPrototype = new DirectedEdge(targetId, srcId, EdgeID.get(edgeIdBwd));
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.DISTANCE, distance);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.DISTANCE, distance);
 					forwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
 					backwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
-					
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER,
+							requiredTransmissionPower);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER,
+							requiredTransmissionPower);
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE,
+							source.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
+									/ requiredTransmissionPower);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE,
+							target.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
+									/ requiredTransmissionPower);
+
 					final IEdge fwdEdge = facade.addEdge(forwardPrototype);
 					final IEdge bwdEdge = facade.addEdge(backwardPrototype);
 					fwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, bwdEdge);
 					bwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, fwdEdge);
 					facade.connectOppositeEdges(fwdEdge, bwdEdge);
-					
+
 					readEdgeLines++;
 				}
 			}

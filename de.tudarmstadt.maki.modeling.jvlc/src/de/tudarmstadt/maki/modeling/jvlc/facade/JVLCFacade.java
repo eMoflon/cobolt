@@ -33,17 +33,31 @@ import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.NodeProperty;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
+import de.tudarmstadt.maki.simonstrator.tc.filtering.EdgeFilters;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
  * TODO@rkluge Integrate Min-weight optimization
+ * 
+ * TODO@rkluge - Implement messaging application
+ * 
+ * TODO@rkluge: Use calibration curve
+ * 
+ * Deferred:
+ * 
+ * TODO@rkluge: Kill Topology#addKTCLink
+ * {@link Topology#addKTCLink(String, KTCNode, KTCNode, double, double, EdgeState)}
+ * 
+ * TODO@rkluge More modular configuration of facades etc.
  * 
  * TODO@rkluge XTC impl.
  * 
@@ -56,15 +70,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * TODO@rkluge- l-kTC impl.
  * 
  * TODO@rkluge- GG impl.
- * 
- * TODO@rkluge- Refactor "is interested in attributes"
- * 
- * TODO@rkluge- Introduce batch / incremental switch
- * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
- * 
- * TODO@rkluge - Implement messaging application
- * 
- * TODO@rkluge: Use calibration curve
  */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
@@ -108,7 +113,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
 			throw new IllegalArgumentException(
 					"Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
-		
+
 		this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
 		this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
 		this.algorithmID = algorithmID;
@@ -155,14 +160,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 		final INode simNode = super.addNode(prototype);
 
-		final Double remainingEnergy;
-		if (simNode.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY) != null) {
-			remainingEnergy = simNode.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY);
-		} else {
-			remainingEnergy = Double.NaN;
-		}
-
-		final KTCNode ktcNode = this.topology.addKTCNode(simNode.getId().valueAsString(), remainingEnergy);
+		final KTCNode ktcNode = JvlcFactory.eINSTANCE.createKTCNode();
+		topology.getNodes().add(ktcNode);
+		ktcNode.setId(prototype.getId().valueAsString());
+		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyControlConstants.REMAINING_ENERGY));
 
 		this.algorithm.handleNodeAddition(ktcNode);
 
@@ -171,6 +172,22 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.firePostNodeAdded(simNode);
 
 		return simNode;
+	}
+
+	private double getNodePropertySafe(INode prototype, NodeProperty<Double> property) {
+		final Double value = prototype.getProperty(property);
+		if (value != null)
+			return value;
+		else
+			return Double.NaN;
+	}
+
+	private double getEdgePropertySafe(IEdge prototype, EdgeProperty<Double> property) {
+		final Double value = prototype.getProperty(property);
+		if (value != null)
+			return value;
+		else
+			return Double.NaN;
 	}
 
 	@Override
@@ -210,20 +227,25 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public IEdge addEdge(IEdge prototype) {
+		if (!EdgeFilters.shallRetainEdge(prototype, getEdgeFilters())) {
+			return null;
+		}
+
 		final IEdge newEdge;
 		if (!this.simonstratorGraph.containsEdge(prototype)) {
 			newEdge = super.addEdge(prototype);
 
-			Double distance = prototype.getProperty(UnderlayTopologyControlConstants.WEIGHT);
-			if (distance == null)
-				distance = Double.NaN;
-
-			Double requiredTransmissionPower = prototype
-					.getProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER);
-
-			final KTCLink modelLink = this.topology.addKTCLink(prototype.getId().valueAsString(),
-					getModelNodeForSimonstratorNode(prototype.fromId()),
-					getModelNodeForSimonstratorNode(prototype.toId()), distance, requiredTransmissionPower);
+			final KTCLink modelLink = JvlcFactory.eINSTANCE.createKTCLink();
+			topology.getEdges().add(modelLink);
+			modelLink.setId(prototype.getId().valueAsString());
+			modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
+			modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
+			modelLink.setState(EdgeState.UNCLASSIFIED);
+			modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.ANGLE));
+			modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.DISTANCE));
+			modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.WEIGHT));
+			modelLink.setExpectedLifetime(
+					getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE));
 
 			establishLinkMapping(newEdge, modelLink);
 
@@ -255,6 +277,15 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final GraphElementProperty<T> property) {
 		super.updateEdgeAttribute(simEdge, property);
+
+		if (!EdgeFilters.shallRetainEdge(simEdge, getEdgeFilters())) {
+			return;
+		}
+
+		if (!this.simonstratorEdgeToModelLink.containsKey(simEdge)) {
+			this.addEdge(simEdge);
+		}
+
 		final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
 		final T value = simEdge.getProperty(property);
 
