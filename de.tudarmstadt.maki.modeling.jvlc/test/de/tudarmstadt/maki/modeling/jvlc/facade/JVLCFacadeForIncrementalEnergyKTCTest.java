@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
-import de.tudarmstadt.maki.modeling.jvlc.IncrementalEnergyKTC;
+import de.tudarmstadt.maki.modeling.jvlc.EnergyAwareKTC;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
@@ -21,7 +21,7 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
- * Unit tests for {@link JVLCFacade}, using {@link IncrementalEnergyKTC}.
+ * Unit tests for {@link JVLCFacade}, using {@link EnergyAwareKTC}.
  */
 public class JVLCFacadeForIncrementalEnergyKTCTest {
 

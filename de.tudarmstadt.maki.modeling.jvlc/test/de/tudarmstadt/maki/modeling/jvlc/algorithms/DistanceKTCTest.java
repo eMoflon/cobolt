@@ -2,61 +2,73 @@ package de.tudarmstadt.maki.modeling.jvlc.algorithms;
 
 import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistanceTestGraph;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.graphmodel.Graph;
 import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.graphmodel.Node;
-import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTC;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.ConstraintsFactory;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnectivityConstraint;
+import de.tudarmstadt.maki.modeling.graphmodel.constraints.NoUnclassifiedLinksConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
+import de.tudarmstadt.maki.modeling.jvlc.PlainKTC;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
-import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
+import de.tudarmstadt.maki.modeling.jvlc.TopologyControlOperationMode;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.modeling.jvlc.io.TopologyUtils;
 
 public class DistanceKTCTest {
 
 	private Topology graph;
 
-	private DistanceKTC algorithm;
+	private PlainKTC algorithm;
 
-	private List<GraphConstraint> strongConsistencyConstraints;
+	private NoUnclassifiedLinksConstraint noUnclasifiedLinksConstraint;
+
+	private EdgeStateBasedConnectivityConstraint strongConnectivityConstraint;
 
 	@Before
 	public void setUp() {
 		this.graph = JvlcFactory.eINSTANCE.createTopology();
-		this.algorithm = JvlcFactory.eINSTANCE.createDistanceKTC();
-
-		this.strongConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfStrongConsistency(UnderlayTopologyControlConstants.D_KTC);
+		this.algorithm = JvlcFactory.eINSTANCE.createPlainKTC();
+		this.algorithm.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
+		this.noUnclasifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
+		this.strongConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+		this.strongConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
 	}
 
 	@Test
-	public void testAlgorithmWithTestgraph1TopologyBased() throws Exception {
+	public void testAlgorithmWithTestgraph1_RunOnTopology() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 
 		algorithm.runOnTopology(graph);
 
-		GraphModelTestHelper.assertGraphConstraints(graph, strongConsistencyConstraints);
+		GraphModelTestHelper.assertGraphConstraints(graph, algorithm.getAlgorithmSpecificConstraints());
+		GraphModelTestHelper.assertGraphConstraint(graph, noUnclasifiedLinksConstraint);
+		GraphModelTestHelper.assertGraphConstraint(graph, strongConnectivityConstraint);
 	}
 
 	@Test
-	public void testAlgorithmWithTestgraph1NodeBased() throws Exception {
+	public void testAlgorithmWithTestgraph1_RunOnNode() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
+		algorithm.initializeConstraints();
 
 		for (final Node node : graph.getNodes()) {
 			algorithm.runOnNode((KTCNode) node);
+			System.out.println(TopologyUtils.formatEdgeStateReport(graph));
 		}
 
-		GraphModelTestHelper.assertGraphConstraints(graph, strongConsistencyConstraints);
+
+		GraphModelTestHelper.assertGraphConstraints(graph, algorithm.getAlgorithmSpecificConstraints());
+		GraphModelTestHelper.assertGraphConstraint(graph, noUnclasifiedLinksConstraint);
+		GraphModelTestHelper.assertGraphConstraint(graph, strongConnectivityConstraint);
 
 	}
 

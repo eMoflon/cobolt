@@ -24,12 +24,11 @@ import de.tudarmstadt.maki.modeling.graphmodel.constraints.EdgeStateBasedConnect
 import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.AbstractKTC;
 import de.tudarmstadt.maki.modeling.jvlc.AbstractTopologyControlAlgorithm;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCActiveLinkConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcFactory;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
+import de.tudarmstadt.maki.modeling.jvlc.TopologyControlOperationMode;
 import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
@@ -44,8 +43,6 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
- * TODO@rkluge Fairness
- * 
  * TODO@rkluge Integrate Min-weight optimization
  * 
  * TODO@rkluge XTC impl.
@@ -64,6 +61,8 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * 
  * TODO@rkluge- Introduce batch / incremental switch
  * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
+ * 
+ * TODO@rkluge - Implement messaging application
  */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
@@ -75,12 +74,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	private final Map<KTCLink, EdgeID> modelLinkToSimonstratorLink;
 	private TopologyControlAlgorithmID algorithmID;
 	private int constraintViolationCounter;
+
 	private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
-	private EdgeStateBasedConnectivityConstraint activeLinkConnectivityConstraint;
 	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
 	private GraphConstraint noUnclassifiedLinksConstraint;
-	private DistanceKTCInactiveLinkConstraint inactiveLinkKTCConstraint;
-	private DistanceKTCActiveLinkConstraint activeLinkKTCConstraint;
 
 	public JVLCFacade() {
 		this.simonstratorNodeToModelNode = new HashMap<>();
@@ -99,13 +96,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		weakConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
 		weakConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
 
-		activeLinkConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
-		activeLinkConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
-
 		noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
-
-		inactiveLinkKTCConstraint = JvlcFactory.eINSTANCE.createDistanceKTCInactiveLinkConstraint();
-		activeLinkKTCConstraint = JvlcFactory.eINSTANCE.createDistanceKTCActiveLinkConstraint();
 	}
 
 	@Override
@@ -126,8 +117,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		if (this.algorithm instanceof AbstractKTC) {
 			((AbstractKTC) this.algorithm).setK(k);
 		}
-		this.inactiveLinkKTCConstraint.setK(k);
-		this.activeLinkKTCConstraint.setK(k);
+		this.algorithm.initializeConstraints();
 
 		this.algorithm.runOnTopology(this.topology);
 	}
@@ -207,7 +197,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			if (distance == null)
 				distance = Double.NaN;
 
-			Double requiredTransmissionPower = prototype.getProperty(UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME);
+			Double requiredTransmissionPower = prototype
+					.getProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER);
 
 			final KTCLink modelLink = this.topology.addKTCLink(prototype.getId().valueAsString(),
 					getModelNodeForSimonstratorNode(prototype.fromId()),
@@ -265,25 +256,30 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	public void checkConstraintsAfterContextEvent() {
 
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		inactiveLinkKTCConstraint.checkOnGraph(this.topology, report);
-		activeLinkKTCConstraint.checkOnGraph(this.topology, report);
+		if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL) {
+			for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
+				constraint.checkOnGraph(topology, report);
+			}
 
-		if (isTopologyPhysicallyConnected()) {
-			weakConnectivityConstraint.checkOnGraph(this.topology, report);
+			if (isTopologyPhysicallyConnected()) {
+				weakConnectivityConstraint.checkOnGraph(this.topology, report);
+			}
+
+			reportConstraintViolations(report);
 		}
-
-		reportConstraintViolations(report);
 	}
 
 	@Override
 	public void checkConstraintsAfterTopologyControl() {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
-		inactiveLinkKTCConstraint.checkOnGraph(topology, report);
-		activeLinkKTCConstraint.checkOnGraph(topology, report);
+		for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
+			constraint.checkOnGraph(topology, report);
+		}
+
 		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
 		if (isTopologyPhysicallyConnected()) {
-			activeLinkConnectivityConstraint.checkOnGraph(this.topology, report);
+			weakConnectivityConstraint.checkOnGraph(this.topology, report);
 		}
 
 		reportConstraintViolations(report);
@@ -343,7 +339,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			final double oldWeight = ktcLink.getWeight();
 			ktcLink.setWeight((Double) value);
 			this.algorithm.handleLinkWeightModification(ktcLink, oldWeight);
-		} else if (UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME.equals(property)) {
+		} else if (UnderlayTopologyControlConstants.EXPECTED_LIFETIME.equals(property)) {
 			double oldExpectedLifetime = ktcLink.getExpectedLifetime();
 			ktcLink.setExpectedLifetime((Double) value);
 			this.algorithm.handleLinkExpectedLifetimeModification(ktcLink, oldExpectedLifetime);

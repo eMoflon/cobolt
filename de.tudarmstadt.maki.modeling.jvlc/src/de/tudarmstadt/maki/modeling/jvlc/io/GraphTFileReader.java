@@ -149,8 +149,8 @@ public class GraphTFileReader {
 					final IEdge backwardPrototype = new DirectedEdge(INodeID.get(targetId), INodeID.get(sourceId), EdgeID.get(edgeIdBwd));
 					forwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
 					backwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_REMAINING_LIFETIME, requiredTransmissionPower);
+					forwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
+					backwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER, requiredTransmissionPower);
 					
 					final IEdge fwdEdge = facade.addEdge(forwardPrototype);
 					final IEdge bwdEdge = facade.addEdge(backwardPrototype);

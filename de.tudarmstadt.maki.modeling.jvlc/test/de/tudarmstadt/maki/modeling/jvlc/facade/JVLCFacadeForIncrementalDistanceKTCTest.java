@@ -3,8 +3,6 @@ package de.tudarmstadt.maki.modeling.jvlc.facade;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,22 +11,18 @@ import org.junit.Test;
 
 import de.tudarmstadt.maki.modeling.graphmodel.EdgeState;
 import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
-import de.tudarmstadt.maki.modeling.graphmodel.constraints.GraphConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCActiveLinkConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.DistanceKTCInactiveLinkConstraint;
-import de.tudarmstadt.maki.modeling.jvlc.IncrementalDistanceKTC;
 import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.modeling.jvlc.KTCNode;
+import de.tudarmstadt.maki.modeling.jvlc.PlainKTC;
 import de.tudarmstadt.maki.modeling.jvlc.Topology;
-import de.tudarmstadt.maki.modeling.jvlc.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 /**
- * Unit tests for {@link JVLCFacade}, using {@link IncrementalDistanceKTC}.
+ * Unit tests for {@link JVLCFacade}, using {@link PlainKTC}.
  */
 public class JVLCFacadeForIncrementalDistanceKTCTest {
 	/*
@@ -41,8 +35,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	private JVLCFacade facade;
 	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlConstants.ID_KTC;
 	private GraphTFileReader reader;
-	private List<GraphConstraint> weakConsistencyConstraints;
-	private List<GraphConstraint> strongConsistencyConstraints;
 
 	@Before
 	public void setup() {
@@ -50,8 +42,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 				.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
 		this.facade.configureAlgorithm(algorithmID);
 		this.reader = new GraphTFileReader();
-		this.strongConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfStrongConsistency(algorithmID);
-		this.weakConsistencyConstraints = AlgorithmHelper.getGraphConstraintsOfWeakConsistency(algorithmID);
 	}
 
 	@Test
@@ -93,11 +83,11 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		final double k = 1.41;
 		facade.run(k);
-		updateKParamterInConstraints(k);
 
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(graph, "e23");
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(graph);
-		GraphModelTestHelper.assertGraphConstraints(this.facade.getTopology(), this.strongConsistencyConstraints);
+		facade.checkConstraintsAfterContextEvent();
+		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
 	}
 
 	@Test
@@ -105,7 +95,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		readTestCase(1);
 		double k = 1.1;
-		this.updateKParamterInConstraints(k);
 		facade.run(k);
 
 		final Topology topology = facade.getTopology();
@@ -113,7 +102,8 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(topology, "e13", "e14", "e15");
 
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
-		GraphModelTestHelper.assertGraphConstraints(this.facade.getTopology(), this.strongConsistencyConstraints);
+		facade.checkConstraintsAfterContextEvent();
+		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
 	}
 
 	@Test
@@ -121,14 +111,14 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 
 		readTestCase(3);
 		final double k = 1.5;
-		this.updateKParamterInConstraints(k);
 		facade.run(k);
 
 		final Topology topology = facade.getTopology();
 
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(topology, "e13", "e31");
 		GraphModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
-		GraphModelTestHelper.assertGraphConstraints(this.facade.getTopology(), this.strongConsistencyConstraints);
+		facade.checkConstraintsAfterContextEvent();
+		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
 	}
 
 	/*
@@ -138,7 +128,6 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	@Test
 	public void testFacadeWithTestgraphD4() throws Exception {
 		final int k = 2;
-		this.updateKParamterInConstraints(k);
 
 		readTestCase(4);
 
@@ -195,25 +184,12 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 		readTestCase(2);
 		final double k = 1.1;
 		facade.run(k);
-		this.updateKParamterInConstraints(k);
 
 		GraphModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(facade.getTopology());
 	}
 
 	private void readTestCase(int id) throws FileNotFoundException {
 		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(id))));
-	}
-
-	private void updateKParamterInConstraints(double k) {
-		for (final List<GraphConstraint> constraints : Arrays.asList(this.weakConsistencyConstraints,
-				this.strongConsistencyConstraints)) {
-			for (final GraphConstraint constraint : constraints) {
-				if (constraint instanceof DistanceKTCActiveLinkConstraint)
-					((DistanceKTCActiveLinkConstraint) constraint).setK(k);
-				if (constraint instanceof DistanceKTCInactiveLinkConstraint)
-					((DistanceKTCInactiveLinkConstraint) constraint).setK(k);
-			}
-		}
 	}
 
 }
