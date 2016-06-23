@@ -63,9 +63,13 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
  * "algorithm.isBatch/algorithm.setBatch/algorithm.supportsBatch"
  * 
  * TODO@rkluge - Implement messaging application
+ * 
+ * TODO@rkluge: Use calibration curve
  */
 public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
+	private static final List<TopologyControlOperationMode> SUPPORTED_OPERATION_MODES = Arrays
+			.asList(TopologyControlOperationMode.BATCH, TopologyControlOperationMode.INCREMENTAL);
 	private final Topology topology;
 	private AbstractTopologyControlAlgorithm algorithm;
 	private final Map<INodeID, KTCNode> simonstratorNodeToModelNode;
@@ -101,6 +105,10 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
+		if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
+			throw new IllegalArgumentException(
+					"Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
+		
 		this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
 		this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
 		this.algorithmID = algorithmID;

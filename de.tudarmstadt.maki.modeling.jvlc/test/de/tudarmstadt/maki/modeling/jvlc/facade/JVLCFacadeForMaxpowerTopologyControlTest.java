@@ -12,6 +12,7 @@ import de.tudarmstadt.maki.modeling.graphmodel.GraphModelTestHelper;
 import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
 
 public class JVLCFacadeForMaxpowerTopologyControlTest {
@@ -23,6 +24,7 @@ public class JVLCFacadeForMaxpowerTopologyControlTest {
 	public void setup() {
 
 		this.facade = (JVLCFacade) TopologyControlFacadeFactory.create("de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade");
+		this.facade.setOperationMode(TopologyControlOperationMode.BATCH);
 		this.facade.configureAlgorithm(ALGO_ID);
 		this.reader = new GraphTFileReader();
 	}
