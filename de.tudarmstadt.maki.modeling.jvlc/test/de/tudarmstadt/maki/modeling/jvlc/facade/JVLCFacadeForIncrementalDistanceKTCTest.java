@@ -161,11 +161,11 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 				"e2-6", "e3-9", "e7-8");
 
 		// CE(ii)
-		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), UnderlayTopologyProperties.WEIGHT, 15.0);
+		facade.updateModelLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), UnderlayTopologyProperties.WEIGHT, 15.0);
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-6");
 		GraphModelTestHelper.assertIsActiveSymmetric(topology, "e5-6");
 
-		facade.updateLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), UnderlayTopologyProperties.WEIGHT, 15.0);
+		facade.updateModelLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), UnderlayTopologyProperties.WEIGHT, 15.0);
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-5");
 		GraphModelTestHelper.assertIsActiveSymmetric(topology, "e4-5");
 		GraphModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-4");

@@ -43,8 +43,8 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 		case JvlcPackage.KTC_LINK__STATE:
 			for (final ILinkStateListener listener : facade.getLinkStateListeners()) {
 				Object newAttributeValue = edge.eGet(attribute);
-					simEdge.setProperty(UnderlayTopologyProperties.EDGE_STATE, EdgeState.ACTIVE);
 				if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE.equals(newAttributeValue)) {
+					simEdge.setProperty(UnderlayTopologyProperties.EDGE_STATE, EdgeState.ACTIVE);
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkActivated(simEdge);
 					}
@@ -58,6 +58,8 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkUnclassified(simEdge);
 					}
+				} else {
+					throw new IllegalArgumentException(String.format("Unsupported edge state: %s", newAttributeValue));
 				}
 			}
 			break;

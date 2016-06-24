@@ -42,7 +42,6 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.NodeProperty;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
-import de.tudarmstadt.maki.simonstrator.tc.filtering.EdgeFilters;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
@@ -50,8 +49,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
  * TODO@rkluge Integrate Min-weight optimization
  * 
  * TODO@rkluge - Implement messaging application
- * 
- * TODO@rkluge: Use calibration curve
  * 
  * Deferred:
  * 
@@ -97,16 +94,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.topology = JvlcFactory.eINSTANCE.createTopology();
 		this.constraintViolationCounter = 0;
 
-		physicalConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
-		physicalConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
-		physicalConnectivityConstraint.getStates().add(EdgeState.INACTIVE);
-		physicalConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
+		this.physicalConnectivityConstraint = createPhysicalConnectivityConstraint();
 
-		weakConnectivityConstraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
-		weakConnectivityConstraint.getStates().add(EdgeState.ACTIVE);
-		weakConnectivityConstraint.getStates().add(EdgeState.UNCLASSIFIED);
+		this.weakConnectivityConstraint = createWeakConnectivityConstraint();
 
-		noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
+		this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
 	}
 
 	@Override
@@ -158,13 +150,13 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public INode addNode(INode prototype) {
+		if (isNodeIdKnown(prototype))
+			throw new IllegalStateException(String.format("Node ID has already been added. Existing: %s. New: %s",
+					this.simonstratorGraph.getNode(prototype.getId()), prototype));
 
 		final INode simNode = super.addNode(prototype);
 
-		final KTCNode ktcNode = JvlcFactory.eINSTANCE.createKTCNode();
-		topology.getNodes().add(ktcNode);
-		ktcNode.setId(prototype.getId().valueAsString());
-		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
+		final KTCNode ktcNode = createNodeFromPrototype(prototype);
 
 		this.algorithm.handleNodeAddition(ktcNode);
 
@@ -175,122 +167,89 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		return simNode;
 	}
 
-	private double getNodePropertySafe(INode prototype, NodeProperty<Double> property) {
-		final Double value = prototype.getProperty(property);
-		if (value != null)
-			return value;
-		else
-			return Double.NaN;
-	}
-
-	private double getEdgePropertySafe(IEdge prototype, EdgeProperty<Double> property) {
-		final Double value = prototype.getProperty(property);
-		if (value != null)
-			return value;
-		else
-			return Double.NaN;
-	}
-
 	@Override
 	public void removeNode(final INodeID nodeId) {
-		if (this.simonstratorNodeToModelNode.containsKey(nodeId)) {
-			for (final IEdge outgoingEdge : new ArrayList<>(this.simonstratorGraph.getOutgoingEdges(nodeId))) {
-				removeEdge(outgoingEdge);
-			}
+		if (!isNodeIdKnown(nodeId))
+			throw new IllegalStateException(String.format("Try to remove non-existing node: %s", nodeId));
 
-			for (final IEdge incomingEdge : new ArrayList<>(this.simonstratorGraph.getIncomingEdges(nodeId))) {
-				removeEdge(incomingEdge);
-			}
-
-			final INode removedNodeId = this.simonstratorGraph.getNode(nodeId);
-			final KTCNode ktcNode = getModelNodeForSimonstratorNode(nodeId);
-
-			firePreRemovedNode(removedNodeId);
-
-			removeNodeMapping(nodeId, ktcNode);
-
-			removeKTCNode(ktcNode);
-
-			super.removeNode(nodeId);
+		for (final IEdge outgoingEdge : new ArrayList<>(this.simonstratorGraph.getOutgoingEdges(nodeId))) {
+			removeEdge(outgoingEdge);
 		}
+
+		for (final IEdge incomingEdge : new ArrayList<>(this.simonstratorGraph.getIncomingEdges(nodeId))) {
+			removeEdge(incomingEdge);
+		}
+
+		final INode removedNodeId = this.simonstratorGraph.getNode(nodeId);
+		final KTCNode ktcNode = getModelNodeForSimonstratorNode(nodeId);
+
+		firePreRemovedNode(removedNodeId);
+
+		removeNodeMapping(nodeId, ktcNode);
+
+		removeKTCNode(ktcNode);
+
+		super.removeNode(nodeId);
 	}
 
 	@Override
 	public <T> void updateNodeAttribute(final INode simNode, final NodeProperty<T> property) {
+		if (!isNodeIdKnown(simNode))
+			throw new IllegalStateException(String.format("Try to update non-existing node: %s", simNode));
+
 		super.updateNodeAttribute(simNode, property);
 
 		final KTCNode ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
 
-		this.updateNodeAttribute(ktcNode, property, simNode.getProperty(property));
+		this.updateModelNodeAttribute(ktcNode, property, simNode.getProperty(property));
 
 		this.firePostNodeAttributeUpdated(simNode, property);
 	}
 
 	@Override
 	public IEdge addEdge(IEdge prototype) {
-		if (!EdgeFilters.shallRetainEdge(prototype, getEdgeFilters())) {
-			return null;
-		}
+		if (isEdgeIdKnown(prototype))
+			throw new IllegalStateException(String.format("Edge ID has already been added. Existing: %s. New: %s",
+					this.simonstratorGraph.getEdge(prototype.getId()), prototype));
 
-		final IEdge newEdge;
-		if (!this.simonstratorGraph.containsEdge(prototype)) {
-			newEdge = super.addEdge(prototype);
+		final IEdge newEdge = super.addEdge(prototype);
 
-			final KTCLink modelLink = JvlcFactory.eINSTANCE.createKTCLink();
-			topology.getEdges().add(modelLink);
-			modelLink.setId(prototype.getId().valueAsString());
-			modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
-			modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
-			modelLink.setState(EdgeState.UNCLASSIFIED);
-			modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
-			modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
-			modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
-			modelLink.setExpectedLifetime(
-					getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
+		final KTCLink modelLink = createLinkFromPrototype(prototype);
 
-			establishLinkMapping(newEdge, modelLink);
+		this.establishLinkMapping(newEdge, modelLink);
 
-			firePostEdgeAdded(prototype);
-
-		} else {
-			newEdge = this.simonstratorGraph.getEdge(prototype.getId());
-		}
+		this.firePostEdgeAdded(prototype);
 
 		return newEdge;
 	}
 
 	@Override
 	public void removeEdge(final IEdge simEdge) {
-		if (this.simonstratorEdgeToModelLink.containsKey(simEdge)) {
+		if (!isEdgeIdKnown(simEdge))
+			throw new IllegalStateException(String.format("Try to remove non-existing edge: %s", simEdge));
 
-			final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
+		final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
 
-			this.firePreEdgeRemoved(simEdge);
+		this.firePreEdgeRemoved(simEdge);
 
-			this.removeLinkMapping(simEdge, ktcLink);
+		this.removeLinkMapping(simEdge.getId(), ktcLink);
 
-			this.removeKTCLink(ktcLink);
+		this.removeKTCLink(ktcLink);
 
-			super.removeEdge(simEdge);
-		}
+		super.removeEdge(simEdge);
 	}
 
 	@Override
 	public <T> void updateEdgeAttribute(final IEdge simEdge, final EdgeProperty<T> property) {
+		if (!isEdgeIdKnown(simEdge))
+			throw new IllegalStateException(String.format("Try to update non-existing edge: %s", simEdge));
+
 		super.updateEdgeAttribute(simEdge, property);
-
-		if (!EdgeFilters.shallRetainEdge(simEdge, getEdgeFilters())) {
-			return;
-		}
-
-		if (!this.simonstratorEdgeToModelLink.containsKey(simEdge)) {
-			this.addEdge(simEdge);
-		}
 
 		final KTCLink ktcLink = getModelLinkForSimonstratorEdge(simEdge);
 		final T value = simEdge.getProperty(property);
 
-		this.updateLinkAttribute(ktcLink, property, value);
+		this.updateModelLinkAttribute(ktcLink, property, value);
 
 		this.firePostEdgeAttributeUpdated(simEdge, property);
 	}
@@ -338,6 +297,79 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		reportConstraintViolations(report);
 	}
 
+	private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint() {
+		EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
+				.createEdgeStateBasedConnectivityConstraint();
+		constraint.getStates().add(EdgeState.ACTIVE);
+		constraint.getStates().add(EdgeState.INACTIVE);
+		constraint.getStates().add(EdgeState.UNCLASSIFIED);
+		return constraint;
+	}
+
+	private static EdgeStateBasedConnectivityConstraint createWeakConnectivityConstraint() {
+		EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
+				.createEdgeStateBasedConnectivityConstraint();
+		constraint.getStates().add(EdgeState.ACTIVE);
+		constraint.getStates().add(EdgeState.UNCLASSIFIED);
+		return constraint;
+	}
+
+	private KTCNode createNodeFromPrototype(INode prototype) {
+		final KTCNode ktcNode = JvlcFactory.eINSTANCE.createKTCNode();
+		topology.getNodes().add(ktcNode);
+		ktcNode.setId(prototype.getId().valueAsString());
+		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
+		return ktcNode;
+	}
+
+	private KTCLink createLinkFromPrototype(IEdge prototype) {
+		final KTCLink modelLink = JvlcFactory.eINSTANCE.createKTCLink();
+		topology.getEdges().add(modelLink);
+		modelLink.setId(prototype.getId().valueAsString());
+		modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
+		modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
+		modelLink.setState(EdgeState.UNCLASSIFIED);
+		modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
+		modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
+		modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
+		modelLink.setExpectedLifetime(
+				getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
+		return modelLink;
+	}
+
+	private double getNodePropertySafe(INode prototype, NodeProperty<Double> property) {
+		final Double value = prototype.getProperty(property);
+		if (value != null)
+			return value;
+		else
+			return Double.NaN;
+	}
+
+	private double getEdgePropertySafe(IEdge prototype, EdgeProperty<Double> property) {
+		final Double value = prototype.getProperty(property);
+		if (value != null)
+			return value;
+		else
+			return Double.NaN;
+	}
+
+	private boolean isNodeIdKnown(final INode prototype) {
+		return this.isNodeIdKnown(prototype.getId());
+	}
+
+	private boolean isNodeIdKnown(final INodeID nodeId) {
+		return this.simonstratorNodeToModelNode.containsKey(nodeId);
+	}
+
+	private boolean isEdgeIdKnown(final IEdge prototype) {
+		EdgeID id = prototype.getId();
+		return isEdgeIdKnown(id);
+	}
+
+	private boolean isEdgeIdKnown(final EdgeID id) {
+		return this.simonstratorEdgeToModelLink.containsKey(id);
+	}
+
 	private boolean isTopologyPhysicallyConnected() {
 		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
@@ -356,7 +388,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		return ktcLink;
 	}
 
-	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateModelNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property,
+			final T value) {
 
 		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
 			double oldEnergyLevel = ktcNode.getEnergyLevel();
@@ -366,14 +399,15 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	/**
-	 * Calls {@link #updateLinkAttribute(KTCLink, GraphElementProperty, Object)}
+	 * Calls
+	 * {@link #updateModelLinkAttribute(KTCLink, GraphElementProperty, Object)}
 	 * for the given link and its reverse link, setting the same value for the
 	 * given property on both links.
 	 */
-	public <T> void updateLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property,
+	public <T> void updateModelLinkAttributeSymmetric(final KTCLink ktcLink, final GraphElementProperty<T> property,
 			final T value) {
-		updateLinkAttribute(ktcLink, property, value);
-		updateLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
+		updateModelLinkAttribute(ktcLink, property, value);
+		updateModelLinkAttribute((KTCLink) ktcLink.getReverseEdge(), property, value);
 	}
 
 	/**
@@ -383,7 +417,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	 * This method also handles the notification of the CE handlers.
 	 * </p>
 	 */
-	public <T> void updateLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property, final T value) {
+	public <T> void updateModelLinkAttribute(final KTCLink ktcLink, final GraphElementProperty<T> property,
+			final T value) {
 		if (ktcLink == null) {
 			throw new NullPointerException();
 		}
@@ -410,9 +445,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	public void removeKTCLink(final KTCLink ktcLink) {
 		this.algorithm.handleLinkDeletion(ktcLink);
 
-		final Edge reverseEdge = ktcLink.getReverseEdge();
 		this.topology.removeEdge(ktcLink);
-		this.topology.removeEdge(reverseEdge);
 	}
 
 	private void reportConstraintViolations(ConstraintViolationReport report) {
@@ -487,9 +520,9 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		this.modelLinkToSimonstratorLink.put(modelLink, simonstratorEdge.getId());
 	}
 
-	private void removeLinkMapping(final IEdge simonstratorEdge, final KTCLink modelLink) {
-		this.modelLinkToSimonstratorLink.remove(modelLink.getId());
-		this.simonstratorEdgeToModelLink.remove(simonstratorEdge);
+	private void removeLinkMapping(final EdgeID simonstratorEdgeId, final KTCLink modelLink) {
+		this.modelLinkToSimonstratorLink.remove(modelLink);
+		this.simonstratorEdgeToModelLink.remove(simonstratorEdgeId);
 	}
 
 	private void removeNodeMapping(final INodeID simonstratorNodeId, final KTCNode modelNode) {
