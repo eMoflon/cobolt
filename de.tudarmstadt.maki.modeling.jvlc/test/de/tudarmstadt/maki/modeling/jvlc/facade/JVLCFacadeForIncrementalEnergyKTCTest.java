@@ -23,7 +23,8 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
  * Unit tests for {@link JVLCFacade}, using {@link EnergyAwareKTC}.
@@ -32,7 +33,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 	private JVLCFacade facade;
 	private GraphTFileReader reader;
-	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlConstants.IE_KTC;
+	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.IE_KTC;
 
 	@Before
 	public void setup() {
@@ -64,14 +65,14 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 		final Topology topology = this.facade.getTopology();
 
 		final INode n3 = graph.getNode(INodeID.get("n3"));
-		Assert.assertEquals(60, n3.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY), EPS_0);
-		n3.setProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY, 15.0);
-		this.facade.updateNodeAttribute(n3, UnderlayTopologyControlConstants.REMAINING_ENERGY);
+		Assert.assertEquals(60, n3.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY), EPS_0);
+		n3.setProperty(UnderlayTopologyProperties.REMAINING_ENERGY, 15.0);
+		this.facade.updateNodeAttribute(n3, UnderlayTopologyProperties.REMAINING_ENERGY);
 		for (final IEdge edge : graph.getOutgoingEdges(n3.getId())) {
-			final double newExpectedLifetime = n3.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
-					/ edge.getProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER);
-			edge.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE, newExpectedLifetime);
-			this.facade.updateEdgeAttribute(edge, UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE);
+			final double newExpectedLifetime = n3.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY)
+					/ edge.getProperty(UnderlayTopologyProperties.REQUIRED_TRANSMISSION_POWER);
+			edge.setProperty(UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE, newExpectedLifetime);
+			this.facade.updateEdgeAttribute(edge, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE);
 		}
 		Assert.assertEquals(15, topology.getKTCNodeById("n3").getEnergyLevel(), EPS_0);
 

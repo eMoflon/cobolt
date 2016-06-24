@@ -18,7 +18,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Node;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 public class GraphTFileReader {
 
@@ -125,7 +125,7 @@ public class GraphTFileReader {
 						remainingEnergy = Double.NaN;
 					}
 					Node node = Graphs.createNode(nodeId);
-					node.setProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY, remainingEnergy);
+					node.setProperty(UnderlayTopologyProperties.REMAINING_ENERGY, remainingEnergy);
 					facade.addNode(node);
 					readNodeLines++;
 				}
@@ -152,19 +152,19 @@ public class GraphTFileReader {
 					final INode target = facade.getGraph().getNode(targetId);
 					final IEdge forwardPrototype = new DirectedEdge(srcId, targetId, EdgeID.get(edgeIdFwd));
 					final IEdge backwardPrototype = new DirectedEdge(targetId, srcId, EdgeID.get(edgeIdBwd));
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.DISTANCE, distance);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.DISTANCE, distance);
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.WEIGHT, distance);
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER,
+					forwardPrototype.setProperty(UnderlayTopologyProperties.DISTANCE, distance);
+					backwardPrototype.setProperty(UnderlayTopologyProperties.DISTANCE, distance);
+					forwardPrototype.setProperty(UnderlayTopologyProperties.WEIGHT, distance);
+					backwardPrototype.setProperty(UnderlayTopologyProperties.WEIGHT, distance);
+					forwardPrototype.setProperty(UnderlayTopologyProperties.REQUIRED_TRANSMISSION_POWER,
 							requiredTransmissionPower);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.REQUIRED_TRANSMISSION_POWER,
+					backwardPrototype.setProperty(UnderlayTopologyProperties.REQUIRED_TRANSMISSION_POWER,
 							requiredTransmissionPower);
-					forwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE,
-							source.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
+					forwardPrototype.setProperty(UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE,
+							source.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY)
 									/ requiredTransmissionPower);
-					backwardPrototype.setProperty(UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE,
-							target.getProperty(UnderlayTopologyControlConstants.REMAINING_ENERGY)
+					backwardPrototype.setProperty(UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE,
+							target.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY)
 									/ requiredTransmissionPower);
 
 					final IEdge fwdEdge = facade.addEdge(forwardPrototype);

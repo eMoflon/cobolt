@@ -13,12 +13,12 @@ import de.tudarmstadt.maki.modeling.jvlc.io.GraphTFileReader;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 
 public class JVLCFacadeForMaxpowerTopologyControlTest {
 	private JVLCFacade facade;
 	private GraphTFileReader reader;
-	private static TopologyControlAlgorithmID ALGO_ID = UnderlayTopologyControlConstants.NULL_TC;
+	private static TopologyControlAlgorithmID ALGO_ID = UnderlayTopologyControlAlgorithms.MAXPOWER_TC;
 
 	@Before
 	public void setup() {

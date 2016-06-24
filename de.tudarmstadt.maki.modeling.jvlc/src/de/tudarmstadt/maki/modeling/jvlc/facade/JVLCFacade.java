@@ -43,7 +43,8 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
 import de.tudarmstadt.maki.simonstrator.tc.filtering.EdgeFilters;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
  * TODO@rkluge Integrate Min-weight optimization
@@ -134,12 +135,12 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public Collection<String> getExpectedParameters() {
-		return Arrays.asList(UnderlayTopologyControlConstants.K);
+		return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
 	}
 
 	@Override
 	public void run(final TopologyControlAlgorithmParamters parameters) {
-		final Double k = (Double) parameters.get(UnderlayTopologyControlConstants.K);
+		final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
 		if (this.algorithm instanceof AbstractKTC) {
 			((AbstractKTC) this.algorithm).setK(k);
 		}
@@ -152,7 +153,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	 * Convenience method that is tailored to kTC.
 	 */
 	public void run(final double k) {
-		this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlConstants.K, k));
+		this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
 	}
 
 	@Override
@@ -163,7 +164,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 		final KTCNode ktcNode = JvlcFactory.eINSTANCE.createKTCNode();
 		topology.getNodes().add(ktcNode);
 		ktcNode.setId(prototype.getId().valueAsString());
-		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyControlConstants.REMAINING_ENERGY));
+		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
 
 		this.algorithm.handleNodeAddition(ktcNode);
 
@@ -241,11 +242,11 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
 			modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
 			modelLink.setState(EdgeState.UNCLASSIFIED);
-			modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.ANGLE));
-			modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.DISTANCE));
-			modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.WEIGHT));
+			modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
+			modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
+			modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
 			modelLink.setExpectedLifetime(
-					getEdgePropertySafe(prototype, UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE));
+					getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
 
 			establishLinkMapping(newEdge, modelLink);
 
@@ -357,7 +358,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	public <T> void updateNodeAttribute(final KTCNode ktcNode, final GraphElementProperty<T> property, final T value) {
 
-		if (UnderlayTopologyControlConstants.REMAINING_ENERGY.equals(property)) {
+		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
 			double oldEnergyLevel = ktcNode.getEnergyLevel();
 			ktcNode.setEnergyLevel((Double) value);
 			this.algorithm.handleNodeEnergyLevelModification(ktcNode, oldEnergyLevel);
@@ -387,15 +388,15 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 			throw new NullPointerException();
 		}
 
-		if (UnderlayTopologyControlConstants.WEIGHT.equals(property)) {
+		if (UnderlayTopologyProperties.WEIGHT.equals(property)) {
 			final double oldWeight = ktcLink.getWeight();
 			ktcLink.setWeight((Double) value);
 			this.algorithm.handleLinkWeightModification(ktcLink, oldWeight);
-		} else if (UnderlayTopologyControlConstants.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
+		} else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
 			double oldExpectedLifetime = ktcLink.getExpectedLifetime();
 			ktcLink.setExpectedLifetime((Double) value);
 			this.algorithm.handleLinkExpectedLifetimeModification(ktcLink, oldExpectedLifetime);
-		} else if (UnderlayTopologyControlConstants.EDGE_STATE.equals(property)) {
+		} else if (UnderlayTopologyProperties.EDGE_STATE.equals(property)) {
 			ktcLink.setState(de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED);
 			this.algorithm.handleLinkUnclassification(ktcLink);
 		}

@@ -9,7 +9,7 @@ import de.tudarmstadt.maki.modeling.jvlc.KTCLink;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlConstants;
+import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
  * This content adapter listens for link state modifications and notifies the
@@ -43,18 +43,18 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 		case JvlcPackage.KTC_LINK__STATE:
 			for (final ILinkStateListener listener : facade.getLinkStateListeners()) {
 				Object newAttributeValue = edge.eGet(attribute);
-					simEdge.setProperty(UnderlayTopologyControlConstants.EDGE_STATE, EdgeState.ACTIVE);
+					simEdge.setProperty(UnderlayTopologyProperties.EDGE_STATE, EdgeState.ACTIVE);
 				if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.ACTIVE.equals(newAttributeValue)) {
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkActivated(simEdge);
 					}
 				} else if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.INACTIVE.equals(newAttributeValue)) {
-					simEdge.setProperty(UnderlayTopologyControlConstants.EDGE_STATE, EdgeState.INACTIVE);
+					simEdge.setProperty(UnderlayTopologyProperties.EDGE_STATE, EdgeState.INACTIVE);
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkInactivated(simEdge);
 					}
 				} else if (de.tudarmstadt.maki.modeling.graphmodel.EdgeState.UNCLASSIFIED.equals(newAttributeValue)) {
-					simEdge.setProperty(UnderlayTopologyControlConstants.EDGE_STATE, EdgeState.UNCLASSIFIED);
+					simEdge.setProperty(UnderlayTopologyProperties.EDGE_STATE, EdgeState.UNCLASSIFIED);
 					if (!facade.areLinkStateModificationListenersMuted()) {
 						listener.linkUnclassified(simEdge);
 					}
