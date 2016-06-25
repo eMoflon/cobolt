@@ -48,8 +48,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 /**
  * TODO@rkluge Integrate Min-weight optimization
  * 
- * TODO@rkluge - Implement messaging application
- * 
  * TODO@rkluge - Fix e-kTC
  * 
  * TODO@rkluge - Check energy model
@@ -495,7 +493,8 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 
 	private static String formatEdge(final Edge edge) {
 		final KTCLink link = (KTCLink) edge;
-		return String.format("%s (s=%s, w=%.3f)", link.getId(), link.getState(), link.getWeight());
+		return String.format("%s (s=%s, w=%.3f, L1=%.3f)", link.getId(), link.getState().toString().charAt(0),
+				link.getWeight(), link.getExpectedLifetime());
 	}
 
 	private KTCNode getModelNodeForSimonstratorNode(final INodeID nodeId) {
