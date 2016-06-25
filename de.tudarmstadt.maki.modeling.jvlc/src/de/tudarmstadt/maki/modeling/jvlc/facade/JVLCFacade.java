@@ -50,6 +50,10 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
  * 
  * TODO@rkluge - Implement messaging application
  * 
+ * TODO@rkluge - Fix e-kTC
+ * 
+ * TODO@rkluge - Check energy model
+ * 
  * Deferred:
  * 
  * TODO@rkluge: Kill Topology#addKTCLink

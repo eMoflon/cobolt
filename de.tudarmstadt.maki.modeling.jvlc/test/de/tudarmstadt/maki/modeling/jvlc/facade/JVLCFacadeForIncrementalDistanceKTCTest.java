@@ -35,7 +35,7 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 * necessary
 	 */
 	private JVLCFacade facade;
-	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.ID_KTC;
+	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.D_KTC;
 	private GraphTFileReader reader;
 
 	@Before

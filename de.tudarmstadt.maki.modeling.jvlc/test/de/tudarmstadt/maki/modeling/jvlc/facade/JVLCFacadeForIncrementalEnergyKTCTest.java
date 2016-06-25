@@ -33,7 +33,7 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 
 	private JVLCFacade facade;
 	private GraphTFileReader reader;
-	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.IE_KTC;
+	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.E_KTC;
 
 	@Before
 	public void setup() {
