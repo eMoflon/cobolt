@@ -46,12 +46,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
- * TODO@rkluge Integrate Min-weight optimization
- * 
- * TODO@rkluge - Fix e-kTC
- * 
- * TODO@rkluge - Check energy model
- * 
  * Deferred:
  * 
  * TODO@rkluge: Kill Topology#addKTCLink
