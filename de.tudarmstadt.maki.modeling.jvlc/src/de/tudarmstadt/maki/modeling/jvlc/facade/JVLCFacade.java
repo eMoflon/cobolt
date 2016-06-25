@@ -46,6 +46,16 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
+ * TODO@rkluge: Specify executor
+ * 
+ * TODO@rkluge: Adjust folder names
+ * 
+ * TODO@rkluge: Test runs
+ * 
+ * TODO@rkluge Deploy to aragorn
+ * 
+ * TODO@rkluge Write R scripts
+ * 
  * Deferred:
  * 
  * TODO@rkluge: Kill Topology#addKTCLink
@@ -56,8 +66,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
  * TODO@rkluge XTC impl.
  * 
  * TODO@rkluge Yao impl.
- * 
- * TODO@rkluge (- ekTC impl.)
  * 
  * TODO@rkluge: Extract hop count from routing
  * 
