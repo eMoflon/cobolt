@@ -46,17 +46,15 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
- * TODO@rkluge: Specify executor
- * 
- * TODO@rkluge: Adjust folder names
- * 
- * TODO@rkluge: Test runs
- * 
- * TODO@rkluge Deploy to aragorn
- * 
  * TODO@rkluge Write R scripts
  * 
  * Deferred:
+ *
+ * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
+ * 
+ * TODO@rkluge: Also visualize the underlying topology
+ * 
+ * TODO@rkluge: Enable scaling in the topology visualization
  * 
  * TODO@rkluge: Kill Topology#addKTCLink
  * {@link Topology#addKTCLink(String, KTCNode, KTCNode, double, double, EdgeState)}
