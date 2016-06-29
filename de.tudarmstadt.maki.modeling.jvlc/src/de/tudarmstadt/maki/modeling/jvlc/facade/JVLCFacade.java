@@ -46,9 +46,10 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 
 /**
- * TODO@rkluge Write R scripts
- * 
  * Deferred:
+ * 
+ * TODO@rkluge: Add hop count statistics to evaluation overview (Create
+ * converter of Graph to adjacency array and APSP algorithm)
  *
  * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
  * 
