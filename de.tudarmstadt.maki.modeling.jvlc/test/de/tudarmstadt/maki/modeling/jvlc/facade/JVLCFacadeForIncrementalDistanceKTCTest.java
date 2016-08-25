@@ -27,13 +27,6 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
  * Unit tests for {@link JVLCFacade}, using {@link PlainKTC}.
  */
 public class JVLCFacadeForIncrementalDistanceKTCTest {
-	/*
-	 * Use cases: * no constraint violation (e.g. increase distance of already
-	 * inactive link) * constraint violation (decrease distance of inactive
-	 * link) * edge addition, node addition -> no problem * removing node ->
-	 * setting incident edges of neighbors to unclassified * no handling
-	 * necessary
-	 */
 	private JVLCFacade facade;
 	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.D_KTC;
 	private GraphTFileReader reader;
