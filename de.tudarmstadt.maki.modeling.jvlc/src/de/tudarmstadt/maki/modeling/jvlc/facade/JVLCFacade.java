@@ -48,19 +48,14 @@ import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 /**
  * Deferred:
  * 
- * TODO@rkluge: Add hop count statistics to evaluation overview (Create
- * converter of Graph to adjacency array and APSP algorithm)
- *
  * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
- * 
- * TODO@rkluge: Also visualize the underlying topology
- * 
- * TODO@rkluge: Enable scaling in the topology visualization
  * 
  * TODO@rkluge: Kill Topology#addKTCLink
  * {@link Topology#addKTCLink(String, KTCNode, KTCNode, double, double, EdgeState)}
  * 
  * TODO@rkluge More modular configuration of facades etc.
+ * 
+ * TODO@rkluge: Create a basic example of how to implement the facade interface
  * 
  * TODO@rkluge XTC impl.
  * 
@@ -464,7 +459,7 @@ public class JVLCFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private String formatHistogramOfViolations(ConstraintViolationReport report) {
-		Map<String, Integer> histogramm = new HashMap<String, Integer>();
+		Map<String, Integer> histogramm = new HashMap<>();
 		Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
 		for (final ConstraintViolation violation : report.getViolations()) {
 			final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
