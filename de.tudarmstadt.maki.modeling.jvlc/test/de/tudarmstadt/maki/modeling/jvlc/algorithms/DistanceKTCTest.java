@@ -62,9 +62,7 @@ public class DistanceKTCTest {
 
 		while (TopologyUtils.containsUnclassifiedEdges(graph)) {
 			for (final Node node : graph.getNodes()) {
-				System.out.println("===" + node + "===");
 				algorithm.runOnNode((KTCNode) node);
-				System.out.println(TopologyUtils.formatEdgeStateReport(graph));
 			}
 		}
 
