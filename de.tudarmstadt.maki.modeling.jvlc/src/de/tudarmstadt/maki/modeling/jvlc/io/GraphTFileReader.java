@@ -13,7 +13,6 @@ import de.tudarmstadt.maki.modeling.jvlc.facade.JVLCFacade;
 import de.tudarmstadt.maki.simonstrator.api.Graphs;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.DirectedEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
@@ -169,8 +168,6 @@ public class GraphTFileReader {
 
 					final IEdge fwdEdge = facade.addEdge(forwardPrototype);
 					final IEdge bwdEdge = facade.addEdge(backwardPrototype);
-					fwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, bwdEdge);
-					bwdEdge.setProperty(GenericGraphElementProperties.REVERSE_EDGE, fwdEdge);
 					facade.connectOppositeEdges(fwdEdge, bwdEdge);
 
 					readEdgeLines++;
