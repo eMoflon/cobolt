@@ -6,8 +6,8 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsPackage;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
+import de.tudarmstadt.maki.tc.cbctc.model.ModelPackage;
 import de.tudarmstadt.maki.tc.cbctc.model.listener.GraphContentAdapter;
 
 /**
@@ -39,7 +39,7 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 		}
 
 		switch (attribute.getFeatureID()) {
-		case AlgorithmsPackage.KTC_LINK__STATE:
+		case ModelPackage.EDGE__STATE:
 			for (final ILinkStateListener listener : facade.getLinkStateListeners()) {
 				Object newAttributeValue = edge.eGet(attribute);
 				if (de.tudarmstadt.maki.tc.cbctc.model.EdgeState.ACTIVE.equals(newAttributeValue)) {

@@ -11,165 +11,122 @@
       <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TopologyControlOperationMode/INCREMENTAL"/>
       <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TopologyControlOperationMode/BATCH"/>
     </genEnums>
-    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCLink">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCLink/angle"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCLink/distance"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCLink/expectedLifetime"/>
-    </genClasses>
-    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCNode">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//KTCNode/hopCount"/>
-    </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//NACFlag">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//NACFlag/matchFound"/>
     </genClasses>
     <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractKTC">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractKTC/k"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm">
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnTopology">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnTopology/topology"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm">
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnNode">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnNode/node"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnNodePreprocessing">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnNodePreprocessing/node"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/activateLink">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/activateLink/edge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatch/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatch/excludedLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/inactivateLink">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/inactivateLink/edge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/checkPredicate">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/checkPredicate/link12"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/checkPredicate/link13"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/checkPredicate/link32"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/edge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnNode">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/runOnNode/node"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/edge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/oldValue"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/activateLink">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/activateLink/link"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleNodeAddition">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleNodeAddition/node"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/inactivateLink">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/inactivateLink/link"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleNodeDeletion">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleNodeDeletion/node"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/eliminateMatchesOfNACs">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/eliminateMatchesOfNACs/link"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/edge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatchBatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatchBatch/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/findMatchBatch/excludedLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkAddition">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkAddition/edge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkWeightModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkWeightModification/link"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkWeightModification/oldValue"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleNodeAddition">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleNodeAddition/newNode"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/inactiveEdge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/excludedEdge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleNodeDeletion">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleNodeDeletion/removedNode"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnTopology">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnTopology/topology"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkDeletion">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkDeletion/removedLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/node"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkAddition">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkAddition/newLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatch">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatch/directEdge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatch/excludedEdge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkUnclassification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/handleLinkUnclassification/unclassifiedLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/checkPredicate">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/checkPredicate/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/checkPredicate/edge13"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/checkPredicate/edge32"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/inactiveLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/excludedLink"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatchBatch">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatchBatch/directEdge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/findMatchBatch/excludedEdge"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/createdDirectedTriangle">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/createdDirectedTriangle/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/createdDirectedTriangle/indirectionLink1"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/createdDirectedTriangle/indirectionLink2"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/createdDirectedTriangle">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/createdDirectedTriangle/directEdge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/createdDirectedTriangle/indirectionEdge1"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/createdDirectedTriangle/indirectionEdge2"/>
       </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/link"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangleTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/oldValue"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/edge"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//TriangleBasedTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/oldValue"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC">
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/edge13"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/edge32"/>
+      </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatch/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatch/excludedLink"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatch/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatch/excludedEdge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/initializeConstraints"/>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/maxLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/otherLink1"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/checkPredicate/otherLink2"/>
-      </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatchBatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatchBatch/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatchBatch/excludedLink"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatchBatch/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTC/findMatchBatch/excludedEdge"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC">
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/edge13"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/edge32"/>
+      </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatch/link12"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatch/excludedLink"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatch/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatch/excludedEdge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/initializeConstraints"/>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/link12"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/link13"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/checkPredicate/link32"/>
-      </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatchBatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatchBatch/link12"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatchBatch/excludedLink"/>
-      </genOperations>
-    </genClasses>
-    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology">
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCNode">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCNode/id"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCNode/remainingEnergy"/>
-      </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/id"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/source"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/target"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/distance"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/requiredTransmissionPower"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink/state"/>
-      </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1/id"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1/source"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1/target"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1/distance"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addKTCLink.1/requiredTransmissionPower"/>
-      </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/idFwd"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/idBwd"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/node1"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/node2"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/distance"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/addUndirectedKTCLink/requiredTransmissionPower"/>
-      </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/getKTCLinkById">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/getKTCLinkById/id"/>
-      </genOperations>
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/getKTCNodeById">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//Topology/getKTCNodeById/id"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatchBatch/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//EnergyAwareKTC/findMatchBatch/excludedEdge"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm">
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnNode">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnNode/node"/>
-      </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnTopology">
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnTopology/topology"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnNode">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/runOnNode/node"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//MaxpowerTopologyControlAlgorithm/initializeConstraints"/>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint">
-      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnGraph">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnGraph/graph"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnGraph/report"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnTopology">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnTopology/topology"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//LocalConstraint/checkOnTopology/report"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTCInactiveLinkConstraint">
@@ -184,20 +141,15 @@
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PlainKTCActiveLinkConstraint/checkOnNode/violationReport"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangle">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangle/directLink"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangle/indirectionLink1"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//DirectedTriangle/indirectionLink2"/>
-    </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm">
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/link1"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/link2"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/link3"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/edge13"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/checkPredicate/edge32"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/findMatch">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/findMatch/directLink"/>
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/findMatch/excludedLink"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/findMatch/edge12"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/findMatch/excludedEdge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//RelativeNeighborhoodGraphAlgorithm/initializeConstraints"/>
     </genClasses>
@@ -225,22 +177,22 @@
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleNodePositionModification/oldLatitude"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkWeightModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkWeightModification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkWeightModification/edge"/>
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkWeightModification/oldValue"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAngleModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAngleModification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAngleModification/edge"/>
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAngleModification/oldValue"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkExpectedLifetimeModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkExpectedLifetimeModification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkExpectedLifetimeModification/edge"/>
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkExpectedLifetimeModification/oldValue"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAddition">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAddition/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkAddition/edge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkDeletion">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkDeletion/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkDeletion/edge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleNodeAddition">
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleNodeAddition/node"/>
@@ -249,18 +201,18 @@
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleNodeDeletion/node"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkUnclassification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkUnclassification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/handleLinkUnclassification/edge"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkWeightModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkWeightModification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkWeightModification/edge"/>
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkWeightModification/oldValue"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/edge"/>
         <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkExpectedLifetimeModification/oldValue"/>
       </genOperations>
       <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkUnclassification">
-        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkUnclassification/link"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AbstractTopologyControlAlgorithm/internalHandleLinkUnclassification/edge"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//XTCAlgorithm"/>
@@ -298,7 +250,6 @@
     <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//WeightBasedAlgorithm"/>
     <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//ExpectedLifetimeBasedAlgorithm"/>
     <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//AngleBasedAlgorithm"/>
-    <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//PositionBasedAlgorithm"/>
     <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.algorithms/model/Algorithms.ecore#//HopCountBasedAlgorithm"/>
   </genPackages>
 </genmodel:GenModel>

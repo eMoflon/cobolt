@@ -897,6 +897,15 @@
       <eParameters name="node">
         <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node"/>
       </eParameters>
+      <activity owningOperation="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing">
+        <ownedActivityEdge source="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityNode.0" target="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityNode.1"/>
+        <ownedActivityEdge source="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityNode.1" target="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityNode.2"/>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="DoNothing" comment="DoNothing" outgoing="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityEdge.1" incoming="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="DoNothing"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//TriangleBasedTopologyControlAlgorithm/runOnNodePreprocessing/@activity/@ownedActivityEdge.1"/>
+      </activity>
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="findMatch">
       <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//DirectedTriangle"/>

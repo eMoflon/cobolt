@@ -32,32 +32,6 @@
     <parameterIDs
         identifier="c"/>
   </operationSpecifications>
-  <operationSpecifications
-      operationIdentifier="eq">
-    <operationSpecifications
-        specification="$a$ == $b$"
-        adornmentString="BB"
-        alwaysSuccessful="false"/>
-    <operationSpecifications
-        specification="$a$ = $b$"
-        adornmentString="FB"/>
-    <parameterIDs
-        identifier="a"/>
-    <parameterIDs
-        identifier="b"/>
-  </operationSpecifications>
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.2"
-      operationIdentifier="max">
-    <parameterIDs
-        identifier="a"/>
-  </operationSpecifications>
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.3"
-      operationIdentifier="min">
-    <parameterIDs
-        identifier="a"/>
-  </operationSpecifications>
   <constraintSpecifications
       operationSpecificationGroup="//@operationSpecifications.0"
       symbol="max">
@@ -90,24 +64,6 @@
           xsi:type="ecore:EDataType"
           href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
-    <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    </parameterTypes>
-  </constraintSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.3"
-      symbol="max">
-    <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    </parameterTypes>
-  </constraintSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.4"
-      symbol="min">
     <parameterTypes>
       <type
           xsi:type="ecore:EDataType"

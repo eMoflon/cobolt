@@ -266,11 +266,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL) {
 			for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
-				constraint.checkOnGraph(topology, report);
+				constraint.checkOnTopology(topology, report);
 			}
 
 			if (isTopologyPhysicallyConnected()) {
-				weakConnectivityConstraint.checkOnGraph(this.topology, report);
+				weakConnectivityConstraint.checkOnTopology(this.topology, report);
 			}
 
 			reportConstraintViolations(report);
@@ -282,12 +282,12 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
 		for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
-			constraint.checkOnGraph(topology, report);
+			constraint.checkOnTopology(topology, report);
 		}
 
-		noUnclassifiedLinksConstraint.checkOnGraph(topology, report);
+		noUnclassifiedLinksConstraint.checkOnTopology(topology, report);
 		if (isTopologyPhysicallyConnected()) {
-			weakConnectivityConstraint.checkOnGraph(this.topology, report);
+			weakConnectivityConstraint.checkOnTopology(this.topology, report);
 		}
 
 		reportConstraintViolations(report);
@@ -368,7 +368,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	private boolean isTopologyPhysicallyConnected() {
 		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		physicalConnectivityConstraint.checkOnGraph(this.topology, tempReport);
+		physicalConnectivityConstraint.checkOnTopology(this.topology, tempReport);
 		boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
 		return isPhysicallyConnected;
 	}

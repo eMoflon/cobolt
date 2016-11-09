@@ -1,9 +1,9 @@
 
-partial class DirectedTriangleTopologyControlAlgorithmImpl {
+partial class TriangleTopologyControlAlgorithmImpl {
 
 
 
-@model runOnNodePreprocessing (KTCNode node) <--
+@model runOnNodePreprocessing (Node node) <--
 		/*
 										 * This preprocessing method sorts the links increasingly by distance, which should yield better 
 										 * performance. 
