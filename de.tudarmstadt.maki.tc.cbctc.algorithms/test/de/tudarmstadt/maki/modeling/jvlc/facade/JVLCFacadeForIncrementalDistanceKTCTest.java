@@ -15,14 +15,15 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCLink;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCNode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
+import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
+import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestHelper;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 /**
  * Unit tests for {@link EMoflonFacade}, using {@link PlainKTC}.
@@ -45,10 +46,10 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	public void testUsageExample_GraphModifications() throws Exception {
 
 		final Topology topology = facade.getTopology();
-		final KTCNode n1 = topology.addKTCNode("n1", 10.0);
-		final KTCNode n2 = topology.addKTCNode("n2", 10.0);
-		final KTCLink link1 = topology.addKTCLink("e12", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
-		final KTCLink link2 = topology.addKTCLink("e21", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
+		final Node n1 = TopologyUtils.addNode(topology, "n1", 10.0);
+		final Node n2 = TopologyUtils.addNode(topology, "n2", 10.0);
+		final Edge link1 = TopologyUtils.addEdge(topology, "e12", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
+		final Edge link2 = TopologyUtils.addEdge(topology, "e21", n1, n2, 150.0, 5.0, EdgeState.UNCLASSIFIED);
 
 		n1.setEnergyLevel(2.0);
 		link1.setState(EdgeState.ACTIVE);
@@ -68,21 +69,21 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 	 */
 	@Test
 	public void testFacadeWithCodedSampleGraph() throws Exception {
-		final Topology graph = facade.getTopology();
-		final KTCNode n1 = graph.addKTCNode("n1", 20.0);
-		final KTCNode n2 = graph.addKTCNode("n2", 20.0);
-		final KTCNode n3 = graph.addKTCNode("n3", 20.0);
-		graph.addUndirectedKTCLink("e12", "e21", n1, n2, 100.0, 5.0);
-		graph.addUndirectedKTCLink("e13", "e31", n1, n3, 120.0, 5.0);
-		graph.addUndirectedKTCLink("e23", "e32", n2, n3, 150.0, 5.0);
+		final Topology topology = facade.getTopology();
+		final Node n1 = TopologyUtils.addNode(topology, "n1", 20.0);
+		final Node n2 = TopologyUtils.addNode(topology, "n2", 20.0);
+		final Node n3 = TopologyUtils.addNode(topology, "n3", 20.0);
+		TopologyUtils.addUndirectedEdge(topology, "e12", "e21", n1, n2, 100.0, 5.0);
+		TopologyUtils.addUndirectedEdge(topology, "e13", "e31", n1, n3, 120.0, 5.0);
+		TopologyUtils.addUndirectedEdge(topology, "e23", "e32", n2, n3, 150.0, 5.0);
 
-		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(graph);
+		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 
 		final double k = 1.41;
 		facade.run(k);
 
-		TopologyModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(graph, "e23");
-		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(graph);
+		TopologyModelTestHelper.assertThatAllLinksAreActiveWithExceptionsSymmetric(topology, "e23");
+		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 		facade.checkConstraintsAfterContextEvent();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
 	}
@@ -136,13 +137,13 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 				"e2-6", "e3-9", "e3-11", "e9-11");
 
 		// CE(i) - Add link e7-9
-		facade.addSymmetricKTCLink("e7-9", "e9-7", topology.getKTCNodeById("7"), topology.getKTCNodeById("9"), 10.0,
+		facade.addSymmetricEdge("e7-9", "e9-7", topology.getNodeById("7"), topology.getNodeById("9"), 10.0,
 				100.0);
 
 		TopologyModelTestHelper.assertIsUnclassified(topology, "e7-9");
 
 		// CE(i) - Remove node 10
-		facade.removeKTCNode(topology.getKTCNodeById("10"));
+		facade.removeNode(topology.getNodeById("10"));
 		Assert.assertEquals(10, topology.getNodeCount());
 		Assert.assertEquals(34, topology.getEdgeCount());
 
@@ -155,11 +156,11 @@ public class JVLCFacadeForIncrementalDistanceKTCTest {
 				"e2-6", "e3-9", "e7-8");
 
 		// CE(ii)
-		facade.updateModelLinkAttributeSymmetric(topology.getKTCLinkById("e2-6"), UnderlayTopologyProperties.WEIGHT, 15.0);
+		facade.updateModelLinkAttributeSymmetric(topology.getEdgeById("e2-6"), UnderlayTopologyProperties.WEIGHT, 15.0);
 		TopologyModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-6");
 		TopologyModelTestHelper.assertIsActiveSymmetric(topology, "e5-6");
 
-		facade.updateModelLinkAttributeSymmetric(topology.getKTCLinkById("e2-5"), UnderlayTopologyProperties.WEIGHT, 15.0);
+		facade.updateModelLinkAttributeSymmetric(topology.getEdgeById("e2-5"), UnderlayTopologyProperties.WEIGHT, 15.0);
 		TopologyModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-5");
 		TopologyModelTestHelper.assertIsActiveSymmetric(topology, "e4-5");
 		TopologyModelTestHelper.assertIsUnclassifiedSymmetric(topology, "e2-4");

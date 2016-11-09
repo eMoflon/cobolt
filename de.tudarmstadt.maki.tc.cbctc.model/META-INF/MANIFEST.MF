@@ -7,7 +7,8 @@ Export-Package: de.tudarmstadt.maki.tc.cbctc.model,
  de.tudarmstadt.maki.tc.cbctc.model.constraints.util,
  de.tudarmstadt.maki.tc.cbctc.model.impl,
  de.tudarmstadt.maki.tc.cbctc.model.listener,
- de.tudarmstadt.maki.tc.cbctc.model.util
+ de.tudarmstadt.maki.tc.cbctc.model.util,
+ de.tudarmstadt.maki.tc.cbctc.model.utils
 Bundle-Name: de.tudarmstadt.maki.tc.cbctc.model
 Bundle-Version: 1.0
 Require-Bundle: org.eclipse.emf.ecore,

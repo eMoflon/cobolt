@@ -7,20 +7,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCLink;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCNode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.TopologyUtils;
+import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Graph;
+import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.NoUnclassifiedLinksConstraint;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 public class DistanceKTCTest {
 
@@ -34,7 +33,7 @@ public class DistanceKTCTest {
 
 	@Before
 	public void setUp() {
-		this.graph = AlgorithmsFactory.eINSTANCE.createTopology();
+		this.graph = ModelFactory.eINSTANCE.createTopology();
 		this.algorithm = AlgorithmsFactory.eINSTANCE.createPlainKTC();
 		this.algorithm.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
 		this.noUnclasifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
@@ -62,7 +61,7 @@ public class DistanceKTCTest {
 
 		while (TopologyUtils.containsUnclassifiedEdges(graph)) {
 			for (final Node node : graph.getNodes()) {
-				algorithm.runOnNode((KTCNode) node);
+				algorithm.runOnNode(node);
 			}
 		}
 
@@ -76,9 +75,9 @@ public class DistanceKTCTest {
 	public void testPredicateWithTestgraph1() throws Exception {
 		GraphTFileReader.readTopology(graph, getPathToDistanceTestGraph(5));
 
-		final KTCLink e13 = getKTCLinkById(graph, "e1-3");
-		final KTCLink e12 = getKTCLinkById(graph, "e1-2");
-		final KTCLink e23 = getKTCLinkById(graph, "e2-3");
+		final Edge e13 = getEdgeById(graph, "e1-3");
+		final Edge e12 = getEdgeById(graph, "e1-2");
+		final Edge e23 = getEdgeById(graph, "e2-3");
 
 		algorithm.setK(1.3);
 		Assert.assertTrue(algorithm.checkPredicate(e13, e12, e23));
@@ -90,8 +89,8 @@ public class DistanceKTCTest {
 		Assert.assertFalse(algorithm.checkPredicate(e13, e23, e12));
 	}
 
-	private KTCLink getKTCLinkById(final Graph testGraph, final String edgeId) {
-		return (KTCLink) testGraph.getEdgeById(edgeId);
+	private Edge getEdgeById(final Topology testGraph, final String edgeId) {
+		return testGraph.getEdgeById(edgeId);
 	}
 
 }

@@ -7,7 +7,6 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsPackage;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCLink;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.listener.GraphContentAdapter;
 
@@ -27,12 +26,12 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 
 	@Override
 	protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
-		if (!(edge instanceof KTCLink))
-			throw new IllegalArgumentException("Expected an instance of " + KTCLink.class.getName());
+		if (!(edge instanceof Edge))
+			throw new IllegalArgumentException("Expected an instance of " + Edge.class.getName());
 		
 		super.edgeAttributeChanged(edge, attribute, oldValue);
 
-		final IEdge simEdge = facade.getSimonstratorLinkForTopologyModelLink((KTCLink)edge);
+		final IEdge simEdge = facade.getSimonstratorLinkForTopologyModelLink(edge);
 		// We may be in the initialization phase - no events should be
 		// triggered here.
 		if (simEdge == null) {

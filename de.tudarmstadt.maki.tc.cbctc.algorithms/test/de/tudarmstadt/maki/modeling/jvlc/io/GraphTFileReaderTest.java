@@ -8,11 +8,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCLink;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCNode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
+import de.tudarmstadt.maki.tc.cbctc.model.Edge;
+import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestHelper;
 
 /**
@@ -25,7 +24,7 @@ public class GraphTFileReaderTest {
 
 	@Before
 	public void setup() {
-		this.topology = AlgorithmsFactory.eINSTANCE.createTopology();
+		this.topology = ModelFactory.eINSTANCE.createTopology();
 	}
 
 	@Test
@@ -35,10 +34,10 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(5, topology.getNodeCount());
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
 
-		final KTCLink link34 = (KTCLink) topology.getEdgeById("e34");
+		final Edge link34 = topology.getEdgeById("e34");
 		Assert.assertEquals(22.0, link34.getWeight(), 0.0);
 
-		final KTCLink revLink34 = ((KTCLink) link34.getReverseEdge());
+		final Edge revLink34 = link34.getReverseEdge();
 		Assert.assertEquals(22.0, revLink34.getWeight(), 0.0);
 		Assert.assertEquals("e43", revLink34.getId());
 
@@ -53,7 +52,7 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(3, topology.getNodeCount());
 		Assert.assertEquals(2 * 3, topology.getEdgeCount());
 
-		final KTCLink link13 = (KTCLink) topology.getEdgeById("e13");
+		final Edge link13 = topology.getEdgeById("e13");
 		Assert.assertEquals(20.0, link13.getWeight(), 0.0);
 		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 	}
@@ -65,8 +64,8 @@ public class GraphTFileReaderTest {
 		Assert.assertEquals(6, topology.getEdgeCount());
 		Assert.assertEquals(3, topology.getNodeCount());
 
-		Assert.assertEquals(10, ((KTCNode) topology.getNodeById("n1")).getEnergyLevel(), EPS_6);
-		Assert.assertEquals(5, ((KTCLink) topology.getEdgeById("e12")).getExpectedLifetime(), EPS_6);
+		Assert.assertEquals(10, topology.getNodeById("n1").getEnergyLevel(), EPS_6);
+		Assert.assertEquals(5, topology.getEdgeById("e12").getExpectedLifetime(), EPS_6);
 
 		TopologyModelTestHelper.assertIsSymmetricWithRespectToStates(topology);
 

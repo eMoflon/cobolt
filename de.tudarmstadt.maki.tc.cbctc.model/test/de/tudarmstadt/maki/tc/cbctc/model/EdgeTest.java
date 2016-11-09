@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.Graph;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 
@@ -13,7 +13,7 @@ public class EdgeTest {
 
 	ModelFactory factory = ModelFactory.eINSTANCE;
 
-	private Graph graph;
+	private Topology graph;
 
 	private Node node1;
 

@@ -22,7 +22,7 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.EnergyAwareKTC;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestHelper;
@@ -75,10 +75,10 @@ public class JVLCFacadeForIncrementalEnergyKTCTest {
 			edge.setProperty(UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE, newExpectedLifetime);
 			this.facade.updateEdgeAttribute(edge, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE);
 		}
-		Assert.assertEquals(15, topology.getKTCNodeById("n3").getEnergyLevel(), EPS_0);
+		Assert.assertEquals(15, topology.getNodeById("n3").getEnergyLevel(), EPS_0);
 
-		TopologyModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e31"));
-		TopologyModelTestHelper.assertIsUnclassified(topology.getKTCLinkById("e32"));
+		TopologyModelTestHelper.assertIsUnclassified(topology.getEdgeById("e31"));
+		TopologyModelTestHelper.assertIsUnclassified(topology.getEdgeById("e32"));
 
 		this.facade.run(1.5);
 		this.facade.checkConstraintsAfterTopologyControl();

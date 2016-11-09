@@ -13,11 +13,11 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.Node;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCNode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
+import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 public class GraphTFileReader {
 
@@ -40,7 +40,7 @@ public class GraphTFileReader {
 			}
 			final int n = Integer.parseInt(nmLine.split("\\s+")[0]);
 			final int m = Integer.parseInt(nmLine.split("\\s+")[1]);
-			final Map<String, KTCNode> idToNode = new HashMap<>();
+			final Map<String, Node> idToNode = new HashMap<>();
 			int readNodeLines = 0;
 			while (readNodeLines < n) {
 				final String line = scanner.nextLine();
@@ -53,7 +53,7 @@ public class GraphTFileReader {
 					} else {
 						remainingEnergy = Double.NaN;
 					}
-					final KTCNode node = topology.addKTCNode(nodeId, remainingEnergy);
+					final Node node = TopologyUtils.addNode(topology, nodeId, remainingEnergy);
 					idToNode.put(nodeId, node);
 					readNodeLines++;
 				}
@@ -74,7 +74,7 @@ public class GraphTFileReader {
 					} else {
 						requiredTransmissionPower = Double.NaN;
 					}
-					topology.addUndirectedKTCLink(edgeIdFwd, edgeIdBwd, idToNode.get(sourceId), idToNode.get(targetId),
+					TopologyUtils.addUndirectedEdge(topology, edgeIdFwd, edgeIdBwd, idToNode.get(sourceId), idToNode.get(targetId),
 							distance, requiredTransmissionPower);
 
 					readEdgeLines++;
@@ -123,7 +123,7 @@ public class GraphTFileReader {
 					} else {
 						remainingEnergy = Double.NaN;
 					}
-					Node node = Graphs.createNode(nodeId);
+					INode node = Graphs.createNode(nodeId);
 					node.setProperty(UnderlayTopologyProperties.REMAINING_ENERGY, remainingEnergy);
 					facade.addNode(node);
 					readNodeLines++;

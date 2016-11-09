@@ -13,7 +13,7 @@ import org.junit.Assert;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Graph;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
@@ -24,7 +24,7 @@ public class TopologyModelTestHelper {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void assertHasState(final Graph topology, final EdgeState state, final boolean checkSymmetry,
+	public static void assertHasState(final Topology topology, final EdgeState state, final boolean checkSymmetry,
 			final String... edgeIds) {
 		for (final String edgeId : edgeIds) {
 			final Edge edge = topology.getEdgeById(edgeId);
@@ -67,7 +67,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that all edges in the given topology that have one of the edgeIds
 	 * are in state {@link EdgeState#ACTIVE}
 	 */
-	public static void assertIsActive(final Graph topology, final String... edgeIds) {
+	public static void assertIsActive(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.ACTIVE, false, edgeIds);
 	}
 
@@ -75,7 +75,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that all edges in the given topology that have one of the edgeIds
 	 * are in state {@link EdgeState#INACTIVE}
 	 */
-	public static void assertIsInactive(final Graph topology, final String... edgeIds) {
+	public static void assertIsInactive(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.INACTIVE, false, edgeIds);
 	}
 
@@ -83,23 +83,23 @@ public class TopologyModelTestHelper {
 	 * Asserts that all edges in the given topology that have one of the edgeIds
 	 * are in state {@link EdgeState#UNCLASSIFIED}
 	 */
-	public static void assertIsUnclassified(final Graph topology, final String... edgeIds) {
+	public static void assertIsUnclassified(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.UNCLASSIFIED, false, edgeIds);
 	}
 
-	public static void assertIsActiveSymmetric(final Graph topology, final String... edgeIds) {
+	public static void assertIsActiveSymmetric(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.ACTIVE, true, edgeIds);
 	}
 
-	public static void assertIsInactiveSymmetric(final Graph topology, final String... edgeIds) {
+	public static void assertIsInactiveSymmetric(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.INACTIVE, true, edgeIds);
 	}
 
-	public static void assertIsUnclassifiedSymmetric(final Graph topology, final String... edgeIds) {
+	public static void assertIsUnclassifiedSymmetric(final Topology topology, final String... edgeIds) {
 		assertHasState(topology, EdgeState.UNCLASSIFIED, true, edgeIds);
 	}
 
-	public static void assertHasNoUnclassifiedLinks(final Graph topology) {
+	public static void assertHasNoUnclassifiedLinks(final Topology topology) {
 		for (final Edge edge : topology.getEdges()) {
 			Assert.assertNotSame(EdgeState.UNCLASSIFIED, edge.getState());
 		}
@@ -109,7 +109,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that the graph contains for each edge its reverse edge and that
 	 * the state of forward and reverse edge are the same.
 	 */
-	public static void assertIsSymmetricWithRespectToStates(final Graph graph) {
+	public static void assertIsSymmetricWithRespectToStates(final Topology graph) {
 		for (final Edge edge : graph.getEdges()) {
 			Assert.assertNotNull("Link '" + edge.getId() + "' has no reverse edge", edge.getReverseEdge());
 			Assert.assertSame(
@@ -126,7 +126,7 @@ public class TopologyModelTestHelper {
 	 * {@edges EdgeState#ACTIVE}, except for those edges that have an ID in the
 	 * specified list of inactiveEdgeIds.
 	 */
-	public static void assertThatAllLinksAreActiveWithExceptions(final Graph topology,
+	public static void assertThatAllLinksAreActiveWithExceptions(final Topology topology,
 			final boolean assumeSymmetricEdges, final String... inactiveEdgeIds) {
 		final List<String> sortedInactiveEdgeIds = new ArrayList<>(Arrays.asList(inactiveEdgeIds));
 		Collections.sort(sortedInactiveEdgeIds);
@@ -146,13 +146,13 @@ public class TopologyModelTestHelper {
 	 * Asserts that all edges in the given graph are of state
 	 * {@edges EdgeState#UNCLASSIFIED}
 	 */
-	public static void assertThatAllLinksAreUnclassified(final Graph graph) {
+	public static void assertThatAllLinksAreUnclassified(final Topology graph) {
 		for (final Edge edge : graph.getEdges()) {
 			assertIsUnclassified(edge);
 		}
 	}
 
-	public static String format(final Graph graph) {
+	public static String format(final Topology graph) {
 		final StringBuilder builder = new StringBuilder();
 		final List<String> edgeIds = new ArrayList<>();
 		final Set<String> processedIds = new HashSet<>();
@@ -185,7 +185,7 @@ public class TopologyModelTestHelper {
 
 	}
 
-	public static void assertThatAllLinksAreActiveWithExceptionsSymmetric(final Graph graph, final String... edgeIds) {
+	public static void assertThatAllLinksAreActiveWithExceptionsSymmetric(final Topology graph, final String... edgeIds) {
 		assertThatAllLinksAreActiveWithExceptions(graph, true, edgeIds);
 	}
 
@@ -193,7 +193,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that the active-edges-induced subgraph of the given graph is
 	 * connected.
 	 */
-	public static void assertConnectivityViaActvieEdges(Graph graph) {
+	public static void assertConnectivityViaActvieEdges(Topology graph) {
 		assertConnectivity(graph, EdgeState.ACTIVE);
 	}
 
@@ -201,7 +201,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that the subgraph induced by active and unclassified edges of the
 	 * given graph is connected.
 	 */
-	public static void assertConnectivityViaActiveOrUnclassifiedEdges(Graph graph) {
+	public static void assertConnectivityViaActiveOrUnclassifiedEdges(Topology graph) {
 		assertConnectivity(graph, EdgeState.ACTIVE, EdgeState.UNCLASSIFIED);
 	}
 
@@ -209,7 +209,7 @@ public class TopologyModelTestHelper {
 	 * Asserts that the subgraph induced by the edges of the given states of the
 	 * given graph is connected.
 	 */
-	public static void assertConnectivity(Graph graph, EdgeState... states) {
+	public static void assertConnectivity(Topology graph, EdgeState... states) {
 		final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
 				.createEdgeStateBasedConnectivityConstraint();
 		constraint.getStates().addAll(Arrays.asList(states));
@@ -219,7 +219,7 @@ public class TopologyModelTestHelper {
 	/**
 	 * Asserts that the given graph fulfills all given constraints
 	 */
-	public static void assertGraphConstraints(Graph graph, List<? extends GraphConstraint> constraints) {
+	public static void assertGraphConstraints(Topology graph, List<? extends GraphConstraint> constraints) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		for (final GraphConstraint constraint : constraints) {
 			constraint.checkOnGraph(graph, report);
@@ -228,7 +228,7 @@ public class TopologyModelTestHelper {
 
 	}
 
-	public static void assertGraphConstraint(Graph graph, GraphConstraint constraint) {
+	public static void assertGraphConstraint(Topology graph, GraphConstraint constraint) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		constraint.checkOnGraph(graph, report);
 		Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());

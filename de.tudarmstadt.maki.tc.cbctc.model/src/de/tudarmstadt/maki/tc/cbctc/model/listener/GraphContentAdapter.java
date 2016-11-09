@@ -6,16 +6,16 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.Graph;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 
 /**
- * This class is a change listener for {@link Graph} instances.
+ * This class is a change listener for {@link Topology} instances.
  *
  * To register this content adapter, use the following code:
  *
  * <pre>
- * Graph graph = ...;
+ * Topology graph = ...;
  * GraphContentAdapter adapter = ...;
  * graph.eAdapters().add(adapter);
  * </pre>
@@ -93,7 +93,7 @@ public class GraphContentAdapter extends EContentAdapter {
 		/*
 		 * Detect structural changes
 		 */
-		if (notifier instanceof Graph) {
+		if (notifier instanceof Topology) {
 			if (notification.getFeature() instanceof EReference) {
 				final EReference ereference = (EReference) notification.getFeature();
 				switch (ereference.getName()) {

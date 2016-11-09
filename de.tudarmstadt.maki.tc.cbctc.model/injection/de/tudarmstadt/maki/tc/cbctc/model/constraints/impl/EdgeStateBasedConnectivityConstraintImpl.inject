@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Graph;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolation;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
@@ -21,7 +21,7 @@ partial class EdgeStateBasedConnectivityConstraintImpl {
 
 
 
-@model checkOnGraph (Graph graph, ConstraintViolationReport report) <--
+@model checkOnTopology (Topology graph, ConstraintViolationReport report) <--
       final EList<Node> nodes = graph.getNodes();
       if (nodes.isEmpty())
          return;

@@ -11,12 +11,12 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCLink;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.KTCNode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
+import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
+import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.listener.GraphContentAdapter;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 public class EMFPerformanceTest {
 
@@ -24,12 +24,12 @@ public class EMFPerformanceTest {
 	@Test
 	public void testSorting() throws Exception {
 
-		Topology topology = AlgorithmsFactory.eINSTANCE.createTopology();
-		KTCNode previous = topology.addKTCNode("n1", Double.NaN);
+		Topology topology = ModelFactory.eINSTANCE.createTopology();
+		Node previous = TopologyUtils.addNode(topology, "n1", Double.NaN);
 		int numberOfNodes = 10;
 		for (int nodeCount = 2; nodeCount <= numberOfNodes; ++nodeCount) {
-			KTCNode next = topology.addKTCNode("n" + nodeCount, Double.NaN);
-			topology.addKTCLink("e" + (nodeCount - 1) + "->" + nodeCount, previous, next, Math.random() * 100,
+			Node next = TopologyUtils.addNode(topology, "n" + nodeCount, Double.NaN);
+			TopologyUtils.addEdge(topology, "e" + (nodeCount - 1) + "->" + nodeCount, previous, next, Math.random() * 100,
 					Double.NaN);
 			previous = next;
 		}
@@ -50,8 +50,8 @@ public class EMFPerformanceTest {
 			ECollections.sort(topology.getEdges(), new Comparator<Edge>() {
 				@Override
 				public int compare(Edge o1, Edge o2) {
-					final KTCLink link1 = (KTCLink) o1;
-					final KTCLink link2 = (KTCLink) o2;
+					final Edge link1 = o1;
+					final Edge link2 = o2;
 					return Double.compare(link1.getWeight(), link2.getWeight());
 				}
 
@@ -59,7 +59,7 @@ public class EMFPerformanceTest {
 			final long toc = System.currentTimeMillis();
 			final double durationInSeconds = (toc - tic) / 1e3;
 			// System.out.println(topology.getEdges().stream().map(e ->
-			// (KTCLink) e).map(KTCLink::getDistance)
+			// (Edge) e).map(Edge::getDistance)
 			// .collect(Collectors.toList()));
 			System.out.println("[EMFCollections] Duration for " + topology.getEdgeCount() + " edges: "
 					+ durationInSeconds + " seconds");
@@ -70,8 +70,8 @@ public class EMFPerformanceTest {
 			Collections.sort(copiedLinks, new Comparator<Edge>() {
 				@Override
 				public int compare(Edge o1, Edge o2) {
-					final KTCLink link1 = (KTCLink) o1;
-					final KTCLink link2 = (KTCLink) o2;
+					final Edge link1 = o1;
+					final Edge link2 = o2;
 					return Double.compare(link1.getWeight(), link2.getWeight());
 				}
 

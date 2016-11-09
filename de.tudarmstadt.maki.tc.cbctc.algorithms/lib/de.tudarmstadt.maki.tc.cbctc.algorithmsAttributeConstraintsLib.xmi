@@ -1,120 +1,92 @@
 <?xml version="1.0" encoding="ASCII"?>
-<org.moflon.sdm.constraints.operationspecification:AttributeConstraintLibrary
-    xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:org.moflon.sdm.constraints.operationspecification="platform:/plugin/org.moflon.sdm.constraints.operationspecification/model/Operationspecification.ecore"
-    prefix="de.tudarmstadt.maki.tc.cbctc.algorithmsAttributeConstraintsLib">
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.0"
-      operationIdentifier="max">
-    <operationSpecifications
-        specification="$a$ = Math.max($b$,$c$)"
-        adornmentString="FBB"/>
-    <parameterIDs
-        identifier="a"/>
-    <parameterIDs
-        identifier="b"/>
-    <parameterIDs
-        identifier="c"/>
+<org.moflon.sdm.constraints.operationspecification:AttributeConstraintLibrary xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:org.moflon.sdm.constraints.operationspecification="platform:/plugin/org.moflon.sdm.constraints.operationspecification/model/Operationspecification.ecore" prefix="de.tudarmstadt.maki.tc.cbctc.algorithmsAttributeConstraintsLib">
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.0" operationIdentifier="max">
+    <operationSpecifications specification="$a$ = Math.max($b$,$c$)" adornmentString="FBB"/>
+    <parameterIDs identifier="a"/>
+    <parameterIDs identifier="b"/>
+    <parameterIDs identifier="c"/>
   </operationSpecifications>
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.1"
-      operationIdentifier="min">
-    <operationSpecifications
-        specification="$a$ = Math.min($b$,$c$)"
-        adornmentString="FBB"/>
-    <parameterIDs
-        identifier="a"/>
-    <parameterIDs
-        identifier="b"/>
-    <parameterIDs
-        identifier="c"/>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.1" operationIdentifier="min">
+    <operationSpecifications specification="$a$ = Math.min($b$,$c$)" adornmentString="FBB"/>
+    <parameterIDs identifier="a"/>
+    <parameterIDs identifier="b"/>
+    <parameterIDs identifier="c"/>
   </operationSpecifications>
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.2"
-      operationIdentifier="eq">
-    <operationSpecifications
-        specification="$a$ == $b$"
-        adornmentString="BB"
-        alwaysSuccessful="false"/>
-    <operationSpecifications
-        specification="$a$ = $b$"
-        adornmentString="FB"/>
-    <parameterIDs
-        identifier="a"/>
-    <parameterIDs
-        identifier="b"/>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.2" operationIdentifier="eq">
+    <operationSpecifications specification="$a$ == $b$" adornmentString="BB" alwaysSuccessful="false"/>
+    <operationSpecifications specification="$a$ = $b$" adornmentString="FB"/>
+    <parameterIDs identifier="a"/>
+    <parameterIDs identifier="b"/>
   </operationSpecifications>
-  <operationSpecifications
-      constraintSpecifications="//@constraintSpecifications.3"
-      operationIdentifier="eq">
-    <operationSpecifications
-        specification="&quot;FOOO&quot;"
-        adornmentString="F"/>
-    <parameterIDs
-        identifier="a"/>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.3" operationIdentifier="eq">
+    <operationSpecifications specification="&quot;FOOO&quot;" adornmentString="F"/>
+    <parameterIDs identifier="a"/>
   </operationSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.0"
-      symbol="max">
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.4" operationIdentifier="max">
+    <parameterIDs identifier="a"/>
+  </operationSpecifications>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.5" operationIdentifier="min">
+    <parameterIDs identifier="a"/>
+  </operationSpecifications>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.6" operationIdentifier=">">
+    <parameterIDs identifier="a"/>
+  </operationSpecifications>
+  <operationSpecifications constraintSpecifications="//@constraintSpecifications.7" operationIdentifier=">=">
+    <parameterIDs identifier="a"/>
+  </operationSpecifications>
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.0" symbol="max">
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
   </constraintSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.1"
-      symbol="min">
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.1" symbol="min">
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
     <parameterTypes>
-      <type
-          xsi:type="ecore:EDataType"
-          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
   </constraintSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.2"
-      symbol="=">
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.2" symbol="=">
     <parameterTypes>
-      <type
-          xsi:type="ecore:EEnum"
-          href="../model/Algorithms.ecore#//EdgeState"/>
+      <type xsi:type="ecore:EEnum" href="../model/Algorithms.ecore#//EdgeState"/>
     </parameterTypes>
     <parameterTypes>
-      <type
-          xsi:type="ecore:EEnum"
-          href="../model/Algorithms.ecore#//EdgeState"/>
+      <type xsi:type="ecore:EEnum" href="../model/Algorithms.ecore#//EdgeState"/>
     </parameterTypes>
   </constraintSpecifications>
-  <constraintSpecifications
-      operationSpecificationGroup="//@operationSpecifications.3"
-      symbol="=">
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.3" symbol="=">
     <parameterTypes>
-      <type
-          xsi:type="ecore:EEnum"
-          href="../model/Algorithms.ecore#//EdgeState"/>
+      <type xsi:type="ecore:EEnum" href="../model/Algorithms.ecore#//EdgeState"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.4" symbol="max">
+    <parameterTypes>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.5" symbol="min">
+    <parameterTypes>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.6" symbol=">">
+    <parameterTypes>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications operationSpecificationGroup="//@operationSpecifications.7" symbol=">=">
+    <parameterTypes>
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameterTypes>
   </constraintSpecifications>
 </org.moflon.sdm.constraints.operationspecification:AttributeConstraintLibrary>
