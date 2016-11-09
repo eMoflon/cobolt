@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activities="platform:/plugin/SDMLanguage/model/SDMLanguage.ecore#//activities" xmlns:callExpressions="platform:/plugin/SDMLanguage/model/SDMLanguage.ecore#//calls/callExpressions" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:expressions="platform:/plugin/SDMLanguage/model/SDMLanguage.ecore#//expressions" xmlns:patternExpressions="platform:/plugin/SDMLanguage/model/SDMLanguage.ecore#//patterns/patternExpressions" name="model" nsURI="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore" nsPrefix="de.tudarmstadt.maki.tc.cbctc.model">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="basePackage" value="de.tudarmstadt.maki.tc.cbctc"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Edge" eSuperTypes="//GraphElement">
+    <eOperations xsi:type="activities:MoflonEOperation" name="isReverseEdgeOf">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eParameters name="other" eType="//Edge"/>
+      <activity owningOperation="//Edge/isReverseEdgeOf">
+        <ownedActivityEdge source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.3" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.0" guard="FAILURE"/>
+        <ownedActivityEdge source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.2" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.1">
+          <returnValue xsi:type="expressions:LiteralExpression" value="false"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="ActivityNode1" comment="ActivityNode1" outgoing="//Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.0 //Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.1" incoming="//Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.2">
+          <storyPattern comment="ActivityNode1">
+            <objectVariable type="//Graph" name="graph" incomingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.5" outgoingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4"/>
+            <objectVariable type="//Node" name="target" outgoingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.3"/>
+            <objectVariable type="//Edge" name="other" incomingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.7" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="this" incomingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.6 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.3 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4" bindingState="BOUND"/>
+            <objectVariable type="//Node" name="source" outgoingLink="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.5 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.6 //Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.7"/>
+            <linkVariable name="edges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" type="//Graph/edges"/>
+            <linkVariable name="graph" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//Node/graph"/>
+            <linkVariable name="outgoingEdges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//Node/outgoingEdges"/>
+            <linkVariable name="incomingEdges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//Node/incomingEdges"/>
+            <linkVariable name="edges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" type="//Graph/edges"/>
+            <linkVariable name="graph" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4" type="//Node/graph"/>
+            <linkVariable name="outgoingEdges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4" type="//Node/outgoingEdges"/>
+            <linkVariable name="incomingEdges" target="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Edge/isReverseEdgeOf/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4" type="//Node/incomingEdges"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.2"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Edge/isReverseEdgeOf/@activity/@ownedActivityEdge.0">
+          <returnValue xsi:type="expressions:LiteralExpression" value="true"/>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="toString">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="graph" eType="//Graph" eOpposite="//Graph/edges"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1" eType="//Node" eOpposite="//Node/outgoingEdges"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1" eType="//Node" eOpposite="//Node/incomingEdges"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reverseEdge" eType="//Edge"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" ordered="false" lowerBound="1" eType="//EdgeState"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GraphElement" abstract="true">
+    <eOperations xsi:type="activities:MoflonEOperation" name="toString">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Graph">
+    <eOperations xsi:type="activities:MoflonEOperation" name="getNodeById" eType="//Node">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <activity owningOperation="//Graph/getNodeById">
+        <ownedActivityEdge source="//Graph/getNodeById/@activity/@ownedActivityNode.1" target="//Graph/getNodeById/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/getNodeById/@activity/@ownedActivityNode.3" target="//Graph/getNodeById/@activity/@ownedActivityNode.2" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/getNodeById/@activity/@ownedActivityNode.3" target="//Graph/getNodeById/@activity/@ownedActivityNode.0" guard="FAILURE"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/getNodeById/@activity/@ownedActivityEdge.2">
+          <returnValue xsi:type="expressions:LiteralExpression" value="null"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/getNodeById/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/getNodeById/@activity/@ownedActivityEdge.1">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="FindNode" comment="FindNode" outgoing="//Graph/getNodeById/@activity/@ownedActivityEdge.1 //Graph/getNodeById/@activity/@ownedActivityEdge.2" incoming="//Graph/getNodeById/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="FindNode">
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0">
+              <constraint>
+                <constraintExpression xsi:type="expressions:ComparisonExpression" operator="EQUAL">
+                  <rightExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/getNodeById/id"/>
+                  <leftExpression xsi:type="patternExpressions:AttributeValueExpression" object="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0" attribute="//GraphElement/id"/>
+                </constraintExpression>
+              </constraint>
+            </objectVariable>
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <linkVariable name="graph" target="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1" source="//Graph/getNodeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0" type="//Node/graph"/>
+          </storyPattern>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getEdgeById" eType="//Edge">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <activity owningOperation="//Graph/getEdgeById">
+        <ownedActivityEdge source="//Graph/getEdgeById/@activity/@ownedActivityNode.1" target="//Graph/getEdgeById/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/getEdgeById/@activity/@ownedActivityNode.3" target="//Graph/getEdgeById/@activity/@ownedActivityNode.2" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/getEdgeById/@activity/@ownedActivityNode.3" target="//Graph/getEdgeById/@activity/@ownedActivityNode.0" guard="FAILURE"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/getEdgeById/@activity/@ownedActivityEdge.2">
+          <returnValue xsi:type="expressions:LiteralExpression" value="null"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/getEdgeById/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/getEdgeById/@activity/@ownedActivityEdge.1">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="FindNode" comment="FindNode" outgoing="//Graph/getEdgeById/@activity/@ownedActivityEdge.1 //Graph/getEdgeById/@activity/@ownedActivityEdge.2" incoming="//Graph/getEdgeById/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="FindNode">
+            <objectVariable type="//Graph" name="this" outgoingLink="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="edge" incomingLink="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0">
+              <constraint>
+                <constraintExpression xsi:type="expressions:ComparisonExpression" operator="EQUAL">
+                  <rightExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/getEdgeById/id"/>
+                  <leftExpression xsi:type="patternExpressions:AttributeValueExpression" object="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1" attribute="//GraphElement/id"/>
+                </constraintExpression>
+              </constraint>
+            </objectVariable>
+            <linkVariable name="edges" target="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1" source="//Graph/getEdgeById/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0" type="//Graph/edges"/>
+          </storyPattern>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="removeNodeById">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <activity owningOperation="//Graph/removeNodeById">
+        <ownedActivityEdge source="//Graph/removeNodeById/@activity/@ownedActivityNode.0" target="//Graph/removeNodeById/@activity/@ownedActivityNode.1" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/removeNodeById/@activity/@ownedActivityNode.0" target="//Graph/removeNodeById/@activity/@ownedActivityNode.4" guard="FAILURE"/>
+        <ownedActivityEdge source="//Graph/removeNodeById/@activity/@ownedActivityNode.1" target="//Graph/removeNodeById/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/removeNodeById/@activity/@ownedActivityNode.2" target="//Graph/removeNodeById/@activity/@ownedActivityNode.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="GetAndRemoveNode" comment="GetAndRemoveNode" outgoing="//Graph/removeNodeById/@activity/@ownedActivityEdge.0 //Graph/removeNodeById/@activity/@ownedActivityEdge.1" incoming="//Graph/removeNodeById/@activity/@ownedActivityEdge.3">
+          <storyPattern comment="GetAndRemoveNode">
+            <objectVariable type="//Graph" name="this" bindingState="BOUND"/>
+            <objectVariable type="//Node" name="node" bindingState="BOUND">
+              <bindingExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/getNodeById">
+                <ownedParameterBindings parameter="//Graph/getNodeById/id">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/removeNodeById/id"/>
+                </ownedParameterBindings>
+                <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeNodeById/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0"/>
+              </bindingExpression>
+            </objectVariable>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="RemoveNode" comment="RemoveNode" outgoing="//Graph/removeNodeById/@activity/@ownedActivityEdge.2" incoming="//Graph/removeNodeById/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="RemoveNode">
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/removeNodeById/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingOperator="DESTROY" bindingState="BOUND"/>
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/removeNodeById/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <linkVariable name="graph" target="//Graph/removeNodeById/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" source="//Graph/removeNodeById/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" type="//Node/graph" bindingOperator="DESTROY"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/removeNodeById/@activity/@ownedActivityEdge.3"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeNodeById/@activity/@ownedActivityEdge.2"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeNodeById/@activity/@ownedActivityEdge.1"/>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="removeEdgeById">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <activity owningOperation="//Graph/removeEdgeById">
+        <ownedActivityEdge source="//Graph/removeEdgeById/@activity/@ownedActivityNode.1" target="//Graph/removeEdgeById/@activity/@ownedActivityNode.0"/>
+        <ownedActivityEdge source="//Graph/removeEdgeById/@activity/@ownedActivityNode.2" target="//Graph/removeEdgeById/@activity/@ownedActivityNode.4" guard="FAILURE"/>
+        <ownedActivityEdge source="//Graph/removeEdgeById/@activity/@ownedActivityNode.2" target="//Graph/removeEdgeById/@activity/@ownedActivityNode.1" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/removeEdgeById/@activity/@ownedActivityNode.3" target="//Graph/removeEdgeById/@activity/@ownedActivityNode.2"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeEdgeById/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StatementNode" name="DeleteEdge" outgoing="//Graph/removeEdgeById/@activity/@ownedActivityEdge.0" incoming="//Graph/removeEdgeById/@activity/@ownedActivityEdge.2">
+          <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/removeEdge">
+            <ownedParameterBindings parameter="//Graph/removeEdge/edge">
+              <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeEdgeById/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0"/>
+            </ownedParameterBindings>
+            <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeEdgeById/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1"/>
+          </statementExpression>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="GetEdge" comment="GetEdge" outgoing="//Graph/removeEdgeById/@activity/@ownedActivityEdge.1 //Graph/removeEdgeById/@activity/@ownedActivityEdge.2" incoming="//Graph/removeEdgeById/@activity/@ownedActivityEdge.3">
+          <storyPattern comment="GetEdge">
+            <objectVariable type="//Edge" name="edge" bindingState="BOUND">
+              <bindingExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/getEdgeById">
+                <ownedParameterBindings parameter="//Graph/getEdgeById/id">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/removeEdgeById/id"/>
+                </ownedParameterBindings>
+                <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeEdgeById/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1"/>
+              </bindingExpression>
+            </objectVariable>
+            <objectVariable type="//Graph" name="this" bindingState="BOUND"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/removeEdgeById/@activity/@ownedActivityEdge.3"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeEdgeById/@activity/@ownedActivityEdge.1"/>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addNode" eType="//Node">
+      <activity owningOperation="//Graph/addNode">
+        <ownedActivityEdge source="//Graph/addNode/@activity/@ownedActivityNode.0" target="//Graph/addNode/@activity/@ownedActivityNode.2"/>
+        <ownedActivityEdge source="//Graph/addNode/@activity/@ownedActivityNode.1" target="//Graph/addNode/@activity/@ownedActivityNode.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateNode" comment="CreateNode" outgoing="//Graph/addNode/@activity/@ownedActivityEdge.0" incoming="//Graph/addNode/@activity/@ownedActivityEdge.1">
+          <storyPattern comment="CreateNode">
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/addNode/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/addNode/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0" bindingOperator="CREATE"/>
+            <linkVariable name="graph" target="//Graph/addNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0" source="//Graph/addNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1" type="//Node/graph" bindingOperator="CREATE"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addNode/@activity/@ownedActivityEdge.1"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addNode/@activity/@ownedActivityEdge.0">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1"/>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="toString">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addNode" eType="//Node">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <activity owningOperation="//Graph/addNode.1">
+        <ownedActivityEdge source="//Graph/addNode.1/@activity/@ownedActivityNode.0" target="//Graph/addNode.1/@activity/@ownedActivityNode.4"/>
+        <ownedActivityEdge source="//Graph/addNode.1/@activity/@ownedActivityNode.1" target="//Graph/addNode.1/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/addNode.1/@activity/@ownedActivityNode.2" target="//Graph/addNode.1/@activity/@ownedActivityNode.0"/>
+        <ownedActivityEdge source="//Graph/addNode.1/@activity/@ownedActivityNode.3" target="//Graph/addNode.1/@activity/@ownedActivityNode.2"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="AssignId" comment="AssignId" outgoing="//Graph/addNode.1/@activity/@ownedActivityEdge.0" incoming="//Graph/addNode.1/@activity/@ownedActivityEdge.2">
+          <storyPattern comment="AssignId">
+            <objectVariable type="//Node" name="node" bindingState="BOUND">
+              <attributeAssignment attribute="//GraphElement/id">
+                <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addNode.1/id"/>
+              </attributeAssignment>
+            </objectVariable>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addNode.1/@activity/@ownedActivityEdge.1"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateNode" comment="CreateNode" outgoing="//Graph/addNode.1/@activity/@ownedActivityEdge.2" incoming="//Graph/addNode.1/@activity/@ownedActivityEdge.3">
+          <storyPattern comment="CreateNode">
+            <objectVariable type="//Node" name="node" bindingState="BOUND">
+              <bindingExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/addNode">
+                <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addNode.1/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0"/>
+              </bindingExpression>
+            </objectVariable>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="BindThis" comment="BindThis" outgoing="//Graph/addNode.1/@activity/@ownedActivityEdge.3" incoming="//Graph/addNode.1/@activity/@ownedActivityEdge.1">
+          <storyPattern comment="BindThis">
+            <objectVariable type="//Graph" name="this" bindingState="BOUND"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addNode.1/@activity/@ownedActivityEdge.0">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addNode.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0"/>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="removeEdge">
+      <eParameters name="edge" eType="//Edge"/>
+      <activity owningOperation="//Graph/removeEdge">
+        <ownedActivityEdge source="//Graph/removeEdge/@activity/@ownedActivityNode.0" target="//Graph/removeEdge/@activity/@ownedActivityNode.1" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/removeEdge/@activity/@ownedActivityNode.0" target="//Graph/removeEdge/@activity/@ownedActivityNode.3" guard="FAILURE"/>
+        <ownedActivityEdge source="//Graph/removeEdge/@activity/@ownedActivityNode.2" target="//Graph/removeEdge/@activity/@ownedActivityNode.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="RemoveEdge" comment="RemoveEdge" outgoing="//Graph/removeEdge/@activity/@ownedActivityEdge.0 //Graph/removeEdge/@activity/@ownedActivityEdge.1" incoming="//Graph/removeEdge/@activity/@ownedActivityEdge.2">
+          <storyPattern comment="RemoveEdge">
+            <objectVariable type="//Node" name="target" outgoingLink="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.1"/>
+            <objectVariable type="//Edge" name="edge" incomingLink="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.2 //Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0 //Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.1" bindingOperator="DESTROY" bindingState="BOUND"/>
+            <objectVariable type="//Graph" name="this" outgoingLink="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <objectVariable type="//Node" name="source" outgoingLink="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.2"/>
+            <linkVariable name="edges" target="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1" source="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.2" type="//Graph/edges" bindingOperator="DESTROY"/>
+            <linkVariable name="incomingEdges" target="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1" source="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0" type="//Node/incomingEdges" bindingOperator="DESTROY"/>
+            <linkVariable name="outgoingEdges" target="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1" source="//Graph/removeEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.3" type="//Node/outgoingEdges" bindingOperator="DESTROY"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeEdge/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/removeEdge/@activity/@ownedActivityEdge.2"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeEdge/@activity/@ownedActivityEdge.1"/>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="removeNode">
+      <eParameters name="node" eType="//Node"/>
+      <activity owningOperation="//Graph/removeNode">
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.0" target="//Graph/removeNode/@activity/@ownedActivityNode.1"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.1" target="//Graph/removeNode/@activity/@ownedActivityNode.7" guard="EACH_TIME"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.1" target="//Graph/removeNode/@activity/@ownedActivityNode.3" guard="END"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.2" target="//Graph/removeNode/@activity/@ownedActivityNode.5" guard="SUCCESS"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.2" target="//Graph/removeNode/@activity/@ownedActivityNode.4" guard="FAILURE"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.3" target="//Graph/removeNode/@activity/@ownedActivityNode.2" guard="END"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.3" target="//Graph/removeNode/@activity/@ownedActivityNode.6" guard="EACH_TIME"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.6" target="//Graph/removeNode/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/removeNode/@activity/@ownedActivityNode.7" target="//Graph/removeNode/@activity/@ownedActivityNode.1"/>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="RemoveOutgoingEdges" comment="RemoveOutgoingEdges" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.1 //Graph/removeNode/@activity/@ownedActivityEdge.2" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.0 //Graph/removeNode/@activity/@ownedActivityEdge.8" forEach="true">
+          <storyPattern comment="RemoveOutgoingEdges">
+            <objectVariable type="//Edge" name="outgoingEdge" incomingLink="//Graph/removeNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0"/>
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/removeNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <linkVariable name="outgoingEdges" target="//Graph/removeNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" source="//Graph/removeNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//Node/outgoingEdges"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="RemoveNode" comment="RemoveNode" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.3 //Graph/removeNode/@activity/@ownedActivityEdge.4" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.5">
+          <storyPattern comment="RemoveNode">
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0" bindingOperator="DESTROY" bindingState="BOUND"/>
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <linkVariable name="graph" target="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1" source="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" type="//Node/graph" bindingOperator="DESTROY"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="RemoveIncomingEdges" comment="RemoveIncomingEdges" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.5 //Graph/removeNode/@activity/@ownedActivityEdge.6" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.2 //Graph/removeNode/@activity/@ownedActivityEdge.7" forEach="true">
+          <storyPattern comment="RemoveIncomingEdges">
+            <objectVariable type="//Node" name="node" outgoingLink="//Graph/removeNode/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="incomingEdge" incomingLink="//Graph/removeNode/@activity/@ownedActivityNode.3/@storyPattern/@linkVariable.0"/>
+            <linkVariable name="incomingEdges" target="//Graph/removeNode/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1" source="//Graph/removeNode/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0" type="//Node/incomingEdges"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.4"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.3"/>
+        <ownedActivityNode xsi:type="activities:StatementNode" name="RemoveEdge" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.7" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.6">
+          <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/removeEdge">
+            <ownedParameterBindings parameter="//Graph/removeEdge/edge">
+              <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeNode/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.1"/>
+            </ownedParameterBindings>
+            <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1"/>
+          </statementExpression>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StatementNode" name="RemoveOutgoingEdge" outgoing="//Graph/removeNode/@activity/@ownedActivityEdge.8" incoming="//Graph/removeNode/@activity/@ownedActivityEdge.1">
+          <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/removeEdge">
+            <ownedParameterBindings parameter="//Graph/removeEdge/edge">
+              <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0"/>
+            </ownedParameterBindings>
+            <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/removeNode/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1"/>
+          </statementExpression>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addUndirectedEdge" eType="//Edge">
+      <eParameters name="idForward">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <eParameters name="idBackward">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <eParameters name="node1" eType="//Node"/>
+      <eParameters name="node2" eType="//Node"/>
+      <activity owningOperation="//Graph/addUndirectedEdge">
+        <ownedActivityEdge source="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.0" target="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2"/>
+        <ownedActivityEdge source="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.1" target="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.0"/>
+        <ownedActivityEdge source="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2" target="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.3"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateEdgesWithoutIds" comment="CreateEdgesWithoutIds" outgoing="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.0" incoming="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.1">
+          <storyPattern comment="CreateEdgesWithoutIds">
+            <objectVariable type="//Edge" name="edge" bindingState="BOUND">
+              <bindingExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/addUndirectedEdge.1">
+                <ownedParameterBindings parameter="//Graph/addUndirectedEdge.1/node1">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addUndirectedEdge/node1"/>
+                </ownedParameterBindings>
+                <ownedParameterBindings parameter="//Graph/addUndirectedEdge.1/node2">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addUndirectedEdge/node2"/>
+                </ownedParameterBindings>
+                <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1"/>
+              </bindingExpression>
+            </objectVariable>
+            <objectVariable type="//Graph" name="this" bindingState="BOUND"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.1"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="AssignIds" comment="AssignIds" outgoing="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.2" incoming="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="AssignIds">
+            <objectVariable type="//Edge" name="reverseEdge" incomingLink="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0">
+              <attributeAssignment attribute="//GraphElement/id">
+                <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addUndirectedEdge/idBackward"/>
+              </attributeAssignment>
+            </objectVariable>
+            <objectVariable type="//Edge" name="edge" outgoingLink="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0" bindingState="BOUND">
+              <attributeAssignment attribute="//GraphElement/id">
+                <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addUndirectedEdge/idForward"/>
+              </attributeAssignment>
+            </objectVariable>
+            <linkVariable name="reverseEdge" target="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" source="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1" type="//Edge/reverseEdge"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addUndirectedEdge/@activity/@ownedActivityEdge.2">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addUndirectedEdge/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1"/>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addUndirectedEdge" eType="//Edge">
+      <eParameters name="node1" eType="//Node"/>
+      <eParameters name="node2" eType="//Node"/>
+      <activity owningOperation="//Graph/addUndirectedEdge.1">
+        <ownedActivityEdge source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.1" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2"/>
+        <ownedActivityEdge source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.0"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addUndirectedEdge.1/@activity/@ownedActivityEdge.1">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addUndirectedEdge.1/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateEdges" comment="CreateEdges" outgoing="//Graph/addUndirectedEdge.1/@activity/@ownedActivityEdge.1" incoming="//Graph/addUndirectedEdge.1/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="CreateEdges">
+            <objectVariable type="//Edge" name="backwardEdge" incomingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.5 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.9 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.1 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.2" outgoingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0" bindingOperator="CREATE"/>
+            <objectVariable type="//Node" name="node2" outgoingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.2 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.3 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.7" bindingState="BOUND"/>
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.4 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.3" outgoingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.1 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.6" bindingState="BOUND"/>
+            <objectVariable type="//Node" name="node1" outgoingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.4 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.5 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.8" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="forwardEdge" incomingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.0 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.6 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.7 //Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.8" outgoingLink="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@linkVariable.9" bindingOperator="CREATE"/>
+            <linkVariable name="reverseEdge" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" type="//Edge/reverseEdge" bindingOperator="CREATE"/>
+            <linkVariable name="edges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.2" type="//Graph/edges" bindingOperator="CREATE"/>
+            <linkVariable name="outgoingEdges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1" type="//Node/outgoingEdges" bindingOperator="CREATE"/>
+            <linkVariable name="graph" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.2" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1" type="//Node/graph"/>
+            <linkVariable name="graph" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.2" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.3" type="//Node/graph"/>
+            <linkVariable name="incomingEdges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.3" type="//Node/incomingEdges" bindingOperator="CREATE"/>
+            <linkVariable name="edges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.2" type="//Graph/edges" bindingOperator="CREATE"/>
+            <linkVariable name="incomingEdges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.1" type="//Node/incomingEdges" bindingOperator="CREATE"/>
+            <linkVariable name="outgoingEdges" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.3" type="//Node/outgoingEdges" bindingOperator="CREATE"/>
+            <linkVariable name="reverseEdge" target="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0" source="//Graph/addUndirectedEdge.1/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.4" type="//Edge/reverseEdge" bindingOperator="CREATE"/>
+          </storyPattern>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addDirectedEdge" eType="//Edge">
+      <eParameters name="source" eType="//Node"/>
+      <eParameters name="target" eType="//Node"/>
+      <activity owningOperation="//Graph/addDirectedEdge">
+        <ownedActivityEdge source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.0" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1"/>
+        <ownedActivityEdge source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.2"/>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addDirectedEdge/@activity/@ownedActivityEdge.0"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateEdge" comment="CreateEdge" outgoing="//Graph/addDirectedEdge/@activity/@ownedActivityEdge.1" incoming="//Graph/addDirectedEdge/@activity/@ownedActivityEdge.0">
+          <storyPattern comment="CreateEdge">
+            <objectVariable type="//Node" name="target" outgoingLink="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1" bindingState="BOUND"/>
+            <objectVariable type="//Graph" name="this" incomingLink="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.3" outgoingLink="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="edge" incomingLink="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4 //Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2" bindingOperator="CREATE"/>
+            <objectVariable type="//Node" name="source" outgoingLink="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.3 //Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4" bindingState="BOUND"/>
+            <linkVariable name="graph" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" type="//Node/graph"/>
+            <linkVariable name="incomingEdges" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" type="//Node/incomingEdges" bindingOperator="CREATE"/>
+            <linkVariable name="edges" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//Graph/edges" bindingOperator="CREATE"/>
+            <linkVariable name="graph" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" type="//Node/graph"/>
+            <linkVariable name="outgoingEdges" target="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" type="//Node/outgoingEdges" bindingOperator="CREATE"/>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addDirectedEdge/@activity/@ownedActivityEdge.1">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addDirectedEdge/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2"/>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="addDirectedEdge" eType="//Edge">
+      <eParameters name="id">
+        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eParameters>
+      <eParameters name="soure" eType="//Node"/>
+      <eParameters name="target" eType="//Node"/>
+      <activity owningOperation="//Graph/addDirectedEdge.1">
+        <ownedActivityEdge source="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.1" target="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.0"/>
+        <ownedActivityEdge source="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.2" target="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.3"/>
+        <ownedActivityEdge source="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.3" target="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.1"/>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.0">
+          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0"/>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="AssignId" comment="AssignId" outgoing="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.0" incoming="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.2">
+          <storyPattern comment="AssignId">
+            <objectVariable type="//Edge" name="edge" bindingState="BOUND">
+              <attributeAssignment attribute="//GraphElement/id">
+                <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addDirectedEdge.1/id"/>
+              </attributeAssignment>
+            </objectVariable>
+          </storyPattern>
+        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StartNode" outgoing="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.1"/>
+        <ownedActivityNode xsi:type="activities:StoryNode" name="CreateEdge" comment="CreateEdge" outgoing="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.2" incoming="//Graph/addDirectedEdge.1/@activity/@ownedActivityEdge.1">
+          <storyPattern comment="CreateEdge">
+            <objectVariable type="//Graph" name="this" bindingState="BOUND"/>
+            <objectVariable type="//Edge" name="edge" bindingState="BOUND">
+              <bindingExpression xsi:type="callExpressions:MethodCallExpression" callee="//Graph/addUndirectedEdge.1">
+                <ownedParameterBindings parameter="//Graph/addUndirectedEdge.1/node1">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addDirectedEdge.1/soure"/>
+                </ownedParameterBindings>
+                <ownedParameterBindings parameter="//Graph/addUndirectedEdge.1/node2">
+                  <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//Graph/addDirectedEdge.1/target"/>
+                </ownedParameterBindings>
+                <target xsi:type="patternExpressions:ObjectVariableExpression" object="//Graph/addDirectedEdge.1/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0"/>
+              </bindingExpression>
+            </objectVariable>
+          </storyPattern>
+        </ownedActivityNode>
+      </activity>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getNodeCount">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getEdgeCount">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" upperBound="-1" eType="//Node" containment="true" eOpposite="//Node/graph"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edges" upperBound="-1" eType="//Edge" containment="true" eOpposite="//Edge/graph"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EdgeState">
+    <eLiterals name="ACTIVE" literal="ACTIVE"/>
+    <eLiterals name="INACTIVE" value="1" literal="INACTIVE"/>
+    <eLiterals name="UNCLASSIFIED" value="2" literal="UNCLASSIFIED"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="//GraphElement">
+    <eOperations xsi:type="activities:MoflonEOperation" name="toString">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getOutdegree">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getIndegree">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations xsi:type="activities:MoflonEOperation" name="getDegree">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="graph" eType="//Graph" eOpposite="//Graph/nodes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingEdges" upperBound="-1" eType="//Edge" eOpposite="//Edge/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incomingEdges" upperBound="-1" eType="//Edge" eOpposite="//Edge/target"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="batteryCapacity" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="energyLevel" ordered="false" lowerBound="1">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eSubpackages name="constraints" nsURI="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints" nsPrefix="constraints">
+    <eClassifiers xsi:type="ecore:EClass" name="ConstraintViolationReport">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="violations" upperBound="-1" eType="//constraints/ConstraintViolation" containment="true" eOpposite="//constraints/ConstraintViolation/report"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EdgeStateBasedConnectivityConstraint" eSuperTypes="//constraints/GraphConstraint">
+      <eOperations xsi:type="activities:MoflonEOperation" name="checkOnGraph">
+        <eParameters name="graph" eType="//Graph"/>
+        <eParameters name="report" eType="//constraints/ConstraintViolationReport"/>
+      </eOperations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="states" ordered="false" lowerBound="1" upperBound="-1" eType="//EdgeState"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="NoUnclassifiedLinksConstraint" eSuperTypes="//constraints/GraphConstraint">
+      <eOperations xsi:type="activities:MoflonEOperation" name="checkOnGraph">
+        <eParameters name="graph" eType="//Graph"/>
+        <eParameters name="report" eType="//constraints/ConstraintViolationReport"/>
+        <activity owningOperation="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph">
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0" target="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.2" guard="EACH_TIME"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0" target="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.3" guard="END"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.1" target="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.2" target="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0"/>
+          <ownedActivityNode xsi:type="activities:StoryNode" name="IterateOverNodes" comment="IterateOverNodes" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.0 //constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.1" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.2 //constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.3" forEach="true">
+            <storyPattern comment="IterateOverNodes">
+              <objectVariable type="//Graph" name="graph" incomingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+              <objectVariable type="//constraints/NoUnclassifiedLinksConstraint" name="this" bindingState="BOUND"/>
+              <objectVariable type="//Node" name="node" outgoingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0"/>
+              <linkVariable name="graph" target="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0" source="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.2" type="//Node/graph"/>
+            </storyPattern>
+          </ownedActivityNode>
+          <ownedActivityNode xsi:type="activities:StartNode" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.2"/>
+          <ownedActivityNode xsi:type="activities:StatementNode" name="CheckOnNode" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.3" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.0">
+            <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//constraints/GraphConstraint/checkOnNode">
+              <ownedParameterBindings parameter="//constraints/GraphConstraint/checkOnNode/node">
+                <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.2"/>
+              </ownedParameterBindings>
+              <ownedParameterBindings parameter="//constraints/GraphConstraint/checkOnNode/violationReport">
+                <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/report"/>
+              </ownedParameterBindings>
+              <target xsi:type="patternExpressions:ObjectVariableExpression" object="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1"/>
+            </statementExpression>
+          </ownedActivityNode>
+          <ownedActivityNode xsi:type="activities:StopNode" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/@activity/@ownedActivityEdge.1"/>
+        </activity>
+      </eOperations>
+      <eOperations xsi:type="activities:MoflonEOperation" name="checkOnNode">
+        <eParameters name="node" eType="//Node"/>
+        <eParameters name="violationReport" eType="//constraints/ConstraintViolationReport"/>
+        <activity owningOperation="//constraints/NoUnclassifiedLinksConstraint/checkOnNode">
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.3" guard="END"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1" guard="EACH_TIME"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0"/>
+          <ownedActivityEdge source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.2" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0"/>
+          <ownedActivityNode xsi:type="activities:StoryNode" name="IterateOverOutgoingLinks" comment="IterateOverOutgoingLinks" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.0 //constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.1" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.2 //constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.3" forEach="true">
+            <storyPattern comment="IterateOverOutgoingLinks">
+              <objectVariable type="//Edge" name="edge" incomingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0">
+                <constraint>
+                  <constraintExpression xsi:type="expressions:ComparisonExpression" operator="EQUAL">
+                    <rightExpression xsi:type="expressions:LiteralExpression" value="EdgeState.UNCLASSIFIED"/>
+                    <leftExpression xsi:type="patternExpressions:AttributeValueExpression" object="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0" attribute="//Edge/state"/>
+                  </constraintExpression>
+                </constraint>
+              </objectVariable>
+              <objectVariable type="//Node" name="node" outgoingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+              <linkVariable name="outgoingEdges" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.0" source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.0/@storyPattern/@objectVariable.1" type="//Node/outgoingEdges"/>
+            </storyPattern>
+          </ownedActivityNode>
+          <ownedActivityNode xsi:type="activities:StoryNode" name="ReportViolation" comment="ReportViolation" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.2" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.1">
+            <storyPattern comment="ReportViolation">
+              <objectVariable type="//constraints/NoUnclassifiedLinksConstraint" name="this" incomingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2" bindingState="BOUND"/>
+              <objectVariable type="//constraints/ConstraintViolationReport" name="violationReport" outgoingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1" bindingState="BOUND"/>
+              <objectVariable type="//constraints/ConstraintViolation" name="violation" incomingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1" outgoingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2" bindingOperator="CREATE"/>
+              <objectVariable type="//Edge" name="edge" incomingLink="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND"/>
+              <linkVariable name="affectedEdges" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" type="//constraints/ConstraintViolation/affectedEdges" bindingOperator="CREATE"/>
+              <linkVariable name="violations" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1" type="//constraints/ConstraintViolationReport/violations" bindingOperator="CREATE"/>
+              <linkVariable name="violatedConstraint" target="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0" source="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2" type="//constraints/ConstraintViolation/violatedConstraint" bindingOperator="CREATE"/>
+            </storyPattern>
+          </ownedActivityNode>
+          <ownedActivityNode xsi:type="activities:StartNode" outgoing="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.3"/>
+          <ownedActivityNode xsi:type="activities:StopNode" incoming="//constraints/NoUnclassifiedLinksConstraint/checkOnNode/@activity/@ownedActivityEdge.0"/>
+        </activity>
+      </eOperations>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ConstraintViolation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="report" eType="//constraints/ConstraintViolationReport" eOpposite="//constraints/ConstraintViolationReport/violations"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="violatedConstraint" eType="//constraints/GraphConstraint"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedGraphs" upperBound="-1" eType="//Graph"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedNodes" upperBound="-1" eType="//Node"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEdges" upperBound="-1" eType="//Edge"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="GraphConstraint" abstract="true" interface="true">
+      <eOperations xsi:type="activities:MoflonEOperation" name="checkOnGraph">
+        <eParameters name="graph" eType="//Graph"/>
+        <eParameters name="report" eType="//constraints/ConstraintViolationReport"/>
+      </eOperations>
+      <eOperations xsi:type="activities:MoflonEOperation" name="checkOnNode">
+        <eParameters name="node" eType="//Node"/>
+        <eParameters name="violationReport" eType="//constraints/ConstraintViolationReport"/>
+      </eOperations>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>

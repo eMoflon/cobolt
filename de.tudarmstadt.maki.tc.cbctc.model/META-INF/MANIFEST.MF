@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: de.tudarmstadt.maki.tc.cbctc.model;singleton:=tru
+ e
+Export-Package: de.tudarmstadt.maki.tc.cbctc.model,
+ de.tudarmstadt.maki.tc.cbctc.model.constraints,
+ de.tudarmstadt.maki.tc.cbctc.model.constraints.impl,
+ de.tudarmstadt.maki.tc.cbctc.model.constraints.util,
+ de.tudarmstadt.maki.tc.cbctc.model.impl,
+ de.tudarmstadt.maki.tc.cbctc.model.listener,
+ de.tudarmstadt.maki.tc.cbctc.model.util
+Bundle-Name: de.tudarmstadt.maki.tc.cbctc.model
+Bundle-Version: 1.0
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.junit;bundle-version="4.11.0";resolution:=optional,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.moflon.core.utilities
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Roland Kluge, TU Darmstadt

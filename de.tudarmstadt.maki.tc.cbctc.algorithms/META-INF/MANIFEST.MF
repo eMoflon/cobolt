@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: de.tudarmstadt.maki.tc.cbctc.algorithms;singleton:=true
+Export-Package: de.tudarmstadt.maki.tc.cbctc.algorithms.util,
+ de.tudarmstadt.maki.tc.cbctc.algorithms.impl,
+ de.tudarmstadt.maki.tc.cbctc.algorithms
+Bundle-Name: de.tudarmstadt.maki.tc.cbctc.algorithms
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.moflon.core.utilities,
+ de.tudarmstadt.maki.tc.cbctc.model
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Roland Kluge, TU Darmstadt

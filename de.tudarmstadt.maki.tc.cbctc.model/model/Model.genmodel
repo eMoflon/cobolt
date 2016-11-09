@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.tudarmstadt.maki.tc.cbctc.model/gen" modelPluginID="de.tudarmstadt.maki.tc.cbctc.model"
+    modelName="Model" updateClasspath="false" codeFormatting="true" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true">
+  <foreignModel>Model.ecore</foreignModel>
+  <genPackages prefix="Model" basePackage="de.tudarmstadt.maki.tc.cbctc" disposableProviderFactory="true"
+      ecorePackage="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//EdgeState">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//EdgeState/ACTIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//EdgeState/INACTIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//EdgeState/UNCLASSIFIED"/>
+    </genEnums>
+    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/graph"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/reverseEdge"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/state"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/isReverseEdgeOf">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/isReverseEdgeOf/other"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/toString"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//GraphElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//GraphElement/id"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//GraphElement/toString"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/nodes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/edges"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getNodeById">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getNodeById/id"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getEdgeById">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getEdgeById/id"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeNodeById">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeNodeById/id"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeEdgeById">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeEdgeById/id"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addNode"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/toString"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addNode.1">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addNode.1/id"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeEdge">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeEdge/edge"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeNode">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/removeNode/node"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge/idForward"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge/idBackward"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge/node1"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge/node2"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge.1">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge.1/node1"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addUndirectedEdge.1/node2"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge/source"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge/target"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge.1">
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge.1/id"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge.1/soure"/>
+        <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/addDirectedEdge.1/target"/>
+      </genOperations>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getNodeCount"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Graph/getEdgeCount"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/graph"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/outgoingEdges"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/x"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/y"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/batteryCapacity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/energyLevel"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/toString"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/getOutdegree"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/getIndegree"/>
+      <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/getDegree"/>
+    </genClasses>
+    <nestedGenPackages prefix="Constraints" disposableProviderFactory="true" ecorePackage="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints">
+      <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolationReport">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolationReport/violations"/>
+      </genClasses>
+      <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/EdgeStateBasedConnectivityConstraint">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/EdgeStateBasedConnectivityConstraint/states"/>
+        <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/EdgeStateBasedConnectivityConstraint/checkOnGraph">
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/EdgeStateBasedConnectivityConstraint/checkOnGraph/graph"/>
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/EdgeStateBasedConnectivityConstraint/checkOnGraph/report"/>
+        </genOperations>
+      </genClasses>
+      <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint">
+        <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnGraph">
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/graph"/>
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnGraph/report"/>
+        </genOperations>
+        <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnNode">
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnNode/node"/>
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/NoUnclassifiedLinksConstraint/checkOnNode/violationReport"/>
+        </genOperations>
+      </genClasses>
+      <genClasses ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation/report"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation/violatedConstraint"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation/affectedGraphs"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation/affectedNodes"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/ConstraintViolation/affectedEdges"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint">
+        <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnGraph">
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnGraph/graph"/>
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnGraph/report"/>
+        </genOperations>
+        <genOperations ecoreOperation="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnNode">
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnNode/node"/>
+          <genParameters ecoreParameter="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//constraints/GraphConstraint/checkOnNode/violationReport"/>
+        </genOperations>
+      </genClasses>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>
