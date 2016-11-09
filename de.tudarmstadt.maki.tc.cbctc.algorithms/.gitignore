@@ -2,3 +2,5 @@
 /gen
 /.settings
 /target/
+/model/*
+!/**/.keep*
