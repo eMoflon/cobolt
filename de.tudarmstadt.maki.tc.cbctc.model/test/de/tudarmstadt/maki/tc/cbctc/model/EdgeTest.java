@@ -4,11 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
-import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
-
 public class EdgeTest {
 
 	ModelFactory factory = ModelFactory.eINSTANCE;
@@ -21,7 +16,7 @@ public class EdgeTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.graph = factory.createGraph();
+		this.graph = factory.createTopology();
 		node1 = graph.addNode();
 		node2 = graph.addNode();
 

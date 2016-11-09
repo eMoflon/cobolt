@@ -122,7 +122,7 @@
             <objectVariable name="node" outgoingLink="//TriangleBasedTopologyControlAlgorithm/runOnNode/@activity/@ownedActivityNode.10/@storyPattern/@linkVariable.0" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node"/>
             </objectVariable>
-            <objectVariable name="unclassifiedEdge" incomingLink="//TriangleBasedTopologyControlAlgorithm/runOnNode/@activity/@ownedActivityNode.10/@storyPattern/@linkVariable.0" bindingState="BOUND">
+            <objectVariable name="unclassifiedEdge" incomingLink="//TriangleBasedTopologyControlAlgorithm/runOnNode/@activity/@ownedActivityNode.10/@storyPattern/@linkVariable.0">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
               <constraint>
                 <constraintExpression xsi:type="expressions:ComparisonExpression" operator="EQUAL">
@@ -223,7 +223,7 @@
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StoryNode" name="ActivateLink" comment="ActivateLink" outgoing="//TriangleBasedTopologyControlAlgorithm/activateLink/@activity/@ownedActivityEdge.4" incoming="//TriangleBasedTopologyControlAlgorithm/activateLink/@activity/@ownedActivityEdge.2">
           <storyPattern comment="ActivateLink">
-            <objectVariable name="link" bindingState="BOUND">
+            <objectVariable name="edge" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
               <attributeAssignment>
                 <valueExpression xsi:type="expressions:LiteralExpression" value="EdgeState.ACTIVE"/>
@@ -248,7 +248,7 @@
         <ownedActivityNode xsi:type="activities:StartNode" outgoing="//TriangleBasedTopologyControlAlgorithm/inactivateLink/@activity/@ownedActivityEdge.0"/>
         <ownedActivityNode xsi:type="activities:StoryNode" name="InactivateLinkUnconditionally" comment="InactivateLinkUnconditionally" outgoing="//TriangleBasedTopologyControlAlgorithm/inactivateLink/@activity/@ownedActivityEdge.1" incoming="//TriangleBasedTopologyControlAlgorithm/inactivateLink/@activity/@ownedActivityEdge.0">
           <storyPattern comment="InactivateLinkUnconditionally">
-            <objectVariable name="link" bindingState="BOUND">
+            <objectVariable name="edge" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
               <attributeAssignment>
                 <valueExpression xsi:type="expressions:LiteralExpression" value="EdgeState.INACTIVE"/>
@@ -358,7 +358,7 @@
         <ownedActivityNode xsi:type="activities:StopNode" incoming="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityEdge.7"/>
         <ownedActivityNode xsi:type="activities:StatementNode" name="UnclassifyLongestEdge" outgoing="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityEdge.6" incoming="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityEdge.5">
           <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
-            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge">
+            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12">
               <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5"/>
             </ownedParameterBindings>
             <target xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0"/>
@@ -436,7 +436,7 @@
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StatementNode" name="UnclassifyLongestEdge" outgoing="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityEdge.11" incoming="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityEdge.10">
           <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
-            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge">
+            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12">
               <valueExpression xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5"/>
             </ownedParameterBindings>
             <target xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/eliminateMatchesOfNACs/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0"/>
@@ -464,7 +464,7 @@
         <ownedActivityNode xsi:type="activities:StopNode" incoming="//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/@activity/@ownedActivityEdge.2"/>
         <ownedActivityNode xsi:type="activities:StatementNode" name="DelegateToHandleLinkDeletion" outgoing="//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/@activity/@ownedActivityEdge.2" incoming="//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/@activity/@ownedActivityEdge.1">
           <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
-            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge">
+            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12">
               <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/edge"/>
             </ownedParameterBindings>
             <target xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/internalHandleLinkWeightModification/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0"/>
@@ -562,7 +562,7 @@
         <ownedActivityNode xsi:type="activities:StopNode" incoming="//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/@activity/@ownedActivityEdge.1"/>
         <ownedActivityNode xsi:type="activities:StatementNode" name="Delegate" outgoing="//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/@activity/@ownedActivityEdge.1" incoming="//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/@activity/@ownedActivityEdge.2">
           <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
-            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge">
+            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12">
               <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/edge"/>
             </ownedParameterBindings>
             <target xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/handleLinkDeletion/@activity/@ownedActivityNode.3/@storyPattern/@objectVariable.0"/>
@@ -598,7 +598,7 @@
       </activity>
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="handleLinkUnclassification">
-      <eParameters name="edge">
+      <eParameters name="edge12">
         <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
       </eParameters>
       <activity owningOperation="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
@@ -800,7 +800,7 @@
         <ownedActivityNode xsi:type="activities:StartNode" outgoing="//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/@activity/@ownedActivityEdge.0"/>
         <ownedActivityNode xsi:type="activities:StatementNode" name="Recurse" outgoing="//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/@activity/@ownedActivityEdge.1" incoming="//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/@activity/@ownedActivityEdge.4">
           <statementExpression xsi:type="callExpressions:MethodCallExpression" callee="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification">
-            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge">
+            <ownedParameterBindings parameter="//TriangleBasedTopologyControlAlgorithm/handleLinkUnclassification/edge12">
               <valueExpression xsi:type="callExpressions:ParameterExpression" parameter="//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/inactiveEdge"/>
             </ownedParameterBindings>
             <target xsi:type="patternExpressions:ObjectVariableExpression" object="//TriangleBasedTopologyControlAlgorithm/unclassifyLinkIfNoExtensionToConclusionMatchExists/@activity/@ownedActivityNode.2/@storyPattern/@objectVariable.0"/>
@@ -1021,13 +1021,13 @@
         <ownedActivityNode xsi:type="activities:StartNode" outgoing="//PlainKTC/checkPredicate/@activity/@ownedActivityEdge.0"/>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CheckPredicate" comment="CheckPredicate" outgoing="//PlainKTC/checkPredicate/@activity/@ownedActivityEdge.1 //PlainKTC/checkPredicate/@activity/@ownedActivityEdge.2" incoming="//PlainKTC/checkPredicate/@activity/@ownedActivityEdge.0">
           <storyPattern comment="CheckPredicate">
-            <objectVariable name="maxLink" bindingState="BOUND">
+            <objectVariable name="edge12" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
-            <objectVariable name="otherLink1" bindingState="BOUND">
+            <objectVariable name="edge13" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
-            <objectVariable name="otherLink2" bindingState="BOUND">
+            <objectVariable name="edge32" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
             <objectVariable type="//PlainKTC" name="this" bindingState="BOUND"/>
@@ -1049,10 +1049,10 @@
             <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="max">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="otherLink1_weight">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="otherLink2_weight">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
             <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="min">
@@ -1064,7 +1064,7 @@
             <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="maxLink_weight">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//PlainKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
           </storyPattern>
@@ -1079,7 +1079,7 @@
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="findMatch">
       <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//DirectedTriangle"/>
-      <eParameters name="directEdge">
+      <eParameters name="edge12">
         <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
       </eParameters>
       <eParameters name="excludedEdge">
@@ -1099,7 +1099,7 @@
             <objectVariable name="node2" outgoingLink="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node"/>
             </objectVariable>
-            <objectVariable name="directEdge" incomingLink="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
+            <objectVariable name="edge12" incomingLink="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
             <objectVariable name="node1" outgoingLink="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2">
@@ -1149,22 +1149,40 @@
             <linkVariable name="incomingEdges" target="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6" source="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4">
               <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
             </linkVariable>
-            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" name="max"/>
-            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" name="min"/>
-            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3" name="*"/>
-            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3" objectVariable="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.7" type="//AbstractKTC/k"/>
-            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" name=">"/>
-            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name=">="/>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="max">
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="max"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="min"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" name="*"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" objectVariable="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.7" type="//AbstractKTC/k"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6" objectVariable="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4" name=">="/>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="max">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="min">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="kmin">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
-            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" attributeValueConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" name="this_k">
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="min">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" name="kmin">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//PlainKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_weight">
               <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </variables>
           </storyPattern>
@@ -1231,7 +1249,7 @@
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="findMatchBatch">
       <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//DirectedTriangle"/>
-      <eParameters name="directEdge">
+      <eParameters name="edge12">
         <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
       </eParameters>
       <eParameters name="excludedEdge">
@@ -1251,7 +1269,7 @@
             <objectVariable name="node2" outgoingLink="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node"/>
             </objectVariable>
-            <objectVariable name="directEdge" incomingLink="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
+            <objectVariable name="edge12" incomingLink="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
             <objectVariable name="node1" outgoingLink="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.2">
@@ -1285,6 +1303,42 @@
             <linkVariable name="incomingEdges" target="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6" source="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4">
               <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
             </linkVariable>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="max"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="min"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" name="*"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" objectVariable="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.7" type="//AbstractKTC/k"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6" objectVariable="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4" name=">="/>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="max">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="min">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" name="kmin">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//PlainKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CreateDirectedTriangle" comment="CreateDirectedTriangle" outgoing="//PlainKTC/findMatchBatch/@activity/@ownedActivityEdge.3" incoming="//PlainKTC/findMatchBatch/@activity/@ownedActivityEdge.1">
@@ -1334,16 +1388,52 @@
         <ownedActivityNode xsi:type="activities:StartNode" outgoing="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityEdge.0"/>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CheckPredicate" comment="CheckPredicate" outgoing="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityEdge.1 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityEdge.2" incoming="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityEdge.0">
           <storyPattern comment="CheckPredicate">
-            <objectVariable name="link12" bindingState="BOUND">
+            <objectVariable name="edge12" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
-            <objectVariable name="link13" bindingState="BOUND">
+            <objectVariable name="edge13" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
-            <objectVariable name="link32" bindingState="BOUND">
+            <objectVariable name="edge32" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
             <objectVariable type="//EnergyAwareKTC" name="this" bindingState="BOUND"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="max"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="min"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.4 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" name="/"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" objectVariable="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.3" type="//AbstractKTC/k"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.3" name="&lt;"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.6" objectVariable="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.4" name="&lt;="/>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="max">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="min">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" name="kmax">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StopNode" incoming="//EnergyAwareKTC/checkPredicate/@activity/@ownedActivityEdge.1">
@@ -1373,7 +1463,7 @@
             <objectVariable name="excludedEdge" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
-            <objectVariable name="node2" outgoingLink="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4" bindingState="BOUND">
+            <objectVariable name="node2" outgoingLink="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.4">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node"/>
             </objectVariable>
             <objectVariable name="edge12" incomingLink="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.1 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
@@ -1426,6 +1516,42 @@
             <linkVariable name="incomingEdges" target="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6" source="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4">
               <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
             </linkVariable>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="max"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="min"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" name="/"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" objectVariable="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.7" type="//AbstractKTC/k"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3" name="&lt;"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6" objectVariable="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4" name="&lt;="/>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="max">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="min">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" name="kmax">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//EnergyAwareKTC/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CreateDirectedTriangle" comment="CreateDirectedTriangle" outgoing="//EnergyAwareKTC/findMatch/@activity/@ownedActivityEdge.3" incoming="//EnergyAwareKTC/findMatch/@activity/@ownedActivityEdge.1">
@@ -1544,6 +1670,42 @@
             <linkVariable name="incomingEdges" target="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6" source="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4">
               <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
             </linkVariable>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="max"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name="min"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" name="/"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.5" objectVariable="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.7" type="//AbstractKTC/k"/>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.3" name="&lt;"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6" objectVariable="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/expectedLifetime"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.6 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.4" name="&lt;="/>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="max">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge13_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge32_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6" name="min">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" name="kmax">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" attributeValueConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.5" name="this_k">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.6 //EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.8" attributeValueConstraints="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.7" name="edge12_expectedLifetime">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CreateDirectedTriangle" comment="CreateDirectedTriangle" outgoing="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityEdge.3" incoming="//EnergyAwareKTC/findMatchBatch/@activity/@ownedActivityEdge.1">
@@ -1608,9 +1770,7 @@
             </linkVariable>
           </storyPattern>
         </ownedActivityNode>
-        <ownedActivityNode xsi:type="activities:StopNode" incoming="//MaxpowerTopologyControlAlgorithm/runOnTopology/@activity/@ownedActivityEdge.1">
-          <returnValue xsi:type="patternExpressions:ObjectVariableExpression" object="//MaxpowerTopologyControlAlgorithm/runOnTopology/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0"/>
-        </ownedActivityNode>
+        <ownedActivityNode xsi:type="activities:StopNode" incoming="//MaxpowerTopologyControlAlgorithm/runOnTopology/@activity/@ownedActivityEdge.1"/>
       </activity>
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="runOnNode">
@@ -1686,7 +1846,7 @@
         <ownedActivityNode xsi:type="activities:StoryNode" name="IterateOverNodes" comment="IterateOverNodes" outgoing="//LocalConstraint/checkOnTopology/@activity/@ownedActivityEdge.1 //LocalConstraint/checkOnTopology/@activity/@ownedActivityEdge.2" incoming="//LocalConstraint/checkOnTopology/@activity/@ownedActivityEdge.0 //LocalConstraint/checkOnTopology/@activity/@ownedActivityEdge.3" forEach="true">
           <storyPattern comment="IterateOverNodes">
             <objectVariable type="//LocalConstraint" name="this" bindingState="BOUND"/>
-            <objectVariable name="graph" outgoingLink="//LocalConstraint/checkOnTopology/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
+            <objectVariable name="topology" outgoingLink="//LocalConstraint/checkOnTopology/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Topology"/>
             </objectVariable>
             <objectVariable name="node" incomingLink="//LocalConstraint/checkOnTopology/@activity/@ownedActivityNode.1/@storyPattern/@linkVariable.0">
@@ -1959,6 +2119,26 @@
             <objectVariable name="edge32" bindingState="BOUND">
               <type xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
             </objectVariable>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" objectVariable="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.0">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.1">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge12_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge13_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="edge32_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StopNode" incoming="//RelativeNeighborhoodGraphAlgorithm/checkPredicate/@activity/@ownedActivityEdge.1">
@@ -1971,7 +2151,7 @@
     </eOperations>
     <eOperations xsi:type="activities:MoflonEOperation" name="findMatch">
       <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//DirectedTriangle"/>
-      <eParameters name="directEdge">
+      <eParameters name="edge12">
         <eType xsi:type="ecore:EClass" href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge"/>
       </eParameters>
       <eParameters name="excludedEdge">
@@ -2041,6 +2221,26 @@
             <linkVariable name="incomingEdges" target="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6" source="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.4">
               <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Node/incomingEdges"/>
             </linkVariable>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0" objectVariable="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.2">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.1" objectVariable="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.6">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <constraints xsi:type="AttributeConstraints:CspConstraint" parameters="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.0 //RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" name=">"/>
+            <constraints xsi:type="AttributeConstraints:AttributeLookupConstraint" parameter="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@variables.2" objectVariable="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@objectVariable.5">
+              <type href="platform:/plugin/de.tudarmstadt.maki.tc.cbctc.model/model/Model.ecore#//Edge/weight"/>
+            </constraints>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0 //RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.1" name="edge12_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.0" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.2" name="edge13_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
+            <variables xsi:type="AttributeConstraints:PrimitiveVariable" cspConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.3" attributeValueConstraints="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityNode.1/@storyPattern/@constraints.4" name="edge32_weight">
+              <type href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </variables>
           </storyPattern>
         </ownedActivityNode>
         <ownedActivityNode xsi:type="activities:StoryNode" name="CreateDirectedTriangle" comment="CreateDirectedTriangle" outgoing="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityEdge.3" incoming="//RelativeNeighborhoodGraphAlgorithm/findMatch/@activity/@ownedActivityEdge.1">

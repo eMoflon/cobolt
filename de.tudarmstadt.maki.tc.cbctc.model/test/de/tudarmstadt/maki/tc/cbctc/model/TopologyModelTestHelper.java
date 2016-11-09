@@ -11,9 +11,6 @@ import java.util.Set;
 
 import org.junit.Assert;
 
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
@@ -222,7 +219,7 @@ public class TopologyModelTestHelper {
 	public static void assertGraphConstraints(Topology graph, List<? extends GraphConstraint> constraints) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		for (final GraphConstraint constraint : constraints) {
-			constraint.checkOnGraph(graph, report);
+			constraint.checkOnTopology(graph, report);
 			Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());
 		}
 
@@ -230,7 +227,7 @@ public class TopologyModelTestHelper {
 
 	public static void assertGraphConstraint(Topology graph, GraphConstraint constraint) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		constraint.checkOnGraph(graph, report);
+		constraint.checkOnTopology(graph, report);
 		Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());
 	}
 }

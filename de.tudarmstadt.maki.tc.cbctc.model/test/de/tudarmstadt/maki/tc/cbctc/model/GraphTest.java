@@ -9,11 +9,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
-import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
-
 public class GraphTest {
 
 	final ModelFactory factory = ModelFactory.eINSTANCE;
@@ -22,7 +17,7 @@ public class GraphTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.graph = factory.createGraph();
+		this.graph = factory.createTopology();
 	}
 
 	@Test
