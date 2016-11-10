@@ -37,7 +37,7 @@ import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolation;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.GraphConstraint;
+import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 /**
@@ -77,7 +77,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
 	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
-	private GraphConstraint noUnclassifiedLinksConstraint;
+	private TopologyConstraint noUnclassifiedLinksConstraint;
 
 	public EMoflonFacade() {
 		this.simonstratorNodeToModelNode = new HashMap<>();
@@ -262,7 +262,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL) {
-			for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
+			for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
 				constraint.checkOnTopology(topology, report);
 			}
 
@@ -278,7 +278,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	public void checkConstraintsAfterTopologyControl() {
 		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
-		for (final GraphConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
+		for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
 			constraint.checkOnTopology(topology, report);
 		}
 

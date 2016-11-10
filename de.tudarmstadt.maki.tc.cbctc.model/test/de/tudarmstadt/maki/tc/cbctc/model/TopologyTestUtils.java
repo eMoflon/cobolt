@@ -10,7 +10,7 @@ import org.junit.Assert;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.GraphConstraint;
+import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
 
 public class TopologyTestUtils {
 	public static final double EPS_6 = 1e-6;
@@ -176,22 +176,22 @@ public class TopologyTestUtils {
 		final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
 				.createEdgeStateBasedConnectivityConstraint();
 		constraint.getStates().addAll(Arrays.asList(states));
-		assertGraphConstraints(graph, Arrays.asList(constraint));
+		assertTopologyConstraints(graph, Arrays.asList(constraint));
 	}
 
 	/**
 	 * Asserts that the given graph fulfills all given constraints
 	 */
-	public static void assertGraphConstraints(Topology graph, List<? extends GraphConstraint> constraints) {
+	public static void assertTopologyConstraints(Topology graph, List<? extends TopologyConstraint> constraints) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		for (final GraphConstraint constraint : constraints) {
+		for (final TopologyConstraint constraint : constraints) {
 			constraint.checkOnTopology(graph, report);
 			Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());
 		}
 
 	}
 
-	public static void assertGraphConstraint(Topology graph, GraphConstraint constraint) {
+	public static void assertTopologyConstraint(Topology graph, TopologyConstraint constraint) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		constraint.checkOnTopology(graph, report);
 		Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());

@@ -49,9 +49,9 @@ public class PlainKTCTest {
 
 		algorithm.runOnTopology(topology);
 
-		TopologyTestUtils.assertGraphConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
-		TopologyTestUtils.assertGraphConstraint(topology, noUnclasifiedLinksConstraint);
-		TopologyTestUtils.assertGraphConstraint(topology, strongConnectivityConstraint);
+		TopologyTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
+		TopologyTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
+		TopologyTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
 	}
 
 	@Test
@@ -66,9 +66,9 @@ public class PlainKTCTest {
 			}
 		}
 
-		TopologyTestUtils.assertGraphConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
-		TopologyTestUtils.assertGraphConstraint(topology, noUnclasifiedLinksConstraint);
-		TopologyTestUtils.assertGraphConstraint(topology, strongConnectivityConstraint);
+		TopologyTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
+		TopologyTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
+		TopologyTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
 
 	}
 

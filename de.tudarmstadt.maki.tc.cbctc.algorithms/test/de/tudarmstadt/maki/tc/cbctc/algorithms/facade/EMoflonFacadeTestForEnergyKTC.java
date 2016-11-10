@@ -24,6 +24,7 @@ import de.tudarmstadt.maki.tc.cbctc.algorithms.EnergyAwareKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
+import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 
 /**
  * Unit tests for {@link EMoflonFacade}, using {@link EnergyAwareKTC}.
@@ -97,5 +98,6 @@ public class EMoflonFacadeTestForEnergyKTC {
 
 	private void readTestCase(int id) throws FileNotFoundException {
 		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(id))));
+		EdgeWeightProviders.applyEdgeWeightProvider(this.facade.getTopology(), EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
 	}
 }

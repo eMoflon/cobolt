@@ -12,7 +12,6 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
