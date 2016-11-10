@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
@@ -22,9 +21,8 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.EnergyAwareKTC;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
 /**
@@ -89,7 +87,6 @@ public class EMoflonFacadeTestForEnergyKTC {
 	 * 'longest' links (in terms of remaining lifetime), only the link with the
 	 * larger ID ('e13' in this case) is inactivated.
 	 */
-	@Ignore // TODO@rkluge: Refine test cases
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
 		readTestCase(2);

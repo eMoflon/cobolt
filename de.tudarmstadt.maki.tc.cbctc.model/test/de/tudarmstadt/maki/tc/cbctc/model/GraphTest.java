@@ -23,7 +23,7 @@ public class GraphTest {
 	@Test
 	public void testAddNode() throws Exception {
 		final Node node = graph.addNode();
-		Assert.assertEquals(graph, node.getGraph());
+		Assert.assertEquals(graph, node.getTopology());
 		Assert.assertEquals(Arrays.asList(node), graph.getNodes());
 	}
 
@@ -32,7 +32,7 @@ public class GraphTest {
 		final Node source = graph.addNode();
 		final Node target = graph.addNode();
 		final Edge edge = graph.addDirectedEdge(source, target);
-		Assert.assertEquals(graph, edge.getGraph());
+		Assert.assertEquals(graph, edge.getTopology());
 		Assert.assertEquals(Arrays.asList(edge), graph.getEdges());
 
 	}
@@ -46,8 +46,8 @@ public class GraphTest {
 		final EList<Edge> edges = graph.getEdges();
 		final Edge edge1 = edges.get(0);
 		final Edge edge2 = edges.get(1);
-		Assert.assertEquals(graph, edge1.getGraph());
-		Assert.assertEquals(graph, edge2.getGraph());
+		Assert.assertEquals(graph, edge1.getTopology());
+		Assert.assertEquals(graph, edge2.getTopology());
 		Assert.assertEquals(2, edges.size());
 		Assert.assertTrue(edge1.isReverseEdgeOf(edge2));
 
