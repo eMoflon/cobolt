@@ -202,4 +202,25 @@ public class TopologyTestUtils {
       Assert.assertEquals(nodeCount, topology.getNodeCount());
       Assert.assertEquals(edgeCount, topology.getEdgeCount());
    }
+
+   public static void assertEdgeDistance(final Topology topology, final String id, final double distance) {
+   	Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getEdgeById(id).getDistance(),
+   			TopologyTestUtils.EPS_0);
+   }
+   
+   public static void assertEdgeWeight(final Topology topology, final String id, final double weight) {
+      Assert.assertEquals("Weight mismatch of " + id + ".", weight, topology.getEdgeById(id).getWeight(),
+            TopologyTestUtils.EPS_0);
+   }
+   
+   public static void assertEquals6(final double expected, final double actual)
+   {
+      Assert.assertEquals(expected, actual, EPS_6);
+   }
+   
+   public static void assertEquals0(final double expected, final double actual)
+   {
+      Assert.assertEquals(expected, actual, EPS_0);
+   }
+  
 }

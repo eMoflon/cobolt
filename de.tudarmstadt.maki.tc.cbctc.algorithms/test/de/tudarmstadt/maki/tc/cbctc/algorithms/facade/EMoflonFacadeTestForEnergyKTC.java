@@ -1,7 +1,6 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
-import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.EPS_0;
-import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToEnergyTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToEnergyTestGraph;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,7 +52,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 		final Topology topology = this.facade.getTopology();
 
 		final INode n3 = graph.getNode(INodeID.get("n3"));
-		Assert.assertEquals(60, n3.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY), EPS_0);
+		Assert.assertEquals(60, n3.getProperty(UnderlayTopologyProperties.REMAINING_ENERGY), TopologyTestUtils.EPS_0);
 		n3.setProperty(UnderlayTopologyProperties.REMAINING_ENERGY, 15.0);
 		this.facade.updateNodeAttribute(n3, UnderlayTopologyProperties.REMAINING_ENERGY);
 		for (final IEdge edge : graph.getOutgoingEdges(n3.getId())) {
@@ -62,7 +61,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 			edge.setProperty(UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE, newExpectedLifetime);
 			this.facade.updateEdgeAttribute(edge, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE);
 		}
-		Assert.assertEquals(15, topology.getNodeById("n3").getEnergyLevel(), EPS_0);
+		Assert.assertEquals(15, topology.getNodeById("n3").getEnergyLevel(), TopologyTestUtils.EPS_0);
 
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e31"));
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e32"));

@@ -1,6 +1,6 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.algorithms;
 
-import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToDistanceTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -44,7 +44,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnTopology() throws Exception {
-		GraphTFileReader.readTopology(topology, getPathToDistanceTestGraph(5));
+		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 
 		algorithm.runOnTopology(topology);
@@ -56,7 +56,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnNode() throws Exception {
-		GraphTFileReader.readTopology(topology, getPathToDistanceTestGraph(5));
+		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 		algorithm.initializeConstraints();
 
@@ -74,7 +74,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
-		GraphTFileReader.readTopology(topology, getPathToDistanceTestGraph(5));
+		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
 		EdgeWeightProviders.applyEdgeWeightProvider(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		final Edge e13 = getEdgeById(topology, "e1-3");

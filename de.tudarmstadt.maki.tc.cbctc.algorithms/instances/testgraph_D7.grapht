@@ -1,0 +1,15 @@
+# A test case for parsing all known attribute types
+#
+# n m
+3 4
+
+# nodes
+1 x=3 y=4
+2 E=123.2
+3 h=7
+
+#edges
+e12 1 2 w=005 d=3
+e13 1 2 a=180 s=I L=0.1
+e32 3 2 s=A
+e23 2 3 R=e32 s=U

@@ -11,7 +11,7 @@ import org.junit.Test;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
@@ -180,7 +180,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 	}
 
 	private void readTestCase(int id) throws FileNotFoundException {
-		reader.read(facade, new FileInputStream(new File(JvlcTestHelper.getPathToDistanceTestGraph(id))));
+		reader.read(facade, new FileInputStream(new File(TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph(id))));
 	}
 
 }

@@ -1,0 +1,12 @@
+# A simple directed triangle
+#
+# n m
+3 3
+# nodes
+1
+2
+3
+#
+e12 1 2 w=5
+e13 1 2 w=3
+e32 3 2 w=4

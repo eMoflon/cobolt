@@ -1,6 +1,6 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
-import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToEnergyTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToEnergyTestGraph;
 
 import java.io.File;
 import java.io.FileInputStream;
