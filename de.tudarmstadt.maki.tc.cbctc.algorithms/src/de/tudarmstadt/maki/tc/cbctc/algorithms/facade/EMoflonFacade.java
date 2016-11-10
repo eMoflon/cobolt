@@ -3,12 +3,9 @@ package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -293,7 +290,26 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		reportConstraintViolations(report);
 	}
 
-	private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint() {
+	@Override
+   public void connectOppositeEdges(IEdge fwdEdgePrototype, IEdge bwdEdgePrototype) {
+   	super.connectOppositeEdges(fwdEdgePrototype, bwdEdgePrototype);
+   
+   	final Edge fwdModelLink = getModelLinkForSimonstratorEdge(fwdEdgePrototype);
+   	final Edge bwdModelLink = getModelLinkForSimonstratorEdge(bwdEdgePrototype);
+   
+   	fwdModelLink.setReverseEdge(bwdModelLink);
+   	bwdModelLink.setReverseEdge(fwdModelLink);
+   }
+
+   @Override
+   public void unclassifyAllLinks() {
+   	super.unclassifyAllLinks();
+   	for (final Edge edge : this.getTopology().getEdges()) {
+   		edge.setState(EdgeState.UNCLASSIFIED);
+   	}
+   }
+
+   private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint() {
 		EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
 				.createEdgeStateBasedConnectivityConstraint();
 		constraint.getStates().add(EdgeState.ACTIVE);
@@ -534,75 +550,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		return this.topology;
 	}
 
+	/**
+	 * Ensures that the {@link LinkActivationContentAdapter} is installed
+	 */
 	private void registerEMFListeners() {
 		topology.eAdapters().clear();
 		topology.eAdapters().add(new LinkActivationContentAdapter(this));
-	}
-
-	@Override
-	public void connectOppositeEdges(IEdge fwdEdgePrototype, IEdge bwdEdgePrototype) {
-		super.connectOppositeEdges(fwdEdgePrototype, bwdEdgePrototype);
-
-		final Edge fwdModelLink = getModelLinkForSimonstratorEdge(fwdEdgePrototype);
-		final Edge bwdModelLink = getModelLinkForSimonstratorEdge(bwdEdgePrototype);
-
-		fwdModelLink.setReverseEdge(bwdModelLink);
-		bwdModelLink.setReverseEdge(fwdModelLink);
-	}
-
-	@Override
-	public void unclassifyAllLinks() {
-		super.unclassifyAllLinks();
-		for (final Edge edge : this.getTopology().getEdges()) {
-			edge.setState(EdgeState.UNCLASSIFIED);
-		}
-	}
-
-	public static String formatEdgeStateReport(final Topology graph) {
-		final StringBuilder builder = new StringBuilder();
-		final List<String> edgeIds = new ArrayList<>();
-		final Set<String> processedIds = new HashSet<>();
-		for (final Edge edge : graph.getEdges()) {
-			edgeIds.add(edge.getId());
-		}
-		final Map<EdgeState, Integer> stateCounts = new HashMap<>();
-		stateCounts.put(EdgeState.ACTIVE, 0);
-		stateCounts.put(EdgeState.INACTIVE, 0);
-		stateCounts.put(EdgeState.UNCLASSIFIED, 0);
-		Collections.sort(edgeIds);
-
-		for (final String id : edgeIds) {
-			if (!processedIds.contains(id)) {
-				final Edge link = graph.getEdgeById(id);
-				EdgeState linkState = link.getState();
-				builder.append(String.format("%6s [%.3f]", link.getId() + " : " + linkState.toString().substring(0, 1),
-						link.getWeight()));
-				processedIds.add(link.getId());
-				stateCounts.put(linkState, stateCounts.get(linkState) + 1);
-
-				if (link.getReverseEdge() != null) {
-					Edge revLink = link.getReverseEdge();
-					EdgeState revLinkState = revLink.getState();
-					builder.append(String.format("%6s [%.3f]",
-							revLink.getId() + " : " + revLinkState.toString().substring(0, 1), revLink.getWeight()));
-					processedIds.add(revLink.getId());
-					stateCounts.put(revLinkState, stateCounts.get(revLinkState) + 1);
-				}
-
-				builder.append("\n");
-			}
-		}
-
-		builder.insert(0,
-				String.format("#A : %d || #I : %d || #U : %d\n || Sum : %d", //
-						stateCounts.get(EdgeState.ACTIVE), //
-						stateCounts.get(EdgeState.INACTIVE), //
-						stateCounts.get(EdgeState.UNCLASSIFIED), //
-						stateCounts.get(EdgeState.ACTIVE) + stateCounts.get(EdgeState.INACTIVE)
-								+ stateCounts.get(EdgeState.UNCLASSIFIED)//
-				));
-
-		return builder.toString().trim();
-
 	}
 }

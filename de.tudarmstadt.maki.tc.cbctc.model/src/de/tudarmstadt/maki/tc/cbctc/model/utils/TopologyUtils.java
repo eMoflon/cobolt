@@ -10,8 +10,8 @@ import java.util.Set;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
 public class TopologyUtils {
 	private TopologyUtils() {
@@ -25,31 +25,36 @@ public class TopologyUtils {
 	   return node;
 	}
 	
-	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance, double expectedRemainingLifetime, EdgeState state)
+	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance, double requiredTransmissionPower, EdgeState state)
 	{
 	   Edge edge = topology.addDirectedEdge(id, source, target);
 	   edge.setWeight(distance);
-	   edge.setExpectedLifetime(expectedRemainingLifetime);
+	   edge.setExpectedLifetime(edge.getSource().getEnergyLevel() / requiredTransmissionPower);
 	   edge.setState(state);
 	   return edge;
 	}
 	
-	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance, double expectedRemainingLifetime)
+	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance, double requiredTransmissionPower)
 	{
-	   return addEdge(topology, id, source, target, distance, expectedRemainingLifetime, EdgeState.UNCLASSIFIED);
+	   return addEdge(topology, id, source, target, distance, requiredTransmissionPower, EdgeState.UNCLASSIFIED);
 	}
 	
-	public static Edge addUndirectedEdge(final Topology topology, String idFwd, String idBwd, Node node1, Node node2, double distance, double expectedRemainingLifetime)
+	public static Edge addUndirectedEdge(final Topology topology, String idFwd, String idBwd, Node node1, Node node2, double distance, double requiredTransmissionPower)
 	{
-	   final Edge fwdEdge = addEdge(topology, idFwd, node1, node2, distance, expectedRemainingLifetime);
-	   final Edge bwdEdge = addEdge(topology, idFwd, node1, node2, distance, expectedRemainingLifetime);
-	   fwdEdge.setReverseEdge(bwdEdge);
+	   final Edge fwdEdge = topology.addUndirectedEdge(idFwd, idBwd, node1, node2);
+	   fwdEdge.setExpectedLifetime(fwdEdge.getSource().getEnergyLevel() / requiredTransmissionPower);
+	   fwdEdge.setDistance(distance);
+	   
+	   final Edge bwdEdge = fwdEdge.getReverseEdge();
+      bwdEdge.setExpectedLifetime(bwdEdge.getSource().getEnergyLevel() / requiredTransmissionPower);
+	   bwdEdge.setDistance(distance);
+	   
 	   return fwdEdge;
 	}
-	public static String formatEdgeStateReport(final Topology graph) {
+	public static String formatEdgeStateReport(final Topology topology) {
       final StringBuilder builder = new StringBuilder();
       final Set<Edge> processedEdges = new HashSet<>();
-      final List<Edge> edges = new ArrayList<>(graph.getEdges());
+      final List<Edge> edges = new ArrayList<>(topology.getEdges());
       edges.sort(new Comparator<Edge>() {
          @Override
          public int compare(Edge o1, Edge o2) {
@@ -96,7 +101,7 @@ public class TopologyUtils {
 
    }
 
-   public static boolean containsUnclassifiedEdges(Topology graph) {
-      return graph.getEdges().stream().anyMatch(e -> e.getState() == EdgeState.UNCLASSIFIED);
+   public static boolean containsUnclassifiedEdges(Topology topology) {
+      return topology.getEdges().stream().anyMatch(e -> e.getState() == EdgeState.UNCLASSIFIED);
    }
 }
