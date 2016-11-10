@@ -1,4 +1,4 @@
-package de.tudarmstadt.maki.modeling.jvlc.constraints;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.constraints;
 
 import org.junit.Before;
 

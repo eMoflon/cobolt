@@ -1,6 +1,6 @@
-package de.tudarmstadt.maki.modeling.jvlc.algorithms;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.algorithms;
 
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistanceTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToDistanceTestGraph;
 
 import org.junit.Assert;
 import org.junit.Before;

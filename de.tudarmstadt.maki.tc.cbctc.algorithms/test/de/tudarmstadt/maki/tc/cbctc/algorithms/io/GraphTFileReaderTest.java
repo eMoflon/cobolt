@@ -1,8 +1,8 @@
-package de.tudarmstadt.maki.modeling.jvlc.io;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.io;
 
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.assertHasDistance;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToDistanceTestGraph;
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.assertHasDistance;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToDistanceTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToEnergyTestGraph;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package de.tudarmstadt.maki.modeling.jvlc;
+package de.tudarmstadt.maki.tc.cbctc.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;

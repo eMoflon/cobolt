@@ -1,6 +1,6 @@
-package de.tudarmstadt.maki.modeling.jvlc.facade;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
-import static de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper.getPathToEnergyTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper.getPathToEnergyTestGraph;
 
 import java.io.File;
 import java.io.FileInputStream;

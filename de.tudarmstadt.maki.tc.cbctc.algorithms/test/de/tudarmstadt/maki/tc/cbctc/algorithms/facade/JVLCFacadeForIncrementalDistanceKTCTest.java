@@ -1,4 +1,4 @@
-package de.tudarmstadt.maki.modeling.jvlc.facade;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,12 +9,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.modeling.jvlc.JvlcTestHelper;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;

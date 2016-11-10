@@ -1,4 +1,4 @@
-package de.tudarmstadt.maki.modeling.jvlc.graph;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.graph;
 
 import java.util.Arrays;
 
