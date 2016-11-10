@@ -29,5 +29,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.tudarmstadt.maki.tc.cbctc.model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/simonstrator-topology-control"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

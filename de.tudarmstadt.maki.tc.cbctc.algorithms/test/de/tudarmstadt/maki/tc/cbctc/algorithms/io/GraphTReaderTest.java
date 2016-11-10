@@ -27,15 +27,17 @@ import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 public class GraphTReaderTest {
 
 	private Topology topology;
+   private TopologyModelGraphTReader reader;
 
 	@Before
 	public void setup() {
 		this.topology = ModelFactory.eINSTANCE.createTopology();
+      this.reader = new TopologyModelGraphTReader();
 	}
 
 	@Test
 	public void testWithTestgraphD1() throws Exception {
-		GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(1));
+		this.reader.read(this.topology, getPathToDistanceTestGraph(1));
 		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		Assert.assertEquals(5, topology.getNodeCount());
@@ -54,12 +56,12 @@ public class GraphTReaderTest {
 	
 	@Test
    public void testWithTestgraphD2() throws Exception {
-	   GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(2));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(2));
 	}
 
 	@Test
 	public void testWithTestgraphD3() throws Exception {
-		GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(3));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(3));
 		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		Assert.assertEquals(3, topology.getNodeCount());
@@ -72,7 +74,7 @@ public class GraphTReaderTest {
 
 	@Test
 	public void testWithTestgrahpD4() throws Exception {
-		GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(4));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(4));
 		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		assertEdgeDistance(topology, "e1-2", 10.0);
@@ -86,7 +88,7 @@ public class GraphTReaderTest {
 
 	@Test
 	public void testWithTestgrahpD5() throws Exception {
-		GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(5));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(5));
 		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		assertEdgeDistance(topology, "e1-2", 15.0);
@@ -103,7 +105,7 @@ public class GraphTReaderTest {
 	
 	@Test
 	public void testWithTestgrahpD6() throws Exception {
-	   GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(6));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(6));
 	   
 	   assertNodeAndEdgeCount(topology, 3, 3);
 	   
@@ -114,7 +116,7 @@ public class GraphTReaderTest {
 	
 	@Test
 	public void testWithTestgrahpD7() throws Exception {
-	   GraphTReader.readTopology(this.topology, getPathToDistanceTestGraph(7));
+	   this.reader.read(this.topology, getPathToDistanceTestGraph(7));
 	   
 	   assertNodeAndEdgeCount(topology, 3, 4);
 	   
@@ -134,7 +136,7 @@ public class GraphTReaderTest {
 
    @Test
    public void testWithTestgraphE1() throws Exception {
-   	GraphTReader.readTopology(this.topology, getPathToEnergyTestGraph(1));
+      this.reader.read(this.topology, getPathToEnergyTestGraph(1));
    	EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
    
    	Assert.assertEquals(6, topology.getEdgeCount());

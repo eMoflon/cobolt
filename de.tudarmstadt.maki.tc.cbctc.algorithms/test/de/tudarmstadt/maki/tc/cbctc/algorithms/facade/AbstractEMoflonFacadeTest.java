@@ -5,12 +5,12 @@ import org.junit.Before;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTReader;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.io.FacadeGraphTReader;
 
 public abstract class AbstractEMoflonFacadeTest
 {
    protected EMoflonFacade facade;
-   protected GraphTReader reader;
+   protected FacadeGraphTReader reader;
 
    @Before
    public void setup() {
@@ -19,7 +19,7 @@ public abstract class AbstractEMoflonFacadeTest
             .create("de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade");
       this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
       this.facade.configureAlgorithm(getAlgorithmID());
-      this.reader = new GraphTReader();
+      this.reader = new FacadeGraphTReader();
    }
 
    protected abstract TopologyControlAlgorithmID getAlgorithmID();

@@ -13,12 +13,11 @@ import org.eclipse.emf.common.util.EList;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.NodeProperty;
+import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSType;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
@@ -148,11 +147,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 		final INode simNode = super.addNode(prototype);
 
-		final Node ktcNode = createNodeFromPrototype(prototype);
+		final Node modelNode = createNodeFromPrototype(prototype);
 
-		this.algorithm.handleNodeAddition(ktcNode);
+		this.algorithm.handleNodeAddition(modelNode);
 
-		this.establishNodeMapping(simNode, ktcNode);
+		this.establishNodeMapping(simNode, modelNode);
 
 		this.firePostNodeAdded(simNode);
 
@@ -173,27 +172,27 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		}
 
 		final INode removedNodeId = this.simonstratorGraph.getNode(nodeId);
-		final Node ktcNode = getModelNodeForSimonstratorNode(nodeId);
+		final Node modelNode = getModelNodeForSimonstratorNode(nodeId);
 
 		firePreRemovedNode(removedNodeId);
 
-		removeNodeMapping(nodeId, ktcNode);
+		removeNodeMapping(nodeId, modelNode);
 
-		removeNode(ktcNode);
+		removeNode(modelNode);
 
 		super.removeNode(nodeId);
 	}
 
 	@Override
-	public <T> void updateNodeAttribute(final INode simNode, final NodeProperty<T> property) {
+	public <T> void updateNodeAttribute(final INode simNode, final SiSType<T> property) {
 		if (!isNodeIdKnown(simNode))
 			throw new IllegalStateException(String.format("Try to update non-existing node: %s", simNode));
 
 		super.updateNodeAttribute(simNode, property);
 
-		final Node ktcNode = getModelNodeForSimonstratorNode(simNode.getId());
+		final Node modelNode = getModelNodeForSimonstratorNode(simNode.getId());
 
-		this.updateModelNodeAttribute(ktcNode, property, simNode.getProperty(property));
+		this.updateModelNodeAttribute(modelNode, property, simNode.getProperty(property));
 
 		this.firePostNodeAttributeUpdated(simNode, property);
 	}
@@ -220,28 +219,28 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		if (!isEdgeIdKnown(simEdge))
 			throw new IllegalStateException(String.format("Try to remove non-existing edge: %s", simEdge));
 
-		final Edge ktcLink = getModelLinkForSimonstratorEdge(simEdge);
+		final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
 
 		this.firePreEdgeRemoved(simEdge);
 
-		this.removeLinkMapping(simEdge.getId(), ktcLink);
+		this.removeLinkMapping(simEdge.getId(), modelEdge);
 
-		this.removeEdge(ktcLink);
+		this.removeEdge(modelEdge);
 
 		super.removeEdge(simEdge);
 	}
 
 	@Override
-	public <T> void updateEdgeAttribute(final IEdge simEdge, final EdgeProperty<T> property) {
+	public <T> void updateEdgeAttribute(final IEdge simEdge, final SiSType<T> property) {
 		if (!isEdgeIdKnown(simEdge))
 			throw new IllegalStateException(String.format("Try to update non-existing edge: %s", simEdge));
 
 		super.updateEdgeAttribute(simEdge, property);
 
-		final Edge ktcLink = getModelLinkForSimonstratorEdge(simEdge);
+		final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
 		final T value = simEdge.getProperty(property);
 
-		this.updateModelLinkAttribute(ktcLink, property, value);
+		this.updateModelLinkAttribute(modelEdge, property, value);
 
 		this.firePostEdgeAttributeUpdated(simEdge, property);
 	}
@@ -326,11 +325,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private Node createNodeFromPrototype(INode prototype) {
-		final Node ktcNode = ModelFactory.eINSTANCE.createNode();
-		topology.getNodes().add(ktcNode);
-		ktcNode.setId(prototype.getId().valueAsString());
-		ktcNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
-		return ktcNode;
+		final Node modelNode = ModelFactory.eINSTANCE.createNode();
+		topology.getNodes().add(modelNode);
+		modelNode.setId(prototype.getId().valueAsString());
+		modelNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
+		return modelNode;
 	}
 
 	private Edge createLinkFromPrototype(IEdge prototype) {
@@ -348,7 +347,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		return modelLink;
 	}
 
-	private double getNodePropertySafe(INode prototype, NodeProperty<Double> property) {
+	private double getNodePropertySafe(INode prototype, SiSType<Double> property) {
 		final Double value = prototype.getProperty(property);
 		if (value != null)
 			return value;
@@ -356,7 +355,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 			return Double.NaN;
 	}
 
-	private double getEdgePropertySafe(IEdge prototype, EdgeProperty<Double> property) {
+	private double getEdgePropertySafe(IEdge prototype, SiSType<Double> property) {
 		final Double value = prototype.getProperty(property);
 		if (value != null)
 			return value;
@@ -391,21 +390,21 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	public Edge addSymmetricEdge(final String forwardEdgeId, final String backwardEdgeId,
 			final Node sourceNode, final Node targetNode, final double distance,
 			final double requiredTransmissionPower) {
-		final Edge ktcLink = TopologyUtils.addUndirectedEdge(this.topology, forwardEdgeId, backwardEdgeId, sourceNode,
+		final Edge modelEdge = TopologyUtils.addUndirectedEdge(this.topology, forwardEdgeId, backwardEdgeId, sourceNode,
 				targetNode, distance, requiredTransmissionPower);
 
-		this.algorithm.handleLinkAddition(ktcLink);
+		this.algorithm.handleLinkAddition(modelEdge);
 
-		return ktcLink;
+		return modelEdge;
 	}
 
-	public <T> void updateModelNodeAttribute(final Node ktcNode, final GraphElementProperty<T> property,
+	public <T> void updateModelNodeAttribute(final Node modelNode, final SiSType<T> property,
 			final T value) {
 
 		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
-			double oldEnergyLevel = ktcNode.getEnergyLevel();
-			ktcNode.setEnergyLevel((Double) value);
-			this.algorithm.handleNodeEnergyLevelModification(ktcNode, oldEnergyLevel);
+			double oldEnergyLevel = modelNode.getEnergyLevel();
+			modelNode.setEnergyLevel((Double) value);
+			this.algorithm.handleNodeEnergyLevelModification(modelNode, oldEnergyLevel);
 		}
 	}
 
@@ -415,10 +414,10 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	 * for the given link and its reverse link, setting the same value for the
 	 * given property on both links.
 	 */
-	public <T> void updateModelLinkAttributeSymmetric(final Edge ktcLink, final GraphElementProperty<T> property,
+	public <T> void updateModelLinkAttributeSymmetric(final Edge modelEdge, final SiSType<T> property,
 			final T value) {
-		updateModelLinkAttribute(ktcLink, property, value);
-		updateModelLinkAttribute(ktcLink.getReverseEdge(), property, value);
+		updateModelLinkAttribute(modelEdge, property, value);
+		updateModelLinkAttribute(modelEdge.getReverseEdge(), property, value);
 	}
 
 	/**
@@ -428,35 +427,35 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	 * This method also handles the notification of the CE handlers.
 	 * </p>
 	 */
-	public <T> void updateModelLinkAttribute(final Edge ktcLink, final GraphElementProperty<T> property,
+	public <T> void updateModelLinkAttribute(final Edge modelEdge, final SiSType<T> property,
 			final T value) {
-		if (ktcLink == null) {
+		if (modelEdge == null) {
 			throw new NullPointerException();
 		}
 
 		if (UnderlayTopologyProperties.WEIGHT.equals(property)) {
-			final double oldWeight = ktcLink.getWeight();
-			ktcLink.setWeight((Double) value);
-			this.algorithm.handleLinkWeightModification(ktcLink, oldWeight);
+			final double oldWeight = modelEdge.getWeight();
+			modelEdge.setWeight((Double) value);
+			this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
 		} else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
-			double oldExpectedLifetime = ktcLink.getExpectedLifetime();
-			ktcLink.setExpectedLifetime((Double) value);
-			this.algorithm.handleLinkExpectedLifetimeModification(ktcLink, oldExpectedLifetime);
+			double oldExpectedLifetime = modelEdge.getExpectedLifetime();
+			modelEdge.setExpectedLifetime((Double) value);
+			this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
 		} else if (UnderlayTopologyProperties.EDGE_STATE.equals(property)) {
-			ktcLink.setState(de.tudarmstadt.maki.tc.cbctc.model.EdgeState.UNCLASSIFIED);
-			this.algorithm.handleLinkUnclassification(ktcLink);
+			modelEdge.setState(de.tudarmstadt.maki.tc.cbctc.model.EdgeState.UNCLASSIFIED);
+			this.algorithm.handleLinkUnclassification(modelEdge);
 		}
 	}
 
-	public void removeNode(final Node ktcNode) {
-		this.algorithm.handleNodeDeletion(ktcNode);
-		this.topology.removeNode(ktcNode);
+	public void removeNode(final Node modelNode) {
+		this.algorithm.handleNodeDeletion(modelNode);
+		this.topology.removeNode(modelNode);
 	}
 
-	public void removeEdge(final Edge ktcLink) {
-		this.algorithm.handleLinkDeletion(ktcLink);
+	public void removeEdge(final Edge modelEdge) {
+		this.algorithm.handleLinkDeletion(modelEdge);
 
-		this.topology.removeEdge(ktcLink);
+		this.topology.removeEdge(modelEdge);
 	}
 
 	private void reportConstraintViolations(ConstraintViolationReport report) {

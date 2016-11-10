@@ -9,7 +9,7 @@ import org.junit.Test;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTReader;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.io.TopologyModelGraphTReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -32,9 +32,12 @@ public class PlainKTCTest {
 
 	private EdgeStateBasedConnectivityConstraint strongConnectivityConstraint;
 
+   private TopologyModelGraphTReader reader;
+
 	@Before
 	public void setUp() {
 		this.topology = ModelFactory.eINSTANCE.createTopology();
+		this.reader = new TopologyModelGraphTReader();
 		this.algorithm = AlgorithmsFactory.eINSTANCE.createPlainKTC();
 		this.algorithm.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
 		this.noUnclasifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
@@ -44,7 +47,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnTopology() throws Exception {
-		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
+	   this.reader.read(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 
 		algorithm.runOnTopology(topology);
@@ -56,7 +59,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnNode() throws Exception {
-		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
+	   this.reader.read(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 		algorithm.initializeConstraints();
 
@@ -74,7 +77,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
-		GraphTReader.readTopology(topology, getPathToDistanceTestGraph(5));
+	   this.reader.read(topology, getPathToDistanceTestGraph(5));
 		EdgeWeightProviders.applyEdgeWeightProvider(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		final Edge e13 = getEdgeById(topology, "e1-3");
