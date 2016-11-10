@@ -11,13 +11,13 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
-public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest
+public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
 {
 
    @Override
    protected TopologyControlAlgorithmID getAlgorithmID()
    {
-      return UnderlayTopologyControlAlgorithms.MAXPOWER_TC;
+      return UnderlayTopologyControlAlgorithms.GABRIEL_GRAPH;
    }
 
    @Test

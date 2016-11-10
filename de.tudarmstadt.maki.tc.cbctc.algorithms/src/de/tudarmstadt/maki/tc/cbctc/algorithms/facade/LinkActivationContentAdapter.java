@@ -4,8 +4,8 @@ import org.eclipse.emf.ecore.EAttribute;
 
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.tc.facade.ILinkStateListener;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.EdgeState;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelPackage;
 import de.tudarmstadt.maki.tc.cbctc.model.listener.GraphContentAdapter;

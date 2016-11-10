@@ -1,7 +1,7 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;;
 

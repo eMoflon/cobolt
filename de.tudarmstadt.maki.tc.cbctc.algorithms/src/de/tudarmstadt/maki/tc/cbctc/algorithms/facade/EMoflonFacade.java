@@ -22,8 +22,8 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.NodeProperty;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
@@ -58,6 +58,8 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * TODO@rkluge- l-kTC impl.
  * 
  * TODO@rkluge- GG impl.
+ * 
+ * TODO@rkluge: Add references to {@link TopologyControlAlgorithmIDs}
  */
 public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 

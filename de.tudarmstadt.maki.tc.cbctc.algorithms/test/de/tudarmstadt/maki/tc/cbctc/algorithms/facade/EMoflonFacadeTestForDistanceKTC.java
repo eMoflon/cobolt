@@ -9,8 +9,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
-import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
