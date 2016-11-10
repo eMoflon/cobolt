@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
@@ -16,12 +15,9 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
-import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
-import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.EnergyAwareKTC;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
@@ -29,22 +25,14 @@ import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 /**
  * Unit tests for {@link EMoflonFacade}, using {@link EnergyAwareKTC}.
  */
-public class EMoflonFacadeTestForEnergyKTC {
+public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 
-	private EMoflonFacade facade;
-	private GraphTFileReader reader;
-	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.E_KTC;
-
-	@Before
-	public void setup() {
-
-		this.facade = (EMoflonFacade) TopologyControlFacadeFactory
-				.create("de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade");
-		this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
-		this.facade.configureAlgorithm(algorithmID);
-		this.reader = new GraphTFileReader();
+	@Override
+	protected TopologyControlAlgorithmID getAlgorithmID()
+	{
+	   return UnderlayTopologyControlAlgorithms.E_KTC;
 	}
-
+	
 	@Test
 	public void testWithTestgraphE1() throws Exception {
 		readTestCase(1);
@@ -93,7 +81,7 @@ public class EMoflonFacadeTestForEnergyKTC {
 		readTestCase(2);
 		facade.run(1.1);
 
-		TopologyTestUtils.assertActiveWithExceptions(facade.getTopology(), false, "e13");
+		TopologyTestUtils.assertActiveSymmetric(facade.getTopology());
 	}
 
 	private void readTestCase(int id) throws FileNotFoundException {

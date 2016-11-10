@@ -45,9 +45,6 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * 
  * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
  * 
- * TODO@rkluge: Kill Topology#addEdge
- * {@link Topology#addEdge(String, Node, Node, double, double, EdgeState)}
- * 
  * TODO@rkluge More modular configuration of facades etc.
  * 
  * TODO@rkluge: Create a basic example of how to implement the facade interface

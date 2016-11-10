@@ -5,18 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
-import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
-import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.ktc.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.JvlcTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.GraphTFileReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
@@ -28,19 +24,13 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 /**
  * Unit tests for {@link EMoflonFacade}, using {@link PlainKTC}.
  */
-public class EMoflonFacadeTestForDistanceKTC {
-	private EMoflonFacade facade;
-	private TopologyControlAlgorithmID algorithmID = UnderlayTopologyControlAlgorithms.D_KTC;
-	private GraphTFileReader reader;
+public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 
-	@Before
-	public void setup() {
-		this.facade = (EMoflonFacade) TopologyControlFacadeFactory
-				.create("de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade");
-		this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
-		this.facade.configureAlgorithm(algorithmID);
-		this.reader = new GraphTFileReader();
-	}
+   @Override
+   protected TopologyControlAlgorithmID getAlgorithmID()
+   {
+      return UnderlayTopologyControlAlgorithms.D_KTC;
+   }
 
 	@Test
 	public void testUsageExample_GraphModifications() throws Exception {
