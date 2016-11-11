@@ -46,19 +46,13 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * 
  * TODO@rkluge More modular configuration of facades etc.
  * 
- * TODO@rkluge: Create a basic example of how to implement the facade interface
- * 
  * TODO@rkluge XTC impl.
  * 
  * TODO@rkluge Yao impl.
  * 
- * TODO@rkluge: Extract hop count from routing
- * 
  * TODO@rkluge- l-kTC impl.
  * 
  * TODO@rkluge- GG impl.
- * 
- * TODO@rkluge: Add references to {@link TopologyControlAlgorithmIDs}
  */
 public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
