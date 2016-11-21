@@ -15,7 +15,7 @@ import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
-import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
+import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.NoUnclassifiedLinksConstraint;
@@ -52,9 +52,9 @@ public class PlainKTCTest {
 
 		algorithm.runOnTopology(topology);
 
-		TopologyTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
-		TopologyTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
-		TopologyTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
+		TopologyModelTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
+		TopologyModelTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
+		TopologyModelTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
 	}
 
 	@Test
@@ -69,9 +69,9 @@ public class PlainKTCTest {
 			}
 		}
 
-		TopologyTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
-		TopologyTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
-		TopologyTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
+		TopologyModelTestUtils.assertTopologyConstraints(topology, algorithm.getAlgorithmSpecificConstraints());
+		TopologyModelTestUtils.assertTopologyConstraint(topology, noUnclasifiedLinksConstraint);
+		TopologyModelTestUtils.assertTopologyConstraint(topology, strongConnectivityConstraint);
 
 	}
 

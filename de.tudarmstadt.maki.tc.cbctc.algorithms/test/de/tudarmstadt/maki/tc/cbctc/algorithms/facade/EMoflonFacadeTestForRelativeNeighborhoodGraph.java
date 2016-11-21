@@ -13,7 +13,7 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLifetimeWeightProvider;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
-import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
+import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils;
 
 /**
  * Tests for implementation of {@link UnderlayTopologyControlAlgorithms#RELATIVE_NEIGHBORHOOD_GRAPH}
@@ -35,12 +35,12 @@ public class EMoflonFacadeTestForRelativeNeighborhoodGraph extends AbstractEMofl
       reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
       EdgeWeightProviders.apply(this.facade, InverseEstimatedRemainingLifetimeWeightProvider.INSTANCE);
 
-      TopologyTestUtils.assertUnclassified(this.facade.getTopology());
+      TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
       TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
       TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
-      TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
+      TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
       
       this.facade.checkConstraintsAfterTopologyControl();
       Assert.assertEquals(0, this.facade.getConstraintViolationCount());

@@ -10,7 +10,7 @@ import org.junit.Test;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
-import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
+import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils;
 
 
 /**
@@ -33,10 +33,10 @@ public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest
    {
       reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
 
-      TopologyTestUtils.assertUnclassified(this.facade.getTopology());
+      TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
 
       TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
-      TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
+      TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
    }
 }

@@ -2,14 +2,13 @@ package de.tudarmstadt.maki.tc.cbctc.algorithms.io;
 
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph;
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToEnergyTestGraph;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.EPS_0;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.EPS_6;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertEdgeDistance;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertEdgeWeight;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertEquals0;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertEquals6;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertIsStatewiseSymmetric;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils.assertNodeAndEdgeCount;
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToHopCountTestGraph;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEdgeDistance;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEdgeWeight;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEquals0;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEquals6;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertIsStatewiseSymmetric;
+import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertNodeAndEdgeCount;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,6 +18,7 @@ import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
+import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 
 /**
@@ -44,10 +44,10 @@ public class GraphTReaderTest {
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
 
 		final Edge link34 = topology.getEdgeById("e34");
-		Assert.assertEquals(22.0, link34.getWeight(), EPS_0);
+		TopologyModelTestUtils.assertEquals0(22.0, link34.getWeight());
 
 		final Edge revLink34 = link34.getReverseEdge();
-		Assert.assertEquals(22.0, revLink34.getWeight(), EPS_0);
+		TopologyModelTestUtils.assertEquals0(22.0, revLink34.getWeight());
 		Assert.assertEquals("e43", revLink34.getId());
 
 		Assert.assertSame(link34, revLink34.getReverseEdge());
@@ -138,17 +138,22 @@ public class GraphTReaderTest {
    public void testWithTestgraphE1() throws Exception {
       this.reader.read(this.topology, getPathToEnergyTestGraph(1));
    	EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
+
+      TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 3, 6);
    
-   	Assert.assertEquals(6, topology.getEdgeCount());
-   	Assert.assertEquals(3, topology.getNodeCount());
-   
-   	Assert.assertEquals(10, topology.getNodeById("n1").getEnergyLevel(), EPS_6);
-   	Assert.assertEquals(2, topology.getEdgeById("e12").getExpectedLifetime(), EPS_6);
-   	Assert.assertEquals(1, topology.getEdgeById("e13").getExpectedLifetime(), EPS_6);
-   	Assert.assertEquals(2, topology.getEdgeById("e23").getExpectedLifetime(), EPS_6);
+      TopologyModelTestUtils.assertEquals6(10, topology.getNodeById("n1").getEnergyLevel());
+      TopologyModelTestUtils.assertEquals6(2, topology.getEdgeById("e12").getExpectedLifetime());
+      TopologyModelTestUtils.assertEquals6(1, topology.getEdgeById("e13").getExpectedLifetime());
+      TopologyModelTestUtils.assertEquals6(2, topology.getEdgeById("e23").getExpectedLifetime());
    
    	assertIsStatewiseSymmetric(topology);
    
    }
 
+   @Test
+   public void testWithTestgraphH1() throws Exception
+   {
+      this.reader.read(this.topology, getPathToHopCountTestGraph(1));
+      TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 3, 3);
+   }
 }

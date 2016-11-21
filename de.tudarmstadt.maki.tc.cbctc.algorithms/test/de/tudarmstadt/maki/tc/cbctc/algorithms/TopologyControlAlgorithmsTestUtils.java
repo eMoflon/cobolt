@@ -8,6 +8,13 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 
+
+/**
+ * Test utilities for the (model-based) topology control algorithms
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public final class TopologyControlAlgorithmsTestUtils
 {
    private TopologyControlAlgorithmsTestUtils()
@@ -15,14 +22,37 @@ public final class TopologyControlAlgorithmsTestUtils
       throw new UnsupportedOperationException();
    }
 
+   /**
+    * Returns the path to the distance-related test case with the given index
+    * 
+    * @param i the index
+    * @return the project-relative path to the test case
+    */
    public static String getPathToDistanceTestGraph(final int i)
    {
       return "instances/testgraph_D" + i + ".grapht";
    }
 
+   /**
+    * Returns the path to the energy-related test case with the given index
+    * 
+    * @param i the index
+    * @return the project-relative path to the test case
+    */
    public static String getPathToEnergyTestGraph(final int i)
    {
       return "instances/testgraph_E" + i + ".grapht";
+   }
+
+   /**
+    * Returns the path to the hop-count-related test case with the given index
+    * 
+    * @param i the index
+    * @return the project-relative path to the test case
+    */
+   public static String getPathToHopCountTestGraph(final int i)
+   {
+      return "instances/testgraph_H" + i + ".grapht";
    }
 
    /**

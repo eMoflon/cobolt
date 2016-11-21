@@ -7,18 +7,25 @@ import java.util.List;
 
 import org.junit.Assert;
 
+import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
 
-public class TopologyTestUtils
+/**
+ * Test utilities for the topology model
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
+public class TopologyModelTestUtils
 {
-   public static final double EPS_6 = 1e-6;
+   private static final double EPS_6 = TopologyControlTestHelper.EPS_6;
 
-   public static final double EPS_0 = 0.0;
+   private static final double EPS_0 = TopologyControlTestHelper.EPS_0;
 
-   private TopologyTestUtils()
+   private TopologyModelTestUtils()
    {
       throw new UnsupportedOperationException("Utility class");
    }
@@ -28,10 +35,10 @@ public class TopologyTestUtils
       for (final String edgeId : edgeIds)
       {
          final Edge edge = topology.getEdgeById(edgeId);
-         TopologyTestUtils.assertState(edge, state);
+         TopologyModelTestUtils.assertState(edge, state);
          if (checkSymmetry)
          {
-            TopologyTestUtils.assertState(edge.getReverseEdge(), state);
+            TopologyModelTestUtils.assertState(edge.getReverseEdge(), state);
          }
       }
    }
@@ -48,7 +55,7 @@ public class TopologyTestUtils
     */
    public static void assertActive(final Edge edge)
    {
-      TopologyTestUtils.assertState(edge, EdgeState.ACTIVE);
+      TopologyModelTestUtils.assertState(edge, EdgeState.ACTIVE);
    }
 
    /**
@@ -56,7 +63,7 @@ public class TopologyTestUtils
     */
    public static void assertInactive(final Edge edge)
    {
-      TopologyTestUtils.assertState(edge, EdgeState.INACTIVE);
+      TopologyModelTestUtils.assertState(edge, EdgeState.INACTIVE);
    }
 
    /**
@@ -64,7 +71,7 @@ public class TopologyTestUtils
     */
    public static void assertUnclassified(final Edge edge)
    {
-      TopologyTestUtils.assertState(edge, EdgeState.UNCLASSIFIED);
+      TopologyModelTestUtils.assertState(edge, EdgeState.UNCLASSIFIED);
    }
 
    /**
@@ -232,12 +239,12 @@ public class TopologyTestUtils
 
    public static void assertEdgeDistance(final Topology topology, final String id, final double distance)
    {
-      Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getEdgeById(id).getDistance(), TopologyTestUtils.EPS_0);
+      Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getEdgeById(id).getDistance(), TopologyModelTestUtils.EPS_0);
    }
 
    public static void assertEdgeWeight(final Topology topology, final String id, final double weight)
    {
-      Assert.assertEquals("Weight mismatch of " + id + ".", weight, topology.getEdgeById(id).getWeight(), TopologyTestUtils.EPS_0);
+      Assert.assertEquals("Weight mismatch of " + id + ".", weight, topology.getEdgeById(id).getWeight(), TopologyModelTestUtils.EPS_0);
    }
 
    public static void assertEquals6(final double expected, final double actual)
