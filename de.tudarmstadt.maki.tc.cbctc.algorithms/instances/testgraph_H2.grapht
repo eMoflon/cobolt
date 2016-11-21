@@ -1,0 +1,13 @@
+# Test case for l*-kTC
+# For a=1.05, e12 may not be removed because the hop count increases by a factor of 11/10=1.1 >= a
+# For a=1.11, e12 may be removed  
+
+3 3
+
+1 h=10
+2 h=10
+3 h=1
+
+e12 1 2 w=5
+e13 1 3 w=1
+e32 3 2 w=3

@@ -80,4 +80,11 @@ public final class TopologyControlAlgorithmsTestUtils
       facade.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
    }
 
+   public static void runFacadeLStarKTC(EMoflonFacade facade, double k, double a)
+   {
+      facade.run(TopologyControlAlgorithmParamters.create(
+            UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k,
+            UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A, a));
+   }
+
 }

@@ -25,7 +25,9 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.LStarKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.YaoGraphAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
@@ -130,15 +132,37 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    {
       this.run(new TopologyControlAlgorithmParamters());
    }
-   
+
    @Override
    public void run(final TopologyControlAlgorithmParamters parameters)
    {
-      final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
       if (this.algorithm instanceof AbstractKTC)
       {
+         final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
+         if (k == null)
+            throw new IllegalArgumentException(
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, this.algorithmID));
          ((AbstractKTC) this.algorithm).setK(k);
       }
+
+      if (this.algorithm instanceof LStarKTC)
+      {
+         final Double a = (Double) parameters.get(UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A);
+         if (a == null)
+            throw new IllegalArgumentException(
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A, this.algorithmID));
+         ((LStarKTC) this.algorithm).setA(a);
+      }
+
+      if (this.algorithm instanceof YaoGraphAlgorithm)
+      {
+         final Integer coneCount = (Integer) parameters.get(UnderlayTopologyControlAlgorithms.YAO_CONE_COUNT);
+         if (coneCount == null)
+            throw new IllegalArgumentException(
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_CONE_COUNT, this.algorithmID));
+         ((YaoGraphAlgorithm) this.algorithm).setConeCount(coneCount);
+      }
+
       this.algorithm.initializeConstraints();
 
       this.algorithm.runOnTopology(this.topology);
