@@ -12,7 +12,6 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.DistanceEdgeWeightProvider;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
@@ -23,7 +22,7 @@ import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 /**
- * Unit tests for {@link EMoflonFacade}, using {@link PlainKTC}.
+ * Unit tests for {@link EMoflonFacade}, using {@link UnderlayTopologyControlAlgorithms#D_KTC}.
  */
 public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 

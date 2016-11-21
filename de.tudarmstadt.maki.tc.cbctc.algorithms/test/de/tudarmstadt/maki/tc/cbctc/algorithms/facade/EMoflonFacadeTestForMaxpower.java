@@ -11,6 +11,13 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
+
+/**
+ * Tests for implementation of {@link UnderlayTopologyControlAlgorithms#MAXPOWER_TC}
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest
 {
 

@@ -5,6 +5,7 @@ import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsT
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
@@ -14,6 +15,11 @@ import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLi
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
+/**
+ * Tests for implementation of {@link UnderlayTopologyControlAlgorithms#GABRIEL_GRAPH}
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
 {
 
@@ -34,6 +40,9 @@ public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
 
       this.facade.run(-1.0);
 
-      TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
+      TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
+      
+      this.facade.checkConstraintsAfterTopologyControl();
+      Assert.assertEquals(0, this.facade.getConstraintViolationCount());
    }
 }

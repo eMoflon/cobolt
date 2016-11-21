@@ -16,13 +16,12 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.EnergyAwareKTC;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
 
 /**
- * Unit tests for {@link EMoflonFacade}, using {@link EnergyAwareKTC}.
+ * Unit tests for {@link EMoflonFacade}, using {@link UnderlayTopologyControlAlgorithms#E_KTC}.
  */
 public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 
