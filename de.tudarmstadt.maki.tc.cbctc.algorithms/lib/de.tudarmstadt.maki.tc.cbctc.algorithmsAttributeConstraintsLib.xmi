@@ -36,7 +36,7 @@
       constraintSpecifications="//@constraintSpecifications.2"
       operationIdentifier="lStarKTCSpecificPredicate">
     <operationSpecifications
-        specification="$a$+$b$ > $c$"
+        specification="de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.LStarKTCHelper.checkPredicate($a$,$b$,$c$,$d$)"
         adornmentString="BBBB"
         alwaysSuccessful="false"/>
     <parameterIDs
