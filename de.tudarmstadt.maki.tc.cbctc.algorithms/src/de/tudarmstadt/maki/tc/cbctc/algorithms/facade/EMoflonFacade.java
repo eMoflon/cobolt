@@ -25,6 +25,7 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
@@ -44,15 +45,9 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * 
  * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
  * 
- * TODO@rkluge More modular configuration of facades etc.
- * 
- * TODO@rkluge XTC impl.
- * 
  * TODO@rkluge Yao impl.
  * 
  * TODO@rkluge- l-kTC impl.
- * 
- * TODO@rkluge- GG impl.
  */
 public class EMoflonFacade extends TopologyControlFacade_ImplBase
 {
@@ -142,14 +137,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       this.algorithm.initializeConstraints();
 
       this.algorithm.runOnTopology(this.topology);
-   }
-
-   /**
-    * Convenience method that is tailored to kTC.
-    */
-   public void runForKTC(final double k)
-   {
-      this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
    }
 
    @Override

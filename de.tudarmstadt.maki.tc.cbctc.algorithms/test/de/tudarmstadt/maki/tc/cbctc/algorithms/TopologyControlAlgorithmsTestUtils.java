@@ -2,6 +2,8 @@ package de.tudarmstadt.maki.tc.cbctc.algorithms;
 
 import org.junit.Assert;
 
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 
@@ -34,6 +36,11 @@ public final class TopologyControlAlgorithmsTestUtils
             .findAny().orElse(null);
       // @formatter:on
       Assert.assertNull(String.format("The weight of the following edge is not set: '%s'", edgeWithUnsetWeight), edgeWithUnsetWeight);
+   }
+
+   public static void runFacadeKTC(EMoflonFacade eMoflonFacade, double k)
+   {
+      eMoflonFacade.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
    }
 
 }

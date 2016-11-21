@@ -16,6 +16,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures.EdgeWeightProviders;
@@ -35,7 +36,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	public void testWithTestgraphE1() throws Exception {
 		readTestCase(1);
 
-		this.facade.runForKTC(1.5);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, 1.5);
 
 		this.facade.checkConstraintsAfterTopologyControl();
 	}
@@ -44,7 +45,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	public void testWithTestgraphE1_OneContextEvent() throws Exception {
 		readTestCase(1);
 
-		this.facade.runForKTC(1.5);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, 1.5);
 		this.facade.checkConstraintsAfterTopologyControl();
 
 		final Graph graph = this.facade.getGraph();
@@ -65,7 +66,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e31"));
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e32"));
 
-		this.facade.runForKTC(1.5);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, 1.5);
 		this.facade.checkConstraintsAfterTopologyControl();
 	}
 
@@ -77,7 +78,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
 		readTestCase(2);
-		facade.runForKTC(1.1);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, 1.1);
 
 		TopologyTestUtils.assertActiveSymmetric(facade.getTopology());
 	}

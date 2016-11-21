@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
 
@@ -34,7 +35,7 @@ public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest
 
       TopologyTestUtils.assertUnclassified(this.facade.getTopology());
 
-      this.facade.runForKTC(-1.0);
+      TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
       TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
    }

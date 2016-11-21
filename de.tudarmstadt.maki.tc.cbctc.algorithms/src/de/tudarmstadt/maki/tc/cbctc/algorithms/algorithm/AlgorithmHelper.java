@@ -17,7 +17,7 @@ public class AlgorithmHelper {
 			return AlgorithmsFactory.eINSTANCE.createMaxpowerTopologyControlAlgorithm();
 		else if (UnderlayTopologyControlAlgorithms.GABRIEL_GRAPH.equals(algorithmId))
 		   return AlgorithmsFactory.eINSTANCE.createGabrielGraphAlgorithm();
-		else if (UnderlayTopologyControlAlgorithms.L_KTC.equals(algorithmId))
+		else if (UnderlayTopologyControlAlgorithms.LSTAR_KTC.equals(algorithmId))
 		   return AlgorithmsFactory.eINSTANCE.createLocalKTC();
 		else if (UnderlayTopologyControlAlgorithms.RELATIVE_NEIGHBORHOOD_GRAPH.equals(algorithmId))
 		   return AlgorithmsFactory.eINSTANCE.createRelativeNeighborhoodGraphAlgorithm();

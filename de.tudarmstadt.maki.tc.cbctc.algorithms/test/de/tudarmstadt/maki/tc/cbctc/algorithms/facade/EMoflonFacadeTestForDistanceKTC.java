@@ -73,7 +73,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyTestUtils.assertIsStatewiseSymmetric(topology);
 
 		final double k = 1.41;
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, k);
 
 		TopologyTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e23");
 		TopologyTestUtils.assertIsStatewiseSymmetric(topology);
@@ -86,7 +86,8 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 
 		readTestCase(1);
 		double k = 1.1;
-		facade.runForKTC(k);
+      final double k1 = k;
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, k1);
 
 		final Topology topology = facade.getTopology();
 
@@ -102,7 +103,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 
 		readTestCase(3);
 		final double k = 1.5;
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, k);
 
 		final Topology topology = facade.getTopology();
 
@@ -123,7 +124,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		readTestCase(4);
 
 		// TC(i)
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
 
 		final Topology topology = facade.getTopology();
 		TopologyTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e2-5",
@@ -144,7 +145,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyTestUtils.assertActiveSymmetric(topology, "e7-8", "e8-9", "e3-7");
 
 		// TC(ii)
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
 		TopologyTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e2-5",
 				"e2-6", "e3-9", "e7-8");
 
@@ -159,7 +160,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyTestUtils.assertUnclassifiedSymmetric(topology, "e2-4");
 
 		// TC(iii)
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
 		TopologyTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e3-9",
 				"e4-5", "e5-6", "e7-8");
 
@@ -174,7 +175,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 	public void testTriangleWithEquisecles() throws Exception {
 		readTestCase(2);
 		final double k = 1.1;
-		facade.runForKTC(k);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, k);
 
 		TopologyTestUtils.assertAllActiveSymmetricWithExceptions(facade.getTopology());
 	}

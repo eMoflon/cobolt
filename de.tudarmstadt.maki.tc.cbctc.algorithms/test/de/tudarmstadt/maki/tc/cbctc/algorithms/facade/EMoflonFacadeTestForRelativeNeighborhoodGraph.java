@@ -38,7 +38,7 @@ public class EMoflonFacadeTestForRelativeNeighborhoodGraph extends AbstractEMofl
       TopologyTestUtils.assertUnclassified(this.facade.getTopology());
       TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
-      this.facade.runForKTC(-1.0);
+      TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
       TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
       
