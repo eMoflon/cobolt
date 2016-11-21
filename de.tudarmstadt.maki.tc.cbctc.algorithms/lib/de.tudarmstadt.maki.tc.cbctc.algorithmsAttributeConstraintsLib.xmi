@@ -32,6 +32,22 @@
     <parameterIDs
         identifier="c"/>
   </operationSpecifications>
+  <operationSpecifications
+      constraintSpecifications="//@constraintSpecifications.2"
+      operationIdentifier="lStarKTCSpecificPredicate">
+    <operationSpecifications
+        specification="$a$+$b$ > $c$"
+        adornmentString="BBBB"
+        alwaysSuccessful="false"/>
+    <parameterIDs
+        identifier="a"/>
+    <parameterIDs
+        identifier="b"/>
+    <parameterIDs
+        identifier="c"/>
+    <parameterIDs
+        identifier="d"/>
+  </operationSpecifications>
   <constraintSpecifications
       operationSpecificationGroup="//@operationSpecifications.0"
       symbol="max">
@@ -63,6 +79,30 @@
       <type
           xsi:type="ecore:EDataType"
           href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameterTypes>
+    <parameterTypes>
+      <type
+          xsi:type="ecore:EDataType"
+          href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameterTypes>
+  </constraintSpecifications>
+  <constraintSpecifications
+      operationSpecificationGroup="//@operationSpecifications.2"
+      symbol="lStarKTCSpecificPredicate">
+    <parameterTypes>
+      <type
+          xsi:type="ecore:EDataType"
+          href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </parameterTypes>
+    <parameterTypes>
+      <type
+          xsi:type="ecore:EDataType"
+          href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </parameterTypes>
+    <parameterTypes>
+      <type
+          xsi:type="ecore:EDataType"
+          href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </parameterTypes>
     <parameterTypes>
       <type
