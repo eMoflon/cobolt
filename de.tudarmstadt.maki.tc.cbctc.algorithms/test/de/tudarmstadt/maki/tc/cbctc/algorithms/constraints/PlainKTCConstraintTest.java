@@ -3,7 +3,7 @@ package de.tudarmstadt.maki.tc.cbctc.algorithms.constraints;
 import org.junit.Before;
 
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTCInactiveLinkConstraint;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTCInactiveEdgeConstraint;
 
 /**
  * Unit tests for {@link DistanceKTCInactiveLinkConstraint}
@@ -11,11 +11,11 @@ import de.tudarmstadt.maki.tc.cbctc.algorithms.PlainKTCInactiveLinkConstraint;
 public class PlainKTCConstraintTest {
 
 	@SuppressWarnings("unused")
-	private PlainKTCInactiveLinkConstraint constraint;
+	private PlainKTCInactiveEdgeConstraint constraint;
 
 	@Before
 	public void setUp() {
-		this.constraint = AlgorithmsFactory.eINSTANCE.createPlainKTCInactiveLinkConstraint();
+		this.constraint = AlgorithmsFactory.eINSTANCE.createPlainKTCInactiveEdgeConstraint();
 	}
 
 }
