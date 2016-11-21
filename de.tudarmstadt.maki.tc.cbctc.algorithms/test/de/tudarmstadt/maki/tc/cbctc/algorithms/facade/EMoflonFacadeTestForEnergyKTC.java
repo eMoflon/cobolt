@@ -35,7 +35,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	public void testWithTestgraphE1() throws Exception {
 		readTestCase(1);
 
-		this.facade.run(1.5);
+		this.facade.runForKTC(1.5);
 
 		this.facade.checkConstraintsAfterTopologyControl();
 	}
@@ -44,7 +44,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	public void testWithTestgraphE1_OneContextEvent() throws Exception {
 		readTestCase(1);
 
-		this.facade.run(1.5);
+		this.facade.runForKTC(1.5);
 		this.facade.checkConstraintsAfterTopologyControl();
 
 		final Graph graph = this.facade.getGraph();
@@ -65,7 +65,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e31"));
 		TopologyTestUtils.assertUnclassified(topology.getEdgeById("e32"));
 
-		this.facade.run(1.5);
+		this.facade.runForKTC(1.5);
 		this.facade.checkConstraintsAfterTopologyControl();
 	}
 
@@ -77,7 +77,7 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 	@Test
 	public void testTriangleWithEquisecles() throws Exception {
 		readTestCase(2);
-		facade.run(1.1);
+		facade.runForKTC(1.1);
 
 		TopologyTestUtils.assertActiveSymmetric(facade.getTopology());
 	}

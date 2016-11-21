@@ -147,7 +147,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    /**
     * Convenience method that is tailored to kTC.
     */
-   public void run(final double k)
+   public void runForKTC(final double k)
    {
       this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
    }

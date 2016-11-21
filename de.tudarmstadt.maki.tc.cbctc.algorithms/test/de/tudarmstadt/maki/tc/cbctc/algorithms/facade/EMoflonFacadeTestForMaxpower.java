@@ -34,7 +34,7 @@ public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest
 
       TopologyTestUtils.assertUnclassified(this.facade.getTopology());
 
-      this.facade.run(-1.0);
+      this.facade.runForKTC(-1.0);
 
       TopologyTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
    }
