@@ -154,6 +154,16 @@ public class GraphTReaderTest {
    public void testWithTestgraphH1() throws Exception
    {
       this.reader.read(this.topology, getPathToHopCountTestGraph(1));
+      
       TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 3, 3);
+      
+      Assert.assertEquals(1, this.topology.getNodeById("1").getHopCount());
+      Assert.assertEquals(1, this.topology.getNodeById("2").getHopCount());
+      Assert.assertEquals(1, this.topology.getNodeById("3").getHopCount());
+      
+      TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
+      TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
+      TopologyModelTestUtils.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
+      
    }
 }

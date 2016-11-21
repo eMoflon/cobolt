@@ -38,7 +38,7 @@ public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
       TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
       TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
-      TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
+      this.facade.run();
 
       TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
       

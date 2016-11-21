@@ -126,6 +126,12 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    }
 
    @Override
+   public void run()
+   {
+      this.run(new TopologyControlAlgorithmParamters());
+   }
+   
+   @Override
    public void run(final TopologyControlAlgorithmParamters parameters)
    {
       final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
