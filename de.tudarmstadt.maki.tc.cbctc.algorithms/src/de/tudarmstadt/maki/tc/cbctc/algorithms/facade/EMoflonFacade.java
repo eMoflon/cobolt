@@ -25,7 +25,6 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.AlgorithmHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
