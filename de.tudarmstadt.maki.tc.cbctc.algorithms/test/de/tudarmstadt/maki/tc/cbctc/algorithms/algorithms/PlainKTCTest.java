@@ -78,7 +78,7 @@ public class PlainKTCTest {
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
 	   this.reader.read(topology, getPathToDistanceTestGraph(5));
-		EdgeWeightProviders.applyEdgeWeightProvider(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		final Edge e13 = getEdgeById(topology, "e1-3");
 		final Edge e12 = getEdgeById(topology, "e1-2");

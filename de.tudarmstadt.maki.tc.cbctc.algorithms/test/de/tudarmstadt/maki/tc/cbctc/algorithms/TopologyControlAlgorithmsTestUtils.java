@@ -1,16 +1,39 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms;
 
-public final class TopologyControlAlgorithmsTestUtils {
-	private TopologyControlAlgorithmsTestUtils() {
-		throw new UnsupportedOperationException();
-	}
+import org.junit.Assert;
 
-	public static String getPathToDistanceTestGraph(final int i) {
-		return "instances/testgraph_D" + i + ".grapht";
-	}
+import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
+import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 
-	public static String getPathToEnergyTestGraph(final int i) {
-		return "instances/testgraph_E" + i + ".grapht";
-	}
+public final class TopologyControlAlgorithmsTestUtils
+{
+   private TopologyControlAlgorithmsTestUtils()
+   {
+      throw new UnsupportedOperationException();
+   }
+
+   public static String getPathToDistanceTestGraph(final int i)
+   {
+      return "instances/testgraph_D" + i + ".grapht";
+   }
+
+   public static String getPathToEnergyTestGraph(final int i)
+   {
+      return "instances/testgraph_E" + i + ".grapht";
+   }
+
+   /**
+    * Asserts that the weight attribute of each edge in the facade's topology is set, i.e., unequal to EMoflonFacade#DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES
+    * @param facade
+    */
+   public static void assertWeightSet(final EMoflonFacade facade)
+   {
+      // @formatter:off
+      final Edge edgeWithUnsetWeight = facade.getTopology().getEdges().stream()
+            .filter(e -> new Double(e.getWeight()).equals(new Double(EMoflonFacade.DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES)))
+            .findAny().orElse(null);
+      // @formatter:on
+      Assert.assertNull(String.format("The weight of the following edge is not set: '%s'", edgeWithUnsetWeight), edgeWithUnsetWeight);
+   }
 
 }

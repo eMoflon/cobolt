@@ -51,6 +51,19 @@ public class TopologyUtils {
 	   
 	   return fwdEdge;
 	}
+	
+	/**
+	 * Creates a summary of the edge states of the given {@link Topology}.
+	 * 
+	 * For instance, this method can be used during debugging as follows:
+	 * 
+	 * de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils.formatEdgeStateReport(unclassifiedEdge.getTopology())
+	 * 
+	 * de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils.formatEdgeStateReport(topology)
+	 * 
+	 * @param topology
+	 * @return
+	 */
 	public static String formatEdgeStateReport(final Topology topology) {
       final StringBuilder builder = new StringBuilder();
       final Set<Edge> processedEdges = new HashSet<>();

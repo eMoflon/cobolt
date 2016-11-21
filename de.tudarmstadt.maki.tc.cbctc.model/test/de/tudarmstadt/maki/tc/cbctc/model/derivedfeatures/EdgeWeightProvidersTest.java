@@ -7,6 +7,11 @@ import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
+/**
+ * Unit tests for {@link EdgeWeightProviders}
+ * 
+ * @author Roland Kluge - Initial implementation
+ */
 public final class EdgeWeightProvidersTest
 {
    @Test

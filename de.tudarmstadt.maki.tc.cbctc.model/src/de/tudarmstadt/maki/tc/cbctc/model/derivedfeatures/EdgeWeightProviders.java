@@ -14,13 +14,13 @@ public final class EdgeWeightProviders
    public static final EdgeWeightProvider EXPECTED_REMAINING_LIFETIME_PROVIDER = new EAttributeBasedEdgeWeightProvider(
          ModelPackage.eINSTANCE.getEdge_ExpectedLifetime());
 
-   public static void applyEdgeWeightProvider(final Edge edge, EdgeWeightProvider weightProvider)
+   public static void apply(final Edge edge, EdgeWeightProvider weightProvider)
    {
       edge.setWeight(weightProvider.getEdgeWeight(edge));
    }
 
-   public static void applyEdgeWeightProvider(final Topology topology, final EdgeWeightProvider weightProvider)
+   public static void apply(final Topology topology, final EdgeWeightProvider weightProvider)
    {
-      topology.getEdges().forEach(edge -> applyEdgeWeightProvider(edge, weightProvider));
+      topology.getEdges().forEach(edge -> apply(edge, weightProvider));
    }
 }

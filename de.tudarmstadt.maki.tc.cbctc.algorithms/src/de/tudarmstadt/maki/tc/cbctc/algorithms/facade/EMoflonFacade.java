@@ -54,499 +54,570 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * 
  * TODO@rkluge- GG impl.
  */
-public class EMoflonFacade extends TopologyControlFacade_ImplBase {
+public class EMoflonFacade extends TopologyControlFacade_ImplBase
+{
 
-	private static final List<TopologyControlOperationMode> SUPPORTED_OPERATION_MODES = Arrays
-			.asList(TopologyControlOperationMode.BATCH, TopologyControlOperationMode.INCREMENTAL);
-	private final Topology topology;
-	private AbstractTopologyControlAlgorithm algorithm;
-	private final Map<INodeID, Node> simonstratorNodeToModelNode;
-	private final Map<Node, INodeID> modelNodeToSimonstratorNode;
-	private final Map<EdgeID, Edge> simonstratorEdgeToModelLink;
-	private final Map<Edge, EdgeID> modelLinkToSimonstratorLink;
-	private TopologyControlAlgorithmID algorithmID;
-	private int constraintViolationCounter;
+   public static final double DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES = Double.NaN;
 
-	private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
-	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
-	private TopologyConstraint noUnclassifiedLinksConstraint;
+   private static final List<TopologyControlOperationMode> SUPPORTED_OPERATION_MODES = Arrays.asList(TopologyControlOperationMode.BATCH,
+         TopologyControlOperationMode.INCREMENTAL);
 
-	public EMoflonFacade() {
-		this.simonstratorNodeToModelNode = new HashMap<>();
-		this.modelNodeToSimonstratorNode = new HashMap<>();
-		this.simonstratorEdgeToModelLink = new HashMap<>();
-		this.modelLinkToSimonstratorLink = new HashMap<>();
-		this.topology = ModelFactory.eINSTANCE.createTopology();
-		this.constraintViolationCounter = 0;
+   private final Topology topology;
 
-		this.physicalConnectivityConstraint = createPhysicalConnectivityConstraint();
+   private AbstractTopologyControlAlgorithm algorithm;
 
-		this.weakConnectivityConstraint = createWeakConnectivityConstraint();
+   private final Map<INodeID, Node> simonstratorNodeToModelNode;
 
-		this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
-	}
+   private final Map<Node, INodeID> modelNodeToSimonstratorNode;
 
-	@Override
-	public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID) {
-		if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
-			throw new IllegalArgumentException(
-					"Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
+   private final Map<EdgeID, Edge> simonstratorEdgeToModelLink;
 
-		this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
-		this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
-		this.algorithmID = algorithmID;
-		this.registerEMFListeners();
-	}
+   private final Map<Edge, EdgeID> modelLinkToSimonstratorLink;
 
-	private TopologyControlOperationMode mapOperationMode(
-			de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode) {
-		switch (operationMode) {
-		case BATCH:
-			return TopologyControlOperationMode.BATCH;
-		case INCREMENTAL:
-			return TopologyControlOperationMode.INCREMENTAL;
-		default:
-			throw new IllegalArgumentException("Unsupported mode: " + operationMode);
-		}
-	}
+   private TopologyControlAlgorithmID algorithmID;
 
-	@Override
-	public Collection<String> getExpectedParameters() {
-		return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
-	}
+   private int constraintViolationCounter;
 
-	@Override
-	public void run(final TopologyControlAlgorithmParamters parameters) {
-		final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
-		if (this.algorithm instanceof AbstractKTC) {
-			((AbstractKTC) this.algorithm).setK(k);
-		}
-		this.algorithm.initializeConstraints();
+   private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
 
-		this.algorithm.runOnTopology(this.topology);
-	}
+   private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
 
-	/**
-	 * Convenience method that is tailored to kTC.
-	 */
-	public void run(final double k) {
-		this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
-	}
+   private TopologyConstraint noUnclassifiedLinksConstraint;
 
-	@Override
-	public INode addNode(INode prototype) {
-		if (isNodeIdKnown(prototype))
-			throw new IllegalStateException(String.format("Node ID has already been added. Existing: %s. New: %s",
-					this.simonstratorGraph.getNode(prototype.getId()), prototype));
+   public EMoflonFacade()
+   {
+      this.simonstratorNodeToModelNode = new HashMap<>();
+      this.modelNodeToSimonstratorNode = new HashMap<>();
+      this.simonstratorEdgeToModelLink = new HashMap<>();
+      this.modelLinkToSimonstratorLink = new HashMap<>();
+      this.topology = ModelFactory.eINSTANCE.createTopology();
+      this.constraintViolationCounter = 0;
 
-		final INode simNode = super.addNode(prototype);
+      this.physicalConnectivityConstraint = createPhysicalConnectivityConstraint();
 
-		final Node modelNode = createNodeFromPrototype(prototype);
+      this.weakConnectivityConstraint = createWeakConnectivityConstraint();
 
-		this.algorithm.handleNodeAddition(modelNode);
-
-		this.establishNodeMapping(simNode, modelNode);
-
-		this.firePostNodeAdded(simNode);
-
-		return simNode;
-	}
-
-	@Override
-	public void removeNode(final INodeID nodeId) {
-		if (!isNodeIdKnown(nodeId))
-			throw new IllegalStateException(String.format("Try to remove non-existing node: %s", nodeId));
-
-		for (final IEdge outgoingEdge : new ArrayList<>(this.simonstratorGraph.getOutgoingEdges(nodeId))) {
-			removeEdge(outgoingEdge);
-		}
-
-		for (final IEdge incomingEdge : new ArrayList<>(this.simonstratorGraph.getIncomingEdges(nodeId))) {
-			removeEdge(incomingEdge);
-		}
-
-		final INode removedNodeId = this.simonstratorGraph.getNode(nodeId);
-		final Node modelNode = getModelNodeForSimonstratorNode(nodeId);
-
-		firePreRemovedNode(removedNodeId);
-
-		removeNodeMapping(nodeId, modelNode);
-
-		removeNode(modelNode);
-
-		super.removeNode(nodeId);
-	}
-
-	@Override
-	public <T> void updateNodeAttribute(final INode simNode, final SiSType<T> property) {
-		if (!isNodeIdKnown(simNode))
-			throw new IllegalStateException(String.format("Try to update non-existing node: %s", simNode));
-
-		super.updateNodeAttribute(simNode, property);
-
-		final Node modelNode = getModelNodeForSimonstratorNode(simNode.getId());
-
-		this.updateModelNodeAttribute(modelNode, property, simNode.getProperty(property));
-
-		this.firePostNodeAttributeUpdated(simNode, property);
-	}
-
-	@Override
-	public IEdge addEdge(IEdge prototype) {
-		if (isEdgeIdKnown(prototype))
-			throw new IllegalStateException(String.format("Edge ID has already been added. Existing: %s. New: %s",
-					this.simonstratorGraph.getEdge(prototype.getId()), prototype));
-
-		final IEdge newEdge = super.addEdge(prototype);
-
-		final Edge modelLink = createLinkFromPrototype(prototype);
-
-		this.establishLinkMapping(newEdge, modelLink);
-
-		this.firePostEdgeAdded(prototype);
-
-		return newEdge;
-	}
-
-	@Override
-	public void removeEdge(final IEdge simEdge) {
-		if (!isEdgeIdKnown(simEdge))
-			throw new IllegalStateException(String.format("Try to remove non-existing edge: %s", simEdge));
-
-		final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
-
-		this.firePreEdgeRemoved(simEdge);
-
-		this.removeLinkMapping(simEdge.getId(), modelEdge);
-
-		this.removeEdge(modelEdge);
-
-		super.removeEdge(simEdge);
-	}
-
-	@Override
-	public <T> void updateEdgeAttribute(final IEdge simEdge, final SiSType<T> property) {
-		if (!isEdgeIdKnown(simEdge))
-			throw new IllegalStateException(String.format("Try to update non-existing edge: %s", simEdge));
-
-		super.updateEdgeAttribute(simEdge, property);
-
-		final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
-		final T value = simEdge.getProperty(property);
-
-		this.updateModelLinkAttribute(modelEdge, property, value);
-
-		this.firePostEdgeAttributeUpdated(simEdge, property);
-	}
-
-	@Override
-	public void resetConstraintViolationCounter() {
-		this.constraintViolationCounter = 0;
-	}
-
-	@Override
-	public int getConstraintViolationCount() {
-		return this.constraintViolationCounter;
-	}
-
-	@Override
-	public void checkConstraintsAfterContextEvent() {
-
-		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL) {
-			for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
-				constraint.checkOnTopology(topology, report);
-			}
-
-			if (isTopologyPhysicallyConnected()) {
-				weakConnectivityConstraint.checkOnTopology(this.topology, report);
-			}
-
-			reportConstraintViolations(report);
-		}
-	}
-
-	@Override
-	public void checkConstraintsAfterTopologyControl() {
-		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-
-		for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
-			constraint.checkOnTopology(topology, report);
-		}
-
-		noUnclassifiedLinksConstraint.checkOnTopology(topology, report);
-		if (isTopologyPhysicallyConnected()) {
-			weakConnectivityConstraint.checkOnTopology(this.topology, report);
-		}
-
-		reportConstraintViolations(report);
-	}
-
-	@Override
-   public void connectOppositeEdges(IEdge fwdEdgePrototype, IEdge bwdEdgePrototype) {
-   	super.connectOppositeEdges(fwdEdgePrototype, bwdEdgePrototype);
-   
-   	final Edge fwdModelLink = getModelLinkForSimonstratorEdge(fwdEdgePrototype);
-   	final Edge bwdModelLink = getModelLinkForSimonstratorEdge(bwdEdgePrototype);
-   
-   	fwdModelLink.setReverseEdge(bwdModelLink);
-   	bwdModelLink.setReverseEdge(fwdModelLink);
+      this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
    }
 
    @Override
-   public void unclassifyAllLinks() {
-   	super.unclassifyAllLinks();
-   	for (final Edge edge : this.getTopology().getEdges()) {
-   		edge.setState(EdgeState.UNCLASSIFIED);
-   	}
+   public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID)
+   {
+      if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
+         throw new IllegalArgumentException("Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
+
+      this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
+      this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
+      this.algorithmID = algorithmID;
+      this.registerEMFListeners();
    }
 
-   private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint() {
-		EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
-				.createEdgeStateBasedConnectivityConstraint();
-		constraint.getStates().add(EdgeState.ACTIVE);
-		constraint.getStates().add(EdgeState.INACTIVE);
-		constraint.getStates().add(EdgeState.UNCLASSIFIED);
-		return constraint;
-	}
+   private TopologyControlOperationMode mapOperationMode(de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode)
+   {
+      switch (operationMode)
+      {
+      case BATCH:
+         return TopologyControlOperationMode.BATCH;
+      case INCREMENTAL:
+         return TopologyControlOperationMode.INCREMENTAL;
+      default:
+         throw new IllegalArgumentException("Unsupported mode: " + operationMode);
+      }
+   }
 
-	private static EdgeStateBasedConnectivityConstraint createWeakConnectivityConstraint() {
-		EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
-				.createEdgeStateBasedConnectivityConstraint();
-		constraint.getStates().add(EdgeState.ACTIVE);
-		constraint.getStates().add(EdgeState.UNCLASSIFIED);
-		return constraint;
-	}
+   @Override
+   public Collection<String> getExpectedParameters()
+   {
+      return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
+   }
 
-	private Node createNodeFromPrototype(INode prototype) {
-		final Node modelNode = ModelFactory.eINSTANCE.createNode();
-		topology.getNodes().add(modelNode);
-		modelNode.setId(prototype.getId().valueAsString());
-		modelNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
-		return modelNode;
-	}
+   @Override
+   public void run(final TopologyControlAlgorithmParamters parameters)
+   {
+      final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
+      if (this.algorithm instanceof AbstractKTC)
+      {
+         ((AbstractKTC) this.algorithm).setK(k);
+      }
+      this.algorithm.initializeConstraints();
 
-	private Edge createLinkFromPrototype(IEdge prototype) {
-		final Edge modelLink = ModelFactory.eINSTANCE.createEdge();
-		topology.getEdges().add(modelLink);
-		modelLink.setId(prototype.getId().valueAsString());
-		modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
-		modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
-		modelLink.setState(EdgeState.UNCLASSIFIED);
-		modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
-		modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
-		modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
-		modelLink.setExpectedLifetime(
-				getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
-		return modelLink;
-	}
+      this.algorithm.runOnTopology(this.topology);
+   }
 
-	private double getNodePropertySafe(INode prototype, SiSType<Double> property) {
-		final Double value = prototype.getProperty(property);
-		if (value != null)
-			return value;
-		else
-			return Double.NaN;
-	}
+   /**
+    * Convenience method that is tailored to kTC.
+    */
+   public void run(final double k)
+   {
+      this.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
+   }
 
-	private double getEdgePropertySafe(IEdge prototype, SiSType<Double> property) {
-		final Double value = prototype.getProperty(property);
-		if (value != null)
-			return value;
-		else
-			return Double.NaN;
-	}
+   @Override
+   public INode addNode(INode prototype)
+   {
+      if (isNodeIdKnown(prototype))
+         throw new IllegalStateException(
+               String.format("Node ID has already been added. Existing: %s. New: %s", this.simonstratorGraph.getNode(prototype.getId()), prototype));
 
-	private boolean isNodeIdKnown(final INode prototype) {
-		return this.isNodeIdKnown(prototype.getId());
-	}
+      final INode simNode = super.addNode(prototype);
 
-	private boolean isNodeIdKnown(final INodeID nodeId) {
-		return this.simonstratorNodeToModelNode.containsKey(nodeId);
-	}
+      final Node modelNode = createNodeFromPrototype(prototype);
 
-	private boolean isEdgeIdKnown(final IEdge prototype) {
-		EdgeID id = prototype.getId();
-		return isEdgeIdKnown(id);
-	}
+      this.algorithm.handleNodeAddition(modelNode);
 
-	private boolean isEdgeIdKnown(final EdgeID id) {
-		return this.simonstratorEdgeToModelLink.containsKey(id);
-	}
+      this.establishNodeMapping(simNode, modelNode);
 
-	private boolean isTopologyPhysicallyConnected() {
-		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-		physicalConnectivityConstraint.checkOnTopology(this.topology, tempReport);
-		boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
-		return isPhysicallyConnected;
-	}
+      this.firePostNodeAdded(simNode);
 
-	public Edge addSymmetricEdge(final String forwardEdgeId, final String backwardEdgeId,
-			final Node sourceNode, final Node targetNode, final double distance,
-			final double requiredTransmissionPower) {
-		final Edge modelEdge = TopologyUtils.addUndirectedEdge(this.topology, forwardEdgeId, backwardEdgeId, sourceNode,
-				targetNode, distance, requiredTransmissionPower);
+      return simNode;
+   }
 
-		this.algorithm.handleLinkAddition(modelEdge);
+   @Override
+   public void removeNode(final INodeID nodeId)
+   {
+      if (!isNodeIdKnown(nodeId))
+         throw new IllegalStateException(String.format("Try to remove non-existing node: %s", nodeId));
 
-		return modelEdge;
-	}
+      for (final IEdge outgoingEdge : new ArrayList<>(this.simonstratorGraph.getOutgoingEdges(nodeId)))
+      {
+         removeEdge(outgoingEdge);
+      }
 
-	public <T> void updateModelNodeAttribute(final Node modelNode, final SiSType<T> property,
-			final T value) {
+      for (final IEdge incomingEdge : new ArrayList<>(this.simonstratorGraph.getIncomingEdges(nodeId)))
+      {
+         removeEdge(incomingEdge);
+      }
 
-		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
-			double oldEnergyLevel = modelNode.getEnergyLevel();
-			modelNode.setEnergyLevel((Double) value);
-			this.algorithm.handleNodeEnergyLevelModification(modelNode, oldEnergyLevel);
-		}
-	}
+      final INode removedNodeId = this.simonstratorGraph.getNode(nodeId);
+      final Node modelNode = getModelNodeForSimonstratorNode(nodeId);
 
-	/**
-	 * Calls
-	 * {@link #updateModelLinkAttribute(Edge, GraphElementProperty, Object)}
-	 * for the given link and its reverse link, setting the same value for the
-	 * given property on both links.
-	 */
-	public <T> void updateModelLinkAttributeSymmetric(final Edge modelEdge, final SiSType<T> property,
-			final T value) {
-		updateModelLinkAttribute(modelEdge, property, value);
-		updateModelLinkAttribute(modelEdge.getReverseEdge(), property, value);
-	}
+      firePreRemovedNode(removedNodeId);
 
-	/**
-	 * Sets the property of the given link to the given value.
-	 * 
-	 * <p>
-	 * This method also handles the notification of the CE handlers.
-	 * </p>
-	 */
-	public <T> void updateModelLinkAttribute(final Edge modelEdge, final SiSType<T> property,
-			final T value) {
-		if (modelEdge == null) {
-			throw new NullPointerException();
-		}
+      removeNodeMapping(nodeId, modelNode);
 
-		if (UnderlayTopologyProperties.WEIGHT.equals(property)) {
-			final double oldWeight = modelEdge.getWeight();
-			modelEdge.setWeight((Double) value);
-			this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
-		} else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
-			double oldExpectedLifetime = modelEdge.getExpectedLifetime();
-			modelEdge.setExpectedLifetime((Double) value);
-			this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
-		} else if (UnderlayTopologyProperties.EDGE_STATE.equals(property)) {
-			modelEdge.setState(de.tudarmstadt.maki.tc.cbctc.model.EdgeState.UNCLASSIFIED);
-			this.algorithm.handleLinkUnclassification(modelEdge);
-		}
-	}
+      removeNode(modelNode);
 
-	public void removeNode(final Node modelNode) {
-		this.algorithm.handleNodeDeletion(modelNode);
-		this.topology.removeNode(modelNode);
-	}
+      super.removeNode(nodeId);
+   }
 
-	public void removeEdge(final Edge modelEdge) {
-		this.algorithm.handleLinkDeletion(modelEdge);
+   @Override
+   public <T> void updateNodeAttribute(final INode simNode, final SiSType<T> property)
+   {
+      if (!isNodeIdKnown(simNode))
+         throw new IllegalStateException(String.format("Try to update non-existing node: %s", simNode));
 
-		this.topology.removeEdge(modelEdge);
-	}
+      super.updateNodeAttribute(simNode, property);
 
-	private void reportConstraintViolations(ConstraintViolationReport report) {
-		final EList<ConstraintViolation> violations = report.getViolations();
-		final int violationCount = violations.size();
-		if (!violations.isEmpty()) {
-			Monitor.log(getClass(), Level.ERROR, "%3d constraint violations detected for %6s: %s", violations.size(),
-					this.algorithmID, formatHistogramOfViolations(report));
-			this.constraintViolationCounter += violationCount;
-		} else {
-			Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
-		}
-	}
+      final Node modelNode = getModelNodeForSimonstratorNode(simNode.getId());
 
-	private String formatHistogramOfViolations(ConstraintViolationReport report) {
-		Map<String, Integer> histogramm = new HashMap<>();
-		Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
-		for (final ConstraintViolation violation : report.getViolations()) {
-			final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
-			if (!histogramm.containsKey(simpleName)) {
-				histogramm.put(simpleName, 0);
-				bytype.put(simpleName, new ArrayList<>());
-			}
-			histogramm.put(simpleName, histogramm.get(simpleName) + 1);
-			bytype.get(simpleName).add(violation);
-		}
-		final StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for (final String key : histogramm.keySet()) {
-			sb.append(String.format("%s : %d\n", key, histogramm.get(key)));
-			for (final ConstraintViolation violation : bytype.get(key)) {
-				sb.append("\n\t[");
-				sb.append(violation.getAffectedEdges().stream().map(EMoflonFacade::formatEdge)
-						.collect(Collectors.joining(",")));
-				sb.append("]\n");
-			}
-			sb.append("\n");
-		}
-		sb.append("]");
+      this.updateModelNodeAttribute(modelNode, property, simNode.getProperty(property));
 
-		return sb.toString();
-	}
+      this.firePostNodeAttributeUpdated(simNode, property);
+   }
 
-	private static String formatEdge(final Edge edge) {
-		final Edge link = edge;
-		return String.format("%s (s=%s, w=%.3f, L1=%.3f)", link.getId(), link.getState().toString().charAt(0),
-				link.getWeight(), link.getExpectedLifetime());
-	}
+   @Override
+   public IEdge addEdge(IEdge prototype)
+   {
+      if (isEdgeIdKnown(prototype))
+         throw new IllegalStateException(
+               String.format("Edge ID has already been added. Existing: %s. New: %s", this.simonstratorGraph.getEdge(prototype.getId()), prototype));
 
-	private Node getModelNodeForSimonstratorNode(final INodeID nodeId) {
-		return this.simonstratorNodeToModelNode.get(nodeId);
-	}
+      final IEdge newEdge = super.addEdge(prototype);
 
-	private Edge getModelLinkForSimonstratorEdge(final IEdge simEdge) {
-		return this.simonstratorEdgeToModelLink.get(simEdge.getId());
-	}
+      final Edge modelLink = createLinkFromPrototype(prototype);
 
-	public IEdge getSimonstratorLinkForTopologyModelLink(final Edge edge) {
-		return getGraph().getEdge(modelLinkToSimonstratorLink.get(edge));
-	}
+      this.establishLinkMapping(newEdge, modelLink);
 
-	public INodeID getSimonstratorNodeForTopologyModelNode(final Node node) {
-		return modelNodeToSimonstratorNode.get(node);
-	}
+      this.firePostEdgeAdded(prototype);
 
-	private void establishNodeMapping(INode simonstratorNode, final Node modelNode) {
-		this.simonstratorNodeToModelNode.put(simonstratorNode.getId(), modelNode);
-		this.modelNodeToSimonstratorNode.put(modelNode, simonstratorNode.getId());
-	}
+      return newEdge;
+   }
 
-	private void establishLinkMapping(final IEdge simonstratorEdge, final Edge modelLink) {
-		this.simonstratorEdgeToModelLink.put(simonstratorEdge.getId(), modelLink);
-		this.modelLinkToSimonstratorLink.put(modelLink, simonstratorEdge.getId());
-	}
+   @Override
+   public void removeEdge(final IEdge simEdge)
+   {
+      if (!isEdgeIdKnown(simEdge))
+         throw new IllegalStateException(String.format("Try to remove non-existing edge: %s", simEdge));
 
-	private void removeLinkMapping(final EdgeID simonstratorEdgeId, final Edge modelLink) {
-		this.modelLinkToSimonstratorLink.remove(modelLink);
-		this.simonstratorEdgeToModelLink.remove(simonstratorEdgeId);
-	}
+      final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
 
-	private void removeNodeMapping(final INodeID simonstratorNodeId, final Node modelNode) {
-		this.modelNodeToSimonstratorNode.remove(modelNode);
-		this.simonstratorNodeToModelNode.remove(simonstratorNodeId);
-	}
+      this.firePreEdgeRemoved(simEdge);
 
-	/**
-	 * Returns the graph of this facade.
-	 */
-	public Topology getTopology() {
-		return this.topology;
-	}
+      this.removeLinkMapping(simEdge.getId(), modelEdge);
 
-	/**
-	 * Ensures that the {@link LinkActivationContentAdapter} is installed
-	 */
-	private void registerEMFListeners() {
-		topology.eAdapters().clear();
-		topology.eAdapters().add(new LinkActivationContentAdapter(this));
-	}
+      this.removeEdge(modelEdge);
+
+      super.removeEdge(simEdge);
+   }
+
+   @Override
+   public <T> void updateEdgeAttribute(final IEdge simEdge, final SiSType<T> property)
+   {
+      if (!isEdgeIdKnown(simEdge))
+         throw new IllegalStateException(String.format("Try to update non-existing edge: %s", simEdge));
+
+      super.updateEdgeAttribute(simEdge, property);
+
+      final Edge modelEdge = getModelLinkForSimonstratorEdge(simEdge);
+      final T value = simEdge.getProperty(property);
+
+      this.updateModelLinkAttribute(modelEdge, property, value);
+
+      this.firePostEdgeAttributeUpdated(simEdge, property);
+   }
+
+   @Override
+   public void resetConstraintViolationCounter()
+   {
+      this.constraintViolationCounter = 0;
+   }
+
+   @Override
+   public int getConstraintViolationCount()
+   {
+      return this.constraintViolationCounter;
+   }
+
+   @Override
+   public void checkConstraintsAfterContextEvent()
+   {
+
+      ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+      if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL)
+      {
+         for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints())
+         {
+            constraint.checkOnTopology(topology, report);
+         }
+
+         if (isTopologyPhysicallyConnected())
+         {
+            weakConnectivityConstraint.checkOnTopology(this.topology, report);
+         }
+
+         reportConstraintViolations(report);
+      }
+   }
+
+   @Override
+   public void checkConstraintsAfterTopologyControl()
+   {
+      ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+
+      for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints())
+      {
+         constraint.checkOnTopology(topology, report);
+      }
+
+      noUnclassifiedLinksConstraint.checkOnTopology(topology, report);
+      if (isTopologyPhysicallyConnected())
+      {
+         weakConnectivityConstraint.checkOnTopology(this.topology, report);
+      }
+
+      reportConstraintViolations(report);
+   }
+
+   @Override
+   public void connectOppositeEdges(IEdge fwdEdgePrototype, IEdge bwdEdgePrototype)
+   {
+      super.connectOppositeEdges(fwdEdgePrototype, bwdEdgePrototype);
+
+      final Edge fwdModelLink = getModelLinkForSimonstratorEdge(fwdEdgePrototype);
+      final Edge bwdModelLink = getModelLinkForSimonstratorEdge(bwdEdgePrototype);
+
+      fwdModelLink.setReverseEdge(bwdModelLink);
+      bwdModelLink.setReverseEdge(fwdModelLink);
+   }
+
+   @Override
+   public void unclassifyAllLinks()
+   {
+      super.unclassifyAllLinks();
+      for (final Edge edge : this.getTopology().getEdges())
+      {
+         edge.setState(EdgeState.UNCLASSIFIED);
+      }
+   }
+
+   private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint()
+   {
+      EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+      constraint.getStates().add(EdgeState.ACTIVE);
+      constraint.getStates().add(EdgeState.INACTIVE);
+      constraint.getStates().add(EdgeState.UNCLASSIFIED);
+      return constraint;
+   }
+
+   private static EdgeStateBasedConnectivityConstraint createWeakConnectivityConstraint()
+   {
+      EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+      constraint.getStates().add(EdgeState.ACTIVE);
+      constraint.getStates().add(EdgeState.UNCLASSIFIED);
+      return constraint;
+   }
+
+   private Node createNodeFromPrototype(INode prototype)
+   {
+      final Node modelNode = ModelFactory.eINSTANCE.createNode();
+      topology.getNodes().add(modelNode);
+      modelNode.setId(prototype.getId().valueAsString());
+      modelNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
+      return modelNode;
+   }
+
+   private Edge createLinkFromPrototype(IEdge prototype)
+   {
+      final Edge modelLink = ModelFactory.eINSTANCE.createEdge();
+      topology.getEdges().add(modelLink);
+      modelLink.setId(prototype.getId().valueAsString());
+      modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
+      modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
+      modelLink.setState(EdgeState.UNCLASSIFIED);
+      modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
+      modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
+      modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
+      modelLink.setExpectedLifetime(getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
+      return modelLink;
+   }
+
+   private double getNodePropertySafe(INode prototype, SiSType<Double> property)
+   {
+      final Double value = prototype.getProperty(property);
+      if (value != null)
+         return value;
+      else
+         return DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES;
+   }
+
+   private double getEdgePropertySafe(IEdge prototype, SiSType<Double> property)
+   {
+      final Double value = prototype.getProperty(property);
+      if (value != null)
+         return value;
+      else
+         return DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES;
+   }
+
+   private boolean isNodeIdKnown(final INode prototype)
+   {
+      return this.isNodeIdKnown(prototype.getId());
+   }
+
+   private boolean isNodeIdKnown(final INodeID nodeId)
+   {
+      return this.simonstratorNodeToModelNode.containsKey(nodeId);
+   }
+
+   private boolean isEdgeIdKnown(final IEdge prototype)
+   {
+      EdgeID id = prototype.getId();
+      return isEdgeIdKnown(id);
+   }
+
+   private boolean isEdgeIdKnown(final EdgeID id)
+   {
+      return this.simonstratorEdgeToModelLink.containsKey(id);
+   }
+
+   private boolean isTopologyPhysicallyConnected()
+   {
+      ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+      physicalConnectivityConstraint.checkOnTopology(this.topology, tempReport);
+      boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
+      return isPhysicallyConnected;
+   }
+
+   public Edge addSymmetricEdge(final String forwardEdgeId, final String backwardEdgeId, final Node sourceNode, final Node targetNode, final double distance,
+         final double requiredTransmissionPower)
+   {
+      final Edge modelEdge = TopologyUtils.addUndirectedEdge(this.topology, forwardEdgeId, backwardEdgeId, sourceNode, targetNode, distance,
+            requiredTransmissionPower);
+
+      this.algorithm.handleLinkAddition(modelEdge);
+
+      return modelEdge;
+   }
+
+   public <T> void updateModelNodeAttribute(final Node modelNode, final SiSType<T> property, final T value)
+   {
+
+      if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property))
+      {
+         double oldEnergyLevel = modelNode.getEnergyLevel();
+         modelNode.setEnergyLevel((Double) value);
+         this.algorithm.handleNodeEnergyLevelModification(modelNode, oldEnergyLevel);
+      }
+   }
+
+   /**
+    * Calls
+    * {@link #updateModelLinkAttribute(Edge, GraphElementProperty, Object)}
+    * for the given link and its reverse link, setting the same value for the
+    * given property on both links.
+    */
+   public <T> void updateModelLinkAttributeSymmetric(final Edge modelEdge, final SiSType<T> property, final T value)
+   {
+      updateModelLinkAttribute(modelEdge, property, value);
+      updateModelLinkAttribute(modelEdge.getReverseEdge(), property, value);
+   }
+
+   /**
+    * Sets the property of the given link to the given value.
+    * 
+    * <p>
+    * This method also handles the notification of the CE handlers.
+    * </p>
+    */
+   public <T> void updateModelLinkAttribute(final Edge modelEdge, final SiSType<T> property, final T value)
+   {
+      if (modelEdge == null)
+      {
+         throw new NullPointerException();
+      }
+
+      if (UnderlayTopologyProperties.WEIGHT.equals(property))
+      {
+         final double oldWeight = modelEdge.getWeight();
+         modelEdge.setWeight((Double) value);
+         this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
+      } else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property))
+      {
+         double oldExpectedLifetime = modelEdge.getExpectedLifetime();
+         modelEdge.setExpectedLifetime((Double) value);
+         this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
+      } else if (UnderlayTopologyProperties.EDGE_STATE.equals(property))
+      {
+         modelEdge.setState(de.tudarmstadt.maki.tc.cbctc.model.EdgeState.UNCLASSIFIED);
+         this.algorithm.handleLinkUnclassification(modelEdge);
+      }
+   }
+
+   public void removeNode(final Node modelNode)
+   {
+      this.algorithm.handleNodeDeletion(modelNode);
+      this.topology.removeNode(modelNode);
+   }
+
+   public void removeEdge(final Edge modelEdge)
+   {
+      this.algorithm.handleLinkDeletion(modelEdge);
+
+      this.topology.removeEdge(modelEdge);
+   }
+
+   private void reportConstraintViolations(ConstraintViolationReport report)
+   {
+      final EList<ConstraintViolation> violations = report.getViolations();
+      final int violationCount = violations.size();
+      if (!violations.isEmpty())
+      {
+         Monitor.log(getClass(), Level.ERROR, "%3d constraint violations detected for %6s: %s", violations.size(), this.algorithmID,
+               formatHistogramOfViolations(report));
+         this.constraintViolationCounter += violationCount;
+      } else
+      {
+         Monitor.log(getClass(), Level.DEBUG, "No constraint violations found");
+      }
+   }
+
+   private String formatHistogramOfViolations(ConstraintViolationReport report)
+   {
+      Map<String, Integer> histogramm = new HashMap<>();
+      Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
+      for (final ConstraintViolation violation : report.getViolations())
+      {
+         final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
+         if (!histogramm.containsKey(simpleName))
+         {
+            histogramm.put(simpleName, 0);
+            bytype.put(simpleName, new ArrayList<>());
+         }
+         histogramm.put(simpleName, histogramm.get(simpleName) + 1);
+         bytype.get(simpleName).add(violation);
+      }
+      final StringBuilder sb = new StringBuilder();
+      sb.append("[");
+      for (final String key : histogramm.keySet())
+      {
+         sb.append(String.format("%s : %d\n", key, histogramm.get(key)));
+         for (final ConstraintViolation violation : bytype.get(key))
+         {
+            sb.append("\n\t[");
+            sb.append(violation.getAffectedEdges().stream().map(EMoflonFacade::formatEdge).collect(Collectors.joining(",")));
+            sb.append("]\n");
+         }
+         sb.append("\n");
+      }
+      sb.append("]");
+
+      return sb.toString();
+   }
+
+   private static String formatEdge(final Edge edge)
+   {
+      final Edge link = edge;
+      return String.format("%s (s=%s, w=%.3f, L1=%.3f)", link.getId(), link.getState().toString().charAt(0), link.getWeight(), link.getExpectedLifetime());
+   }
+
+   private Node getModelNodeForSimonstratorNode(final INodeID nodeId)
+   {
+      return this.simonstratorNodeToModelNode.get(nodeId);
+   }
+
+   private Edge getModelLinkForSimonstratorEdge(final IEdge simEdge)
+   {
+      return this.simonstratorEdgeToModelLink.get(simEdge.getId());
+   }
+
+   public IEdge getSimonstratorLinkForTopologyModelLink(final Edge edge)
+   {
+      return getGraph().getEdge(modelLinkToSimonstratorLink.get(edge));
+   }
+
+   public INodeID getSimonstratorNodeForTopologyModelNode(final Node node)
+   {
+      return modelNodeToSimonstratorNode.get(node);
+   }
+
+   private void establishNodeMapping(INode simonstratorNode, final Node modelNode)
+   {
+      this.simonstratorNodeToModelNode.put(simonstratorNode.getId(), modelNode);
+      this.modelNodeToSimonstratorNode.put(modelNode, simonstratorNode.getId());
+   }
+
+   private void establishLinkMapping(final IEdge simonstratorEdge, final Edge modelLink)
+   {
+      this.simonstratorEdgeToModelLink.put(simonstratorEdge.getId(), modelLink);
+      this.modelLinkToSimonstratorLink.put(modelLink, simonstratorEdge.getId());
+   }
+
+   private void removeLinkMapping(final EdgeID simonstratorEdgeId, final Edge modelLink)
+   {
+      this.modelLinkToSimonstratorLink.remove(modelLink);
+      this.simonstratorEdgeToModelLink.remove(simonstratorEdgeId);
+   }
+
+   private void removeNodeMapping(final INodeID simonstratorNodeId, final Node modelNode)
+   {
+      this.modelNodeToSimonstratorNode.remove(modelNode);
+      this.simonstratorNodeToModelNode.remove(simonstratorNodeId);
+   }
+
+   /**
+    * Returns the graph of this facade.
+    */
+   public Topology getTopology()
+   {
+      return this.topology;
+   }
+
+   /**
+    * Ensures that the {@link LinkActivationContentAdapter} is installed
+    */
+   private void registerEMFListeners()
+   {
+      topology.eAdapters().clear();
+      topology.eAdapters().add(new LinkActivationContentAdapter(this));
+   }
 }

@@ -67,7 +67,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyUtils.addUndirectedEdge(topology, "e12", "e21", n1, n2, 100.0, 5.0);
 		TopologyUtils.addUndirectedEdge(topology, "e13", "e31", n1, n3, 120.0, 5.0);
 		TopologyUtils.addUndirectedEdge(topology, "e23", "e32", n2, n3, 150.0, 5.0);
-		EdgeWeightProviders.applyEdgeWeightProvider(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 		
 		TopologyTestUtils.assertNodeAndEdgeCount(topology, 3, 6);
 

@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders;
+import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLifetimeWeightProvider;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.TopologyTestUtils;
 
 public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
@@ -24,8 +27,10 @@ public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest
    public void testWithTestgraphE1() throws Exception
    {
       reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
+      EdgeWeightProviders.apply(this.facade, InverseEstimatedRemainingLifetimeWeightProvider.INSTANCE);
 
       TopologyTestUtils.assertUnclassified(this.facade.getTopology());
+      TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
       this.facade.run(-1.0);
 

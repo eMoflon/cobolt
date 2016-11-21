@@ -38,7 +38,7 @@ public class GraphTReaderTest {
 	@Test
 	public void testWithTestgraphD1() throws Exception {
 		this.reader.read(this.topology, getPathToDistanceTestGraph(1));
-		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		Assert.assertEquals(5, topology.getNodeCount());
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
@@ -62,7 +62,7 @@ public class GraphTReaderTest {
 	@Test
 	public void testWithTestgraphD3() throws Exception {
 	   this.reader.read(this.topology, getPathToDistanceTestGraph(3));
-		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		Assert.assertEquals(3, topology.getNodeCount());
 		Assert.assertEquals(2 * 3, topology.getEdgeCount());
@@ -75,7 +75,7 @@ public class GraphTReaderTest {
 	@Test
 	public void testWithTestgrahpD4() throws Exception {
 	   this.reader.read(this.topology, getPathToDistanceTestGraph(4));
-		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		assertEdgeDistance(topology, "e1-2", 10.0);
 		assertEdgeDistance(topology, "e1-3", 20.0);
@@ -89,7 +89,7 @@ public class GraphTReaderTest {
 	@Test
 	public void testWithTestgrahpD5() throws Exception {
 	   this.reader.read(this.topology, getPathToDistanceTestGraph(5));
-		EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		assertEdgeDistance(topology, "e1-2", 15.0);
 		assertEdgeDistance(topology, "e1-3", 20.0);
@@ -137,7 +137,7 @@ public class GraphTReaderTest {
    @Test
    public void testWithTestgraphE1() throws Exception {
       this.reader.read(this.topology, getPathToEnergyTestGraph(1));
-   	EdgeWeightProviders.applyEdgeWeightProvider(this.topology, EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
+   	EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
    
    	Assert.assertEquals(6, topology.getEdgeCount());
    	Assert.assertEquals(3, topology.getNodeCount());

@@ -85,6 +85,6 @@ public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 
 	private void readTestCase(int id) throws FileNotFoundException {
 		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(id))));
-		EdgeWeightProviders.applyEdgeWeightProvider(this.facade.getTopology(), EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
+		EdgeWeightProviders.apply(this.facade.getTopology(), EdgeWeightProviders.EXPECTED_REMAINING_LIFETIME_PROVIDER);
 	}
 }
