@@ -15,9 +15,11 @@ import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSType;
+import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSTypes;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
@@ -53,7 +55,11 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 public class EMoflonFacade extends TopologyControlFacade_ImplBase
 {
 
-   public static final double DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES = Double.NaN;
+   private static final EdgeState DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE = EdgeState.UNCLASSIFIED;
+
+   public static final Double DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES = Double.NaN;
+
+   public static final int DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT = -1;
 
    private static final List<TopologyControlOperationMode> SUPPORTED_OPERATION_MODES = Arrays.asList(TopologyControlOperationMode.BATCH,
          TopologyControlOperationMode.INCREMENTAL);
@@ -356,63 +362,109 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       }
    }
 
+   // TODO@rkluge extract
    private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint()
    {
-      EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+      final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
       constraint.getStates().add(EdgeState.ACTIVE);
       constraint.getStates().add(EdgeState.INACTIVE);
       constraint.getStates().add(EdgeState.UNCLASSIFIED);
       return constraint;
    }
 
+   // TODO@rkluge extract
    private static EdgeStateBasedConnectivityConstraint createWeakConnectivityConstraint()
    {
-      EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
+      final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
       constraint.getStates().add(EdgeState.ACTIVE);
       constraint.getStates().add(EdgeState.UNCLASSIFIED);
       return constraint;
    }
 
+   /**
+    * Creates a model node from the given Simonstrator node
+    */
    private Node createNodeFromPrototype(INode prototype)
    {
       final Node modelNode = ModelFactory.eINSTANCE.createNode();
       topology.getNodes().add(modelNode);
       modelNode.setId(prototype.getId().valueAsString());
-      modelNode.setEnergyLevel(getNodePropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY));
+      modelNode.setEnergyLevel(getRemainingEnergySafe(prototype));
+      modelNode.setHopCount(getHopCountPropertySafe(prototype));
+      modelNode.setX(getPropertySafe(prototype, UnderlayTopologyProperties.LONGITUDE));
+      modelNode.setY(getPropertySafe(prototype, UnderlayTopologyProperties.LATITUDE));
+      modelNode.setBatteryCapacity(getPropertySafe(prototype, SiSTypes.ENERGY_BATTERY_CAPACITY));
       return modelNode;
    }
 
-   private Edge createLinkFromPrototype(IEdge prototype)
+   /**
+    * Creates a model edge from the given Simonstrator edge
+    */
+   private Edge createLinkFromPrototype(final IEdge prototype)
    {
       final Edge modelLink = ModelFactory.eINSTANCE.createEdge();
       topology.getEdges().add(modelLink);
       modelLink.setId(prototype.getId().valueAsString());
       modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
       modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
-      modelLink.setState(EdgeState.UNCLASSIFIED);
-      modelLink.setAngle(getEdgePropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
-      modelLink.setDistance(getEdgePropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
-      modelLink.setWeight(getEdgePropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
-      modelLink.setExpectedLifetime(getEdgePropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
+      modelLink.setState(getEdgeStateSafe(prototype));
+      modelLink.setAngle(getPropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
+      modelLink.setDistance(getPropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
+      modelLink.setWeight(getPropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
+      modelLink.setExpectedLifetime(getPropertySafe(prototype, UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE));
+      modelLink.setTransmissionPower(getPropertySafe(prototype, UnderlayTopologyProperties.REQUIRED_TRANSMISSION_POWER));
+      // modelLink.setReverseEdge(...); is missing because reverse edges are linked elsewhere #connectOppositeEdges
       return modelLink;
    }
 
-   private double getNodePropertySafe(INode prototype, SiSType<Double> property)
+   // TODO@rkluge extract
+   private EdgeState getEdgeStateSafe(IEdge prototype)
    {
-      final Double value = prototype.getProperty(property);
+      final de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value = prototype.getProperty(UnderlayTopologyProperties.EDGE_STATE);
       if (value != null)
-         return value;
+         return mapToModelEdgeState(value);
       else
-         return DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES;
+         return DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE;
    }
 
-   private double getEdgePropertySafe(IEdge prototype, SiSType<Double> property)
+   // TODO@rkluge extract
+   private EdgeState mapToModelEdgeState(de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value)
    {
-      final Double value = prototype.getProperty(property);
+      switch(value)
+      {
+      case ACTIVE:
+         return EdgeState.ACTIVE;
+      case INACTIVE:
+         return EdgeState.INACTIVE;
+      case UNCLASSIFIED:
+         return EdgeState.UNCLASSIFIED;
+      default:
+            throw new IllegalArgumentException("Unsupported edge state: " + value);
+      }
+   }
+
+   private double getRemainingEnergySafe(final INode prototype)
+   {
+      return getPropertySafe(prototype, UnderlayTopologyProperties.REMAINING_ENERGY, DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES);
+   }
+
+   private int getHopCountPropertySafe(final INode prototype)
+   {
+      return getPropertySafe(prototype, UnderlayTopologyProperties.HOP_COUNT, DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT);
+   }
+
+   private double getPropertySafe(IElement prototype, SiSType<Double> property)
+   {
+      return getPropertySafe(prototype, property, DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES);
+   }
+
+   private <T> T getPropertySafe(IElement prototype, SiSType<T> property, T defaultValueForUndefinedAttributes)
+   {
+      final T value = prototype.getProperty(property);
       if (value != null)
          return value;
       else
-         return DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES;
+         return defaultValueForUndefinedAttributes;
    }
 
    private boolean isNodeIdKnown(final INode prototype)

@@ -21,10 +21,6 @@ import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
  */
 public class TopologyModelTestUtils
 {
-   private static final double EPS_6 = TopologyControlTestHelper.EPS_6;
-
-   private static final double EPS_0 = TopologyControlTestHelper.EPS_0;
-
    private TopologyModelTestUtils()
    {
       throw new UnsupportedOperationException("Utility class");
@@ -36,7 +32,7 @@ public class TopologyModelTestUtils
       {
          final Edge edge = topology.getEdgeById(edgeId);
          TopologyModelTestUtils.assertState(edge, state);
-         if (checkSymmetry)
+         if (checkSymmetry &&  edge.getReverseEdge() != null)
          {
             TopologyModelTestUtils.assertState(edge.getReverseEdge(), state);
          }
@@ -70,6 +66,14 @@ public class TopologyModelTestUtils
     * Asserts that the given edge is in state {@link EdgeState#UNCLASSIFIED}
     */
    public static void assertUnclassified(final Edge edge)
+   {
+      TopologyModelTestUtils.assertState(edge, EdgeState.UNCLASSIFIED);
+   }
+   
+   /**
+    * Asserts that the given edge is **not** in state {@link EdgeState#UNCLASSIFIED}
+    */
+   public static void assertClassified(final Edge edge)
    {
       TopologyModelTestUtils.assertState(edge, EdgeState.UNCLASSIFIED);
    }
@@ -118,19 +122,16 @@ public class TopologyModelTestUtils
 
    public static void assertClassified(final Topology topology)
    {
-      for (final Edge edge : topology.getEdges())
-      {
-         Assert.assertNotSame(EdgeState.UNCLASSIFIED, edge.getState());
-      }
+      topology.getEdges().forEach(edge -> Assert.assertNotSame(EdgeState.UNCLASSIFIED, edge.getState()));
    }
 
    /**
     * Asserts that the graph contains for each edge its reverse edge and that
     * the state of forward and reverse edge are the same.
     */
-   public static void assertIsStatewiseSymmetric(final Topology graph)
+   public static void assertIsStatewiseSymmetric(final Topology topology)
    {
-      for (final Edge edge : graph.getEdges())
+      for (final Edge edge : topology.getEdges())
       {
          Assert.assertNotNull("Link '" + edge.getId() + "' has no reverse edge", edge.getReverseEdge());
          Assert.assertSame("Reverse edge of reverse edge of '" + edge.getId() + "' is '" + edge.getReverseEdge().getReverseEdge() + "'.", edge,
@@ -168,26 +169,30 @@ public class TopologyModelTestUtils
     * Asserts that all edges in the given graph are of state
     * {@edges EdgeState#UNCLASSIFIED}
     */
-   public static void assertUnclassified(final Topology graph)
+   public static void assertUnclassified(final Topology topology)
    {
-      for (final Edge edge : graph.getEdges())
-      {
-         assertUnclassified(edge);
-      }
+      topology.getEdges().forEach(edge -> assertUnclassified(edge));
    }
 
-   public static void assertAllActiveSymmetricWithExceptions(final Topology graph, final String... edgeIds)
+   /**
+    * Asserts that all edges (except for those with the given IDs) are active.
+    * 
+    * Additionally, symmetry w.r.t. edge states is checked.
+    * @param topology
+    * @param edgeIds
+    */
+   public static void assertAllActiveSymmetricWithExceptions(final Topology topology, final String... edgeIds)
    {
-      assertActiveWithExceptions(graph, true, edgeIds);
+      assertActiveWithExceptions(topology, true, edgeIds);
    }
 
    /**
     * Asserts that the active-edges-induced subgraph of the given graph is
     * connected.
     */
-   public static void assertActiveConnectivity(Topology graph)
+   public static void assertActiveConnectivity(final Topology topology)
    {
-      assertConnectivity(graph, EdgeState.ACTIVE);
+      assertConnectivity(topology, EdgeState.ACTIVE);
    }
 
    /**
@@ -212,49 +217,108 @@ public class TopologyModelTestUtils
 
    /**
     * Asserts that the given graph fulfills all given constraints
+    * 
+    * @see #assertTopologyConstraint(Topology, TopologyConstraint)
     */
-   public static void assertTopologyConstraints(Topology graph, List<? extends TopologyConstraint> constraints)
+   public static void assertTopologyConstraints(Topology topology, List<? extends TopologyConstraint> constraints)
    {
-      final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-      for (final TopologyConstraint constraint : constraints)
-      {
-         constraint.checkOnTopology(graph, report);
-         Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());
-      }
-
+      constraints.forEach(constraint -> assertTopologyConstraint(topology, constraint));
    }
 
-   public static void assertTopologyConstraint(Topology graph, TopologyConstraint constraint)
+   /**
+    * Checks whether the given constraint is fulfilled on the given topology
+    * @param topology the topology
+    * @param constraint the constraint to check
+    */
+   public static void assertTopologyConstraint(final Topology topology, final TopologyConstraint constraint)
    {
       final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
-      constraint.checkOnTopology(graph, report);
+      constraint.checkOnTopology(topology, report);
       Assert.assertEquals("Constraint checker report contains violations", 0, report.getViolations().size());
    }
 
-   public static void assertNodeAndEdgeCount(Topology topology, int nodeCount, int edgeCount)
+   /**
+    * Utility method for checking wether the given topology has the expected node and edge count
+    * @param topology
+    * @param expectedNodeCount
+    * @param expectedEdgeCount
+    */
+   public static void assertNodeAndEdgeCount(final Topology topology, final int expectedNodeCount, final int expectedEdgeCount)
    {
-      Assert.assertEquals(nodeCount, topology.getNodeCount());
-      Assert.assertEquals(edgeCount, topology.getEdgeCount());
+      Assert.assertEquals("Node count mismatch", expectedNodeCount, topology.getNodeCount());
+      Assert.assertEquals("Edge count mismatch", expectedEdgeCount, topology.getEdgeCount());
    }
 
-   public static void assertEdgeDistance(final Topology topology, final String id, final double distance)
+   /**
+    * Checks whether the edge with the given id has the given distance (no tolerance)
+    * @param topology the topology
+    * @param id the edge ID
+    * @param expectedDistance the expected weight
+    */
+   public static void assertEdgeDistance(final Topology topology, final String id, final double expectedDistance)
    {
-      Assert.assertEquals("Distance mismatch of " + id + ".", distance, topology.getEdgeById(id).getDistance(), TopologyModelTestUtils.EPS_0);
+      Assert.assertEquals("Distance mismatch of " + id + ".", expectedDistance, topology.getEdgeById(id).getDistance(), TopologyControlTestHelper.EPS_0);
    }
 
-   public static void assertEdgeWeight(final Topology topology, final String id, final double weight)
+   /**
+    * Checks whether the edge with the given id has the given weight (no tolerance)
+    * @param topology the topology
+    * @param id the edge ID
+    * @param expectedWeight the expected weight
+    */
+   public static void assertEdgeWeight(final Topology topology, final String id, final double expectedWeight)
    {
-      Assert.assertEquals("Weight mismatch of " + id + ".", weight, topology.getEdgeById(id).getWeight(), TopologyModelTestUtils.EPS_0);
+      Assert.assertEquals("Weight mismatch of " + id + ".", expectedWeight, topology.getEdgeById(id).getWeight(), TopologyControlTestHelper.EPS_0);
    }
 
+   /**
+    * Checks the given expected and actual value for equality with 1e-6 absolute tolerance.
+    * 
+    * @param expected the expected value
+    * @param actual the actual value
+    * @see TopologyControlTestHelper#EPS_6
+    */
    public static void assertEquals6(final double expected, final double actual)
    {
-      Assert.assertEquals(expected, actual, EPS_6);
+      Assert.assertEquals(expected, actual, TopologyControlTestHelper.EPS_6);
    }
 
+   /**
+    * Checks the given expected and actual value for equality with zero tolerance.
+    * 
+    * @param expected the expected value
+    * @param actual the actual value
+    * @see TopologyControlTestHelper#EPS_0
+    */
    public static void assertEquals0(final double expected, final double actual)
    {
-      Assert.assertEquals(expected, actual, EPS_0);
+      Assert.assertEquals(expected, actual, TopologyControlTestHelper.EPS_0);
+   }
+
+   /**
+    * Implementation of the implication operator
+    * 
+    * The result is !<code>premise</code> OR <code>conclusion</code>
+    * @param premise the premise value
+    * @param conclusion the conclusion value
+    * @return whether implication holds
+    */
+   public static boolean implies(boolean premise, boolean conclusion)
+   {
+      return !premise || conclusion;
+   }
+
+   /**
+    * Implementation of the biimplication operator
+    * 
+    * The result is (<code>a</code> AND <code>b</code>) OR (!<code>a</code> AND !<code>b</code>) 
+    * @param a the premise value
+    * @param b the conclusion value
+    * @return whether implication holds
+    */
+   public static boolean biimplies(boolean a, boolean b)
+   {
+      return a == b;
    }
 
 }

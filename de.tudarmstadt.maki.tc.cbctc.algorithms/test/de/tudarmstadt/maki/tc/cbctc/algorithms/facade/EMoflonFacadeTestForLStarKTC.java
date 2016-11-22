@@ -43,14 +43,14 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest
    }
    
    @Test
-   public void testWithTestgraphH2WithoutRemoval() throws Exception
+   public void testWithTestgraphH2_Negative() throws Exception
    {
       this.reader.read(this.facade, new FileInputStream(getPathToHopCountTestGraph(2)));
       
       TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
       TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
       
-      TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.05);
+      TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.2);
       
       TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false);
       
@@ -59,16 +59,32 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest
    }
    
    @Test
-   public void testWithTestgraphH2WithRemoval() throws Exception
+   public void testWithTestgraphH2_Positive() throws Exception
    {
       this.reader.read(this.facade, new FileInputStream(getPathToHopCountTestGraph(2)));
       
       TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
       TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
       
-      TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.11);
+      TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.3);
       
       TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e12");
+      
+      this.facade.checkConstraintsAfterTopologyControl();
+      Assert.assertEquals(0, this.facade.getConstraintViolationCount());
+   }
+   
+   @Test
+   public void testWithTestgraphH3() throws Exception
+   {
+      this.reader.read(this.facade, new FileInputStream(getPathToHopCountTestGraph(3)));
+      
+      TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
+      TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
+      
+      TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.11);
+      
+      TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false);
       
       this.facade.checkConstraintsAfterTopologyControl();
       Assert.assertEquals(0, this.facade.getConstraintViolationCount());

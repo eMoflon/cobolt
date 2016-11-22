@@ -1,4 +1,6 @@
 # Test case for l*-kTC
+# Expected: e12 should be removed because it fulfills the kTC predicate and its incident nodes have an equal hop count
+#
 
 3 3
 
