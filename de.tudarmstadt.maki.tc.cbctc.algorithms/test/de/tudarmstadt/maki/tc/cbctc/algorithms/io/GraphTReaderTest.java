@@ -6,8 +6,6 @@ import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsT
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToHopCountTestGraph;
 import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEdgeDistance;
 import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEdgeWeight;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEquals0;
-import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertEquals6;
 import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertIsStatewiseSymmetric;
 import static de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils.assertNodeAndEdgeCount;
 
@@ -15,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -45,10 +44,10 @@ public class GraphTReaderTest {
 		Assert.assertEquals(2 * 7, topology.getEdgeCount());
 
 		final Edge link34 = topology.getEdgeById("e34");
-		TopologyModelTestUtils.assertEquals0(22.0, link34.getWeight());
+		TopologyControlTestHelper.assertEquals0(22.0, link34.getWeight());
 
 		final Edge revLink34 = link34.getReverseEdge();
-		TopologyModelTestUtils.assertEquals0(22.0, revLink34.getWeight());
+		TopologyControlTestHelper.assertEquals0(22.0, revLink34.getWeight());
 		Assert.assertEquals("e43", revLink34.getId());
 
 		Assert.assertSame(link34, revLink34.getReverseEdge());
@@ -121,14 +120,14 @@ public class GraphTReaderTest {
 	   
 	   assertNodeAndEdgeCount(topology, 3, 4);
 	   
-	   assertEquals6(3, topology.getNodeById("1").getX());
-	   assertEquals6(4, topology.getNodeById("1").getY());
-	   assertEquals6(123.2, topology.getNodeById("2").getEnergyLevel());
-	   assertEquals0(7, topology.getNodeById("3").getHopCount());
+	   TopologyControlTestHelper.assertEquals6(3, topology.getNodeById("1").getX());
+	   TopologyControlTestHelper.assertEquals6(4, topology.getNodeById("1").getY());
+	   TopologyControlTestHelper.assertEquals6(123.2, topology.getNodeById("2").getEnergyLevel());
+	   TopologyControlTestHelper.assertEquals0(7, topology.getNodeById("3").getHopCount());
 	   
-	   assertEquals6(5, topology.getEdgeById("e12").getWeight());
-	   assertEquals6(3, topology.getEdgeById("e12").getDistance());
-	   assertEquals6(180, topology.getEdgeById("e13").getAngle());
+	   TopologyControlTestHelper.assertEquals6(5, topology.getEdgeById("e12").getWeight());
+	   TopologyControlTestHelper.assertEquals6(3, topology.getEdgeById("e12").getDistance());
+	   TopologyControlTestHelper.assertEquals6(180, topology.getEdgeById("e13").getAngle());
 	   Assert.assertEquals(EdgeState.INACTIVE, topology.getEdgeById("e13").getState());
 	   Assert.assertEquals(EdgeState.ACTIVE, topology.getEdgeById("e32").getState());
 	   Assert.assertEquals(EdgeState.UNCLASSIFIED, topology.getEdgeById("e23").getState());
@@ -142,10 +141,10 @@ public class GraphTReaderTest {
 
       TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 3, 6);
    
-      TopologyModelTestUtils.assertEquals6(10, topology.getNodeById("n1").getEnergyLevel());
-      TopologyModelTestUtils.assertEquals6(2, topology.getEdgeById("e12").getExpectedLifetime());
-      TopologyModelTestUtils.assertEquals6(1, topology.getEdgeById("e13").getExpectedLifetime());
-      TopologyModelTestUtils.assertEquals6(2, topology.getEdgeById("e23").getExpectedLifetime());
+      TopologyControlTestHelper.assertEquals6(10, topology.getNodeById("n1").getEnergyLevel());
+      TopologyControlTestHelper.assertEquals6(2, topology.getEdgeById("e12").getExpectedLifetime());
+      TopologyControlTestHelper.assertEquals6(1, topology.getEdgeById("e13").getExpectedLifetime());
+      TopologyControlTestHelper.assertEquals6(2, topology.getEdgeById("e23").getExpectedLifetime());
    
    	assertIsStatewiseSymmetric(topology);
    
@@ -162,9 +161,9 @@ public class GraphTReaderTest {
       Assert.assertEquals(1, this.topology.getNodeById("2").getHopCount());
       Assert.assertEquals(1, this.topology.getNodeById("3").getHopCount());
       
-      TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
-      TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
-      TopologyModelTestUtils.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
+      TopologyControlTestHelper.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
+      TopologyControlTestHelper.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
+      TopologyControlTestHelper.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
    }
    
    @Test
@@ -178,9 +177,9 @@ public class GraphTReaderTest {
       Assert.assertEquals(1, this.topology.getNodeById("2").getHopCount());
       Assert.assertEquals(11, this.topology.getNodeById("3").getHopCount());
       
-      TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
-      TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
-      TopologyModelTestUtils.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
+      TopologyControlTestHelper.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
+      TopologyControlTestHelper.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
+      TopologyControlTestHelper.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
    }
    
    @Test
@@ -194,9 +193,9 @@ public class GraphTReaderTest {
       Assert.assertEquals(-1, this.topology.getNodeById("2").getHopCount());
       Assert.assertEquals(1, this.topology.getNodeById("3").getHopCount());
       
-      TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
-      TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
-      TopologyModelTestUtils.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
+      TopologyControlTestHelper.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
+      TopologyControlTestHelper.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
+      TopologyControlTestHelper.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
    }
    
    @Test
@@ -206,13 +205,13 @@ public class GraphTReaderTest {
       
       TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 5, 12);
       
-      TopologyModelTestUtils.assertEquals0(0, this.topology.getEdgeById("e12").getAngle());
-      TopologyModelTestUtils.assertEquals0(10, this.topology.getEdgeById("e12").getWeight());
-      TopologyModelTestUtils.assertEquals0(90, this.topology.getEdgeById("e13").getAngle());
-      TopologyModelTestUtils.assertEquals0(20, this.topology.getEdgeById("e13").getWeight());
-      TopologyModelTestUtils.assertEquals0(180, this.topology.getEdgeById("e14").getAngle());
-      TopologyModelTestUtils.assertEquals0(30, this.topology.getEdgeById("e14").getWeight());
-      TopologyModelTestUtils.assertEquals0(270, this.topology.getEdgeById("e15").getAngle());
-      TopologyModelTestUtils.assertEquals0(40, this.topology.getEdgeById("e15").getWeight());
+      TopologyControlTestHelper.assertEquals0(0, this.topology.getEdgeById("e12").getAngle());
+      TopologyControlTestHelper.assertEquals0(10, this.topology.getEdgeById("e12").getWeight());
+      TopologyControlTestHelper.assertEquals0(90, this.topology.getEdgeById("e13").getAngle());
+      TopologyControlTestHelper.assertEquals0(20, this.topology.getEdgeById("e13").getWeight());
+      TopologyControlTestHelper.assertEquals0(180, this.topology.getEdgeById("e14").getAngle());
+      TopologyControlTestHelper.assertEquals0(30, this.topology.getEdgeById("e14").getWeight());
+      TopologyControlTestHelper.assertEquals0(270, this.topology.getEdgeById("e15").getAngle());
+      TopologyControlTestHelper.assertEquals0(40, this.topology.getEdgeById("e15").getWeight());
    }
 }

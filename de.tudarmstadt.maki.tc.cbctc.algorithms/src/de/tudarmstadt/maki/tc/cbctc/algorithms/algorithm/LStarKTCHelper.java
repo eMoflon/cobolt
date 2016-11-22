@@ -1,7 +1,7 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm;
 
+import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
-import de.tudarmstadt.maki.tc.cbctc.model.TopologyModelTestUtils;
 
 /**
  * Helper class for {@link UnderlayTopologyControlAlgorithms#LSTAR_KTC}
@@ -24,9 +24,9 @@ public class LStarKTCHelper
       if (Math.min(hopCount1, Math.min(hopCount2, hopCount3)) < 0)
          return false;
       else
-         return TopologyModelTestUtils.implies(hopCount1 == hopCount2, true)
-               && TopologyModelTestUtils.implies(hopCount1 > hopCount2, (hopCount3 + 1) * 1.0 / Math.max(1, hopCount1) < a)
-               && TopologyModelTestUtils.implies(hopCount1 < hopCount2, (hopCount3 + 1) * 1.0 / Math.max(1, hopCount2) < a);
+         return TopologyControlTestHelper.implies(hopCount1 == hopCount2, true)
+               && TopologyControlTestHelper.implies(hopCount1 > hopCount2, (hopCount3 + 1) * 1.0 / Math.max(1, hopCount1) < a)
+               && TopologyControlTestHelper.implies(hopCount1 < hopCount2, (hopCount3 + 1) * 1.0 / Math.max(1, hopCount2) < a);
    }
 
 }
