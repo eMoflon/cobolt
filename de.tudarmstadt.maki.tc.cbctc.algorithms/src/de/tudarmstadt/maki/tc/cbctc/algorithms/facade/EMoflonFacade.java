@@ -47,10 +47,6 @@ import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
  * Deferred:
  * 
  * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
- * 
- * TODO@rkluge Yao impl.
- * 
- * TODO@rkluge- l-kTC impl.
  */
 public class EMoflonFacade extends TopologyControlFacade_ImplBase
 {
@@ -130,7 +126,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    @Override
    public Collection<String> getExpectedParameters()
    {
-      return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
+      return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAM_K);
    }
 
    @Override
@@ -144,28 +140,28 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    {
       if (this.algorithm instanceof AbstractKTC)
       {
-         final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K);
+         final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAM_K);
          if (k == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, this.algorithmID));
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.KTC_PARAM_K, this.algorithmID));
          ((AbstractKTC) this.algorithm).setK(k);
       }
 
       if (this.algorithm instanceof LStarKTC)
       {
-         final Double a = (Double) parameters.get(UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A);
+         final Double a = (Double) parameters.get(UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A);
          if (a == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A, this.algorithmID));
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A, this.algorithmID));
          ((LStarKTC) this.algorithm).setA(a);
       }
 
       if (this.algorithm instanceof YaoGraphAlgorithm)
       {
-         final Integer coneCount = (Integer) parameters.get(UnderlayTopologyControlAlgorithms.YAO_CONE_COUNT);
+         final Integer coneCount = (Integer) parameters.get(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
          if (coneCount == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_CONE_COUNT, this.algorithmID));
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, this.algorithmID));
          ((YaoGraphAlgorithm) this.algorithm).setConeCount(coneCount);
       }
 

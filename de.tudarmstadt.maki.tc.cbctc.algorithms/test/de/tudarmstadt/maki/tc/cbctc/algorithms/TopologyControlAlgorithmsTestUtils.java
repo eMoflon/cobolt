@@ -8,7 +8,6 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.EMoflonFacade;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 
-
 /**
  * Test utilities for the (model-based) topology control algorithms
  * 
@@ -54,6 +53,17 @@ public final class TopologyControlAlgorithmsTestUtils
    {
       return "instances/testgraph_H" + i + ".grapht";
    }
+   
+   /**
+    * Returns the path to the angle-related test case with the given index
+    * 
+    * @param i the index
+    * @return the project-relative path to the test case
+    */
+   public static String getPathToAngleTestGraph(final int i)
+   {
+      return "instances/testgraph_A" + i + ".grapht";
+   }
 
    /**
     * Asserts that the weight attribute of each edge in the facade's topology is set, i.e., unequal to EMoflonFacade#DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES
@@ -73,18 +83,33 @@ public final class TopologyControlAlgorithmsTestUtils
     * Invokes the given facade that must be configured to run a kTC-style algorithm with the given k-value.
     * 
     * @param facade the given facade
-    * @param k the given k
+    * @param k see {@link UnderlayTopologyControlAlgorithms#KTC_PARAM_K}
     */
    public static void runFacadeKTC(ITopologyControlFacade facade, double k)
    {
-      facade.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k));
+      facade.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAM_K, k));
    }
 
-   public static void runFacadeLStarKTC(EMoflonFacade facade, double k, double a)
+   /**
+    * Configures the given facade to run {@link UnderlayTopologyControlAlgorithms#LSTAR_KTC} 
+    * @param facade the facade
+    * @param k see {@link UnderlayTopologyControlAlgorithms#KTC_PARAM_K}
+    * @param a see {@link UnderlayTopologyControlAlgorithms#LSTAR_KTC_PARAM_A}
+    */
+   public static void runFacadeLStarKTC(ITopologyControlFacade facade, double k, double a)
    {
-      facade.run(TopologyControlAlgorithmParamters.create(
-            UnderlayTopologyControlAlgorithms.KTC_PARAMETER_K, k,
-            UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAMETER_A, a));
+      facade.run(
+            TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.KTC_PARAM_K, k, UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A, a));
+   }
+
+   /**
+    * Configures the given facade to run {@link UnderlayTopologyControlAlgorithms#YAO} 
+    * @param facade the facade
+    * @param coneCount see {@link UnderlayTopologyControlAlgorithms#YAO_PARAM_CONE_COUNT}
+    */
+   public static void runFacadeYao(ITopologyControlFacade facade, int coneCount)
+   {
+      facade.run(TopologyControlAlgorithmParamters.create(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, coneCount));
    }
 
 }

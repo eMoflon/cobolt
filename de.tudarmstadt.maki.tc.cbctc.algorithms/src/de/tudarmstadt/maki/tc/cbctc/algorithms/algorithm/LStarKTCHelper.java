@@ -16,7 +16,7 @@ public class LStarKTCHelper
     * @param hopCount1
     * @param hopCount2
     * @param hopCount3
-    * @param a see {@link UnderlayTopologyControlAlgorithms#LSTAR_KTC_PARAMETER_A}
+    * @param a see {@link UnderlayTopologyControlAlgorithms#LSTAR_KTC_PARAM_A}
     * @return whether the predicate is fulfilled
     */
    public static boolean checkPredicate(final int hopCount1, final int hopCount2, final int hopCount3, final double a)

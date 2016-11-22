@@ -1,5 +1,6 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.io;
 
+import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToAngleTestGraph;
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph;
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToEnergyTestGraph;
 import static de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils.getPathToHopCountTestGraph;
@@ -174,8 +175,8 @@ public class GraphTReaderTest {
       TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 3, 3);
       
       Assert.assertEquals(10, this.topology.getNodeById("1").getHopCount());
-      Assert.assertEquals(11, this.topology.getNodeById("2").getHopCount());
-      Assert.assertEquals(1, this.topology.getNodeById("3").getHopCount());
+      Assert.assertEquals(1, this.topology.getNodeById("2").getHopCount());
+      Assert.assertEquals(11, this.topology.getNodeById("3").getHopCount());
       
       TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
       TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
@@ -196,5 +197,22 @@ public class GraphTReaderTest {
       TopologyModelTestUtils.assertEquals0(5, this.topology.getEdgeById("e12").getWeight());
       TopologyModelTestUtils.assertEquals0(1, this.topology.getEdgeById("e13").getWeight());
       TopologyModelTestUtils.assertEquals0(3, this.topology.getEdgeById("e32").getWeight());
+   }
+   
+   @Test
+   public void testWithTestgraphA1() throws Exception
+   {
+      this.reader.read(this.topology, getPathToAngleTestGraph(1));
+      
+      TopologyModelTestUtils.assertNodeAndEdgeCount(this.topology, 5, 12);
+      
+      TopologyModelTestUtils.assertEquals0(0, this.topology.getEdgeById("e12").getAngle());
+      TopologyModelTestUtils.assertEquals0(10, this.topology.getEdgeById("e12").getWeight());
+      TopologyModelTestUtils.assertEquals0(90, this.topology.getEdgeById("e13").getAngle());
+      TopologyModelTestUtils.assertEquals0(20, this.topology.getEdgeById("e13").getWeight());
+      TopologyModelTestUtils.assertEquals0(180, this.topology.getEdgeById("e14").getAngle());
+      TopologyModelTestUtils.assertEquals0(30, this.topology.getEdgeById("e14").getWeight());
+      TopologyModelTestUtils.assertEquals0(270, this.topology.getEdgeById("e15").getAngle());
+      TopologyModelTestUtils.assertEquals0(40, this.topology.getEdgeById("e15").getWeight());
    }
 }
