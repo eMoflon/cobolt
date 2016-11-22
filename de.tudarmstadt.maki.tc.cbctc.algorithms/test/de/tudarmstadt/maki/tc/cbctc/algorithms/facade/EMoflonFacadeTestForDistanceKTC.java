@@ -5,12 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
-import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.DistanceEdgeWeightProvider;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlAlgorithmsTestUtils;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
@@ -111,59 +109,6 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyModelTestUtils.assertIsStatewiseSymmetric(topology);
 		facade.checkConstraintsAfterContextEvent();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
-	}
-
-	/*
-	 * ################## Incremental test cases ##################
-	 */
-	@Ignore // TODO@rkluge: Check back later
-	@Test
-	public void testFacadeWithTestgraphD4() throws Exception {
-		final int k = 2;
-
-		readTestCase(4);
-
-		// TC(i)
-		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
-
-		final Topology topology = facade.getTopology();
-		TopologyModelTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e2-5",
-				"e2-6", "e3-9", "e3-11", "e9-11");
-
-		// CE(i) - Add link e7-9
-		facade.addSymmetricEdge("e7-9", "e9-7", topology.getNodeById("7"), topology.getNodeById("9"), 10.0,
-				100.0);
-
-		TopologyModelTestUtils.assertUnclassified(topology, "e7-9");
-
-		// CE(i) - Remove node 10
-		facade.removeNode(topology.getNodeById("10"));
-		Assert.assertEquals(10, topology.getNodeCount());
-		Assert.assertEquals(34, topology.getEdgeCount());
-
-		TopologyModelTestUtils.assertUnclassifiedSymmetric(topology, "e3-9", "e3-11", "e9-11");
-		TopologyModelTestUtils.assertActiveSymmetric(topology, "e7-8", "e8-9", "e3-7");
-
-		// TC(ii)
-		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
-		TopologyModelTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e2-5",
-				"e2-6", "e3-9", "e7-8");
-
-		// CE(ii)
-		facade.updateModelLinkAttributeSymmetric(topology.getEdgeById("e2-6"), UnderlayTopologyProperties.WEIGHT, 15.0);
-		TopologyModelTestUtils.assertUnclassifiedSymmetric(topology, "e2-6");
-		TopologyModelTestUtils.assertActiveSymmetric(topology, "e5-6");
-
-		facade.updateModelLinkAttributeSymmetric(topology.getEdgeById("e2-5"), UnderlayTopologyProperties.WEIGHT, 15.0);
-		TopologyModelTestUtils.assertUnclassifiedSymmetric(topology, "e2-5");
-		TopologyModelTestUtils.assertActiveSymmetric(topology, "e4-5");
-		TopologyModelTestUtils.assertUnclassifiedSymmetric(topology, "e2-4");
-
-		// TC(iii)
-		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, (double) k);
-		TopologyModelTestUtils.assertAllActiveSymmetricWithExceptions(topology, "e1-3", "e2-4", "e3-9",
-				"e4-5", "e5-6", "e7-8");
-
 	}
 
 	/**

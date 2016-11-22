@@ -20,6 +20,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INodeID;
 import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSType;
 import de.tudarmstadt.maki.simonstrator.api.component.sis.type.SiSTypes;
+import de.tudarmstadt.maki.simonstrator.tc.facade.ITopologyControlFacade;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacade_ImplBase;
@@ -30,7 +31,7 @@ import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.LStarKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.YaoGraphAlgorithm;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.AlgorithmHelper;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.AlgorithmHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -44,14 +45,13 @@ import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyUtils;
 
 /**
- * Deferred:
+ * Implementation of {@link ITopologyControlFacade} that integrates with eMoflon (www.emoflon.org)
  * 
- * TODO@rkluge: Create screenshots (PNG/SVG) from topology visualization
+ * @author Roland Kluge - Initial implementation
+ *
  */
 public class EMoflonFacade extends TopologyControlFacade_ImplBase
 {
-
-   private static final EdgeState DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE = EdgeState.UNCLASSIFIED;
 
    public static final Double DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES = Double.NaN;
 
@@ -91,9 +91,9 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       this.topology = ModelFactory.eINSTANCE.createTopology();
       this.constraintViolationCounter = 0;
 
-      this.physicalConnectivityConstraint = createPhysicalConnectivityConstraint();
+      this.physicalConnectivityConstraint = EMoflonFacadeConstraintsHelper.createPhysicalConnectivityConstraint();
 
-      this.weakConnectivityConstraint = createWeakConnectivityConstraint();
+      this.weakConnectivityConstraint = EMoflonFacadeConstraintsHelper.createWeakConnectivityConstraint();
 
       this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
    }
@@ -358,25 +358,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       }
    }
 
-   // TODO@rkluge extract
-   private static EdgeStateBasedConnectivityConstraint createPhysicalConnectivityConstraint()
-   {
-      final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
-      constraint.getStates().add(EdgeState.ACTIVE);
-      constraint.getStates().add(EdgeState.INACTIVE);
-      constraint.getStates().add(EdgeState.UNCLASSIFIED);
-      return constraint;
-   }
-
-   // TODO@rkluge extract
-   private static EdgeStateBasedConnectivityConstraint createWeakConnectivityConstraint()
-   {
-      final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE.createEdgeStateBasedConnectivityConstraint();
-      constraint.getStates().add(EdgeState.ACTIVE);
-      constraint.getStates().add(EdgeState.UNCLASSIFIED);
-      return constraint;
-   }
-
    /**
     * Creates a model node from the given Simonstrator node
     */
@@ -403,7 +384,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       modelLink.setId(prototype.getId().valueAsString());
       modelLink.setSource(getModelNodeForSimonstratorNode(prototype.fromId()));
       modelLink.setTarget(getModelNodeForSimonstratorNode(prototype.toId()));
-      modelLink.setState(getEdgeStateSafe(prototype));
+      modelLink.setState(EMoflonFacadeAttributeHelper.getEdgeStateSafe(prototype));
       modelLink.setAngle(getPropertySafe(prototype, UnderlayTopologyProperties.ANGLE));
       modelLink.setDistance(getPropertySafe(prototype, UnderlayTopologyProperties.DISTANCE));
       modelLink.setWeight(getPropertySafe(prototype, UnderlayTopologyProperties.WEIGHT));
@@ -411,32 +392,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       modelLink.setTransmissionPower(getPropertySafe(prototype, UnderlayTopologyProperties.REQUIRED_TRANSMISSION_POWER));
       // modelLink.setReverseEdge(...); is missing because reverse edges are linked elsewhere #connectOppositeEdges
       return modelLink;
-   }
-
-   // TODO@rkluge extract
-   private EdgeState getEdgeStateSafe(IEdge prototype)
-   {
-      final de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value = prototype.getProperty(UnderlayTopologyProperties.EDGE_STATE);
-      if (value != null)
-         return mapToModelEdgeState(value);
-      else
-         return DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE;
-   }
-
-   // TODO@rkluge extract
-   private EdgeState mapToModelEdgeState(de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value)
-   {
-      switch(value)
-      {
-      case ACTIVE:
-         return EdgeState.ACTIVE;
-      case INACTIVE:
-         return EdgeState.INACTIVE;
-      case UNCLASSIFIED:
-         return EdgeState.UNCLASSIFIED;
-      default:
-            throw new IllegalArgumentException("Unsupported edge state: " + value);
-      }
    }
 
    private double getRemainingEnergySafe(final INode prototype)
