@@ -13,6 +13,12 @@ import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
+/**
+ * Utility class for manipulating {@link Topology}'s 
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class TopologyUtils {
 	private TopologyUtils() {
 		throw new UnsupportedOperationException();
@@ -114,6 +120,12 @@ public class TopologyUtils {
 
    }
 
+	/**
+	 * Returns true if the topology contains at least one unclassified edge
+	 * 
+	 * @param topology the topology to check
+	 * @return whether the topology contains at least one unclassified edge
+	 */
    public static boolean containsUnclassifiedEdges(Topology topology) {
       return topology.getEdges().stream().anyMatch(e -> e.getState() == EdgeState.UNCLASSIFIED);
    }

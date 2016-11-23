@@ -4,6 +4,12 @@ import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelPackage;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
+/**
+ * Collection of several pre-configured {@link EdgeWeightProvider}s and utility methods
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public final class EdgeWeightProviders
 {
    public static final EdgeWeightProvider DISTANCE_PROVIDER = new EAttributeBasedEdgeWeightProvider(ModelPackage.eINSTANCE.getEdge_Distance());

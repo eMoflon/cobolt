@@ -2,6 +2,12 @@ package de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures;
 
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 
+/**
+ * Generic type for weight providers of {@link Edge}s
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public interface EdgeWeightProvider
 {
    /**

@@ -5,6 +5,12 @@ import java.util.logging.Logger;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 
+/**
+ * An implementation of {@link GraphContentAdapter} that logs all events to its logger (level=INFO)
+ * 
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class LoggingGraphContentAdapter extends GraphContentAdapter {
 
 	private static final Logger logger = Logger.getLogger(LoggingGraphContentAdapter.class.getName());
