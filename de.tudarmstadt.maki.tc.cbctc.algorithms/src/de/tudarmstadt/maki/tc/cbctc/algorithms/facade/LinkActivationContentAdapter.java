@@ -17,9 +17,6 @@ import de.tudarmstadt.maki.tc.cbctc.model.listener.GraphContentAdapter;
 class LinkActivationContentAdapter extends GraphContentAdapter {
 	private final EMoflonFacade facade;
 
-	/**
-	 * @param facade
-	 */
 	LinkActivationContentAdapter(final EMoflonFacade facade) {
 		this.facade = facade;
 	}

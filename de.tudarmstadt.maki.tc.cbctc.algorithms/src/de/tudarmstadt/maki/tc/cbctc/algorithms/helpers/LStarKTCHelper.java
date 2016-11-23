@@ -13,6 +13,9 @@ public class LStarKTCHelper
 {
    /**
     * This helper method checks whether the l*-kTC-specific condition holds, given the three hop count values and the strech limit a.
+    * 
+    * Link e12 is the removal candidate, node3 is the relay node.
+    * 
     * @param hopCount1
     * @param hopCount2
     * @param hopCount3

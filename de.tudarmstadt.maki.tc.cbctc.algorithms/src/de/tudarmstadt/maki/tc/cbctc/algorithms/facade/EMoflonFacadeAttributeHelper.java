@@ -4,6 +4,11 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 
+/**
+ * Helper class for attribute updates in the {@link EMoflonFacade} 
+ * 
+ * @author Roland Kluge - Initial implementation
+ */
 public class EMoflonFacadeAttributeHelper
 {
    private static final EdgeState DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE = EdgeState.UNCLASSIFIED;

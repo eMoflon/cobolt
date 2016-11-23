@@ -31,7 +31,6 @@ import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.LStarKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.YaoGraphAlgorithm;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.AlgorithmHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -104,7 +103,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
          throw new IllegalArgumentException("Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
 
-      this.algorithm = AlgorithmHelper.createAlgorithmForID(algorithmID);
+      this.algorithm = EMoflonFacadeAlgorithmHelper.createAlgorithmForID(algorithmID);
       this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
       this.algorithmID = algorithmID;
       this.registerEMFListeners();

@@ -5,7 +5,7 @@ import org.junit.Before;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
-import de.tudarmstadt.maki.tc.cbctc.algorithms.io.FacadeGraphTReader;
+import de.tudarmstadt.maki.simonstrator.tc.io.FacadeGraphTReader;
 
 public abstract class AbstractEMoflonFacadeTest
 {

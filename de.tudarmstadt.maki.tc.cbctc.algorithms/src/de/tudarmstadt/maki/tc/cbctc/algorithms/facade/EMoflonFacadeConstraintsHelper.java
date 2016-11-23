@@ -4,6 +4,11 @@ import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 
+/**
+ * Helper class for graph constraints in the {@link EMoflonFacade} 
+ * 
+ * @author Roland Kluge - Initial implementation
+ */
 public class EMoflonFacadeConstraintsHelper
 {
 

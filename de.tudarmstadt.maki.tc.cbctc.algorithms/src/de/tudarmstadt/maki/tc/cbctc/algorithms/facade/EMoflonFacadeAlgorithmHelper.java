@@ -1,11 +1,16 @@
-package de.tudarmstadt.maki.tc.cbctc.algorithms.helpers;
+package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.AlgorithmsFactory;;
 
-public class AlgorithmHelper {
+/**
+ * Helper class for algorithms in the {@link EMoflonFacade} 
+ * 
+ * @author Roland Kluge - Initial implementation
+ */
+public class EMoflonFacadeAlgorithmHelper {
 
 	public static AbstractTopologyControlAlgorithm createAlgorithmForID(final TopologyControlAlgorithmID algorithmId) {
 

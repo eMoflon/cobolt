@@ -12,8 +12,8 @@ public class YaoAlgorithmHelper
 {
    /**
     * This helper method checks whether the l*-kTC-specific condition holds, given the three hop count values and the strech limit a.
-    * @param edgeAngle12
-    * @param edgeAngle13
+    * @param edgeAngle12 angle of the removal candidate
+    * @param edgeAngle13 angle of some other link in the same cone
     * @param coneCount see {@link UnderlayTopologyControlAlgorithms#YAO_PARAM_CONE_COUNT}
     * @return whether the predicate is fulfilled
     */
