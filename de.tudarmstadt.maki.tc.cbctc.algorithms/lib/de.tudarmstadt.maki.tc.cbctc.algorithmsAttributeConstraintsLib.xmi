@@ -36,7 +36,7 @@
       constraintSpecifications="//@constraintSpecifications.2"
       operationIdentifier="lStarKTCSpecificPredicate">
     <operationSpecifications
-        specification="de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.LStarKTCHelper.checkPredicate($a$,$b$,$c$,$d$)"
+        specification="de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.LStarKTCHelper.checkPredicate($a$,$b$,$c$,$d$)"
         adornmentString="BBBB"
         alwaysSuccessful="false"/>
     <parameterIDs
@@ -52,7 +52,7 @@
       constraintSpecifications="//@constraintSpecifications.3"
       operationIdentifier="yaoSpecificPredicate">
     <operationSpecifications
-        specification="de.tudarmstadt.maki.tc.cbctc.algorithms.algorithm.YaoAlgorithmHelper.checkPredicate($a$, $b$, $c$)"
+        specification="de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.YaoAlgorithmHelper.checkPredicate($a$, $b$, $c$)"
         adornmentString="BBB"
         alwaysSuccessful="false"/>
     <parameterIDs
