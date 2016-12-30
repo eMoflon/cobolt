@@ -23,4 +23,10 @@ public class NullNodePreprocessor implements INodePreprocessor
       // nop
    }
 
+   @Override
+   public void setShallReverseOrder(boolean shallReverseOrder)
+   {
+      // nop
+   }
+
 }

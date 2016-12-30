@@ -16,4 +16,10 @@ public interface INodePreprocessor
     * @param algorithm the algorithm to refer to while sorting
     */
    void setAlgorithm(AbstractTopologyControlAlgorithm algorithm);
+   
+   /**
+    * Indicates that edges should be preprocessed in reverse order
+    * @param shallReverseOrder
+    */
+   void setShallReverseOrder(boolean shallReverseOrder);
 }

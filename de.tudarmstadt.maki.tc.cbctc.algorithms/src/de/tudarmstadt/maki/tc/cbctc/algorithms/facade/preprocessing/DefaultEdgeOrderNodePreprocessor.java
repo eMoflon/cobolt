@@ -54,6 +54,7 @@ public class DefaultEdgeOrderNodePreprocessor implements INodePreprocessor
       this.algorithm = algorithm;
    }
    
+   @Override
    public void setShallReverseOrder(boolean shallReverseOrder)
    {
       this.shallReverseOrder = shallReverseOrder;
