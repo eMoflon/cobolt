@@ -4,23 +4,11 @@ partial class TriangleBasedTopologyControlAlgorithmImpl {
 
 
 @model runOnNodePreprocessing (Node node) <--
-      /*
-      										 * This preprocessing method sorts the links increasingly by distance, which should yield better 
-      										 * performance. 
-      										 */
-      final long ticMillis = System.currentTimeMillis();
-      org.eclipse.emf.common.util.ECollections.sort(node.getOutgoingEdges(), new java.util.Comparator<Edge>() {
-         @Override
-         public int compare(Edge o1, Edge o2)
-         {
-            return Double.compare(o1.getWeight(), o2.getWeight());
-         }
-
-      });
-      final long tocMillis = System.currentTimeMillis();
-      final long durationInMillis = tocMillis - ticMillis;
-      de.tudarmstadt.maki.simonstrator.api.Monitor.log(getClass(), de.tudarmstadt.maki.simonstrator.api.Monitor.Level.DEBUG,
-            "Sorting during preprocessing of unclassified link identification took %dms", durationInMillis);
+      final de.tudarmstadt.maki.tc.cbctc.algorithms.facade.preprocessing.INodePreprocessor nodePreprocessor = 
+            de.tudarmstadt.maki.tc.cbctc.algorithms.facade.preprocessing.NodePreprocessingRegistry
+            .getInstance().getNodePreprocessor();
+      if (nodePreprocessor != null)
+         nodePreprocessor.preprocess(node);
 -->
 
 }

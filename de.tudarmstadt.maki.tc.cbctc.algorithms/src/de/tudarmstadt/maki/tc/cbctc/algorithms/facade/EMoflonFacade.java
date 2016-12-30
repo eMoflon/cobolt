@@ -31,6 +31,8 @@ import de.tudarmstadt.maki.tc.cbctc.algorithms.AbstractTopologyControlAlgorithm;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.LStarKTC;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.TopologyControlOperationMode;
 import de.tudarmstadt.maki.tc.cbctc.algorithms.YaoGraphAlgorithm;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.preprocessing.INodePreprocessor;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.facade.preprocessing.NodePreprocessingRegistry;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
@@ -80,6 +82,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
 
    private TopologyConstraint noUnclassifiedLinksConstraint;
+   
 
    public EMoflonFacade()
    {
@@ -96,6 +99,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
 
       this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
    }
+   
+   public void setNodePreprocessor(INodePreprocessor nodePreprocessor)
+   {
+      NodePreprocessingRegistry.getInstance().setNodePreprocessor(nodePreprocessor);
+   }
 
    @Override
    public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID)
@@ -107,6 +115,8 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
       this.algorithmID = algorithmID;
       this.registerEMFListeners();
+      
+      NodePreprocessingRegistry.getInstance().getNodePreprocessor().setAlgorithm(algorithm);
    }
 
    private TopologyControlOperationMode mapOperationMode(de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode)
@@ -163,6 +173,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
                   String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, this.algorithmID));
          ((YaoGraphAlgorithm) this.algorithm).setConeCount(coneCount);
       }
+      
 
       this.algorithm.initializeConstraints();
 
@@ -170,7 +181,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    }
 
    @Override
-   public INode addNode(INode prototype)
+   public INode addNode(final INode prototype)
    {
       if (isNodeIdKnown(prototype))
          throw new IllegalStateException(
