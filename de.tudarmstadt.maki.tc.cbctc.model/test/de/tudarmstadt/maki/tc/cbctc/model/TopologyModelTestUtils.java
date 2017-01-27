@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
+import org.moflon.core.utilities.UtilityClassNotInstantiableException;
 
 import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
@@ -23,7 +24,7 @@ public class TopologyModelTestUtils
 {
    private TopologyModelTestUtils()
    {
-      throw new UnsupportedOperationException("Utility class");
+      throw new UtilityClassNotInstantiableException();
    }
 
    public static void assertState(final Topology topology, final EdgeState state, final boolean checkSymmetry, final String... edgeIds)

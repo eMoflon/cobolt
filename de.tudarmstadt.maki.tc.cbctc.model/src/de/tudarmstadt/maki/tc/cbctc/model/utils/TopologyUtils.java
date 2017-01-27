@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.moflon.core.utilities.UtilityClassNotInstantiableException;
+
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
@@ -21,7 +23,7 @@ import de.tudarmstadt.maki.tc.cbctc.model.Topology;
  */
 public class TopologyUtils {
 	private TopologyUtils() {
-		throw new UnsupportedOperationException();
+		throw new UtilityClassNotInstantiableException();
 	}
 
 	public static Node addNode(final Topology topology, String id, double remainingEnergy)
