@@ -70,6 +70,13 @@
 			<artifactId>simonstrator-peerfactsim</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>simonstrator-topology-control-democles</groupId>
+			<artifactId>
+				simonstrator-topology-control-democles
+			</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
