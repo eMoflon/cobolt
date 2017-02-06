@@ -20,7 +20,6 @@ import com.google.common.collect.Iterables;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.GenericGraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
@@ -35,18 +34,26 @@ import de.tudarmstadt.maki.simonstrator.tc.patternMatching.matching.TopologyPatt
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.matching.TopologyPatternMatcher_Impl;
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.pattern.PatternBuilder;
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.pattern.TopologyPattern;
+import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 import de.tudarmstadt.maki.tc.cbctc.analysis.AbstractMatchCounter;
 import de.tudarmstadt.maki.tc.cbctc.analysis.AnalysisFactory;
 import de.tudarmstadt.maki.tc.cbctc.analysis.FiveCliqueMatchCounter;
 import de.tudarmstadt.maki.tc.cbctc.analysis.KTCMatchCounter;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.analysis.TriangleMatchCounter;
+import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
+import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
 public class DemoclesComparisonFacade extends EMoflonFacade {
 
-	private static final double KTC_K = 1.41;
+	private static final String FIVE_CLIQUE_ID = "5-clique";
+
+   private static final String KTC_ID = "kTC";
+
+   private static final String TRIANGLE_ID = "triangle";
+
+   private static final double KTC_K = 1.41;
 
 	private static final List<String> CSV_HEADER = Arrays.asList(//
 			"Time", "NodeCount", "EdgeCount", "GraphSize", //
@@ -130,6 +137,27 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
             throw new IllegalStateException(String.format("No counterpart for model node %s", node));
          }
       }
+      for (final IEdge edge : graph.getEdges())
+      {
+         Edge foundEdge = topology2.getEdges().stream().filter(e -> e.getId().equals(edge.getId().valueAsString())).findFirst().orElse(null);
+         if (foundEdge == null)
+         {
+            throw new IllegalStateException(String.format("No counterpart for Sim-edge %s", edge));
+         }
+      }
+      for (final Edge edge : topology2.getEdges())
+      {
+         IEdge foundEdge = graph.getEdges().stream().filter(e -> e.getId().valueAsString().equals(edge.getId())).findFirst().orElse(null);
+         if (foundEdge == null)
+         {
+            throw new IllegalStateException(String.format("No counterpart for model node %s", edge));
+         }
+         else {
+            if (edge.getWeight() != foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT)) {
+               throw new IllegalStateException(String.format("Weight mismatch for edges with ID %s: sim: %f, model: %f", foundEdge.getId(), foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT), edge.getWeight()));
+            }
+         }
+      }
 		final int nodeCount = graph.getNodeCount();
 		final int edgeCount = graph.getEdgeCount();
 		final int graphSize = nodeCount + edgeCount;
@@ -144,8 +172,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 			}
 		}
 
-		for (final String patternID : Arrays.asList("triangle", "kTC",
-				"5-clique")) {
+		for (final String patternID : Arrays.asList(TRIANGLE_ID, KTC_ID)) {
 			final TopologyPattern pattern = this.getPattern(patternID);
 			final Map<String, Long> times = new HashMap<>();
 			final Map<String, Integer> matchCounts = new HashMap<>();
@@ -229,11 +256,11 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	private AbstractMatchCounter createEMoflonPatternMatcher(
 			final String patternID) {
 		switch (patternID) {
-			case "triangle" :
+			case TRIANGLE_ID :
 				return triangleMatcher;
-			case "kTC" :
+			case KTC_ID :
 				return kTCMatchCounter;
-			case "5-clique" :
+			case FIVE_CLIQUE_ID :
 				return fiveCliqueMatchCounter;
 			default :
 				throw new IllegalArgumentException(
@@ -258,11 +285,11 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 
 	private TopologyPattern getPattern(final String patternID) {
 		switch (patternID) {
-			case "triangle" :
+			case TRIANGLE_ID :
 				return trianglePattern;
-			case "kTC" :
+			case KTC_ID :
 				return ktcPattern;
-			case "5-clique" :
+			case FIVE_CLIQUE_ID :
 				return fiveCliquePattern;
 			default:
 				throw new IllegalArgumentException(
@@ -335,18 +362,18 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 						final IEdge pe23 = IEdge.class.cast(iter.next());
 
 						GraphElementProperties.validateThatPropertyIsPresent(
-								pe12, GenericGraphElementProperties.WEIGHT);
+								pe12, UnderlayTopologyProperties.WEIGHT);
 						GraphElementProperties.validateThatPropertyIsPresent(
-								pe13, GenericGraphElementProperties.WEIGHT);
+								pe13, UnderlayTopologyProperties.WEIGHT);
 						GraphElementProperties.validateThatPropertyIsPresent(
-								pe23, GenericGraphElementProperties.WEIGHT);
+								pe23, UnderlayTopologyProperties.WEIGHT);
 
 						final double w12 = pe12.getProperty(
-								GenericGraphElementProperties.WEIGHT);
+						      UnderlayTopologyProperties.WEIGHT);
 						final double w13 = pe13.getProperty(
-								GenericGraphElementProperties.WEIGHT);
+						      UnderlayTopologyProperties.WEIGHT);
 						final double w23 = pe23.getProperty(
-								GenericGraphElementProperties.WEIGHT);
+						      UnderlayTopologyProperties.WEIGHT);
 						return w12 > Math.max(w13, w23)
 								&& w12 > KTC_K * Math.min(w13, w23);
 					}
