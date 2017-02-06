@@ -57,7 +57,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
 
    private static final String KTC_ID = "kTC";
 
-   private static final String FOUR_CHAIN = "4-chain";
+   private static final String FOUR_CHAIN_ID = "4-chain";
 
    private static final String TRIANGLE_ID = "triangle";
 
@@ -120,54 +120,54 @@ public class DemoclesComparisonFacade extends EMoflonFacade
    public void run(TopologyControlAlgorithmParamters parameters)
    {
       final Graph graph = this.getGraph();
-      Topology topology2 = this.getTopology();
-      if (topology2.getEdgeCount() != graph.getEdgeCount())
-      {
-         throw new IllegalStateException(String.format("Edge count mismatch: Sim. %d <-> Model: %d", graph.getEdgeCount(), topology2.getEdgeCount()));
-      }
-      if (topology2.getNodeCount() != graph.getNodeCount())
-      {
-         throw new IllegalStateException(String.format("Node count mismatch: Sim. %d <-> Model: %d", graph.getNodeCount(), topology2.getNodeCount()));
-      }
-      for (final INode node : graph.getNodes())
-      {
-         Node foundNode = topology2.getNodes().stream().filter(n -> n.getId().equals(node.getId().valueAsString())).findFirst().orElse(null);
-         if (foundNode == null)
-         {
-            throw new IllegalStateException(String.format("No counterpart for Sim-node %s", node));
-         }
-      }
-      for (final Node node : topology2.getNodes())
-      {
-         INode foundNode = graph.getNodes().stream().filter(n -> n.getId().valueAsString().equals(node.getId())).findFirst().orElse(null);
-         if (foundNode == null)
-         {
-            throw new IllegalStateException(String.format("No counterpart for model node %s", node));
-         }
-      }
-      for (final IEdge edge : graph.getEdges())
-      {
-         Edge foundEdge = topology2.getEdges().stream().filter(e -> e.getId().equals(edge.getId().valueAsString())).findFirst().orElse(null);
-         if (foundEdge == null)
-         {
-            throw new IllegalStateException(String.format("No counterpart for Sim-edge %s", edge));
-         }
-      }
-      for (final Edge edge : topology2.getEdges())
-      {
-         IEdge foundEdge = graph.getEdges().stream().filter(e -> e.getId().valueAsString().equals(edge.getId())).findFirst().orElse(null);
-         if (foundEdge == null)
-         {
-            throw new IllegalStateException(String.format("No counterpart for model node %s", edge));
-         } else
-         {
-            if (edge.getWeight() != foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT))
-            {
-               throw new IllegalStateException(String.format("Weight mismatch for edges with ID %s: sim: %f, model: %f", foundEdge.getId(),
-                     foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT), edge.getWeight()));
-            }
-         }
-      }
+//      Topology topology2 = this.getTopology();
+//      if (topology2.getEdgeCount() != graph.getEdgeCount())
+//      {
+//         throw new IllegalStateException(String.format("Edge count mismatch: Sim. %d <-> Model: %d", graph.getEdgeCount(), topology2.getEdgeCount()));
+//      }
+//      if (topology2.getNodeCount() != graph.getNodeCount())
+//      {
+//         throw new IllegalStateException(String.format("Node count mismatch: Sim. %d <-> Model: %d", graph.getNodeCount(), topology2.getNodeCount()));
+//      }
+//      for (final INode node : graph.getNodes())
+//      {
+//         Node foundNode = topology2.getNodes().stream().filter(n -> n.getId().equals(node.getId().valueAsString())).findFirst().orElse(null);
+//         if (foundNode == null)
+//         {
+//            throw new IllegalStateException(String.format("No counterpart for Sim-node %s", node));
+//         }
+//      }
+//      for (final Node node : topology2.getNodes())
+//      {
+//         INode foundNode = graph.getNodes().stream().filter(n -> n.getId().valueAsString().equals(node.getId())).findFirst().orElse(null);
+//         if (foundNode == null)
+//         {
+//            throw new IllegalStateException(String.format("No counterpart for model node %s", node));
+//         }
+//      }
+//      for (final IEdge edge : graph.getEdges())
+//      {
+//         Edge foundEdge = topology2.getEdges().stream().filter(e -> e.getId().equals(edge.getId().valueAsString())).findFirst().orElse(null);
+//         if (foundEdge == null)
+//         {
+//            throw new IllegalStateException(String.format("No counterpart for Sim-edge %s", edge));
+//         }
+//      }
+//      for (final Edge edge : topology2.getEdges())
+//      {
+//         IEdge foundEdge = graph.getEdges().stream().filter(e -> e.getId().valueAsString().equals(edge.getId())).findFirst().orElse(null);
+//         if (foundEdge == null)
+//         {
+//            throw new IllegalStateException(String.format("No counterpart for model node %s", edge));
+//         } else
+//         {
+//            if (edge.getWeight() != foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT))
+//            {
+//               throw new IllegalStateException(String.format("Weight mismatch for edges with ID %s: sim: %f, model: %f", foundEdge.getId(),
+//                     foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT), edge.getWeight()));
+//            }
+//         }
+//      }
       final int nodeCount = graph.getNodeCount();
       final int edgeCount = graph.getEdgeCount();
       final int graphSize = nodeCount + edgeCount;
@@ -183,7 +183,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
          }
       }
 
-      for (final String patternID : Arrays.asList(TRIANGLE_ID, KTC_ID))
+      for (final String patternID : Arrays.asList(TRIANGLE_ID, KTC_ID, FOUR_CHAIN_ID, FIVE_CLIQUE_ID))
       {
          final TopologyPattern pattern = this.getPattern(patternID);
          final Map<String, Long> times = new HashMap<>();
@@ -265,7 +265,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
          return triangleMatcher;
       case KTC_ID:
          return kTCMatchCounter;
-      case FOUR_CHAIN:
+      case FOUR_CHAIN_ID:
          return fourChainWithoutShortcutsMatcher;
       case FIVE_CLIQUE_ID:
          return fiveCliqueMatchCounter;
@@ -300,7 +300,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
          return trianglePattern;
       case KTC_ID:
          return ktcPattern;
-      case FOUR_CHAIN:
+      case FOUR_CHAIN_ID:
          return fourChainWithoutShortcutsPattern;
       case FIVE_CLIQUE_ID:
          return fiveCliquePattern;
