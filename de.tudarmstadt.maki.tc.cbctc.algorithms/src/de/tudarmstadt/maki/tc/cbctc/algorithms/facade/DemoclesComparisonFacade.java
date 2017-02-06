@@ -24,6 +24,7 @@ import de.tudarmstadt.maki.simonstrator.api.common.graph.Graph;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperties;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
+import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
 import de.tudarmstadt.maki.simonstrator.tc.democles.integrated.DemoclesTopologyPatternMatcher;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.constraint.GraphElementConstraint;
@@ -35,6 +36,8 @@ import de.tudarmstadt.maki.simonstrator.tc.patternMatching.pattern.TopologyPatte
 import de.tudarmstadt.maki.tc.cbctc.analysis.AbstractMatchCounter;
 import de.tudarmstadt.maki.tc.cbctc.analysis.AnalysisFactory;
 import de.tudarmstadt.maki.tc.cbctc.analysis.KTCMatchCounter;
+import de.tudarmstadt.maki.tc.cbctc.model.Node;
+import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
 public class DemoclesComparisonFacade extends EMoflonFacade
 {
@@ -72,6 +75,31 @@ public class DemoclesComparisonFacade extends EMoflonFacade
    public void run(TopologyControlAlgorithmParamters parameters)
    {
       final Graph graph = this.getGraph();
+      Topology topology2 = this.getTopology();
+      if (topology2.getEdgeCount() != graph.getEdgeCount())
+      {
+         throw new IllegalStateException(String.format("Edge count mismatch: Sim. %d <-> Model: %d", graph.getEdgeCount(), topology2.getEdgeCount()));
+      }
+      if (topology2.getNodeCount() != graph.getNodeCount())
+      {
+         throw new IllegalStateException(String.format("Node count mismatch: Sim. %d <-> Model: %d", graph.getNodeCount(), topology2.getNodeCount()));
+      }
+      for (final INode node : graph.getNodes())
+      {
+         Node foundNode = topology2.getNodes().stream().filter(n -> n.getId().equals(node.getId().valueAsString())).findFirst().orElse(null);
+         if (foundNode == null)
+         {
+            throw new IllegalStateException(String.format("No counterpart for Sim-node %s", node));
+         }
+      }
+      for (final Node node : topology2.getNodes())
+      {
+         INode foundNode = graph.getNodes().stream().filter(n -> n.getId().valueAsString().equals(node.getId())).findFirst().orElse(null);
+         if (foundNode == null)
+         {
+            throw new IllegalStateException(String.format("No counterpart for model node %s", node));
+         }
+      }
       final int nodeCount = graph.getNodeCount();
       final int edgeCount = graph.getEdgeCount();
       final int graphSize = nodeCount + edgeCount;
@@ -231,13 +259,13 @@ public class DemoclesComparisonFacade extends EMoflonFacade
                   }
                });
          break;
+      case "3-chain":
+         break;
       case "5-clique":
-         //         patternBuilder.addUndirectedEdge("pn1", "pn2").addUndirectedEdge("pn1", "pn3").addUndirectedEdge("pn1", "pn4").addUndirectedEdge("pn1", "pn5")
-         //               .addUndirectedEdge("pn2", "pn3").addUndirectedEdge("pn2", "pn4").addUndirectedEdge("pn2", "pn5").addUndirectedEdge("pn3", "pn4")
-         //               .addUndirectedEdge("pn3", "pn5").addUndirectedEdge("pn4", "pn5");
          patternBuilder.addDirectedEdge("pn1", "pn2").addDirectedEdge("pn1", "pn3").addDirectedEdge("pn1", "pn4").addDirectedEdge("pn1", "pn5")
                .addDirectedEdge("pn2", "pn3").addDirectedEdge("pn2", "pn4").addDirectedEdge("pn2", "pn5").addDirectedEdge("pn3", "pn4")
                .addDirectedEdge("pn3", "pn5").addDirectedEdge("pn4", "pn5");
+         break;
       }
       return patternBuilder.done();
    }
