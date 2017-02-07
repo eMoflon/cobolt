@@ -1,0 +1,11 @@
+
+partial class EdgeImpl {
+
+
+
+@model toString () <--
+      return String.format("%s -> %s [%s, w=%.2f, a=%.2f, d=%.2f, Lexp=%.2f]", this.getSource().getId(), this.getTarget().getId(), this.getState(),
+            this.getWeight(), this.getAngle(), this.getDistance(), this.getExpectedLifetime());
+-->
+
+}

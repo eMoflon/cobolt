@@ -39,15 +39,13 @@ import de.tudarmstadt.maki.simonstrator.tc.patternMatching.matching.TopologyPatt
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.pattern.PatternBuilder;
 import de.tudarmstadt.maki.simonstrator.tc.patternMatching.pattern.TopologyPattern;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
-import de.tudarmstadt.maki.tc.cbctc.analysis.AbstractMatchCounter;
+import de.tudarmstadt.maki.tc.cbctc.analysis.AbstractPatternMatcher;
 import de.tudarmstadt.maki.tc.cbctc.analysis.AnalysisFactory;
-import de.tudarmstadt.maki.tc.cbctc.analysis.FiveCliqueMatchCounter;
-import de.tudarmstadt.maki.tc.cbctc.analysis.FourChainWithoutShortcutsMatcher;
-import de.tudarmstadt.maki.tc.cbctc.analysis.KTCMatchCounter;
-import de.tudarmstadt.maki.tc.cbctc.analysis.TriangleMatchCounter;
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
+import de.tudarmstadt.maki.tc.cbctc.analysis.FiveCliquePatternMatcher;
+import de.tudarmstadt.maki.tc.cbctc.analysis.FourChainWithoutShortcutsPatternMatcher;
+import de.tudarmstadt.maki.tc.cbctc.analysis.KTCPatternMatcher;
+import de.tudarmstadt.maki.tc.cbctc.analysis.TrianglePatternMatcher;
 import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 
 public class DemoclesComparisonFacade extends EMoflonFacade
@@ -93,13 +91,13 @@ public class DemoclesComparisonFacade extends EMoflonFacade
 
    private final TopologyPattern fiveCliquePattern;
 
-   private final TriangleMatchCounter triangleMatcher;
+   private final TrianglePatternMatcher triangleMatcher;
 
-   private final KTCMatchCounter kTCMatchCounter;
+   private final KTCPatternMatcher kTCMatchCounter;
 
-   private final FiveCliqueMatchCounter fiveCliqueMatchCounter;
+   private final FiveCliquePatternMatcher fiveCliqueMatchCounter;
 
-   private final FourChainWithoutShortcutsMatcher fourChainWithoutShortcutsMatcher;
+   private final FourChainWithoutShortcutsPatternMatcher fourChainWithoutShortcutsMatcher;
 
    public DemoclesComparisonFacade()
    {
@@ -109,11 +107,11 @@ public class DemoclesComparisonFacade extends EMoflonFacade
       fourChainWithoutShortcutsPattern = createFourChainWithoutShortcutsMatcher();
       fiveCliquePattern = createFiveCliquePattern();
 
-      triangleMatcher = AnalysisFactory.eINSTANCE.createTriangleMatchCounter();
-      kTCMatchCounter = AnalysisFactory.eINSTANCE.createKTCMatchCounter();
+      triangleMatcher = AnalysisFactory.eINSTANCE.createTrianglePatternMatcher();
+      kTCMatchCounter = AnalysisFactory.eINSTANCE.createKTCPatternMatcher();
       kTCMatchCounter.setK(KTC_K);
-      fourChainWithoutShortcutsMatcher = AnalysisFactory.eINSTANCE.createFourChainWithoutShortcutsMatcher();
-      fiveCliqueMatchCounter = AnalysisFactory.eINSTANCE.createFiveCliqueMatchCounter();
+      fourChainWithoutShortcutsMatcher = AnalysisFactory.eINSTANCE.createFourChainWithoutShortcutsPatternMatcher();
+      fiveCliqueMatchCounter = AnalysisFactory.eINSTANCE.createFiveCliquePatternMatcher();
    }
 
    @Override
@@ -203,9 +201,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade
                matchCount = Iterables.size(matches);
                break;
             case EMOFLON_PM_ID:
-               final AbstractMatchCounter matchCounter = createEMoflonPatternMatcher(patternID);
+               final AbstractPatternMatcher matchCounter = createEMoflonPatternMatcher(patternID);
                final Topology topology = getTopology();
-               matchCount = matchCounter.count(topology);
+               matchCount = matchCounter.match(topology).getMatches().size();
                break;
             default:
                throw new IllegalStateException("Invalid PM: " + patternMatcherID);
@@ -257,7 +255,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
 
    }
 
-   private AbstractMatchCounter createEMoflonPatternMatcher(final String patternID)
+   private AbstractPatternMatcher createEMoflonPatternMatcher(final String patternID)
    {
       switch (patternID)
       {

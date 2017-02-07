@@ -15,13 +15,13 @@ public class FourChainWithoutShortcutsMatcherTest
 
    ModelFactory mf = ModelFactory.eINSTANCE;
 
-   private FourChainWithoutShortcutsMatcher matcher;
+   private FourChainWithoutShortcutsPatternMatcher matcher;
 
    @Before
    public void setUp()
    {
 
-      matcher = factory.createFourChainWithoutShortcutsMatcher();
+      matcher = factory.createFourChainWithoutShortcutsPatternMatcher();
    }
 
    @Test
@@ -29,55 +29,55 @@ public class FourChainWithoutShortcutsMatcherTest
    {
       Topology t = createFourChainWithoutShortcuts();
 
-      Assert.assertEquals(1, matcher.count(t));
+      Assert.assertEquals(1, matcher.match(t).getMatches().size());
    }
 
    @Test
    public void testNoMatchDueToShortcut() throws Exception
    {
-      Topology topology = createFourChainWithoutShortcuts();
+      Topology t = createFourChainWithoutShortcuts();
 
       Edge shortcut1 = mf.createEdge();
-      topology.getEdges().add(shortcut1);
-      shortcut1.setSource(topology.getNodes().get(0));
-      shortcut1.setTarget(topology.getNodes().get(2));
+      t.getEdges().add(shortcut1);
+      shortcut1.setSource(t.getNodes().get(0));
+      shortcut1.setTarget(t.getNodes().get(2));
 
-      Assert.assertEquals(0, matcher.count(topology));
+      Assert.assertEquals(0, matcher.match(t).getMatches().size());
    }
 
    @Test
    public void testNoMatchDueToShortcut2() throws Exception
    {
-      Topology topology = createFourChainWithoutShortcuts();
+      Topology t = createFourChainWithoutShortcuts();
 
       Edge shortcut1 = mf.createEdge();
-      topology.getEdges().add(shortcut1);
-      shortcut1.setSource(topology.getNodes().get(0));
-      shortcut1.setTarget(topology.getNodes().get(3));
+      t.getEdges().add(shortcut1);
+      shortcut1.setSource(t.getNodes().get(0));
+      shortcut1.setTarget(t.getNodes().get(3));
 
-      Assert.assertEquals(0, matcher.count(topology));
+      Assert.assertEquals(0, matcher.match(t).getMatches().size());
    }
 
    @Test
    public void testNoMatchDueToShortcut3() throws Exception
    {
-      Topology topology = createFourChainWithoutShortcuts();
+      Topology t = createFourChainWithoutShortcuts();
 
       {
          Edge shortcut1 = mf.createEdge();
-         topology.getEdges().add(shortcut1);
-         shortcut1.setSource(topology.getNodes().get(0));
-         shortcut1.setTarget(topology.getNodes().get(2));
+         t.getEdges().add(shortcut1);
+         shortcut1.setSource(t.getNodes().get(0));
+         shortcut1.setTarget(t.getNodes().get(2));
 
       }
       {
          Edge shortcut1 = mf.createEdge();
-         topology.getEdges().add(shortcut1);
-         shortcut1.setSource(topology.getNodes().get(0));
-         shortcut1.setTarget(topology.getNodes().get(3));
+         t.getEdges().add(shortcut1);
+         shortcut1.setSource(t.getNodes().get(0));
+         shortcut1.setTarget(t.getNodes().get(3));
       }
 
-      Assert.assertEquals(0, matcher.count(topology));
+      Assert.assertEquals(0, matcher.match(t).getMatches().size());
    }
 
    private Topology createFourChainWithoutShortcuts()
