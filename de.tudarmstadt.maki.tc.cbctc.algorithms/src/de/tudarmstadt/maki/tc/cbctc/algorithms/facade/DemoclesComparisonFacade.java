@@ -64,18 +64,20 @@ public class DemoclesComparisonFacade extends EMoflonFacade
    private static final List<String> CSV_HEADER = Arrays.asList(//
          "Time", "NodeCount", "EdgeCount", "GraphSize", //
          "Pattern", //
-         "TimeSim", "TimeDemocles", "TimeEMoflon", //
-         "MatchCountSim", "MatchCountDemocles", "MatchCountEMoflon");
+         "TimeSim", "TimeDemoclesDefault", "TimeDemoclesLightning", "TimeEMoflon", //
+         "MatchCountSim", "MatchCountDemoclesDefault", "MatchCountDemoclesLightning", "MatchCountEMoflon");
 
    private static final String CSV_SEP = ";";
 
    private static final String SIM_PM_ID = "Default";
 
-   private static final String DEMOCLES_PM_ID = "Democles";
+   private static final String DEMOCLES_DEFAULT_PM_ID = "Democles-default";
+
+   private static final String DEMOCLES_LIGHTNING_PM_ID = "Democles-lightning";
 
    private static final String EMOFLON_PM_ID = "eMoflon";
 
-   private static final List<String> PATTERN_MATCHERS = Arrays.asList(DEMOCLES_PM_ID, SIM_PM_ID, EMOFLON_PM_ID);
+   private static final List<String> PATTERN_MATCHERS = Arrays.asList(SIM_PM_ID, DEMOCLES_DEFAULT_PM_ID, DEMOCLES_LIGHTNING_PM_ID, EMOFLON_PM_ID);
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HHmmss");
 
@@ -117,55 +119,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade
    @Override
    public void run(TopologyControlAlgorithmParamters parameters)
    {
+      final int widthOfPatternColumn = 10;
+      final int widthOfPMColumn = 20;
       final Graph graph = this.getGraph();
-//      Topology topology2 = this.getTopology();
-//      if (topology2.getEdgeCount() != graph.getEdgeCount())
-//      {
-//         throw new IllegalStateException(String.format("Edge count mismatch: Sim. %d <-> Model: %d", graph.getEdgeCount(), topology2.getEdgeCount()));
-//      }
-//      if (topology2.getNodeCount() != graph.getNodeCount())
-//      {
-//         throw new IllegalStateException(String.format("Node count mismatch: Sim. %d <-> Model: %d", graph.getNodeCount(), topology2.getNodeCount()));
-//      }
-//      for (final INode node : graph.getNodes())
-//      {
-//         Node foundNode = topology2.getNodes().stream().filter(n -> n.getId().equals(node.getId().valueAsString())).findFirst().orElse(null);
-//         if (foundNode == null)
-//         {
-//            throw new IllegalStateException(String.format("No counterpart for Sim-node %s", node));
-//         }
-//      }
-//      for (final Node node : topology2.getNodes())
-//      {
-//         INode foundNode = graph.getNodes().stream().filter(n -> n.getId().valueAsString().equals(node.getId())).findFirst().orElse(null);
-//         if (foundNode == null)
-//         {
-//            throw new IllegalStateException(String.format("No counterpart for model node %s", node));
-//         }
-//      }
-//      for (final IEdge edge : graph.getEdges())
-//      {
-//         Edge foundEdge = topology2.getEdges().stream().filter(e -> e.getId().equals(edge.getId().valueAsString())).findFirst().orElse(null);
-//         if (foundEdge == null)
-//         {
-//            throw new IllegalStateException(String.format("No counterpart for Sim-edge %s", edge));
-//         }
-//      }
-//      for (final Edge edge : topology2.getEdges())
-//      {
-//         IEdge foundEdge = graph.getEdges().stream().filter(e -> e.getId().valueAsString().equals(edge.getId())).findFirst().orElse(null);
-//         if (foundEdge == null)
-//         {
-//            throw new IllegalStateException(String.format("No counterpart for model node %s", edge));
-//         } else
-//         {
-//            if (edge.getWeight() != foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT))
-//            {
-//               throw new IllegalStateException(String.format("Weight mismatch for edges with ID %s: sim: %f, model: %f", foundEdge.getId(),
-//                     foundEdge.getProperty(UnderlayTopologyProperties.WEIGHT), edge.getWeight()));
-//            }
-//         }
-//      }
       final int nodeCount = graph.getNodeCount();
       final int edgeCount = graph.getEdgeCount();
       final int graphSize = nodeCount + edgeCount;
@@ -193,7 +149,8 @@ public class DemoclesComparisonFacade extends EMoflonFacade
             switch (patternMatcherID)
             {
             case SIM_PM_ID:
-            case DEMOCLES_PM_ID:
+            case DEMOCLES_DEFAULT_PM_ID:
+            case DEMOCLES_LIGHTNING_PM_ID:
                this.setPatternMatcher(patternMatcherID);
                final TopologyPatternMatcher patternMatcher = this.getPatternMatcher();
                patternMatcher.setPattern(pattern);
@@ -211,18 +168,21 @@ public class DemoclesComparisonFacade extends EMoflonFacade
             final long durationInMillis = System.currentTimeMillis() - startTime;
             times.put(patternMatcherID, durationInMillis);
             matchCounts.put(patternMatcherID, matchCount);
-            Monitor.log(getClass(), Level.INFO, "[%10s][%10s]  Match count: %6d, Time in ms: %10d", patternID, patternMatcherID, matchCount, durationInMillis);
+            Monitor.log(getClass(), Level.INFO, "[%" + widthOfPatternColumn + "s][%" + widthOfPMColumn + "s]  Match count: %6d, Time in ms: %10d", //
+                  patternID, patternMatcherID, matchCount, durationInMillis);
          }
          final long simTime = times.get(SIM_PM_ID);
-         final long democlesTime = times.get(DEMOCLES_PM_ID);
+         final long democlesDefaultTime = times.get(DEMOCLES_DEFAULT_PM_ID);
+         final long democlesLightningTime = times.get(DEMOCLES_LIGHTNING_PM_ID);
          final long eMoflonTime = times.get(EMOFLON_PM_ID);
          final Integer simMatchCount = matchCounts.get(SIM_PM_ID);
-         final Integer democlesMatchCount = matchCounts.get(DEMOCLES_PM_ID);
+         final Integer democlesMatchCount = matchCounts.get(DEMOCLES_DEFAULT_PM_ID);
+         final Integer democlesLightningMatchCount = matchCounts.get(DEMOCLES_LIGHTNING_PM_ID);
          final Integer eMoflonMatchCount = matchCounts.get(EMOFLON_PM_ID);
-         Monitor.log(getClass(), Level.INFO, "[%10s] t: %5d | %5d | %5d || count: %5d | %5d | %5d : ", //
+         Monitor.log(getClass(), Level.INFO, "[%" + widthOfPatternColumn + "s] t: %5d | %5d | %5d | %d || count: %5d | %5d | %5d | %5d: ", //
                patternID, //
-               simTime, democlesTime, eMoflonTime, //
-               simMatchCount, democlesMatchCount, eMoflonMatchCount//
+               simTime, democlesDefaultTime, democlesLightningTime, eMoflonTime, //
+               simMatchCount, democlesMatchCount, democlesLightningMatchCount, eMoflonMatchCount//
          );
 
          try
@@ -233,10 +193,12 @@ public class DemoclesComparisonFacade extends EMoflonFacade
                   Integer.toString(edgeCount), //
                   Integer.toString(graphSize), //
                   patternID, Long.toString(simTime), //
-                  Long.toString(democlesTime), //
+                  Long.toString(democlesDefaultTime), //
+                  Long.toString(democlesLightningTime), //
                   Long.toString(eMoflonTime), //
                   Integer.toString(simMatchCount), //
                   Integer.toString(democlesMatchCount), //
+                  Integer.toString(democlesLightningMatchCount), //
                   Integer.toString(eMoflonMatchCount)//
             );
 
@@ -281,8 +243,12 @@ public class DemoclesComparisonFacade extends EMoflonFacade
    {
       switch (patternMatcherID)
       {
-      case DEMOCLES_PM_ID:
+      case DEMOCLES_DEFAULT_PM_ID:
          this.patternMatcher = new DemoclesTopologyPatternMatcher();
+         break;
+      case DEMOCLES_LIGHTNING_PM_ID:
+         final Map<String, Object> democlesConfig = new HashMap<>();
+         this.patternMatcher = new DemoclesTopologyPatternMatcher(democlesConfig);
          break;
       case SIM_PM_ID:
          this.patternMatcher = new TopologyPatternMatcher_Impl();
@@ -380,7 +346,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
             .addDirectedEdge("pn3", "pe34", "pn4")//
             .addNAC(nac1).addNAC(nac2).done();
    }
-   
+
    @Test
    public void testFourChainSingleMatch() throws Exception
    {
@@ -389,7 +355,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade
       Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
       Assert.assertEquals(1, Iterables.size(match));
    }
-   
+
    @Test
    public void testFourChainWithShortcut1() throws Exception
    {
