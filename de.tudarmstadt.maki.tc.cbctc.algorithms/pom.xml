@@ -71,7 +71,7 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>simonstrator-topology-control-democles</groupId>
+			<groupId>maki</groupId>
 			<artifactId>
 				simonstrator-topology-control-democles
 			</artifactId>
