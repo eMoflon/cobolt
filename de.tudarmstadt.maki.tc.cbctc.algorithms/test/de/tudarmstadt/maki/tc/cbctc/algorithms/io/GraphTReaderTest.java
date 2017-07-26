@@ -87,7 +87,7 @@ public class GraphTReaderTest {
 
 	}
 
-	@Test
+   @Test
 	public void testWithTestgrahpD5() throws Exception {
 	   this.reader.read(this.topology, getPathToDistanceTestGraph(5));
 		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
@@ -134,6 +134,22 @@ public class GraphTReaderTest {
 	   Assert.assertEquals(EdgeState.UNCLASSIFIED, topology.getEdgeById("e23").getState());
 	   Assert.assertEquals(topology.getEdgeById("e32"), topology.getEdgeById("e23").getReverseEdge());
 	}
+
+   @Test
+   public void testWithTestgrahpD8() throws Exception
+   {
+      this.reader.read(this.topology, getPathToDistanceTestGraph(8));
+      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+   
+      assertEdgeDistance(topology, "e1-2", 10.0);
+      assertEdgeDistance(topology, "e1-3", 20.0);
+      assertEdgeDistance(topology, "e1-7", 10.0);
+      assertEdgeDistance(topology, "e1-7", 10.0);
+      assertEdgeDistance(topology, "e3-7", 11.0);
+   
+      assertIsStatewiseSymmetric(topology);
+   
+   }
 
    @Test
    public void testWithTestgraphE1() throws Exception {

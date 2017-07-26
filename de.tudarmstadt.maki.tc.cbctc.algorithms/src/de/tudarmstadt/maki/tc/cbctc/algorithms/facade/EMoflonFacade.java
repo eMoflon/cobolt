@@ -383,6 +383,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       modelNode.setX(getPropertySafe(prototype, UnderlayTopologyProperties.LONGITUDE));
       modelNode.setY(getPropertySafe(prototype, UnderlayTopologyProperties.LATITUDE));
       modelNode.setBatteryCapacity(getPropertySafe(prototype, SiSTypes.ENERGY_BATTERY_CAPACITY));
+      modelNode.setLocalViewHorizon(getPropertySafe(prototype, UnderlayTopologyProperties.LOCAL_VIEW_HORIZON, 1));
       return modelNode;
    }
 
