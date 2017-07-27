@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.tudarmstadt.maki.simonstrator.tc.io.GraphTReader;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelPackage;
 import de.tudarmstadt.maki.tc.cbctc.model.Node;
 import de.tudarmstadt.maki.tc.cbctc.model.Topology;
@@ -22,12 +21,12 @@ import de.tudarmstadt.maki.tc.cbctc.model.TopologyElement;
 public class TopologyModelGraphTReader extends GraphTReader
 {
 
-   private final HashMap<String, EStructuralFeature> modelAttributeMapping = new HashMap<>();
+   private final Map<String, EStructuralFeature> modelAttributeMapping;
 
    public TopologyModelGraphTReader()
    {
       super();
-      initializeAttributeIdentifierMapping();
+      this.modelAttributeMapping = TopologyModelGraphTIO.initializeAttributeIdentifierMapping();
    }
 
    /**
@@ -164,75 +163,11 @@ public class TopologyModelGraphTReader extends GraphTReader
          throw new IllegalArgumentException("Invalid attribute identifier: " + attributeIdentifier);
 
       final String attributeValueString = attributeEntry[1];
-      final Object attributeValue = convertToObject(attributeValueString, attributeIdentifier, topology, topologyElement);
+      final Object attributeValue = TopologyModelGraphTIO.convertToObject(attributeValueString, attributeIdentifier, topology, topologyElement);
       topologyElement.eSet(eAttribute, attributeValue);
       if (eAttribute == ModelPackage.eINSTANCE.getEdge_ReverseEdge())
       {
          ((Edge) attributeValue).setReverseEdge((Edge) topologyElement);
-      }
-   }
-
-   private void initializeAttributeIdentifierMapping()
-   {
-      modelAttributeMapping.put("a", ModelPackage.eINSTANCE.getEdge_Angle());
-      modelAttributeMapping.put("d", ModelPackage.eINSTANCE.getEdge_Distance());
-      modelAttributeMapping.put("E", ModelPackage.eINSTANCE.getNode_EnergyLevel());
-      modelAttributeMapping.put("h", ModelPackage.eINSTANCE.getNode_HopCount());
-      modelAttributeMapping.put("L", ModelPackage.eINSTANCE.getEdge_ExpectedLifetime());
-      modelAttributeMapping.put("P", ModelPackage.eINSTANCE.getEdge_TransmissionPower());
-      modelAttributeMapping.put("R", ModelPackage.eINSTANCE.getEdge_ReverseEdge());
-      modelAttributeMapping.put("s", ModelPackage.eINSTANCE.getEdge_State());
-      modelAttributeMapping.put("w", ModelPackage.eINSTANCE.getEdge_Weight());
-      modelAttributeMapping.put("x", ModelPackage.eINSTANCE.getNode_X());
-      modelAttributeMapping.put("y", ModelPackage.eINSTANCE.getNode_Y());
-
-   }
-
-
-   private Object convertToObject(String attributeValue, String attributeIdentifier, Topology topology, TopologyElement topologyElement)
-   {
-      switch (attributeIdentifier)
-      {
-      case "a":
-      case "d":
-      case "E":
-      case "L":
-      case "P":
-      case "w":
-      case "x":
-      case "y":
-         return Double.parseDouble(attributeValue);
-      case "h":
-         return Integer.parseInt(attributeValue);
-      case "s":
-         return parseEdgeState(attributeValue);
-      case "R":
-
-         if (attributeValue.equals(topologyElement.getId()))
-            throw new IllegalArgumentException(
-                  String.format("Reverse link ID '%s' must be distinct from the ID of the current topology element", attributeValue));
-
-         final Edge reverseEdge = topology.getEdgeById(attributeValue);
-         if (reverseEdge == null)
-            throw new IllegalArgumentException(String.format("No edge with ID '%s' is known (yet)", attributeValue));
-         return reverseEdge;
-      default:
-         throw new IllegalArgumentException("Unsupported attribute identifier: " + attributeIdentifier);
-      }
-   }
-
-   private EdgeState parseEdgeState(String stateIdentifier)
-   {
-      switch (stateIdentifier)
-      {
-      case "A":
-         return EdgeState.ACTIVE;
-      case "I":
-         return EdgeState.INACTIVE;
-      case "U":
-         return EdgeState.UNCLASSIFIED;
-      default:
-         throw new IllegalArgumentException("Unsupported state identifier: " + stateIdentifier);
       }
    }
 }
