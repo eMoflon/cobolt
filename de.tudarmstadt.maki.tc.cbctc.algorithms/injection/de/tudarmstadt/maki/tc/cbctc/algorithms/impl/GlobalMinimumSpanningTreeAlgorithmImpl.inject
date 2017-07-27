@@ -39,7 +39,6 @@ partial class GlobalMinimumSpanningTreeAlgorithmImpl {
          while (this.priorityQueue.isEmpty() && !this.unexploredNodes.isEmpty())
          {
             Node nextRootNode = this.unexploredNodes.iterator().next();
-            System.out.println("Explore: " + nextRootNode);
             this.exploredNodes.add(nextRootNode);
             this.unexploredNodes.remove(nextRootNode);
             this.priorityQueue.addAll(nextRootNode.getOutgoingEdges());
@@ -49,7 +48,6 @@ partial class GlobalMinimumSpanningTreeAlgorithmImpl {
          while (!this.priorityQueue.isEmpty())
          {
             final Edge firstEdgeInPQ = this.priorityQueue.poll();
-            System.out.println("Select: " + firstEdgeInPQ);
             final Node source = firstEdgeInPQ.getSource();
             final Node target = firstEdgeInPQ.getTarget();
             if (this.unexploredNodes.contains(target))

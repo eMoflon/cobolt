@@ -1,8 +1,6 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.facade;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +56,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
 
    public static final int DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT = -1;
 
-   private static final List<TopologyControlOperationMode> SUPPORTED_OPERATION_MODES = Arrays.asList(TopologyControlOperationMode.BATCH,
-         TopologyControlOperationMode.INCREMENTAL);
-
    private final Topology topology;
 
    private AbstractTopologyControlAlgorithm algorithm;
@@ -73,7 +68,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
 
    private final Map<Edge, EdgeID> modelLinkToSimonstratorLink;
 
-   private TopologyControlAlgorithmID algorithmID;
+   private TopologyControlAlgorithmID algorithmId;
 
    private int constraintViolationCounter;
 
@@ -106,14 +101,26 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    }
 
    @Override
-   public void configureAlgorithm(final TopologyControlAlgorithmID algorithmID)
+   public boolean supportsOperationMode(final TopologyControlAlgorithmID algorithmId, final de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode mode)
+   {
+      final AbstractTopologyControlAlgorithm algorithm = EMoflonFacadeAlgorithmHelper.createAlgorithmForID(algorithmId);
+      return algorithm.supportsOperationMode(mapOperationMode(mode));
+   }
+   
+   @Override
+   public void configureAlgorithm(final TopologyControlAlgorithmID algorithmId)
    {
       if (this.operationMode == de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode.NOT_SET)
-         throw new IllegalArgumentException("Need to specify an operation mode from the following set: " + SUPPORTED_OPERATION_MODES);
+         throw new IllegalStateException("Please specify an operation mode before configuring the algorithm");
+      
 
-      this.algorithm = EMoflonFacadeAlgorithmHelper.createAlgorithmForID(algorithmID);
-      this.algorithm.setOperationMode(mapOperationMode(this.operationMode));
-      this.algorithmID = algorithmID;
+      final AbstractTopologyControlAlgorithm algorithm = EMoflonFacadeAlgorithmHelper.createAlgorithmForID(algorithmId);
+      if (!algorithm.supportsOperationMode(mapOperationMode(this.operationMode)))
+         throw new IllegalArgumentException(String.format("The configured algorithm '%s' does not support operation mode '%s'", algorithmId, this.operationMode));
+      
+      algorithm.setOperationMode(mapOperationMode(this.operationMode));
+      this.algorithm = algorithm;
+      this.algorithmId = algorithmId;
       this.registerEMFListeners();
       
       final INodePreprocessor nodePreprocessor = NodePreprocessingRegistry.getInstance().getNodePreprocessor();
@@ -130,14 +137,8 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       case INCREMENTAL:
          return TopologyControlOperationMode.INCREMENTAL;
       default:
-         throw new IllegalArgumentException("Unsupported mode: " + operationMode);
+         throw new IllegalArgumentException(String.format("Unsupported mode: '%s'", operationMode));
       }
-   }
-
-   @Override
-   public Collection<String> getExpectedParameters()
-   {
-      return Arrays.asList(UnderlayTopologyControlAlgorithms.KTC_PARAM_K);
    }
 
    @Override
@@ -151,29 +152,29 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
    {
       if (this.algorithm instanceof AbstractKTC)
       {
-         final Double k = (Double) parameters.get(UnderlayTopologyControlAlgorithms.KTC_PARAM_K);
+         final Double k = parameters.getDouble(UnderlayTopologyControlAlgorithms.KTC_PARAM_K);
          if (k == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.KTC_PARAM_K, this.algorithmID));
-         ((AbstractKTC) this.algorithm).setK(k);
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.KTC_PARAM_K, this.algorithmId));
+         AbstractKTC.class.cast(this.algorithm).setK(k);
       }
 
       if (this.algorithm instanceof LStarKTC)
       {
-         final Double a = (Double) parameters.get(UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A);
+         final Double a = parameters.getDouble(UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A);
          if (a == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A, this.algorithmID));
-         ((LStarKTC) this.algorithm).setA(a);
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.LSTAR_KTC_PARAM_A, this.algorithmId));
+         LStarKTC.class.cast(this.algorithm).setA(a);
       }
 
       if (this.algorithm instanceof YaoGraphAlgorithm)
       {
-         final Integer coneCount = (Integer) parameters.get(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
+         final Integer coneCount = parameters.getInt(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
          if (coneCount == null)
             throw new IllegalArgumentException(
-                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, this.algorithmID));
-         ((YaoGraphAlgorithm) this.algorithm).setConeCount(coneCount);
+                  String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, this.algorithmId));
+         YaoGraphAlgorithm.class.cast(this.algorithm).setConeCount(coneCount);
       }
       
 
@@ -544,7 +545,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       final int violationCount = violations.size();
       if (!violations.isEmpty())
       {
-         Monitor.log(getClass(), Level.ERROR, "%3d constraint violations detected for %6s: %s", violations.size(), this.algorithmID,
+         Monitor.log(getClass(), Level.ERROR, "%3d constraint violations detected for %6s: %s", violations.size(), this.algorithmId,
                formatHistogramOfViolations(report));
          this.constraintViolationCounter += violationCount;
       } else
