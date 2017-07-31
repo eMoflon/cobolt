@@ -1,0 +1,68 @@
+import  de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.EdgeWeightComparator;
+import  de.tudarmstadt.maki.tc.cbctc.algorithms.io.TopologyModelGraphTWriter;
+import  de.tudarmstadt.maki.tc.cbctc.model.Node;
+import  java.util.List;
+import  java.util.PriorityQueue;
+import  java.util.ArrayList;
+import  java.util.Collection;
+import  java.util.Iterator;
+import  java.util.Set;
+import  java.util.stream.Collectors;
+import  java.util.HashSet;
+
+partial class LocalMinimumSpanningTreeAlgorithmImpl {
+
+@members<--
+   private static List<Edge> filterForUnexploredTargets(final List<Edge> edges, final Collection<Node> unexploredNodes)
+   {
+      return edges.stream().filter(edge -> unexploredNodes.contains(edge.getTarget())).collect(Collectors.toList());
+   }
+
+   private static List<Edge> filterForUnexploredSources(final List<Edge> edges, final Collection<Node> unexploredNodes)
+   {
+      return edges.stream().filter(edge -> unexploredNodes.contains(edge.getSource())).collect(Collectors.toList());
+   }
+   -->
+
+@model buildLmst (Node node, EdgeSet lmst)<--      final Set<Node> unexploredNodes = new HashSet<>(); 
+      node.getEdgesInLocalView().forEach(edge -> {
+         unexploredNodes.add(edge.getSource());
+         unexploredNodes.add(edge.getTarget());
+      });
+      final Set<Node> exploredNodes = new HashSet<>();
+      final Set<Edge> tentativeLmst = new HashSet<>();
+      final PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new EdgeWeightComparator());
+      
+      // The first node is chosen arbitrarily
+      final Node firstNode = node;
+      priorityQueue.addAll(firstNode.getOutgoingEdges());
+      priorityQueue.addAll(firstNode.getIncomingEdges());
+      exploredNodes.add(firstNode);
+      unexploredNodes.remove(firstNode);
+      
+      while (!priorityQueue.isEmpty())
+      {
+         final Edge firstEdgeInPQ = priorityQueue.poll();
+         final Node source = firstEdgeInPQ.getSource();
+         final Node target = firstEdgeInPQ.getTarget();
+         if (unexploredNodes.contains(target))
+         {
+            exploredNodes.add(target);
+            unexploredNodes.remove(target);
+            priorityQueue.addAll(filterForUnexploredTargets(target.getOutgoingEdges(), unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredSources(target.getIncomingEdges(), unexploredNodes));
+         } else if (unexploredNodes.contains(source))
+         {
+            exploredNodes.add(source);
+            unexploredNodes.remove(source);
+            priorityQueue.addAll(filterForUnexploredTargets(source.getOutgoingEdges(), unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredSources(source.getIncomingEdges(), unexploredNodes));
+         } else
+         {
+            continue;
+         }
+         tentativeLmst.add(firstEdgeInPQ);
+      }
+      lmst.getEdges().addAll(tentativeLmst);-->
+
+}

@@ -62,9 +62,9 @@ public class GlobalMinimumSpanningTreeAlgorithmTest
    public void testRun_DirectedTriangle() throws Exception
    {
       addNodes(3);
-      Edge e12 = createDirectedEdge(1, 2, 2.0);
-      Edge e13 = createDirectedEdge(1, 3, 3.0);
-      Edge e23 = createDirectedEdge(2, 3, 5.0);
+      final Edge e12 = createDirectedEdge(1, 2, 2.0);
+      final Edge e13 = createDirectedEdge(1, 3, 3.0);
+      final Edge e23 = createDirectedEdge(2, 3, 5.0);
       algorithm.runOnTopology(topology);
       Arrays.asList(e12, e13).forEach(edge -> TopologyModelTestUtils.assertActive(edge));
       Arrays.asList(e23).forEach(edge -> TopologyModelTestUtils.assertInactive(edge));
@@ -74,9 +74,9 @@ public class GlobalMinimumSpanningTreeAlgorithmTest
    public void testRun_UndirectedTriangle() throws Exception
    {
       addNodes(3);
-      Edge e12 = createUndirectedEdge(1, 2, 2.0);
-      Edge e13 = createUndirectedEdge(1, 3, 3.0);
-      Edge e23 = createUndirectedEdge(2, 3, 5.0);
+      final Edge e12 = createUndirectedEdge(1, 2, 2.0);
+      final Edge e13 = createUndirectedEdge(1, 3, 3.0);
+      final Edge e23 = createUndirectedEdge(2, 3, 5.0);
       algorithm.runOnTopology(topology);
       Arrays.asList(e12, e13).forEach(edge -> {
          TopologyModelTestUtils.assertActive(edge);
@@ -91,7 +91,7 @@ public class GlobalMinimumSpanningTreeAlgorithmTest
    @Test
    public void testRun_D8() throws Exception
    {
-      TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
       reader.read(this.topology, getPathToDistanceTestGraph(8));
       EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
       algorithm.runOnTopology(topology);
@@ -106,14 +106,14 @@ public class GlobalMinimumSpanningTreeAlgorithmTest
 
    private Edge createDirectedEdge(int i, int j, double d)
    {
-      Edge edge = topology.addDirectedEdge("e" + i + "" + j, this.nodes.get(i - 1), this.nodes.get(j - 1));
+      final Edge edge = topology.addDirectedEdge("e" + i + "" + j, this.nodes.get(i - 1), this.nodes.get(j - 1));
       edge.setWeight(d);
       return edge;
    }
 
    private Edge createUndirectedEdge(int i, int j, double weight)
    {
-      Edge edge = topology.addUndirectedEdge("e" + i + "" + j, "e" + j + "" + i, this.nodes.get(i - 1), this.nodes.get(j - 1));
+      final Edge edge = topology.addUndirectedEdge("e" + i + "" + j, "e" + j + "" + i, this.nodes.get(i - 1), this.nodes.get(j - 1));
       edge.setWeight(weight);
       edge.getReverseEdge().setWeight(weight);
       return edge;
