@@ -117,9 +117,10 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
          throw new IllegalStateException("Please specify an operation mode before configuring the algorithm");
 
       final AbstractTopologyControlAlgorithm algorithm = EMoflonFacadeAlgorithmHelper.createAlgorithmForID(algorithmId);
-      if (!algorithm.supportsOperationMode(mapOperationMode(this.operationMode)))
-         throw new IllegalArgumentException(
-               String.format("The configured algorithm '%s' does not support operation mode '%s'", algorithmId, this.operationMode));
+      //TODO@rkluge: Re-enable assertion as soon as TC architecture has been refactored
+      //      if (!algorithm.supportsOperationMode(mapOperationMode(this.operationMode)))
+      //         throw new IllegalArgumentException(
+      //               String.format("The configured algorithm '%s' does not support operation mode '%s'", algorithmId, this.operationMode));
 
       algorithm.setOperationMode(mapOperationMode(this.operationMode));
       this.algorithm = algorithm;
