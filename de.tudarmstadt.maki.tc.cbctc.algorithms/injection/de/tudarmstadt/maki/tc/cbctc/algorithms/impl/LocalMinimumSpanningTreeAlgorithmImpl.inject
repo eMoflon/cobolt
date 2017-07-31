@@ -13,14 +13,18 @@ import  java.util.HashSet;
 partial class LocalMinimumSpanningTreeAlgorithmImpl {
 
 @members<--
-   private static List<Edge> filterForUnexploredTargets(final List<Edge> edges, final Collection<Node> unexploredNodes)
+   private static List<Edge> filterForUnexploredTargets(final List<Edge> edges, final Node selfNode, final Collection<Node> unexploredNodes)
    {
-      return edges.stream().filter(edge -> unexploredNodes.contains(edge.getTarget())).collect(Collectors.toList());
+      return edges.stream()//
+            .filter(edge -> selfNode.getEdgesInLocalView().contains(edge)) //
+            .filter(edge -> unexploredNodes.contains(edge.getTarget())).collect(Collectors.toList());
    }
 
-   private static List<Edge> filterForUnexploredSources(final List<Edge> edges, final Collection<Node> unexploredNodes)
+   private static List<Edge> filterForUnexploredSources(final List<Edge> edges, final Node selfNode, final Collection<Node> unexploredNodes)
    {
-      return edges.stream().filter(edge -> unexploredNodes.contains(edge.getSource())).collect(Collectors.toList());
+      return edges.stream()//
+            .filter(edge -> selfNode.getEdgesInLocalView().contains(edge)) //
+            .filter(edge -> unexploredNodes.contains(edge.getSource())).collect(Collectors.toList());
    }
    -->
 
@@ -34,11 +38,10 @@ partial class LocalMinimumSpanningTreeAlgorithmImpl {
       final PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new EdgeWeightComparator());
       
       // The first node is chosen arbitrarily
-      final Node firstNode = node;
-      priorityQueue.addAll(firstNode.getOutgoingEdges());
-      priorityQueue.addAll(firstNode.getIncomingEdges());
-      exploredNodes.add(firstNode);
-      unexploredNodes.remove(firstNode);
+      priorityQueue.addAll(filterForUnexploredTargets(node.getOutgoingEdges(), node, unexploredNodes));
+      priorityQueue.addAll(filterForUnexploredSources(node.getIncomingEdges(), node, unexploredNodes));
+      exploredNodes.add(node);
+      unexploredNodes.remove(node);
       
       while (!priorityQueue.isEmpty())
       {
@@ -49,14 +52,14 @@ partial class LocalMinimumSpanningTreeAlgorithmImpl {
          {
             exploredNodes.add(target);
             unexploredNodes.remove(target);
-            priorityQueue.addAll(filterForUnexploredTargets(target.getOutgoingEdges(), unexploredNodes));
-            priorityQueue.addAll(filterForUnexploredSources(target.getIncomingEdges(), unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredTargets(target.getOutgoingEdges(), node, unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredSources(target.getIncomingEdges(), node, unexploredNodes));
          } else if (unexploredNodes.contains(source))
          {
             exploredNodes.add(source);
             unexploredNodes.remove(source);
-            priorityQueue.addAll(filterForUnexploredTargets(source.getOutgoingEdges(), unexploredNodes));
-            priorityQueue.addAll(filterForUnexploredSources(source.getIncomingEdges(), unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredTargets(source.getOutgoingEdges(), node, unexploredNodes));
+            priorityQueue.addAll(filterForUnexploredSources(source.getIncomingEdges(), node, unexploredNodes));
          } else
          {
             continue;

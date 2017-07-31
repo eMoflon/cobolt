@@ -43,11 +43,11 @@ public class LocalMinimumSpanningTreeAlgorithmTest
       {
          Node node = ModelFactory.eINSTANCE.createNode();
          node.setId("n" + i);
+         node.setLocalViewHorizon(2);
          this.nodes.add(node);
       }
       this.selfNode = this.nodes.get(0);
       this.algorithm.setSelfNode(selfNode);
-      this.selfNode.setLocalViewHorizon(2);
    }
 
    @Test
@@ -94,18 +94,57 @@ public class LocalMinimumSpanningTreeAlgorithmTest
    }
 
    @Test
-   public void testRun_D8() throws Exception
+   public void testRun_D8_1HopView() throws Exception
    {
       final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
       reader.read(this.topology, getPathToDistanceTestGraph(8));
       EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
-      algorithm.runOnTopology(topology);
-      Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e8-9", "e9-10", "e10-11").stream()//
+      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(1));
+      this.algorithm.runOnTopology(topology);
+
+      // With a 1-hop view, the LMST always contains all incident edges of a node
+      topology.getEdges().forEach(edge -> {
+         TopologyModelTestUtils.assertActive(edge);
+         TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+      });
+      TopologyModelTestUtils.assertClassified(this.topology);
+   }
+
+   @Test
+   public void testRun_D8_2HopView() throws Exception
+   {
+      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+      reader.read(this.topology, getPathToDistanceTestGraph(8));
+      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
+      this.algorithm.runOnTopology(topology);
+
+      // With a 1-hop view, the LMST always contains all incident edges of a node
+      Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e7-8", "e8-9", "e9-10", "e10-11").stream()//
             .map(id -> topology.getEdgeById(id))//
             .forEach(edge -> {
                TopologyModelTestUtils.assertActive(edge);
                TopologyModelTestUtils.assertActive(edge.getReverseEdge());
             });
+      TopologyModelTestUtils.assertClassified(this.topology);
+   }
+   
+   @Test
+   public void testRun_D8_3HopView() throws Exception
+   {
+      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+      reader.read(this.topology, getPathToDistanceTestGraph(8));
+      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
+      this.algorithm.runOnTopology(topology);
+      
+      // With a 1-hop view, the LMST always contains all incident edges of a node
+      Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e8-9", "e9-10", "e10-11").stream()//
+      .map(id -> topology.getEdgeById(id))//
+      .forEach(edge -> {
+         TopologyModelTestUtils.assertActive(edge);
+         TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+      });
       TopologyModelTestUtils.assertClassified(this.topology);
    }
 
