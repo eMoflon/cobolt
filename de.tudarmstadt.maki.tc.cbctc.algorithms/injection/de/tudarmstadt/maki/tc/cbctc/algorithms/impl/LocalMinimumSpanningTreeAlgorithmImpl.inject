@@ -13,6 +13,7 @@ import  java.util.HashSet;
 partial class LocalMinimumSpanningTreeAlgorithmImpl {
 
 @members<--
+
    private static List<Edge> filterForUnexploredTargets(final List<Edge> edges, final Node selfNode, final Collection<Node> unexploredNodes)
    {
       return edges.stream()//
@@ -26,9 +27,10 @@ partial class LocalMinimumSpanningTreeAlgorithmImpl {
             .filter(edge -> selfNode.getEdgesInLocalView().contains(edge)) //
             .filter(edge -> unexploredNodes.contains(edge.getSource())).collect(Collectors.toList());
    }
+
    -->
 
-@model buildLmst (Node node, EdgeSet lmst)<--      final Set<Node> unexploredNodes = new HashSet<>(); 
+@model buildLmst (Node node, EdgeSet lmst)<--      final Set<Node> unexploredNodes = new HashSet<>();
       node.getEdgesInLocalView().forEach(edge -> {
          unexploredNodes.add(edge.getSource());
          unexploredNodes.add(edge.getTarget());
@@ -36,13 +38,13 @@ partial class LocalMinimumSpanningTreeAlgorithmImpl {
       final Set<Node> exploredNodes = new HashSet<>();
       final Set<Edge> tentativeLmst = new HashSet<>();
       final PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new EdgeWeightComparator());
-      
+
       // The first node is chosen arbitrarily
       priorityQueue.addAll(filterForUnexploredTargets(node.getOutgoingEdges(), node, unexploredNodes));
       priorityQueue.addAll(filterForUnexploredSources(node.getIncomingEdges(), node, unexploredNodes));
       exploredNodes.add(node);
       unexploredNodes.remove(node);
-      
+
       while (!priorityQueue.isEmpty())
       {
          final Edge firstEdgeInPQ = priorityQueue.poll();
