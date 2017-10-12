@@ -6,3 +6,5 @@
 # The file AttrCondDefLibrary.tgg is not meant to be edited
 /**/AttrCondDefLibrary.tgg
 !/**/.keep*
+/target/
+/.settings
