@@ -1,5 +1,4 @@
 import  de.tudarmstadt.maki.tc.cbctc.algorithms.helpers.EdgeWeightComparator;
-import  de.tudarmstadt.maki.tc.cbctc.algorithms.io.TopologyModelGraphTWriter;
 import  de.tudarmstadt.maki.tc.cbctc.model.Node;
 import  java.util.List;
 import  java.util.PriorityQueue;

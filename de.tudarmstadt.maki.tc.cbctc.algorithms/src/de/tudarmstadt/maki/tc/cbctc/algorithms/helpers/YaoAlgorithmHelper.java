@@ -1,9 +1,9 @@
 package de.tudarmstadt.maki.tc.cbctc.algorithms.helpers;
 
-import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
+import de.tudarmstadt.maki.tc.cbctc.algorithms.YaoGraphAlgorithm;
 
 /**
- * Helper class for {@link UnderlayTopologyControlAlgorithms#YAO}
+ * Helper class for {@link YaoGraphAlgorithm}
  * 
  * @author Roland Kluge - Initial implementation
  *
@@ -14,7 +14,7 @@ public class YaoAlgorithmHelper
     * This helper method checks whether the l*-kTC-specific condition holds, given the three hop count values and the strech limit a.
     * @param edgeAngle12 angle of the removal candidate
     * @param edgeAngle13 angle of some other link in the same cone
-    * @param coneCount see {@link UnderlayTopologyControlAlgorithms#YAO_PARAM_CONE_COUNT}
+    * @param coneCount see UnderlayTopologyControlAlgorithms#YAO_PARAM_CONE_COUNT
     * @return whether the predicate is fulfilled
     */
    public static boolean checkPredicate(final double edgeAngle12, final double edgeAngle13, final int coneCount)

@@ -8,11 +8,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.moflon.core.utilities.UtilityClassNotInstantiableException;
 
-import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 import de.tudarmstadt.maki.tc.cbctc.model.constraints.TopologyConstraint;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyControlTestHelper;
 
 /**
  * Test utilities for the topology model

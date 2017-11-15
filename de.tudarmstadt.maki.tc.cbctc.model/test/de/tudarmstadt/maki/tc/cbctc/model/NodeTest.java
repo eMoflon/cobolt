@@ -6,17 +6,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.math.IntRange;
 import org.apache.commons.lang3.time.StopWatch;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
 import de.tudarmstadt.maki.tc.cbctc.model.impl.NodeImpl;
 
 /**
@@ -175,7 +170,7 @@ public class NodeTest
    private List<Integer> streamIntArray(final int count)
    {
       List<Integer> list = new ArrayList<>();
-      for (final int value : new IntRange(1, count).toArray())
+      for (int value = 1; value <= count; ++value)
       {
          list.add(value);
       }

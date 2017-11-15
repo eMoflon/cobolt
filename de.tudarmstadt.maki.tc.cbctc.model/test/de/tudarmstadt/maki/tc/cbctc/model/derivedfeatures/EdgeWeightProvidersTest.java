@@ -2,9 +2,9 @@ package de.tudarmstadt.maki.tc.cbctc.model.derivedfeatures;
 
 import org.junit.Test;
 
-import de.tudarmstadt.maki.simonstrator.tc.testing.TopologyControlTestHelper;
 import de.tudarmstadt.maki.tc.cbctc.model.Edge;
 import de.tudarmstadt.maki.tc.cbctc.model.ModelFactory;
+import de.tudarmstadt.maki.tc.cbctc.model.utils.TopologyControlTestHelper;
 
 /**
  * Unit tests for {@link EdgeWeightProviders}
