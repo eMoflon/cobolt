@@ -128,6 +128,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       this.registerEMFListeners();
 
       this.algorithm.setNodePreprocessor(this.nodePreprocessor);
+      this.unclassifyAllLinks();
    }
 
    private TopologyControlOperationMode mapOperationMode(de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode)
