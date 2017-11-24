@@ -174,11 +174,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase
       if (this.algorithm instanceof YaoGraphAlgorithm)
       {
          //TODO@rkluge: Fix getInt
-         final Double coneCount = parameters.getDouble(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
+         final Integer coneCount = parameters.getInt(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
          if (coneCount == null)
             throw new IllegalArgumentException(
                   String.format("Missing mandatory parameter '%s' for %s", UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT, this.getConfiguredAlgorithm()));
-         YaoGraphAlgorithm.class.cast(this.algorithm).setConeCount(coneCount.intValue());
+         YaoGraphAlgorithm.class.cast(this.algorithm).setConeCount(coneCount);
       }
 
       this.algorithm.initializeConstraints();
