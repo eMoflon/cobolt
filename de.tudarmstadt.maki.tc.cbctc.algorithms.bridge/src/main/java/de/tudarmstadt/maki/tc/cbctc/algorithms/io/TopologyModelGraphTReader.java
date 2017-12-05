@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.tudarmstadt.maki.simonstrator.tc.io.GraphTReader;
@@ -146,7 +147,7 @@ public class TopologyModelGraphTReader extends GraphTReader
          throw new IllegalArgumentException(e);
       } finally
       {
-         scanner.close();
+         IOUtils.closeQuietly(scanner);
          configureDefaults();
       }
    }
