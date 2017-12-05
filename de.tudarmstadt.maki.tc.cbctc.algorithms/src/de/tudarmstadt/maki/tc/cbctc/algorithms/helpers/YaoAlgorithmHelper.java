@@ -20,7 +20,9 @@ public class YaoAlgorithmHelper
    public static boolean checkPredicate(final double edgeAngle12, final double edgeAngle13, final int coneCount)
    {
       final double anglePerCone = 360.0 / coneCount;
-      return Math.floor(edgeAngle12 / anglePerCone) % coneCount == Math.floor(edgeAngle13 / anglePerCone) % coneCount;
+      final int cone12 = (int) Math.floor(edgeAngle12 / anglePerCone);
+      final int cone13 = (int) Math.floor(edgeAngle13 / anglePerCone);
+      return cone12 % coneCount == cone13 % coneCount;
    }
 
 }
