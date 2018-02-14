@@ -1,27 +1,23 @@
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
-
-import de.tudarmstadt.maki.tc.cbctc.model.Edge;
-import de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
-import de.tudarmstadt.maki.tc.cbctc.model.Topology;
-import de.tudarmstadt.maki.tc.cbctc.model.Node;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolation;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsPackage;
-import de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
+import  java.util.HashSet;
+import  java.util.Set;
+import  org.eclipse.emf.common.util.EList;
+import  org.eclipse.emf.ecore.EClass;
+import  org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import  de.tudarmstadt.maki.tc.cbctc.model.Edge;
+import  de.tudarmstadt.maki.tc.cbctc.model.EdgeState;
+import  de.tudarmstadt.maki.tc.cbctc.model.Topology;
+import  de.tudarmstadt.maki.tc.cbctc.model.Node;
+import  de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolation;
+import  de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintViolationReport;
+import  de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsFactory;
+import  de.tudarmstadt.maki.tc.cbctc.model.constraints.ConstraintsPackage;
+import  de.tudarmstadt.maki.tc.cbctc.model.constraints.EdgeStateBasedConnectivityConstraint;
 
 partial class EdgeStateBasedConnectivityConstraintImpl {
 
 
 
-@model checkOnTopology (Topology graph, ConstraintViolationReport report) <--
+@model checkOnTopology (Topology graph, ConstraintViolationReport report)<--
       final EList<Node> nodes = graph.getNodes();
       if (nodes.isEmpty())
          return;
@@ -54,7 +50,6 @@ partial class EdgeStateBasedConnectivityConstraintImpl {
          report.getViolations().add(violation);
          violation.setViolatedConstraint(this);
          violation.getAffectedGraphs().add(graph);
-      }
--->
+      }-->
 
 }
