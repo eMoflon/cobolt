@@ -10,10 +10,7 @@
 package org.cobolt.tccpa;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
@@ -24,7 +21,6 @@ import org.eclipse.emf.henshin.cpa.CPAUtility;
 import org.eclipse.emf.henshin.cpa.CpaByAGG;
 import org.eclipse.emf.henshin.cpa.ICriticalPairAnalysis;
 import org.eclipse.emf.henshin.cpa.UnsupportedRuleException;
-import org.eclipse.emf.henshin.cpa.persist.CriticalPairNode;
 import org.eclipse.emf.henshin.cpa.result.CPAResult;
 import org.eclipse.emf.henshin.interpreter.EGraph;
 import org.eclipse.emf.henshin.interpreter.Engine;
@@ -125,7 +121,7 @@ public class TopologyControlCriticalPairAnalysisMain
          dependencies.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
          conflicts.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
 
-         HashMap<String, Set<CriticalPairNode>> persistedResults = CPAUtility.persistCpaResult(jointCpaResult, resultsPath);
+         CPAUtility.persistCpaResult(jointCpaResult, resultsPath);
          System.out.println("Saved CPA results.");
 
       } catch (UnsupportedRuleException e)
