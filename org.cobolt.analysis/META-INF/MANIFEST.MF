@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.cobolt.analysis;singleton:=true
+Export-Package: org.cobolt.analysis,
+ org.cobolt.analysis.impl,
+ org.cobolt.analysis.util
+Bundle-Name: org.cobolt.analysis
+Bundle-Version: 1.0
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.moflon.core.utilities,
+ org.moflon.core.ecoreutils,
+ org.cobolt.model,
+ org.junit;bundle-version="4.12.0"
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Roland Kluge, TU Darmstadt

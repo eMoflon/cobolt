@@ -2,14 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.tudarmstadt.maki.tc.cbctc</groupId>
-  <artifactId>de.tudarmstadt.maki.tc.cbctc.parent</artifactId>
+  <groupId>org.cobolt</groupId>
+  <artifactId>cobolt-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>de.tudarmstadt.maki.tc.cbctc.algorithms</module>
-    <module>de.tudarmstadt.maki.tc.cbctc.analysis</module>
-    <module>de.tudarmstadt.maki.tc.cbctc.model</module>
+    <module>org.cobolt.algorithms</module>
+    <module>org.cobolt.analysis</module>
+    <module>org.cobolt.model</module>
+    <module>org.cobolt.simbridge</module>
+    <module>org.cobolt.tccpa</module>
   </modules>
 
   <properties>

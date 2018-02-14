@@ -1,0 +1,13 @@
+#! auto-create-reverse-edges
+
+3 6
+n1 E=10
+n2 E=30
+n3 E=60
+
+e12 n1 n2 P=05 L=2
+e21 n2 n1 P=05 L=6
+e13 n1 n3 P=10 L=1
+e31 n3 n1 P=10 L=6
+e23 n2 n3 P=15 L=2
+e32 n3 n2 P=15 L=4

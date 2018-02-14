@@ -1,0 +1,86 @@
+import  org.cobolt.algorithms.helpers.EdgeWeightComparator;
+import  org.cobolt.model.Node;
+import  java.util.List;
+import  java.util.PriorityQueue;
+import  java.util.Set;
+import  java.util.stream.Collectors;
+import  java.util.HashSet;
+
+partial class GlobalMinimumSpanningTreeAlgorithmImpl {
+
+@members<--
+
+   private PriorityQueue<Edge> priorityQueue;
+
+   private Topology topology;
+
+   private Set<Node> exploredNodes;
+
+   private Set<Node> unexploredNodes;
+
+   private List<Edge> filterForUnexploredTargets(final List<Edge> edges)
+   {
+      return edges.stream().filter(edge -> this.unexploredNodes.contains(edge.getTarget())).collect(Collectors.toList());
+   }
+
+   private List<Edge> filterForUnexploredSources(final List<Edge> edges)
+   {
+      return edges.stream().filter(edge -> this.unexploredNodes.contains(edge.getSource())).collect(Collectors.toList());
+   }
+
+   -->
+
+@model findNextTreeEdge (Topology topology)<--
+      // Create new tree (re-try if newRootNode has degree 0)
+      while (!this.unexploredNodes.isEmpty())
+      {
+         while (this.priorityQueue.isEmpty() && !this.unexploredNodes.isEmpty())
+         {
+            Node nextRootNode = this.unexploredNodes.iterator().next();
+            this.exploredNodes.add(nextRootNode);
+            this.unexploredNodes.remove(nextRootNode);
+            this.priorityQueue.addAll(nextRootNode.getOutgoingEdges());
+            this.priorityQueue.addAll(nextRootNode.getIncomingEdges());
+         }
+
+         while (!this.priorityQueue.isEmpty())
+         {
+            final Edge firstEdgeInPQ = this.priorityQueue.poll();
+            final Node source = firstEdgeInPQ.getSource();
+            final Node target = firstEdgeInPQ.getTarget();
+            if (this.unexploredNodes.contains(target))
+            {
+               this.exploredNodes.add(target);
+               this.unexploredNodes.remove(target);
+               this.priorityQueue.addAll(filterForUnexploredTargets(target.getOutgoingEdges()));
+               this.priorityQueue.addAll(filterForUnexploredSources(target.getIncomingEdges()));
+            } else if (this.unexploredNodes.contains(source))
+            {
+               this.exploredNodes.add(source);
+               this.unexploredNodes.remove(source);
+               this.priorityQueue.addAll(filterForUnexploredTargets(source.getOutgoingEdges()));
+               this.priorityQueue.addAll(filterForUnexploredSources(source.getIncomingEdges()));
+            } else
+            {
+               continue;
+            }
+            return firstEdgeInPQ;
+         }
+      }
+      return null;-->
+
+@model configureTopology (Topology topology)<--      this.topology = topology;
+      this.exploredNodes = new HashSet<>();
+      this.unexploredNodes = new HashSet<>(this.topology.getNodes());
+      this.priorityQueue = new PriorityQueue<Edge>(new EdgeWeightComparator());
+      if (this.topology.getNodeCount() > 0)
+      {
+         // The first node is chosen arbitrarily
+         final Node firstNode = this.topology.getNodes().get(0);
+         this.priorityQueue.addAll(firstNode.getOutgoingEdges());
+         this.priorityQueue.addAll(firstNode.getIncomingEdges());
+         this.exploredNodes.add(firstNode);
+         this.unexploredNodes.remove(firstNode);
+      }-->
+
+}

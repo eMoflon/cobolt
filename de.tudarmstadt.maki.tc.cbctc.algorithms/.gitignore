@@ -1,6 +1,0 @@
-/bin
-/gen
-/.settings
-/target/
-/model/*
-!/**/.keep*

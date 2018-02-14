@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.cobolt.model;singleton:=true
+Export-Package: org.cobolt.model,
+ org.cobolt.model.constraints,
+ org.cobolt.model.constraints.impl,
+ org.cobolt.model.constraints.util,
+ org.cobolt.model.impl,
+ org.cobolt.model.util,
+ org.cobolt.model.utils
+Bundle-Name: org.cobolt.model
+Bundle-Version: 1.0
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.junit;bundle-version="4.11.0";resolution:=optional,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.moflon.core.utilities
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Roland Kluge, TU Darmstadt

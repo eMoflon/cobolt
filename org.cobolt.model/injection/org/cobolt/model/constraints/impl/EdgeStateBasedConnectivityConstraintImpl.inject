@@ -1,0 +1,55 @@
+import  java.util.HashSet;
+import  java.util.Set;
+import  org.eclipse.emf.common.util.EList;
+import  org.eclipse.emf.ecore.EClass;
+import  org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import  org.cobolt.model.Edge;
+import  org.cobolt.model.EdgeState;
+import  org.cobolt.model.Topology;
+import  org.cobolt.model.Node;
+import  org.cobolt.model.constraints.ConstraintViolation;
+import  org.cobolt.model.constraints.ConstraintViolationReport;
+import  org.cobolt.model.constraints.ConstraintsFactory;
+import  org.cobolt.model.constraints.ConstraintsPackage;
+import  org.cobolt.model.constraints.EdgeStateBasedConnectivityConstraint;
+
+partial class EdgeStateBasedConnectivityConstraintImpl {
+
+
+
+@model checkOnTopology (Topology graph, ConstraintViolationReport report)<--
+      final EList<Node> nodes = graph.getNodes();
+      if (nodes.isEmpty())
+         return;
+
+      final Set<Node> unprocessedNodes = new HashSet<>();
+      final Set<Node> processedNodes = new HashSet<>();
+      final Node firstNode = nodes.iterator().next();
+      unprocessedNodes.add(firstNode);
+      while (!unprocessedNodes.isEmpty())
+      {
+         final Node node = unprocessedNodes.iterator().next();
+         unprocessedNodes.remove(node);
+         processedNodes.add(node);
+         for (final Edge outgoingEdge : node.getOutgoingEdges())
+         {
+            if (this.getStates().contains(outgoingEdge.getState()))
+            {
+               Node target = outgoingEdge.getTarget();
+               if (!processedNodes.contains(target))
+               {
+                  unprocessedNodes.add(target);
+               }
+            }
+         }
+      }
+
+      if (processedNodes.size() != nodes.size())
+      {
+         ConstraintViolation violation = ConstraintsFactory.eINSTANCE.createConstraintViolation();
+         report.getViolations().add(violation);
+         violation.setViolatedConstraint(this);
+         violation.getAffectedGraphs().add(graph);
+      }-->
+
+}

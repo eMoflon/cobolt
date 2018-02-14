@@ -1,0 +1,43 @@
+import  java.util.Set;
+import  java.util.HashSet;
+
+partial class NodeImpl {
+
+
+
+@model getOutdegree ()<--
+      return this.getOutgoingEdges().size();-->
+
+@model getIndegree ()<--
+      return this.getIncomingEdges().size();-->
+
+@model getDegree ()<--
+      return this.getIndegree() + this.getOutdegree();-->
+
+@model buildLocalView ()<--      this.getEdgesInLocalView().clear();
+      final Set<Node> currentLayer = new HashSet<>();
+      final Set<Node> nextLayer = new HashSet<>();
+      final Set<Edge> tentativeLocalView = new HashSet<>();
+
+      currentLayer.add(this);
+      for (int k = 0; k < this.getLocalViewHorizon(); ++k)
+      {
+         currentLayer.forEach(node -> {
+            node.getIncomingEdges().forEach(edge -> {
+               tentativeLocalView.add(edge);
+               nextLayer.add(edge.getSource());
+            });
+            node.getOutgoingEdges().forEach(edge -> {
+               tentativeLocalView.add(edge);
+               nextLayer.add(edge.getTarget());
+            });
+         });
+
+         currentLayer.clear();
+         currentLayer.addAll(nextLayer);
+         nextLayer.clear();
+      }
+
+      this.getEdgesInLocalView().addAll(tentativeLocalView);-->
+
+}
