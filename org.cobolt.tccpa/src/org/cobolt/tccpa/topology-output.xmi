@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.cobolt.tccpa:Topology xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.cobolt.tccpa="http://www.bank.com" xsi:schemaLocation="http://www.bank.com bank.ecore">
+  <nodes id="n1" incomingLinks="e21"/>
+  <nodes id="n2" outgoingLinks="e21"/>
+  <links id="e21" weight="3.0" source="n2" target="n1"/>
+</org.cobolt.tccpa:Topology>

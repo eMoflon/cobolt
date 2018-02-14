@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_XF6w8H_5EeKZZICbS5P5TQ">
+  <imports href="bank.ecore#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_oLoVUBFsEei5o9tPb1r_qA" name="removeLink">
+    <parameters xmi:id="_6ztqwBFsEei5o9tPb1r_qA" name="linkId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_6zvf8BFsEei5o9tPb1r_qA" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="bank.ecore#//Topology"/>
+    </parameters>
+    <lhs xmi:id="_oLwRIBFsEei5o9tPb1r_qA" name="Lhs">
+      <nodes xmi:id="__zsy0BFsEei5o9tPb1r_qA" name="topology" outgoing="_GeG1UBFtEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_CV0KQBFtEei5o9tPb1r_qA" incoming="_GeG1UBFtEei5o9tPb1r_qA" outgoing="_YFVf0BFvEei5o9tPb1r_qA _l0JZMBFvEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Link"/>
+      </nodes>
+      <nodes xmi:id="_kOHsABFuEei5o9tPb1r_qA" name="source" incoming="_l0JZMBFvEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Node"/>
+      </nodes>
+      <nodes xmi:id="_W_G3kBFvEei5o9tPb1r_qA" name="target" incoming="_YFVf0BFvEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Node"/>
+      </nodes>
+      <edges xmi:id="_GeG1UBFtEei5o9tPb1r_qA" source="__zsy0BFsEei5o9tPb1r_qA" target="_CV0KQBFtEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Topology/links"/>
+      </edges>
+      <edges xmi:id="_YFVf0BFvEei5o9tPb1r_qA" source="_CV0KQBFtEei5o9tPb1r_qA" target="_W_G3kBFvEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Link/target"/>
+      </edges>
+      <edges xmi:id="_l0JZMBFvEei5o9tPb1r_qA" source="_CV0KQBFtEei5o9tPb1r_qA" target="_kOHsABFuEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Link/source"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_oLwRIRFsEei5o9tPb1r_qA" name="Rhs">
+      <nodes xmi:id="__zuoABFsEei5o9tPb1r_qA" name="topology">
+        <type href="bank.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_lOzs8BFuEei5o9tPb1r_qA" name="source">
+        <type href="bank.ecore#//Node"/>
+      </nodes>
+      <nodes xmi:id="_W_G3kRFvEei5o9tPb1r_qA" name="target">
+        <type href="bank.ecore#//Node"/>
+      </nodes>
+    </rhs>
+    <mappings xmi:id="__zuoARFsEei5o9tPb1r_qA" origin="__zsy0BFsEei5o9tPb1r_qA" image="__zuoABFsEei5o9tPb1r_qA"/>
+    <mappings xmi:id="_lOzs8RFuEei5o9tPb1r_qA" origin="_kOHsABFuEei5o9tPb1r_qA" image="_lOzs8BFuEei5o9tPb1r_qA"/>
+    <mappings xmi:id="_W_G3khFvEei5o9tPb1r_qA" origin="_W_G3kBFvEei5o9tPb1r_qA" image="_W_G3kRFvEei5o9tPb1r_qA"/>
+  </units>
+  <units xsi:type="henshin:Rule" xmi:id="_MYCVwBFwEei5o9tPb1r_qA" name="addLink">
+    <parameters xmi:id="_X1w9UBFwEei5o9tPb1r_qA" name="srcId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_ZyMNwBFwEei5o9tPb1r_qA" name="trgId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_C5Rf0BFxEei5o9tPb1r_qA" name="linkId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_ZyMNwRFwEei5o9tPb1r_qA" name="weight" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameters>
+    <parameters xmi:id="_bg9csBFwEei5o9tPb1r_qA" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="bank.ecore#//Topology"/>
+    </parameters>
+    <lhs xmi:id="_MYHOQBFwEei5o9tPb1r_qA" name="Lhs">
+      <nodes xmi:id="_JoeiwBFxEei5o9tPb1r_qA" name="source">
+        <type href="bank.ecore#//Node"/>
+        <attributes xmi:id="_A0RswBFyEei5o9tPb1r_qA" value="srcId">
+          <type href="bank.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_MOe7sBFxEei5o9tPb1r_qA" name="topology">
+        <type href="bank.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_N2olQBFxEei5o9tPb1r_qA" name="target">
+        <type href="bank.ecore#//Node"/>
+        <attributes xmi:id="_BTG90BFyEei5o9tPb1r_qA" value="trgId">
+          <type href="bank.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+    </lhs>
+    <rhs xmi:id="_MYHOQRFwEei5o9tPb1r_qA" name="Rhs">
+      <nodes xmi:id="_6xoDQBFwEei5o9tPb1r_qA" name="newLink" incoming="_PMVM4BFxEei5o9tPb1r_qA _RwqK0BFxEei5o9tPb1r_qA" outgoing="_Pyt3cBFxEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Link"/>
+        <attributes xmi:id="_-R7hQBFwEei5o9tPb1r_qA" value="linkId">
+          <type href="bank.ecore#//TopologyElement/id"/>
+        </attributes>
+        <attributes xmi:id="_AICHQBFxEei5o9tPb1r_qA" value="weight">
+          <type href="bank.ecore#//Link/weight"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_KiiXQBFxEei5o9tPb1r_qA" name="source" outgoing="_PMVM4BFxEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Node"/>
+        <attributes xmi:id="_A0UJABFyEei5o9tPb1r_qA" value="srcId">
+          <type href="bank.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_MOe7sRFxEei5o9tPb1r_qA" name="topology" outgoing="_RwqK0BFxEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_N2olQRFxEei5o9tPb1r_qA" name="target" incoming="_Pyt3cBFxEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Node"/>
+        <attributes xmi:id="_BTG90RFyEei5o9tPb1r_qA" value="trgId">
+          <type href="bank.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_PMVM4BFxEei5o9tPb1r_qA" source="_KiiXQBFxEei5o9tPb1r_qA" target="_6xoDQBFwEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Node/outgoingLinks"/>
+      </edges>
+      <edges xmi:id="_Pyt3cBFxEei5o9tPb1r_qA" source="_6xoDQBFwEei5o9tPb1r_qA" target="_N2olQRFxEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Link/target"/>
+      </edges>
+      <edges xmi:id="_RwqK0BFxEei5o9tPb1r_qA" source="_MOe7sRFxEei5o9tPb1r_qA" target="_6xoDQBFwEei5o9tPb1r_qA">
+        <type href="bank.ecore#//Topology/links"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_KiiXQRFxEei5o9tPb1r_qA" origin="_JoeiwBFxEei5o9tPb1r_qA" image="_KiiXQBFxEei5o9tPb1r_qA"/>
+    <mappings xmi:id="_MOe7shFxEei5o9tPb1r_qA" origin="_MOe7sBFxEei5o9tPb1r_qA" image="_MOe7sRFxEei5o9tPb1r_qA"/>
+    <mappings xmi:id="_N2olQhFxEei5o9tPb1r_qA" origin="_N2olQBFxEei5o9tPb1r_qA" image="_N2olQRFxEei5o9tPb1r_qA"/>
+  </units>
+</henshin:Module>
