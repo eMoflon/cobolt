@@ -1,6 +1,10 @@
 /.settings/
 /bin/
 /target/
+/gen/
 /**/.cpa.options
+/**/*output*.xmi
+/src/**/2018.*-*
 /output/
 null.ggx
+!/**/.keep*
