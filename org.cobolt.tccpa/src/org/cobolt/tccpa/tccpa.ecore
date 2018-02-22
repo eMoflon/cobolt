@@ -32,7 +32,6 @@
     <eLiterals name="UNMARKED" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TopologyElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
