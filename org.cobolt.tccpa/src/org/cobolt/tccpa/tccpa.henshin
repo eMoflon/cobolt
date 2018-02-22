@@ -118,4 +118,51 @@
     <mappings xmi:id="_MOe7shFxEei5o9tPb1r_qA" origin="_MOe7sBFxEei5o9tPb1r_qA" image="_MOe7sRFxEei5o9tPb1r_qA"/>
     <mappings xmi:id="_N2olQhFxEei5o9tPb1r_qA" origin="_N2olQBFxEei5o9tPb1r_qA" image="_N2olQRFxEei5o9tPb1r_qA"/>
   </units>
+  <units xsi:type="henshin:Rule" xmi:id="_wv9YoBfUEeivYOgNged4Ww" name="addNode">
+    <parameters xmi:id="_zVnMQBfUEeivYOgNged4Ww" name="nodeId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_zVnzUBfUEeivYOgNged4Ww" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+    </parameters>
+    <lhs xmi:id="_wyrVcBfUEeivYOgNged4Ww" name="Lhs">
+      <nodes xmi:id="_0S1CcBfUEeivYOgNged4Ww" name="topology">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <formula xsi:type="henshin:Not" xmi:id="_5uD8EBfUEeivYOgNged4Ww">
+        <child xsi:type="henshin:NestedCondition" xmi:id="_5uD8ERfUEeivYOgNged4Ww">
+          <conclusion xmi:id="_5uD8EhfUEeivYOgNged4Ww">
+            <nodes xmi:id="_5uD8ExfUEeivYOgNged4Ww" name="topology" outgoing="_6XBZgBfUEeivYOgNged4Ww">
+              <type href="tccpa.ecore#//Topology"/>
+            </nodes>
+            <nodes xmi:id="_4gy3sBfUEeivYOgNged4Ww" name="forbiddenNode" incoming="_6XBZgBfUEeivYOgNged4Ww">
+              <type href="tccpa.ecore#//Node"/>
+              <attributes xmi:id="_9PD9oBfUEeivYOgNged4Ww" value="nodeId">
+                <type href="tccpa.ecore#//TopologyElement/id"/>
+              </attributes>
+            </nodes>
+            <edges xmi:id="_6XBZgBfUEeivYOgNged4Ww" source="_5uD8ExfUEeivYOgNged4Ww" target="_4gy3sBfUEeivYOgNged4Ww">
+              <type href="tccpa.ecore#//Topology/nodes"/>
+            </edges>
+          </conclusion>
+          <mappings xmi:id="_5uD8FBfUEeivYOgNged4Ww" origin="_0S1CcBfUEeivYOgNged4Ww" image="_5uD8ExfUEeivYOgNged4Ww"/>
+        </child>
+      </formula>
+    </lhs>
+    <rhs xmi:id="_wyrVcRfUEeivYOgNged4Ww" name="Rhs">
+      <nodes xmi:id="_0S1CcRfUEeivYOgNged4Ww" name="topology" outgoing="_6xdSwBfUEeivYOgNged4Ww">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_1UWw4BfUEeivYOgNged4Ww" name="newNode" incoming="_6xdSwBfUEeivYOgNged4Ww">
+        <type href="tccpa.ecore#//Node"/>
+        <attributes xmi:id="_76c7IBfUEeivYOgNged4Ww" value="nodeId">
+          <type href="tccpa.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_6xdSwBfUEeivYOgNged4Ww" source="_0S1CcRfUEeivYOgNged4Ww" target="_1UWw4BfUEeivYOgNged4Ww">
+        <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_0S1pgBfUEeivYOgNged4Ww" origin="_0S1CcBfUEeivYOgNged4Ww" image="_0S1CcRfUEeivYOgNged4Ww"/>
+  </units>
 </henshin:Module>

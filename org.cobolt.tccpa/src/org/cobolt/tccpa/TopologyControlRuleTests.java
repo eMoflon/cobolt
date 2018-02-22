@@ -7,11 +7,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -56,13 +59,13 @@ public class TopologyControlRuleTests
 
    private Module rulesModule;
 
-   //@BeforeAll
-   static void setUpClass()
+   /**
+    * Creates and saves the test input model
+    * @param args ignored
+    */
+   public static void main(final String[] args)
    {
       final HenshinResourceSet resourceSet = new HenshinResourceSet(WORKING_DIRECTORY);
-
-      // Load prior to working with generated code
-      new EGraphImpl(resourceSet.getResource("topology-input.xmi"));
 
       final Resource generatedCodeResource = resourceSet.createResource(TEMP_XMI_FILE);
 
@@ -165,7 +168,7 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine);
+      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
       final boolean executionSuccessfull = removeLink.execute(null);
       if (!executionSuccessfull)
       {
@@ -196,7 +199,7 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine);
+      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
       removeLink.execute(null);
    }
 
@@ -211,17 +214,54 @@ public class TopologyControlRuleTests
    }
 
    @ParameterizedTest
-   @ValueSource(strings = {"n7"})
+   @ValueSource(strings = { "n7" })
    void testNodeAdditionPositive(final String nodeIdToAdd) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareNodeAddition(nodeIdToAdd, graph, topology, engine);
-      removeLink.execute(null);
+      final UnitApplication removeLink = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
+      if (!removeLink.execute(null))
+      {
+         Assert.fail();
+      }
+      boolean foundNode7 = topology.eContents().stream().filter(o -> o instanceof DynamicEObjectImpl).map(o -> (DynamicEObjectImpl) o)
+            .filter(o -> "Node".equals(o.eClass().getName())).map(o -> o.eGet(findIdStructuralFeature(o))).anyMatch(nodeId -> "n7".equals(nodeId));
+      Assert.assertTrue(foundNode7);
    }
 
-   private UnitApplication prepareNodeAddition(final String nodeIdToAdd, final EGraph graph, final EObject topology, final Engine engine)
+   @ParameterizedTest
+   @ValueSource(strings = { "n1", "n2", "n3", "n4", "n5", "n6" })
+   void testNodeAdditionNegative(final String nodeIdToAdd) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      final UnitApplication removeLink = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
+      if (removeLink.execute(null))
+      {
+         Assert.fail();
+      }
+   }
+
+   private static EStructuralFeature findIdStructuralFeature(final DynamicEObjectImpl o)
+   {
+      return findFeatureByName(o, "id");
+   }
+
+   private static EStructuralFeature findFeatureByName(final DynamicEObjectImpl o, final String featureName)
+   {
+      final Optional<EStructuralFeature> maybeFeature = o.eClass().getEAllStructuralFeatures().stream().filter(f -> featureName.equals(f.getName())).findAny();
+      if (maybeFeature.isPresent())
+      {
+         return maybeFeature.get();
+      } else
+      {
+         throw new IllegalArgumentException(String.format("Cannot find feature with name %s in class of %s", featureName, o));
+      }
+   }
+
+   private static UnitApplication prepareNodeAddition(final String nodeIdToAdd, final EGraph graph, final EObject topology, final Engine engine, Module rulesModule)
    {
       final UnitApplication removeLink = new UnitApplicationImpl(engine);
       removeLink.setEGraph(graph);
@@ -231,7 +271,7 @@ public class TopologyControlRuleTests
       return removeLink;
    }
 
-   private UnitApplication prepareLinkRemoval(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine)
+   private static UnitApplication prepareLinkRemoval(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine, Module rulesModule)
    {
       final UnitApplication removeLink = new UnitApplicationImpl(engine);
       removeLink.setEGraph(graph);
@@ -249,6 +289,7 @@ public class TopologyControlRuleTests
    private static Node createNode(final String nodeId, final Topology topology)
    {
       final Node node = TccpaFactory.eINSTANCE.createNode();
+      topology.getNodes().add(node);
       node.setTopology(topology);
       node.setId(nodeId);
       return node;
@@ -257,6 +298,7 @@ public class TopologyControlRuleTests
    private static Link createLink(final Node fromNode, final Node toNode, final double weight, final Topology topology)
    {
       final Link link = TccpaFactory.eINSTANCE.createLink();
+      topology.getLinks().add(link);
       link.setTopology(topology);
       link.setId(String.format("%s->%s", fromNode.getId(), toNode.getId()));
       link.setSource(fromNode);
