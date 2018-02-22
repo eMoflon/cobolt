@@ -9,7 +9,7 @@
       outgoingLinks="//@links.0"/>
   <nodes id="n2"
       incomingLinks="//@links.0"/>
-  <links id="e12"
+  <links id="n1->n2"
       source="//@nodes.0"
       target="//@nodes.1"/>
 </org.cobolt.tccpa:Topology>
