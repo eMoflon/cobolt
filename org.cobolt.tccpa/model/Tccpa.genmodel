@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.cobolt.tccpa/gen" modelPluginID="org.cobolt.tccpa"
+    modelName="Tccpa" updateClasspath="false" codeFormatting="true" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true">
+  <foreignModel>Tccpa.ecore</foreignModel>
+  <genPackages prefix="Tccpa" disposableProviderFactory="true" ecorePackage="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/ACTIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/INACTIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/UNMARKED"/>
+    </genEnums>
+    <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology/nodes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology/links"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/topology"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/outgoingLinks"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/incomingLinks"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/weight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/state"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/topology"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/target"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//TopologyElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//TopologyElement/id"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//PhiTriangle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//PhiTriangle/base"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//PhiTriangle/left"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//PhiTriangle/right"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
