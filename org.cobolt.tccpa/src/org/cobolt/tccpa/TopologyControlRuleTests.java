@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -28,6 +27,7 @@ import org.eclipse.emf.henshin.model.Module;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -168,8 +168,8 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
-      final boolean executionSuccessfull = removeLink.execute(null);
+      final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
+      final boolean executionSuccessfull = unit.execute(null);
       if (!executionSuccessfull)
       {
          Assert.fail("Rule not applicable");
@@ -199,8 +199,8 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
-      removeLink.execute(null);
+      final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
+      unit.execute(null);
    }
 
    @SuppressWarnings("unused")
@@ -220,14 +220,13 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
-      if (!removeLink.execute(null))
+      final UnitApplication unit = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
+      if (!unit.execute(null))
       {
          Assert.fail();
       }
-      boolean foundNode7 = topology.eContents().stream().filter(o -> o instanceof DynamicEObjectImpl).map(o -> (DynamicEObjectImpl) o)
-            .filter(o -> "Node".equals(o.eClass().getName())).map(o -> o.eGet(findIdStructuralFeature(o))).anyMatch(nodeId -> "n7".equals(nodeId));
-      Assert.assertTrue(foundNode7);
+      final String nodeIdToCheck = "n7";
+      Assert.assertTrue(containsNodeWithId(topology, nodeIdToCheck));
    }
 
    @ParameterizedTest
@@ -237,19 +236,113 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      final UnitApplication removeLink = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
-      if (removeLink.execute(null))
+      final UnitApplication unit = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
+      if (unit.execute(null))
       {
          Assert.fail();
       }
    }
 
-   private static EStructuralFeature findIdStructuralFeature(final DynamicEObjectImpl o)
+   @Disabled
+   @Test
+   void testNodeRemovalPositive_Node1() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(prepareLinkRemoval("n1->n2", graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(prepareLinkRemoval("n1->n3", graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(prepareLinkRemoval("n2->n1", graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(prepareLinkRemoval("n3->n1", graph, topology, engine, rulesModule).execute(null));
+      final UnitApplication unit = prepareNodeRemoval("n1", graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+      Assert.assertFalse(containsNodeWithId(topology, "n1"));
+   }
+
+   @Disabled
+   @Test
+   void testNodeRemovalPositive_FreshNode() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      final String isolatedNodeId = "n7";
+      prepareNodeAddition(isolatedNodeId, graph, topology, engine, rulesModule).execute(null);
+      Assert.assertTrue(containsNodeWithId(topology, isolatedNodeId));
+      final UnitApplication unit = prepareNodeRemoval(isolatedNodeId, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+      Assert.assertFalse(containsNodeWithId(topology, "n1"));
+   }
+
+   @ParameterizedTest
+   @ValueSource(strings = { "n1", "n2", "n3", "n4", "n5", "n6" })
+   void testNodeRemovalnNegative(final String nodeIdToRemove) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      final UnitApplication unit = prepareNodeRemoval(nodeIdToRemove, graph, topology, engine, rulesModule);
+      Assert.assertFalse(unit.execute(null));
+   }
+
+   @Test
+   void testModifyLinkWeight_e34() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, "n3->n4"));
+      final UnitApplication unit = prepareLinkWeightModification("n3->n4", 7, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+      Assert.assertTrue(containsLinkWithIdAndWeight(topology, "n3->n4", 7));
+   }
+
+   private static boolean containsNodeWithId(final EObject topology, final String nodeIdToCheck)
+   {
+      final List<? extends EObject> nodes = getNodes(topology);
+      return nodes.stream().map(o -> o.eGet(findIdStructuralFeature(o))).anyMatch(nodeId -> {
+         return nodeIdToCheck.equals(nodeId);
+      });
+   }
+
+   private static boolean containsLinkWithId(final EObject topology, final String linkId)
+   {
+      return getLinks(topology).stream().map(o -> o.eGet(findIdStructuralFeature(o))).anyMatch(id -> {
+         return linkId.equals(id);
+      });
+   }
+
+   private static boolean containsLinkWithIdAndWeight(final EObject topology, final String linkId, final Integer weight)
+   {
+      return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o))))
+            .filter(o -> {
+               return Math.abs(weight - (Double)o.eGet(findWeightStructuralFeature(o))) < 1e-7;
+            }).findAny().isPresent();
+   }
+
+   @SuppressWarnings("unchecked")
+   private static List<? extends EObject> getNodes(final EObject topology)
+   {
+      return (List<EObject>) topology.eGet(findFeatureByName(topology, "nodes"));
+   }
+
+   @SuppressWarnings("unchecked")
+   private static List<? extends EObject> getLinks(final EObject topology)
+   {
+      return (List<EObject>) topology.eGet(findFeatureByName(topology, "links"));
+   }
+
+   private static EStructuralFeature findIdStructuralFeature(final EObject o)
    {
       return findFeatureByName(o, "id");
    }
 
-   private static EStructuralFeature findFeatureByName(final DynamicEObjectImpl o, final String featureName)
+   private static EStructuralFeature findWeightStructuralFeature(final EObject o)
+   {
+      return findFeatureByName(o, "weight");
+   }
+
+   private static EStructuralFeature findFeatureByName(final EObject o, final String featureName)
    {
       final Optional<EStructuralFeature> maybeFeature = o.eClass().getEAllStructuralFeatures().stream().filter(f -> featureName.equals(f.getName())).findAny();
       if (maybeFeature.isPresent())
@@ -261,24 +354,49 @@ public class TopologyControlRuleTests
       }
    }
 
-   private static UnitApplication prepareNodeAddition(final String nodeIdToAdd, final EGraph graph, final EObject topology, final Engine engine, Module rulesModule)
+   private static UnitApplication prepareNodeAddition(final String nodeIdToAdd, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
    {
-      final UnitApplication removeLink = new UnitApplicationImpl(engine);
-      removeLink.setEGraph(graph);
-      removeLink.setUnit(rulesModule.getUnit("addNode"));
-      removeLink.setParameterValue("nodeId", nodeIdToAdd);
-      removeLink.setParameterValue("topology", topology);
-      return removeLink;
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("addNode"));
+      unit.setParameterValue("nodeId", nodeIdToAdd);
+      unit.setParameterValue("topology", topology);
+      return unit;
    }
 
-   private static UnitApplication prepareLinkRemoval(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine, Module rulesModule)
+   private static UnitApplication prepareNodeRemoval(final String nodeIdToRemove, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
    {
-      final UnitApplication removeLink = new UnitApplicationImpl(engine);
-      removeLink.setEGraph(graph);
-      removeLink.setUnit(rulesModule.getUnit("removeLink"));
-      removeLink.setParameterValue("linkId", linkIdToRemove);
-      removeLink.setParameterValue("topology", topology);
-      return removeLink;
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("removeNode"));
+      unit.setParameterValue("nodeId", nodeIdToRemove);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkRemoval(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("removeLink"));
+      unit.setParameterValue("linkId", linkIdToRemove);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkWeightModification(final String linkIdToBeModified, final int newWeight, final EGraph graph,
+         final EObject topology, final Engine engine, Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("modifyLinkWeight"));
+      unit.setParameterValue("linkId", linkIdToBeModified);
+      unit.setParameterValue("newWeight", newWeight);
+      unit.setParameterValue("topology", topology);
+      return unit;
    }
 
    private static Stream<String> buildLinkIdStream(final Integer[][] nodePairs)
