@@ -27,7 +27,6 @@ import org.eclipse.emf.henshin.model.Module;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -168,12 +167,9 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkIdToRemove));
       final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
-      final boolean executionSuccessfull = unit.execute(null);
-      if (!executionSuccessfull)
-      {
-         Assert.fail("Rule not applicable");
-      }
+      Assert.assertTrue(unit.execute(null));
    }
 
    @SuppressWarnings("unused")
@@ -199,8 +195,9 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
+      Assert.assertFalse(containsLinkWithId(topology, linkIdToRemove));
       final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
-      unit.execute(null);
+      Assert.assertFalse(unit.execute(null));
    }
 
    @SuppressWarnings("unused")
@@ -243,7 +240,6 @@ public class TopologyControlRuleTests
       }
    }
 
-   @Disabled
    @Test
    void testNodeRemovalPositive_Node1() throws Exception
    {
@@ -254,12 +250,15 @@ public class TopologyControlRuleTests
       Assert.assertTrue(prepareLinkRemoval("n1->n3", graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(prepareLinkRemoval("n2->n1", graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(prepareLinkRemoval("n3->n1", graph, topology, engine, rulesModule).execute(null));
+      Assert.assertFalse(containsLinkWithId(topology, "n1->n2"));
+      Assert.assertFalse(containsLinkWithId(topology, "n2->n1"));
+      Assert.assertFalse(containsLinkWithId(topology, "n1->n2"));
+      Assert.assertFalse(containsLinkWithId(topology, "n1->n3"));
       final UnitApplication unit = prepareNodeRemoval("n1", graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
       Assert.assertFalse(containsNodeWithId(topology, "n1"));
    }
 
-   @Disabled
    @Test
    void testNodeRemovalPositive_FreshNode() throws Exception
    {
@@ -267,16 +266,16 @@ public class TopologyControlRuleTests
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
       final String isolatedNodeId = "n7";
-      prepareNodeAddition(isolatedNodeId, graph, topology, engine, rulesModule).execute(null);
+      Assert.assertTrue(prepareNodeAddition(isolatedNodeId, graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(containsNodeWithId(topology, isolatedNodeId));
       final UnitApplication unit = prepareNodeRemoval(isolatedNodeId, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
-      Assert.assertFalse(containsNodeWithId(topology, "n1"));
+      Assert.assertFalse(containsNodeWithId(topology, isolatedNodeId));
    }
 
    @ParameterizedTest
    @ValueSource(strings = { "n1", "n2", "n3", "n4", "n5", "n6" })
-   void testNodeRemovalnNegative(final String nodeIdToRemove) throws Exception
+   void testNodeRemovalNegative(final String nodeIdToRemove) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
