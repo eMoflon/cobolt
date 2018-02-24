@@ -41,7 +41,7 @@ public class TopologyControlCriticalPairAnalysisMain
     */
    public static void run(String path, boolean saveResult)
    {
-
+      final long startTimeMillis = System.currentTimeMillis();
       // Create a resource set with a base directory:
       HenshinResourceSet resourceSet = new HenshinResourceSet(path);
 
@@ -61,18 +61,19 @@ public class TopologyControlCriticalPairAnalysisMain
          ICriticalPairAnalysis cpa = new CpaByAGG();
          final CPAOptions options = new CPAOptions();
          options.setComplete(true);
-         options.setIgnore(true);
+         options.setIgnore(false);
          options.setReduceSameRuleAndSameMatch(true);
          options.persist(resultsPath + "/.cpa.options");
          cpa.init(rules, options);
-         CPAResult dependencies = cpa.runDependencyAnalysis();
-         CPAResult conflicts = cpa.runConflictAnalysis();
-         CPAResult jointCpaResult = new CPAResult();
+         final CPAResult dependencies = cpa.runDependencyAnalysis();
+         final CPAResult conflicts = cpa.runConflictAnalysis();
+         final CPAResult jointCpaResult = new CPAResult();
          dependencies.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
          conflicts.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
 
          CPAUtility.persistCpaResult(jointCpaResult, resultsPath);
-         System.out.println("Saved CPA results.");
+         final long endTimeMillis = System.currentTimeMillis();
+         System.out.printf("Saved %d critical pairs after %dms\n", jointCpaResult.getCriticalPairs().size(), (endTimeMillis - startTimeMillis));
 
       } catch (UnsupportedRuleException e)
       {

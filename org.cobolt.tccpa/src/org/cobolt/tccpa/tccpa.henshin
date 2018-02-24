@@ -345,16 +345,13 @@
     <parameters xmi:id="_6qVi4RmcEeiSQamcGPWslw" name="topology" kind="IN">
       <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
     </parameters>
-    <parameters xmi:id="_c_M6QBmdEeiSQamcGPWslw" name="x" kind="VAR">
-      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    </parameters>
     <lhs xmi:id="_2xdM0BmcEeiSQamcGPWslw" name="Lhs">
       <nodes xmi:id="_77H1UBmcEeiSQamcGPWslw" incoming="_9PmU8BmcEeiSQamcGPWslw">
         <type href="tccpa.ecore#//Link"/>
         <attributes xmi:id="_LxZKcBmdEeiSQamcGPWslw" value="linkId">
           <type href="tccpa.ecore#//TopologyElement/id"/>
         </attributes>
-        <attributes xmi:id="_YrCWYBmdEeiSQamcGPWslw" value="x">
+        <attributes xmi:id="_YrCWYBmdEeiSQamcGPWslw" value="0">
           <type href="tccpa.ecore#//Link/state"/>
         </attributes>
       </nodes>
@@ -372,7 +369,7 @@
               <attributes xmi:id="_C04QhBmfEeiSQamcGPWslw" value="linkId">
                 <type href="tccpa.ecore#//TopologyElement/id"/>
               </attributes>
-              <attributes xmi:id="_C04QhRmfEeiSQamcGPWslw" value="x">
+              <attributes xmi:id="_C04QhRmfEeiSQamcGPWslw" value="0">
                 <type href="tccpa.ecore#//Link/state"/>
               </attributes>
             </nodes>
@@ -421,9 +418,6 @@
     <parameters xmi:id="_cAWEURmoEeiSQamcGPWslw" name="topology" kind="IN">
       <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
     </parameters>
-    <parameters xmi:id="_cAWEUhmoEeiSQamcGPWslw" name="x" kind="VAR">
-      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    </parameters>
     <lhs xmi:id="_YND_8BmoEeiSQamcGPWslw" name="Lhs">
       <nodes xmi:id="_cqmiQBmoEeiSQamcGPWslw" outgoing="_ecaeIBmoEeiSQamcGPWslw">
         <type href="tccpa.ecore#//Topology"/>
@@ -433,7 +427,7 @@
         <attributes xmi:id="_fq6RkBmoEeiSQamcGPWslw" value="linkId">
           <type href="tccpa.ecore#//TopologyElement/id"/>
         </attributes>
-        <attributes xmi:id="_gSICkBmoEeiSQamcGPWslw" value="x">
+        <attributes xmi:id="_gSICkBmoEeiSQamcGPWslw" value="0">
           <type href="tccpa.ecore#//Link/state"/>
         </attributes>
       </nodes>
