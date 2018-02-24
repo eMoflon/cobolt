@@ -393,8 +393,8 @@ public class TopologyControlRuleTests
    {
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
-            //{1, 2}, {2, 1},
-            {1, 3}, {3, 1},
+            {1, 2}, {2, 1},
+            //{1, 3}, {3, 1},
             {2, 3}, {3, 2},
             {3, 4}, {4, 3},
             {4, 5}, {5, 4},
@@ -420,7 +420,56 @@ public class TopologyControlRuleTests
    {
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
-            {1, 2}, {2, 1}
+         {1, 3}, {3, 1},
+      });
+      //@formatter:on
+   }
+
+   @ParameterizedTest
+   @MethodSource("testInactivateLinkPositive")
+   void testInactivateLinkPositive(final String linkToBeInactivated) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkToBeInactivated));
+      final UnitApplication unit = prepareLinkInactivation(linkToBeInactivated, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, linkToBeInactivated));
+   }
+
+   static Stream<String> testInactivateLinkPositive()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+         {1, 3}, {3, 1}
+      });
+      //@formatter:on
+   }
+
+   @ParameterizedTest
+   @MethodSource("testInactivateLinkNegative")
+   void testInactivateLinkNegative(final String linkIdToBeInactivated) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkIdToBeInactivated));
+      final UnitApplication unit = prepareLinkInactivation(linkIdToBeInactivated, graph, topology, engine, rulesModule);
+      Assert.assertFalse(unit.execute(null));
+   }
+
+   static Stream<String> testInactivateLinkNegative()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+         {1, 2}, {2, 1},
+         //{1, 3}, {3, 1},
+         {2, 3}, {3, 2},
+         {3, 4}, {4, 3},
+         {4, 5}, {5, 4},
+         {4, 6}, {6, 4},
+         {5, 6}, {6, 5},
       });
       //@formatter:on
    }
@@ -576,6 +625,17 @@ public class TopologyControlRuleTests
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
       unit.setUnit(rulesModule.getUnit("activateLink"));
+      unit.setParameterValue("linkId", linkIdToBeModified);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkInactivation(final String linkIdToBeModified, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("inactivateLink"));
       unit.setParameterValue("linkId", linkIdToBeModified);
       unit.setParameterValue("topology", topology);
       return unit;
