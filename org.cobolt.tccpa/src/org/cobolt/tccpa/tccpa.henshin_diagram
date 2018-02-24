@@ -52,7 +52,7 @@
       </children>
     </children>
     <element xmi:type="henshin:Rule" href="tccpa.henshin#_oLoVUBFsEei5o9tPb1r_qA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-PRL0RGREei2nc2ybxl-XA" width="697" height="311"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_-PRL0RGREei2nc2ybxl-XA" width="697" height="202"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_-PZusBGREei2nc2ybxl-XA" type="2001" fontName="Segoe UI" italic="true" lineColor="0">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_LgNbMhmaEeiSQamcGPWslw" source="defaultAction">
