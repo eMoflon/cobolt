@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.EEnumLiteralImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -34,13 +35,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import tccpa.Link;
+import tccpa.LinkState;
 import tccpa.Node;
+import tccpa.PhiTriangle;
 import tccpa.TccpaFactory;
 import tccpa.TccpaPackage;
 import tccpa.Topology;
 
 public class TopologyControlRuleTests
 {
+   private static final String NODE_ID_SEPARATOR = "->";
+
    /**
     * Project-relative path to the folder containing models and metamodels
     */
@@ -62,8 +67,9 @@ public class TopologyControlRuleTests
    /**
     * Creates and saves the test input model
     * @param args ignored
+    * @throws IOException
     */
-   public static void main(final String[] args)
+   public static void main(final String[] args) throws IOException
    {
       final HenshinResourceSet resourceSet = new HenshinResourceSet(WORKING_DIRECTORY);
 
@@ -79,15 +85,23 @@ public class TopologyControlRuleTests
       generatedCodeResource.getContents().add(topology);
       final List<Node> nodes = IntStream.rangeClosed(1, 6).boxed().map(i -> createNode("n" + i, topology)).collect(toList());
 
-      final List<Link> forwardEdges = Arrays.asList(getlinkSpec(1, 2, 3), getlinkSpec(1, 3, 10), getlinkSpec(2, 3, 5), getlinkSpec(3, 4, 5),
-            getlinkSpec(4, 5, 7), getlinkSpec(4, 6, 10), getlinkSpec(5, 6, 9)).stream().map(linkSpec -> {
+      //@formatter:off
+      final List<Link> forwardLinks = Arrays.asList(
+            getlinkSpec(1, 2, 3),
+            getlinkSpec(1, 3, 10),
+            getlinkSpec(2, 3, 5),
+            getlinkSpec(3, 4, 5),
+            getlinkSpec(4, 5, 7),
+            getlinkSpec(4, 6, 10),
+            getlinkSpec(5, 6, 9)).stream().map(linkSpec -> {
                final Node fromNode = nodes.get(linkSpec.get(0) - 1);
                final Node toNode = nodes.get(linkSpec.get(1) - 1);
                final int weight = linkSpec.get(2);
                return createLink(fromNode, toNode, weight, topology);
             }).collect(toList());
+      //@formatter:on
 
-      forwardEdges.stream().map(forwardLink -> {
+      forwardLinks.stream().map(forwardLink -> {
          final Node fromNode = forwardLink.getTarget();
          final Node toNode = forwardLink.getSource();
          final double weight = forwardLink.getWeight();
@@ -97,16 +111,32 @@ public class TopologyControlRuleTests
       Assert.assertEquals(6, topology.getNodes().size());
       Assert.assertEquals(2 * 7, topology.getLinks().size());
 
-      try
       {
-         final Map<String, Object> options = new HashMap<>();
-         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
-         options.put(XMIResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-         generatedCodeResource.save(options);
-      } catch (final IOException e)
-      {
-         Assert.fail(e.getMessage());
+         final PhiTriangle triangle12 = factory.createPhiTriangle();
+         topology.getTriangles().add(triangle12);
+         triangle12.setTopology(topology);
+         triangle12.setBase(findLinkById("n1->n3", topology));
+         triangle12.setLeft(findLinkById("n1->n2", topology));
+         triangle12.setRight(findLinkById("n3->n2", topology));
       }
+      {
+         final PhiTriangle triangle21 = factory.createPhiTriangle();
+         topology.getTriangles().add(triangle21);
+         triangle21.setTopology(topology);
+         triangle21.setBase(findLinkById("n3->n1", topology));
+         triangle21.setLeft(findLinkById("n3->n2", topology));
+         triangle21.setRight(findLinkById("n2->n1", topology));
+      }
+
+      final Map<String, Object> options = new HashMap<>();
+      options.put(XMLResource.OPTION_ENCODING, "UTF-8");
+      options.put(XMIResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+      generatedCodeResource.save(options);
+   }
+
+   private static Link findLinkById(final String linkId, final Topology topology)
+   {
+      return topology.getLinks().stream().filter(link -> linkId.equals(link.getId())).findAny().get();
    }
 
    @BeforeEach
@@ -137,7 +167,7 @@ public class TopologyControlRuleTests
             UnitApplication removeLink = new UnitApplicationImpl(engine);
             removeLink.setEGraph(graph);
             removeLink.setUnit(rulesModule.getUnit("removeLink"));
-            removeLink.setParameterValue("linkId", "n1->n2");
+            removeLink.setParameterValue("linkId", "n1" + NODE_ID_SEPARATOR + "n2");
             removeLink.setParameterValue("topology", topology);
             if (!removeLink.execute(null))
             {
@@ -150,7 +180,7 @@ public class TopologyControlRuleTests
             addLink.setUnit(rulesModule.getUnit("addLink"));
             addLink.setParameterValue("srcId", "n2");
             addLink.setParameterValue("trgId", "n1");
-            addLink.setParameterValue("linkId", "n1->n2");
+            addLink.setParameterValue("linkId", "n1" + NODE_ID_SEPARATOR + "n2");
             addLink.setParameterValue("weight", 3.0);
             addLink.setParameterValue("topology", topology);
             if (!addLink.execute(null))
@@ -198,7 +228,10 @@ public class TopologyControlRuleTests
       final Engine engine = new EngineImpl();
       Assert.assertFalse(containsLinkWithId(topology, linkIdToRemove));
       final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
-      Assert.assertFalse(unit.execute(null));
+      int hashCodeBefore = graph.hashCode();
+      unit.execute(null);
+      int hashCodeAfter = graph.hashCode();
+      Assert.assertEquals(hashCodeBefore, hashCodeAfter);
    }
 
    @SuppressWarnings("unused")
@@ -336,10 +369,60 @@ public class TopologyControlRuleTests
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
       final Engine engine = new EngineImpl();
-      Assert.assertTrue(containsLinkWithId(topology, "n3->n4"));
-      final UnitApplication unit = prepareLinkWeightModification("n3->n4", 7, graph, topology, engine, rulesModule);
+      final String linkId = "n3->n4";
+      Assert.assertTrue(containsLinkWithId(topology, linkId));
+      final UnitApplication unit = prepareLinkWeightModification(linkId, 7, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
-      Assert.assertTrue(containsLinkWithIdAndWeight(topology, "n3->n4", 7));
+      Assert.assertTrue(containsLinkWithIdAndWeight(topology, linkId, 7));
+   }
+
+   @ParameterizedTest
+   @MethodSource("testActivateLinkPositive")
+   void testActivateLinkPositive(final String linkToBeActivated) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkToBeActivated));
+      final UnitApplication unit = prepareLinkActivation(linkToBeActivated, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+      Assert.assertTrue(containsActiveLinkWithId(topology, linkToBeActivated));
+   }
+
+   static Stream<String> testActivateLinkPositive()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+            //{1, 2}, {2, 1},
+            {1, 3}, {3, 1},
+            {2, 3}, {3, 2},
+            {3, 4}, {4, 3},
+            {4, 5}, {5, 4},
+            {4, 6}, {6, 4},
+            {5, 6}, {6, 5},
+      });
+      //@formatter:on
+   }
+
+   @ParameterizedTest
+   @MethodSource("testActivateLinkNegative")
+   void testActivateLinkNegative(final String linkToBeActivated) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkToBeActivated));
+      final UnitApplication unit = prepareLinkActivation(linkToBeActivated, graph, topology, engine, rulesModule);
+      Assert.assertFalse(unit.execute(null));
+   }
+
+   static Stream<String> testActivateLinkNegative()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+            {1, 2}, {2, 1}
+      });
+      //@formatter:on
    }
 
    private static boolean containsNodeWithId(final EObject topology, final String nodeIdToCheck)
@@ -359,10 +442,31 @@ public class TopologyControlRuleTests
 
    private static boolean containsLinkWithIdAndWeight(final EObject topology, final String linkId, final Integer weight)
    {
-      return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o))))
-            .filter(o -> {
-               return Math.abs(weight - (Double)o.eGet(findWeightStructuralFeature(o))) < 1e-7;
-            }).findAny().isPresent();
+      return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o)))).filter(o -> {
+         return Math.abs(weight - (Double) o.eGet(findWeightStructuralFeature(o))) < 1e-7;
+      }).findAny().isPresent();
+   }
+
+   private boolean containsActiveLinkWithId(final EObject topology, final String linkId)
+   {
+      return containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE.getName());
+   }
+
+   private boolean containsInactiveLinkWithId(final EObject topology, final String linkId)
+   {
+      return containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE.getName());
+   }
+
+   private boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final String state)
+   {
+      return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o)))).filter(link -> hasState(link, state)).findAny()
+            .isPresent();
+   }
+
+   private boolean hasState(final EObject link, final String expectedState)
+   {
+      final EEnumLiteralImpl currentState = (EEnumLiteralImpl) link.eGet(findStateStructuralFeature(link));
+      return expectedState.equals(currentState.getName());
    }
 
    @SuppressWarnings("unchecked")
@@ -387,6 +491,11 @@ public class TopologyControlRuleTests
       return findFeatureByName(o, "weight");
    }
 
+   private static EStructuralFeature findStateStructuralFeature(final EObject o)
+   {
+      return findFeatureByName(o, "state");
+   }
+
    private static EStructuralFeature findFeatureByName(final EObject o, final String featureName)
    {
       final Optional<EStructuralFeature> maybeFeature = o.eClass().getEAllStructuralFeatures().stream().filter(f -> featureName.equals(f.getName())).findAny();
@@ -395,7 +504,7 @@ public class TopologyControlRuleTests
          return maybeFeature.get();
       } else
       {
-         throw new IllegalArgumentException(String.format("Cannot find feature with name %s in class of %s", featureName, o));
+         throw new IllegalArgumentException(String.format("Cannot find feature '%s' in class '%s' of %s", featureName, o.eClass(), o));
       }
    }
 
@@ -435,8 +544,8 @@ public class TopologyControlRuleTests
    private static UnitApplication prepareLinkAddition(final String linkIdToAdd, final EGraph graph, final EObject topology, final Engine engine,
          Module rulesModule)
    {
-      final String srcId = linkIdToAdd.split(Pattern.quote("->"))[0];
-      final String trgId = linkIdToAdd.split(Pattern.quote("->"))[1];
+      final String srcId = extractNodeIds(linkIdToAdd)[0];
+      final String trgId = extractNodeIds(linkIdToAdd)[1];
       final double weight = 1.0;
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
@@ -461,9 +570,20 @@ public class TopologyControlRuleTests
       return unit;
    }
 
+   private static UnitApplication prepareLinkActivation(final String linkIdToBeModified, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("activateLink"));
+      unit.setParameterValue("linkId", linkIdToBeModified);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
    private static Stream<String> buildLinkIdStream(final Integer[][] nodePairs)
    {
-      return Arrays.asList(nodePairs).stream().map(pair -> String.format("n%d->n%d", pair[0], pair[1]));
+      return Arrays.asList(nodePairs).stream().map(pair -> String.format("n%d%sn%d", pair[0], NODE_ID_SEPARATOR, pair[1]));
    }
 
    private static Node createNode(final String nodeId, final Topology topology)
@@ -480,7 +600,7 @@ public class TopologyControlRuleTests
       final Link link = TccpaFactory.eINSTANCE.createLink();
       topology.getLinks().add(link);
       link.setTopology(topology);
-      link.setId(String.format("%s->%s", fromNode.getId(), toNode.getId()));
+      link.setId(String.format("%s%s%s", fromNode.getId(), NODE_ID_SEPARATOR, toNode.getId()));
       link.setSource(fromNode);
       link.setTarget(toNode);
       link.setWeight(weight);
@@ -490,5 +610,10 @@ public class TopologyControlRuleTests
    private static List<Integer> getlinkSpec(int fromNodeId, int toNodeId, int weight)
    {
       return Arrays.asList(fromNodeId, toNodeId, weight);
+   }
+
+   private static String[] extractNodeIds(final String linkId)
+   {
+      return linkId.split(Pattern.quote(NODE_ID_SEPARATOR));
    }
 }
