@@ -5,11 +5,6 @@
     complianceLevel="8.0" copyrightFields="false" operationReflection="true">
   <foreignModel>Tccpa.ecore</foreignModel>
   <genPackages prefix="Tccpa" disposableProviderFactory="true" ecorePackage="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#/">
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState">
-      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/ACTIVE"/>
-      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/INACTIVE"/>
-      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//LinkState/UNMARKED"/>
-    </genEnums>
     <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology/nodes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Topology/links"/>

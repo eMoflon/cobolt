@@ -19,8 +19,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//TopologyElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" eType="#//LinkState"
-        defaultValueLiteral="UNMARKED"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="topology" eType="#//Topology"
         eOpposite="#//Topology/links"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
@@ -33,11 +33,6 @@
         eType="#//PhiTriangle" eOpposite="#//PhiTriangle/left"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rightLinkInTriangles" upperBound="-1"
         eType="#//PhiTriangle" eOpposite="#//PhiTriangle/right"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="LinkState">
-    <eLiterals name="ACTIVE"/>
-    <eLiterals name="INACTIVE" value="1" literal="INACTIVE"/>
-    <eLiterals name="UNMARKED" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TopologyElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.impl.EEnumLiteralImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -35,7 +34,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import tccpa.Link;
-import tccpa.LinkState;
 import tccpa.Node;
 import tccpa.PhiTriangle;
 import tccpa.TccpaFactory;
@@ -498,24 +496,23 @@ public class TopologyControlRuleTests
 
    private boolean containsActiveLinkWithId(final EObject topology, final String linkId)
    {
-      return containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE.getName());
+      return containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE);
    }
 
    private boolean containsInactiveLinkWithId(final EObject topology, final String linkId)
    {
-      return containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE.getName());
+      return containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE);
    }
 
-   private boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final String state)
+   private boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final int state)
    {
       return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o)))).filter(link -> hasState(link, state)).findAny()
             .isPresent();
    }
 
-   private boolean hasState(final EObject link, final String expectedState)
+   private boolean hasState(final EObject link, final Integer expectedState)
    {
-      final EEnumLiteralImpl currentState = (EEnumLiteralImpl) link.eGet(findStateStructuralFeature(link));
-      return expectedState.equals(currentState.getName());
+      return expectedState.equals(link.eGet(findStateStructuralFeature(link)));
    }
 
    @SuppressWarnings("unchecked")
