@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -211,6 +212,51 @@ public class TopologyControlRuleTests
    }
 
    @ParameterizedTest
+   @MethodSource("testLinkAdditionPositive")
+   void testLinkAdditionPositive(final String linkIdToAdd) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertFalse(containsLinkWithId(topology, linkIdToAdd));
+      final UnitApplication unit = prepareLinkAddition(linkIdToAdd, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
+   }
+
+   @SuppressWarnings("unused")
+   private static Stream<String> testLinkAdditionPositive()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+         {1, 6}, {6, 1}
+      });
+      //@formatter:on
+   }
+
+   @ParameterizedTest
+   @MethodSource("testLinkAdditionNegative")
+   void testLinkAdditionNegative(final String linkIdToAdd) throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final Engine engine = new EngineImpl();
+      Assert.assertTrue(containsLinkWithId(topology, linkIdToAdd));
+      final UnitApplication unit = prepareLinkAddition(linkIdToAdd, graph, topology, engine, rulesModule);
+      Assert.assertFalse(unit.execute(null));
+   }
+
+   @SuppressWarnings("unused")
+   private static Stream<String> testLinkAdditionNegative()
+   {
+      //@formatter:off
+      return buildLinkIdStream(new Integer[][] {
+         {1, 2}, {2, 1},
+         {3, 4}, {4, 3}
+      });
+      //@formatter:on
+   }
+
+   @ParameterizedTest
    @ValueSource(strings = { "n7" })
    void testNodeAdditionPositive(final String nodeIdToAdd) throws Exception
    {
@@ -382,6 +428,23 @@ public class TopologyControlRuleTests
       unit.setEGraph(graph);
       unit.setUnit(rulesModule.getUnit("removeLink"));
       unit.setParameterValue("linkId", linkIdToRemove);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkAddition(final String linkIdToAdd, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final String srcId = linkIdToAdd.split(Pattern.quote("->"))[0];
+      final String trgId = linkIdToAdd.split(Pattern.quote("->"))[1];
+      final double weight = 1.0;
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("addLink"));
+      unit.setParameterValue("srcId", srcId);
+      unit.setParameterValue("trgId", trgId);
+      unit.setParameterValue("linkId", linkIdToAdd);
+      unit.setParameterValue("weight", weight);
       unit.setParameterValue("topology", topology);
       return unit;
    }
