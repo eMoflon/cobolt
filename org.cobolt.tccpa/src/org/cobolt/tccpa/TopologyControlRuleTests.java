@@ -146,6 +146,9 @@ public class TopologyControlRuleTests
       // Load prior to working with generated code
       new EGraphImpl(resourceSet.getResource("topology-input.xmi"));
 
+      //TccpaPackage.eINSTANCE.eResource().setURI(URI.createFileURI("tccpa.ecore"));
+      //resourceSet.getPackageRegistry().put(TccpaPackage.eINSTANCE.getNsURI(), TccpaPackage.eINSTANCE);
+
       testTopologyResource = resourceSet.getResource(TEMP_XMI_FILE);
    }
 
@@ -167,10 +170,7 @@ public class TopologyControlRuleTests
             removeLink.setUnit(rulesModule.getUnit("removeLink"));
             removeLink.setParameterValue("linkId", "n1" + NODE_ID_SEPARATOR + "n2");
             removeLink.setParameterValue("topology", topology);
-            if (!removeLink.execute(null))
-            {
-               throw new RuntimeException("Link removal failed");
-            }
+            Assert.assertTrue(removeLink.execute(null));
          }
          {
             UnitApplication addLink = new UnitApplicationImpl(engine);
@@ -181,10 +181,7 @@ public class TopologyControlRuleTests
             addLink.setParameterValue("linkId", "n1" + NODE_ID_SEPARATOR + "n2");
             addLink.setParameterValue("weight", 3.0);
             addLink.setParameterValue("topology", topology);
-            if (!addLink.execute(null))
-            {
-               throw new RuntimeException("Link addition failed");
-            }
+            Assert.assertTrue(addLink.execute(null));
          }
       }
    }
