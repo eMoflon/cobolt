@@ -35,7 +35,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import tccpa.Link;
 import tccpa.Node;
-import tccpa.PhiTriangle;
 import tccpa.TccpaFactory;
 import tccpa.TccpaPackage;
 import tccpa.Topology;
@@ -83,22 +82,20 @@ public class TopologyControlRuleTests
       final TccpaFactory factory = TccpaFactory.eINSTANCE;
       final Topology topology = factory.createTopology();
       generatedCodeResource.getContents().add(topology);
-      final List<Node> nodes = IntStream.rangeClosed(1, 6).boxed().map(i -> createNode("n" + i, topology)).collect(toList());
+      final List<Node> nodes = IntStream.rangeClosed(1, 7).boxed().map(i -> createNode("n" + i, topology)).collect(toList());
 
       //@formatter:off
       final List<Link> forwardLinks = Arrays.asList(
-            getlinkSpec(1, 2, 3),
-            getlinkSpec(1, 3, 10),
-            getlinkSpec(2, 3, 5),
-            getlinkSpec(3, 4, 5),
-            getlinkSpec(4, 5, 7),
-            getlinkSpec(4, 6, 10),
-            getlinkSpec(5, 6, 9)).stream().map(linkSpec -> {
-               final Node fromNode = nodes.get(linkSpec.get(0) - 1);
-               final Node toNode = nodes.get(linkSpec.get(1) - 1);
-               final int weight = linkSpec.get(2);
-               return createLink(fromNode, toNode, weight, topology);
-            }).collect(toList());
+            createLinkSpec(1, 2, 3),
+            createLinkSpec(1, 3, 10),
+            createLinkSpec(2, 3, 5),
+            createLinkSpec(3, 4, 5),
+            createLinkSpec(4, 5, 7),
+            createLinkSpec(4, 6, 10),
+            createLinkSpec(4, 7, 6),
+            createLinkSpec(5, 6, 9),
+            createLinkSpec(6, 7, 6)
+            ).stream().map(linkSpec -> createLink(nodes, linkSpec, topology)).collect(toList());
       //@formatter:on
 
       forwardLinks.stream().map(forwardLink -> {
@@ -111,32 +108,10 @@ public class TopologyControlRuleTests
       Assert.assertEquals(6, topology.getNodes().size());
       Assert.assertEquals(2 * 7, topology.getLinks().size());
 
-      {
-         final PhiTriangle triangle12 = factory.createPhiTriangle();
-         topology.getTriangles().add(triangle12);
-         triangle12.setTopology(topology);
-         triangle12.setBase(findLinkById("n1->n3", topology));
-         triangle12.setLeft(findLinkById("n1->n2", topology));
-         triangle12.setRight(findLinkById("n3->n2", topology));
-      }
-      {
-         final PhiTriangle triangle21 = factory.createPhiTriangle();
-         topology.getTriangles().add(triangle21);
-         triangle21.setTopology(topology);
-         triangle21.setBase(findLinkById("n3->n1", topology));
-         triangle21.setLeft(findLinkById("n3->n2", topology));
-         triangle21.setRight(findLinkById("n2->n1", topology));
-      }
-
       final Map<String, Object> options = new HashMap<>();
       options.put(XMLResource.OPTION_ENCODING, "UTF-8");
       options.put(XMIResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
       generatedCodeResource.save(options);
-   }
-
-   private static Link findLinkById(final String linkId, final Topology topology)
-   {
-      return topology.getLinks().stream().filter(link -> linkId.equals(link.getId())).findAny().get();
    }
 
    @BeforeEach
@@ -189,14 +164,6 @@ public class TopologyControlRuleTests
       }
    }
 
-   /* TODO:fix test
-    * This test currently fails because there is only one rule that assumes that the link to be removed has to have three connected PhiTriangles
-    * Idea: Create 8 rules for
-    * 3 triangles: base-left-right
-    * 2 triangels: base-left, base-right, left-right
-    * 1 triangle: base, left, right
-    * 0 triangles
-    */
    @ParameterizedTest
    @MethodSource("testLinkRemovalPositive")
    void testLinkRemovalPositive(final String linkIdToRemove) throws Exception
@@ -248,6 +215,66 @@ public class TopologyControlRuleTests
          {1, 6}, {6, 1}
       });
       //@formatter:on
+   }
+
+   @Test
+   void testHandleLinkRemoval1_e13() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      final String e13 = createLinkId(1, 3);
+      final String e12 = createLinkId(1, 2);
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e13));
+      Assert.assertTrue(prepareLinkInactivation(e13, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e13));
+      Assert.assertTrue(prepareLinkRemovalHandlerSelf(e12, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e13));
+   }
+
+   @Test
+   void testHandleLinkRemoval2_e13() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      final String e13 = createLinkId(1, 3);
+      final String e23 = createLinkId(2, 3);
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e13));
+      Assert.assertTrue(prepareLinkInactivation(e13, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e13));
+      Assert.assertTrue(prepareLinkRemovalHandlerRemote(e23, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e13));
+   }
+
+   @Test
+   void testHandleLinkRemoval1_e46() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      final String e46 = createLinkId(4, 6);
+      final String e45 = createLinkId(4, 5);
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e46));
+      Assert.assertTrue(prepareLinkInactivation(e46, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
+      Assert.assertFalse(prepareLinkRemovalHandlerSelf(e45, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
+   }
+
+   @Test
+   void testHandleLinkRemoval2_e46() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      final String e46 = createLinkId(4, 6);
+      final String e56 = createLinkId(5, 6);
+      Assert.assertTrue(containsUnmarkedLinkWithId(topology, e46));
+      Assert.assertTrue(prepareLinkInactivation(e46, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
+      Assert.assertFalse(prepareLinkRemovalHandlerRemote(e56, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
    }
 
    @ParameterizedTest
@@ -344,7 +371,7 @@ public class TopologyControlRuleTests
    }
 
    @ParameterizedTest
-   @ValueSource(strings = {"nFresh"})
+   @ValueSource(strings = { "nFresh" })
    void testNodeRemovalPositive_FreshNode(final String isolatedNodeId) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
@@ -398,11 +425,9 @@ public class TopologyControlRuleTests
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
             {1, 2}, {2, 1},
-            //{1, 3}, {3, 1},
             {2, 3}, {3, 2},
             {3, 4}, {4, 3},
             {4, 5}, {5, 4},
-            {4, 6}, {6, 4},
             {5, 6}, {6, 5},
       });
       //@formatter:on
@@ -425,6 +450,7 @@ public class TopologyControlRuleTests
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
          {1, 3}, {3, 1},
+         {4, 6}, {6, 4}
       });
       //@formatter:on
    }
@@ -446,7 +472,8 @@ public class TopologyControlRuleTests
    {
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
-         {1, 3}, {3, 1}
+         {1, 3}, {3, 1},
+         {4, 6}, {6, 4}
       });
       //@formatter:on
    }
@@ -468,11 +495,9 @@ public class TopologyControlRuleTests
       //@formatter:off
       return buildLinkIdStream(new Integer[][] {
          {1, 2}, {2, 1},
-         //{1, 3}, {3, 1},
          {2, 3}, {3, 2},
          {3, 4}, {4, 3},
          {4, 5}, {5, 4},
-         {4, 6}, {6, 4},
          {5, 6}, {6, 5},
       });
       //@formatter:on
@@ -508,6 +533,11 @@ public class TopologyControlRuleTests
    private boolean containsInactiveLinkWithId(final EObject topology, final String linkId)
    {
       return containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE);
+   }
+
+   private boolean containsUnmarkedLinkWithId(final EObject topology, final String linkId)
+   {
+      return containsLinkWithStateAndId(topology, linkId, LinkState.UNMARKED);
    }
 
    private boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final int state)
@@ -593,6 +623,28 @@ public class TopologyControlRuleTests
       return unit;
    }
 
+   private static UnitApplication prepareLinkRemovalHandlerSelf(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("handleLinkRemoval1"));
+      unit.setParameterValue("linkId", linkIdToRemove);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkRemovalHandlerRemote(final String linkIdToRemove, final EGraph graph, final EObject topology, final Engine engine,
+         Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(rulesModule.getUnit("handleLinkRemoval2"));
+      unit.setParameterValue("linkId", linkIdToRemove);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
    private static UnitApplication prepareLinkAddition(final String linkIdToAdd, final EGraph graph, final EObject topology, final Engine engine,
          Module rulesModule)
    {
@@ -646,7 +698,19 @@ public class TopologyControlRuleTests
 
    private static Stream<String> buildLinkIdStream(final Integer[][] nodePairs)
    {
-      return Arrays.asList(nodePairs).stream().map(pair -> String.format("n%d%sn%d", pair[0], NODE_ID_SEPARATOR, pair[1]));
+      return Arrays.asList(nodePairs).stream().map(pair -> createLinkId(pair));
+   }
+
+   private static String createLinkId(Integer[] pair)
+   {
+      final Integer sourceNode = pair[0];
+      final Integer targetNode = pair[1];
+      return createLinkId(sourceNode, targetNode);
+   }
+
+   private static String createLinkId(final int sourceNode, final int targetNode)
+   {
+      return String.format("n%d%sn%d", sourceNode, NODE_ID_SEPARATOR, targetNode);
    }
 
    private static Node createNode(final String nodeId, final Topology topology)
@@ -670,7 +734,15 @@ public class TopologyControlRuleTests
       return link;
    }
 
-   private static List<Integer> getlinkSpec(int fromNodeId, int toNodeId, int weight)
+   private static Link createLink(final List<Node> nodes, List<Integer> linkSpec, final Topology topology)
+   {
+      final Node fromNode = nodes.get(linkSpec.get(0) - 1);
+      final Node toNode = nodes.get(linkSpec.get(1) - 1);
+      final int weight = linkSpec.get(2);
+      return createLink(fromNode, toNode, weight, topology);
+   }
+
+   private static List<Integer> createLinkSpec(int fromNodeId, int toNodeId, int weight)
    {
       return Arrays.asList(fromNodeId, toNodeId, weight);
    }
