@@ -62,6 +62,8 @@ public class TopologyControlRuleTests
 
    private Module rulesModule;
 
+   private Engine engine;
+
    /**
     * Creates and saves the test input model
     * @param args ignored
@@ -142,6 +144,7 @@ public class TopologyControlRuleTests
    {
       resourceSet = new HenshinResourceSet(WORKING_DIRECTORY);
       rulesModule = resourceSet.getModule("tccpa.henshin", false);
+      engine = new EngineImpl();
 
       // Load prior to working with generated code
       new EGraphImpl(resourceSet.getResource("topology-input.xmi"));
@@ -159,7 +162,7 @@ public class TopologyControlRuleTests
       EGraph graphGencode = new EGraphImpl(testTopologyResource);
 
       // Create an engine and a rule application:
-      Engine engine = new EngineImpl();
+
       for (final EGraph graph : Arrays.asList(graphDynamic, graphGencode))
       {
          final EObject topology = graph.getRoots().get(0);
@@ -186,13 +189,21 @@ public class TopologyControlRuleTests
       }
    }
 
+   /* TODO:fix test
+    * This test currently fails because there is only one rule that assumes that the link to be removed has to have three connected PhiTriangles
+    * Idea: Create 8 rules for
+    * 3 triangles: base-left-right
+    * 2 triangels: base-left, base-right, left-right
+    * 1 triangle: base, left, right
+    * 0 triangles
+    */
    @ParameterizedTest
    @MethodSource("testLinkRemovalPositive")
    void testLinkRemovalPositive(final String linkIdToRemove) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkIdToRemove));
       final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
@@ -220,7 +231,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertFalse(containsLinkWithId(topology, linkIdToRemove));
       final UnitApplication unit = prepareLinkRemoval(linkIdToRemove, graph, topology, engine, rulesModule);
       int hashCodeBefore = graph.hashCode();
@@ -245,7 +256,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertFalse(containsLinkWithId(topology, linkIdToAdd));
       final UnitApplication unit = prepareLinkAddition(linkIdToAdd, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
@@ -267,7 +278,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkIdToAdd));
       final UnitApplication unit = prepareLinkAddition(linkIdToAdd, graph, topology, engine, rulesModule);
       Assert.assertFalse(unit.execute(null));
@@ -285,19 +296,18 @@ public class TopologyControlRuleTests
    }
 
    @ParameterizedTest
-   @ValueSource(strings = { "n7" })
+   @ValueSource(strings = { "nFresh" })
    void testNodeAdditionPositive(final String nodeIdToAdd) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       final UnitApplication unit = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
       if (!unit.execute(null))
       {
          Assert.fail();
       }
-      final String nodeIdToCheck = "n7";
-      Assert.assertTrue(containsNodeWithId(topology, nodeIdToCheck));
+      Assert.assertTrue(containsNodeWithId(topology, nodeIdToAdd));
    }
 
    @ParameterizedTest
@@ -306,7 +316,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       final UnitApplication unit = prepareNodeAddition(nodeIdToAdd, graph, topology, engine, rulesModule);
       if (unit.execute(null))
       {
@@ -319,7 +329,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(prepareLinkRemoval("n1->n2", graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(prepareLinkRemoval("n1->n3", graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(prepareLinkRemoval("n2->n1", graph, topology, engine, rulesModule).execute(null));
@@ -333,13 +343,12 @@ public class TopologyControlRuleTests
       Assert.assertFalse(containsNodeWithId(topology, "n1"));
    }
 
-   @Test
-   void testNodeRemovalPositive_FreshNode() throws Exception
+   @ParameterizedTest
+   @ValueSource(strings = {"nFresh"})
+   void testNodeRemovalPositive_FreshNode(final String isolatedNodeId) throws Exception
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
-      final String isolatedNodeId = "n7";
       Assert.assertTrue(prepareNodeAddition(isolatedNodeId, graph, topology, engine, rulesModule).execute(null));
       Assert.assertTrue(containsNodeWithId(topology, isolatedNodeId));
       final UnitApplication unit = prepareNodeRemoval(isolatedNodeId, graph, topology, engine, rulesModule);
@@ -353,7 +362,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       final UnitApplication unit = prepareNodeRemoval(nodeIdToRemove, graph, topology, engine, rulesModule);
       Assert.assertFalse(unit.execute(null));
    }
@@ -363,7 +372,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       final String linkId = "n3->n4";
       Assert.assertTrue(containsLinkWithId(topology, linkId));
       final UnitApplication unit = prepareLinkWeightModification(linkId, 7, graph, topology, engine, rulesModule);
@@ -377,7 +386,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkToBeActivated));
       final UnitApplication unit = prepareLinkActivation(linkToBeActivated, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
@@ -405,7 +414,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkToBeActivated));
       final UnitApplication unit = prepareLinkActivation(linkToBeActivated, graph, topology, engine, rulesModule);
       Assert.assertFalse(unit.execute(null));
@@ -426,7 +435,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkToBeInactivated));
       final UnitApplication unit = prepareLinkInactivation(linkToBeInactivated, graph, topology, engine, rulesModule);
       Assert.assertTrue(unit.execute(null));
@@ -448,7 +457,7 @@ public class TopologyControlRuleTests
    {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
-      final Engine engine = new EngineImpl();
+
       Assert.assertTrue(containsLinkWithId(topology, linkIdToBeInactivated));
       final UnitApplication unit = prepareLinkInactivation(linkIdToBeInactivated, graph, topology, engine, rulesModule);
       Assert.assertFalse(unit.execute(null));
