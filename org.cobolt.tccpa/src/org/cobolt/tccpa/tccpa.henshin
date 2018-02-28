@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_XF6w8H_5EeKZZICbS5P5TQ">
   <imports href="tccpa.ecore#/"/>
-  <units xsi:type="henshin:Rule" xmi:id="_oLoVUBFsEei5o9tPb1r_qA" name="removeLink" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_oLoVUBFsEei5o9tPb1r_qA" name="removeLink">
     <parameters xmi:id="_6ztqwBFsEei5o9tPb1r_qA" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -49,7 +49,7 @@
     <mappings xmi:id="_JDb4MRuGEeicT67Yd1EHCQ" origin="_He-b0BuGEeicT67Yd1EHCQ" image="_JDb4MBuGEeicT67Yd1EHCQ"/>
     <mappings xmi:id="_KBQLURuGEeicT67Yd1EHCQ" origin="_IGzQ0BuGEeicT67Yd1EHCQ" image="_KBQLUBuGEeicT67Yd1EHCQ"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_MYCVwBFwEei5o9tPb1r_qA" name="addLink" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_MYCVwBFwEei5o9tPb1r_qA" name="addLink" description="">
     <parameters xmi:id="_X1w9UBFwEei5o9tPb1r_qA" name="srcId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -175,7 +175,7 @@
     <mappings xmi:id="_MOe7shFxEei5o9tPb1r_qA" origin="_MOe7sBFxEei5o9tPb1r_qA" image="_MOe7sRFxEei5o9tPb1r_qA"/>
     <mappings xmi:id="_N2olQhFxEei5o9tPb1r_qA" origin="_N2olQBFxEei5o9tPb1r_qA" image="_N2olQRFxEei5o9tPb1r_qA"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_wv9YoBfUEeivYOgNged4Ww" name="addNode" description="" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_wv9YoBfUEeivYOgNged4Ww" name="addNode" description="">
     <parameters xmi:id="_zVnMQBfUEeivYOgNged4Ww" name="nodeId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -222,7 +222,7 @@
     </rhs>
     <mappings xmi:id="_0S1pgBfUEeivYOgNged4Ww" origin="_0S1CcBfUEeivYOgNged4Ww" image="_0S1CcRfUEeivYOgNged4Ww"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_IAvlQBfaEeivYOgNged4Ww" name="removeNode" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_IAvlQBfaEeivYOgNged4Ww" name="removeNode">
     <parameters xmi:id="_KtT5MBfaEeivYOgNged4Ww" name="nodeId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -230,17 +230,20 @@
       <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
     </parameters>
     <lhs xmi:id="_IA7ygBfaEeivYOgNged4Ww" name="Lhs">
-      <nodes xmi:id="_Lb1zIBfaEeivYOgNged4Ww" incoming="_PoVBsBfaEeivYOgNged4Ww">
+      <nodes xmi:id="_Lb1zIBfaEeivYOgNged4Ww" incoming="_PoVBsBfaEeivYOgNged4Ww" outgoing="_CH714BxbEei24-B_WWBgtw">
         <type href="tccpa.ecore#//Node"/>
         <attributes xmi:id="_N7Y3YBfdEeivYOgNged4Ww" value="nodeId">
           <type href="tccpa.ecore#//TopologyElement/id"/>
         </attributes>
       </nodes>
-      <nodes xmi:id="_NPXmQBfaEeivYOgNged4Ww" name="topology" outgoing="_PoVBsBfaEeivYOgNged4Ww">
+      <nodes xmi:id="_NPXmQBfaEeivYOgNged4Ww" name="topology" incoming="_CH714BxbEei24-B_WWBgtw" outgoing="_PoVBsBfaEeivYOgNged4Ww">
         <type href="tccpa.ecore#//Topology"/>
       </nodes>
       <edges xmi:id="_PoVBsBfaEeivYOgNged4Ww" source="_NPXmQBfaEeivYOgNged4Ww" target="_Lb1zIBfaEeivYOgNged4Ww">
         <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+      <edges xmi:id="_CH714BxbEei24-B_WWBgtw" source="_Lb1zIBfaEeivYOgNged4Ww" target="_NPXmQBfaEeivYOgNged4Ww">
+        <type href="tccpa.ecore#//Node/topology"/>
       </edges>
       <formula xsi:type="henshin:Not" xmi:id="_RNsNUBmYEeiSQamcGPWslw">
         <child xsi:type="henshin:NestedCondition" xmi:id="_RNsNURmYEeiSQamcGPWslw">
@@ -282,7 +285,7 @@
     </rhs>
     <mappings xmi:id="_NPYNUBfaEeivYOgNged4Ww" origin="_NPXmQBfaEeivYOgNged4Ww" image="_NPXmQRfaEeivYOgNged4Ww"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_ylAqMBfeEeivYOgNged4Ww" name="modifyLinkWeight" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_ylAqMBfeEeivYOgNged4Ww" name="modifyLinkWeight">
     <parameters xmi:id="_2SnkYBfeEeivYOgNged4Ww" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -338,7 +341,7 @@
     <mappings xmi:id="_24VgkBfeEeivYOgNged4Ww" origin="_24U5gBfeEeivYOgNged4Ww" image="_24U5gRfeEeivYOgNged4Ww"/>
     <mappings xmi:id="_4k0QghfeEeivYOgNged4Ww" origin="_4k0QgBfeEeivYOgNged4Ww" image="_4k0QgRfeEeivYOgNged4Ww"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_2xawkBmcEeiSQamcGPWslw" name="activateLink" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_2xawkBmcEeiSQamcGPWslw" name="activateLink">
     <parameters xmi:id="_6qVi4BmcEeiSQamcGPWslw" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -463,7 +466,7 @@
     <mappings xmi:id="_77H1UhmcEeiSQamcGPWslw" origin="_77H1UBmcEeiSQamcGPWslw" image="_77H1URmcEeiSQamcGPWslw"/>
     <mappings xmi:id="_8iglchmcEeiSQamcGPWslw" origin="_8iglcBmcEeiSQamcGPWslw" image="_8iglcRmcEeiSQamcGPWslw"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_YNCKwBmoEeiSQamcGPWslw" name="inactivateLink" description="" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_YNCKwBmoEeiSQamcGPWslw" name="inactivateLink" description="">
     <parameters xmi:id="_cAWEUBmoEeiSQamcGPWslw" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -606,7 +609,7 @@
     <mappings xmi:id="_kiP5whuyEeiLEJjbAYhz4A" origin="_kiP5wBuyEeiLEJjbAYhz4A" image="_kiP5wRuyEeiLEJjbAYhz4A"/>
     <mappings xmi:id="_lHNA8huyEeiLEJjbAYhz4A" origin="_lHNA8BuyEeiLEJjbAYhz4A" image="_lHNA8RuyEeiLEJjbAYhz4A"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_QI-EkBuTEeiIo90lHmPnNg" name="handleLinkRemoval1" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_QI-EkBuTEeiIo90lHmPnNg" name="handleLinkRemoval1">
     <parameters xmi:id="_UQWJoBuTEeiIo90lHmPnNg" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -779,7 +782,7 @@
     <mappings xmi:id="_gige0BuTEeiIo90lHmPnNg" origin="_gif3wBuTEeiIo90lHmPnNg" image="_gif3wRuTEeiIo90lHmPnNg"/>
     <mappings xmi:id="_D59jgRuzEeiLEJjbAYhz4A" origin="_882ncBuyEeiLEJjbAYhz4A" image="_D59jgBuzEeiLEJjbAYhz4A"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_TvZ4YBuWEeiIo90lHmPnNg" name="handleLinkRemoval2" checkDangling="false">
+  <units xsi:type="henshin:Rule" xmi:id="_TvZ4YBuWEeiIo90lHmPnNg" name="handleLinkRemoval2">
     <parameters xmi:id="_WGu8IBuWEeiIo90lHmPnNg" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
