@@ -772,7 +772,7 @@
         <type href="tccpa.ecore#//Link/target"/>
       </edges>
     </rhs>
-    <attributeConditions xmi:id="_MHh0UBvTEeiLEJjbAYhz4A" name="kTC condition" conditionText="w13 > w14 &amp;&amp; w14 > w43"/>
+    <attributeConditions xmi:id="_MHh0UBvTEeiLEJjbAYhz4A" name="kTC condition" conditionText="w13 > w14 &amp;&amp; w13 > w43"/>
     <mappings xmi:id="_WzlicRuTEeiIo90lHmPnNg" origin="_Wzh4EBuTEeiIo90lHmPnNg" image="_WzlicBuTEeiIo90lHmPnNg"/>
     <mappings xmi:id="_XuVTchuTEeiIo90lHmPnNg" origin="_XuVTcBuTEeiIo90lHmPnNg" image="_XuVTcRuTEeiIo90lHmPnNg"/>
     <mappings xmi:id="_cPpigRuTEeiIo90lHmPnNg" origin="_cPo7cBuTEeiIo90lHmPnNg" image="_cPpigBuTEeiIo90lHmPnNg"/>

@@ -105,8 +105,8 @@ public class TopologyControlRuleTests
          return createLink(fromNode, toNode, weight, topology);
       }).collect(toList());
 
-      Assert.assertEquals(6, topology.getNodes().size());
-      Assert.assertEquals(2 * 7, topology.getLinks().size());
+      Assert.assertEquals(7, topology.getNodes().size());
+      Assert.assertEquals(2 * 9, topology.getLinks().size());
 
       final Map<String, Object> options = new HashMap<>();
       options.put(XMLResource.OPTION_ENCODING, "UTF-8");
