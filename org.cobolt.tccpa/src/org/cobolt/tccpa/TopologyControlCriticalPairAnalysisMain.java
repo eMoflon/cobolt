@@ -10,8 +10,10 @@
 package org.cobolt.tccpa;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -59,19 +61,34 @@ public class TopologyControlCriticalPairAnalysisMain
          resultDir.mkdirs();
          final String resultsPath = resultDir.getAbsolutePath();
 
-         List<Rule> rules = module.getUnits().stream().filter(unit -> unit instanceof Rule).map(unit -> (Rule) unit).collect(Collectors.toList());
-         ICriticalPairAnalysis cpa = new CpaByAGG();
-         final CPAOptions options = new CPAOptions();
-         options.setComplete(true);
-         options.setIgnore(false);
-         options.setReduceSameRuleAndSameMatch(true);
-         options.persist(resultsPath + "/.cpa.options");
-         cpa.init(rules, options);
-         final CPAResult dependencies = cpa.runDependencyAnalysis(new CPAProgressMonitor("D"));
-         final CPAResult conflicts = cpa.runConflictAnalysis(new CPAProgressMonitor("C"));
+         final List<Rule> rules = module.getUnits().stream().filter(unit -> unit instanceof Rule).map(unit -> (Rule) unit).collect(Collectors.toList());
          final CPAResult jointCpaResult = new CPAResult();
-         dependencies.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
-         conflicts.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
+         for (final String analysisGoal : Arrays.asList("C"))
+         {
+            final ICriticalPairAnalysis cpa = new CpaByAGG();
+
+            final CPAOptions options = new CPAOptions();
+            options.setComplete(true);
+            options.setIgnore(false);
+            options.setReduceSameRuleAndSameMatch(false);
+            options.persist(resultsPath + "/.cpa.options");
+
+            final List<Rule> rulesLeft = rules;
+            final List<Rule> rulesRight = rules;
+            cpa.init(rulesLeft, rulesRight, options);
+
+            switch(analysisGoal)
+            {
+            case "D":
+               final CPAResult dependencies = cpa.runDependencyAnalysis(new CPAProgressMonitor(analysisGoal));
+               dependencies.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
+               break;
+            case "C":
+               final CPAResult conflicts = cpa.runConflictAnalysis(new CPAProgressMonitor(analysisGoal));
+               conflicts.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
+               break;
+            }
+         }
 
          CPAUtility.persistCpaResult(jointCpaResult, resultsPath);
          final long endTimeMillis = System.currentTimeMillis();
@@ -100,7 +117,6 @@ public class TopologyControlCriticalPairAnalysisMain
       private int workDone;
 
       private boolean canceled;
-
 
       public CPAProgressMonitor(final String taskName)
       {
