@@ -14,8 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.henshin.cpa.CPAOptions;
@@ -29,12 +30,16 @@ import org.eclipse.emf.henshin.model.resource.HenshinResourceFactory;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 
 public class TopologyControlCriticalPairAnalysisMain {
-	private static final Logger logger = Logger.getLogger(TopologyControlCriticalPairAnalysisMain.class);
+	private static final String STATISTICS_FILE_NAME = "statistics.csv";
+
+	static final Logger logger = Logger.getLogger(TopologyControlCriticalPairAnalysisMain.class);
 
 	/**
 	 * Project-relative path to the folder containing models and metamodels
 	 */
 	private static final String PATH = "src/org/cobolt/tccpa";
+
+	private static final String CSV_SEP = ";";
 
 	/**
 	 * Runs some tests with the specified rules
@@ -58,7 +63,7 @@ public class TopologyControlCriticalPairAnalysisMain {
 
 		final List<Rule> rules = module.getUnits().stream().filter(unit -> unit instanceof Rule)
 				.map(unit -> (Rule) unit).collect(Collectors.toList());
-		final CPAResult jointCpaResult = new CPAResult();
+		logger.info("Start CPA.");
 		for (final String analysisGoal : Arrays.asList("C", "D")) {
 			final List<Rule> rulesLeft = rules;
 			final List<Rule> rulesRight = rules;
@@ -76,21 +81,36 @@ public class TopologyControlCriticalPairAnalysisMain {
 
 						cpa.init(Arrays.asList(ruleLeft), Arrays.asList(ruleRight), options);
 
+						final CPAResult result;
 						switch (analysisGoal) {
 						case "D":
-							final CPAResult dependencies = cpa
-									.runDependencyAnalysis(new CPAProgressMonitor(analysisGoal));
-							dependencies.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
+							result = cpa.runDependencyAnalysis();
 							break;
 						case "C":
-							final CPAResult conflicts = cpa.runConflictAnalysis(new CPAProgressMonitor(analysisGoal));
-							conflicts.getCriticalPairs().forEach(pair -> jointCpaResult.addResult(pair));
+							result = cpa.runConflictAnalysis();
 							break;
+						default:
+							throw new IllegalStateException(analysisGoal);
 						}
-						CPAUtility.persistCpaResult(jointCpaResult, resultsPath);
+						CPAUtility.persistCpaResult(result, resultsPath);
 						final long endTimeMillis = System.currentTimeMillis();
-						System.out.printf("Saved %d critical pairs after %dms\n",
-								jointCpaResult.getCriticalPairs().size(), (endTimeMillis - startTimeMillis));
+						final long durationMillis = endTimeMillis - startTimeMillis;
+						final int numPairs = result.getCriticalPairs().size();
+						final String rightName = ruleRight.getName();
+						final String leftName = ruleLeft.getName();
+						System.out.printf("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs, leftName,
+								rightName, durationMillis);
+						final String header = StringUtils.join(
+								Arrays.asList("InteractionType", "RuleLeft", "RuleRight", "NumPairs", "DurationMillis"),
+								CSV_SEP);
+						final File statisticsFile = new File(resultDir, STATISTICS_FILE_NAME);
+						if (!statisticsFile.exists()) {
+							FileUtils.writeLines(statisticsFile, Arrays.asList(header));
+						}
+						final String dataLine = StringUtils.join(
+								Arrays.asList(analysisGoal, leftName, rightName, numPairs, durationMillis), CSV_SEP);
+						FileUtils.writeLines(statisticsFile, Arrays.asList(dataLine), true);
+
 					} catch (final Exception e) {
 						e.printStackTrace();
 					}
@@ -101,75 +121,6 @@ public class TopologyControlCriticalPairAnalysisMain {
 	}
 
 	public static void main(String[] args) {
-		run(PATH, true); // we assume the working directory is the root of the examples plug-in
-	}
-
-	private static final class CPAProgressMonitor implements IProgressMonitor {
-		private final String processName;
-
-		private String taskName = "";
-
-		private String subtaskName = "";
-
-		private int workDone;
-
-		private boolean canceled;
-
-		public CPAProgressMonitor(final String taskName) {
-			this.processName = taskName;
-		}
-
-		@Override
-		public void worked(int work) {
-			this.workDone += work;
-			logger.info(String.format("%s Progress: %d work units done", this.formatTask(), this.workDone));
-		}
-
-		private String formatTask() {
-			final StringBuilder sb = new StringBuilder();
-			sb.append(processName);
-			if (!this.taskName.isEmpty())
-				sb.append("::").append(this.taskName);
-			if (!this.subtaskName.isEmpty())
-				sb.append("::").append(this.subtaskName);
-			return sb.toString();
-		}
-
-		@Override
-		public void subTask(String name) {
-			this.subtaskName = name;
-		}
-
-		@Override
-		public void setTaskName(String name) {
-			this.taskName = name;
-			this.subtaskName = "";
-		}
-
-		@Override
-		public void setCanceled(boolean value) {
-			this.canceled = value;
-		}
-
-		@Override
-		public boolean isCanceled() {
-			return this.canceled;
-		}
-
-		@Override
-		public void internalWorked(double work) {
-			// Nop
-		}
-
-		@Override
-		public void done() {
-			System.out.println(this.formatTask() + " completed!");
-		}
-
-		@Override
-		public void beginTask(String name, int totalWork) {
-			this.setTaskName(name);
-			this.workDone = 0;
-		}
+		run(PATH, true); // we assume the working directory is the root of the plug-in
 	}
 }
