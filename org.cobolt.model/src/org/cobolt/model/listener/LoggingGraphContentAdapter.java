@@ -6,7 +6,8 @@ import org.cobolt.model.Edge;
 import org.cobolt.model.Node;
 
 /**
- * An implementation of {@link GraphContentAdapter} that logs all events to its logger (level=INFO)
+ * An implementation of {@link GraphContentAdapter} that logs all events to its
+ * logger (level=INFO)
  *
  * @author Roland Kluge - Initial implementation
  *

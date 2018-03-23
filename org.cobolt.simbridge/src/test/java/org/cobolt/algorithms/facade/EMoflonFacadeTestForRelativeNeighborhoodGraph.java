@@ -16,33 +16,32 @@ import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLi
 import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 
 /**
- * Tests for implementation of {@link UnderlayTopologyControlAlgorithms#RELATIVE_NEIGHBORHOOD_GRAPH}
+ * Tests for implementation of
+ * {@link UnderlayTopologyControlAlgorithms#RELATIVE_NEIGHBORHOOD_GRAPH}
+ * 
  * @author Roland Kluge - Initial implementation
  *
  */
-public class EMoflonFacadeTestForRelativeNeighborhoodGraph extends AbstractEMoflonFacadeTest
-{
+public class EMoflonFacadeTestForRelativeNeighborhoodGraph extends AbstractEMoflonFacadeTest {
 
-   @Override
-   protected TopologyControlAlgorithmID getAlgorithmID()
-   {
-      return UnderlayTopologyControlAlgorithms.RELATIVE_NEIGHBORHOOD_GRAPH;
-   }
+	@Override
+	protected TopologyControlAlgorithmID getAlgorithmID() {
+		return UnderlayTopologyControlAlgorithms.RELATIVE_NEIGHBORHOOD_GRAPH;
+	}
 
-   @Test
-   public void testWithTestgraphE1() throws Exception
-   {
-      reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
-      EdgeWeightProviders.apply(this.facade, InverseEstimatedRemainingLifetimeWeightProvider.INSTANCE);
+	@Test
+	public void testWithTestgraphE1() throws Exception {
+		reader.read(this.facade, new FileInputStream(new File(getPathToEnergyTestGraph(1))));
+		EdgeWeightProviders.apply(this.facade, InverseEstimatedRemainingLifetimeWeightProvider.INSTANCE);
 
-      TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
-      TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
+		TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
+		TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
-      TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
+		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
-      TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
-      
-      this.facade.checkConstraintsAfterTopologyControl();
-      Assert.assertEquals(0, this.facade.getConstraintViolationCount());
-   }
+		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
+
+		this.facade.checkConstraintsAfterTopologyControl();
+		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
+	}
 }

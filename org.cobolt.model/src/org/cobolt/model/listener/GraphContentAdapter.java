@@ -26,7 +26,7 @@ public class GraphContentAdapter extends EContentAdapter {
 	private static final String EREFERENCE_GRAPH_TO_NODE = "nodes";
 
 	/**
-	 * 	Gets called, when a new node is added to the graph.
+	 * Gets called, when a new node is added to the graph.
 	 *
 	 * This is an empty default implementation.
 	 */
@@ -58,7 +58,9 @@ public class GraphContentAdapter extends EContentAdapter {
 	}
 
 	/**
-	 * Gets called when any immediate attribute of the given edge has changed. The old value is passed as final argument. The new value can be extracted from the attribute.
+	 * Gets called when any immediate attribute of the given edge has changed. The
+	 * old value is passed as final argument. The new value can be extracted from
+	 * the attribute.
 	 *
 	 * This is an empty default implementation.
 	 */
@@ -66,7 +68,9 @@ public class GraphContentAdapter extends EContentAdapter {
 	}
 
 	/**
-	 * Gets called when any immediate attribute of the given node has changed. The old value is passed as final argument. The new value can be extracted from the attribute.
+	 * Gets called when any immediate attribute of the given node has changed. The
+	 * old value is passed as final argument. The new value can be extracted from
+	 * the attribute.
 	 *
 	 * This is an empty default implementation.
 	 */
@@ -81,11 +85,13 @@ public class GraphContentAdapter extends EContentAdapter {
 		final Object notifier = notification.getNotifier();
 		final Object oldValue = notification.getOldValue();
 
-		if (notifier instanceof Node && notification.getFeature() instanceof EAttribute && notification.getEventType() == Notification.SET) {
+		if (notifier instanceof Node && notification.getFeature() instanceof EAttribute
+				&& notification.getEventType() == Notification.SET) {
 			nodeAttributeChanged((Node) notifier, (EAttribute) notification.getFeature(), notification.getOldValue());
 		}
 
-		if (notifier instanceof Edge && notification.getFeature() instanceof EAttribute && notification.getEventType() == Notification.SET) {
+		if (notifier instanceof Edge && notification.getFeature() instanceof EAttribute
+				&& notification.getEventType() == Notification.SET) {
 			edgeAttributeChanged((Edge) notifier, (EAttribute) notification.getFeature(), notification.getOldValue());
 		}
 

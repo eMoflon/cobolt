@@ -21,155 +21,144 @@ import org.cobolt.algorithms.io.TopologyModelGraphTReader;
 
 /**
  * Unit tests for {@link LocalMinimumSpanningTreeAlgorithm}
+ * 
  * @author Roland Kluge - Initial implementation
  *
  */
-public class LocalMinimumSpanningTreeAlgorithmTest
-{
+public class LocalMinimumSpanningTreeAlgorithmTest {
 
-   private Topology topology;
+	private Topology topology;
 
-   private LocalMinimumSpanningTreeAlgorithm algorithm;
+	private LocalMinimumSpanningTreeAlgorithm algorithm;
 
-   private List<Node> nodes;
+	private List<Node> nodes;
 
-   private Node selfNode;
+	private Node selfNode;
 
-   @Before
-   public void setUp()
-   {
-      this.topology = ModelFactory.eINSTANCE.createTopology();
-      this.algorithm = AlgorithmsFactory.eINSTANCE.createLocalMinimumSpanningTreeAlgorithm();
-      this.nodes = new ArrayList<>();
-      for (int i = 1; i <= 20; ++i)
-      {
-         Node node = ModelFactory.eINSTANCE.createNode();
-         node.setId("n" + i);
-         node.setLocalViewHorizon(2);
-         this.nodes.add(node);
-      }
-      this.selfNode = this.nodes.get(0);
-      this.algorithm.setSelfNode(selfNode);
-   }
+	@Before
+	public void setUp() {
+		this.topology = ModelFactory.eINSTANCE.createTopology();
+		this.algorithm = AlgorithmsFactory.eINSTANCE.createLocalMinimumSpanningTreeAlgorithm();
+		this.nodes = new ArrayList<>();
+		for (int i = 1; i <= 20; ++i) {
+			Node node = ModelFactory.eINSTANCE.createNode();
+			node.setId("n" + i);
+			node.setLocalViewHorizon(2);
+			this.nodes.add(node);
+		}
+		this.selfNode = this.nodes.get(0);
+		this.algorithm.setSelfNode(selfNode);
+	}
 
-   @Test
-   public void testRun_EmptyTopology() throws Exception
-   {
-      algorithm.runOnTopology(topology);
-   }
+	@Test
+	public void testRun_EmptyTopology() throws Exception {
+		algorithm.runOnTopology(topology);
+	}
 
-   @Test
-   public void testRun_IsolatedNodes() throws Exception
-   {
-      addNodes(20);
-      algorithm.runOnTopology(topology);
-   }
+	@Test
+	public void testRun_IsolatedNodes() throws Exception {
+		addNodes(20);
+		algorithm.runOnTopology(topology);
+	}
 
-   @Test
-   public void testRun_DirectedTriangle() throws Exception
-   {
-      addNodes(3);
-      final Edge e12 = createDirectedEdge(1, 2, 2.0);
-      final Edge e13 = createDirectedEdge(1, 3, 3.0);
-      final Edge e23 = createDirectedEdge(2, 3, 5.0);
-      algorithm.runOnTopology(topology);
-      Arrays.asList(e12, e13).forEach(edge -> TopologyModelTestUtils.assertActive(edge));
-      Arrays.asList(e23).forEach(edge -> TopologyModelTestUtils.assertInactive(edge));
-   }
+	@Test
+	public void testRun_DirectedTriangle() throws Exception {
+		addNodes(3);
+		final Edge e12 = createDirectedEdge(1, 2, 2.0);
+		final Edge e13 = createDirectedEdge(1, 3, 3.0);
+		final Edge e23 = createDirectedEdge(2, 3, 5.0);
+		algorithm.runOnTopology(topology);
+		Arrays.asList(e12, e13).forEach(edge -> TopologyModelTestUtils.assertActive(edge));
+		Arrays.asList(e23).forEach(edge -> TopologyModelTestUtils.assertInactive(edge));
+	}
 
-   @Test
-   public void testRun_UndirectedTriangle() throws Exception
-   {
-      addNodes(3);
-      final Edge e12 = createUndirectedEdge(1, 2, 2.0);
-      final Edge e13 = createUndirectedEdge(1, 3, 3.0);
-      final Edge e23 = createUndirectedEdge(2, 3, 5.0);
-      algorithm.runOnTopology(topology);
-      Arrays.asList(e12, e13).forEach(edge -> {
-         TopologyModelTestUtils.assertActive(edge);
-         TopologyModelTestUtils.assertActive(edge.getReverseEdge());
-      });
-      Arrays.asList(e23).forEach(edge -> {
-         TopologyModelTestUtils.assertInactive(edge);
-         TopologyModelTestUtils.assertInactive(edge.getReverseEdge());
-      });
-   }
+	@Test
+	public void testRun_UndirectedTriangle() throws Exception {
+		addNodes(3);
+		final Edge e12 = createUndirectedEdge(1, 2, 2.0);
+		final Edge e13 = createUndirectedEdge(1, 3, 3.0);
+		final Edge e23 = createUndirectedEdge(2, 3, 5.0);
+		algorithm.runOnTopology(topology);
+		Arrays.asList(e12, e13).forEach(edge -> {
+			TopologyModelTestUtils.assertActive(edge);
+			TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+		});
+		Arrays.asList(e23).forEach(edge -> {
+			TopologyModelTestUtils.assertInactive(edge);
+			TopologyModelTestUtils.assertInactive(edge.getReverseEdge());
+		});
+	}
 
-   @Test
-   public void testRun_D8_1HopView() throws Exception
-   {
-      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
-      reader.read(this.topology, getPathToDistanceTestGraph(8));
-      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
-      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(1));
-      this.algorithm.runOnTopology(topology);
+	@Test
+	public void testRun_D8_1HopView() throws Exception {
+		final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+		reader.read(this.topology, getPathToDistanceTestGraph(8));
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(1));
+		this.algorithm.runOnTopology(topology);
 
-      // With a 1-hop view, the LMST always contains all incident edges of a node
-      topology.getEdges().forEach(edge -> {
-         TopologyModelTestUtils.assertActive(edge);
-         TopologyModelTestUtils.assertActive(edge.getReverseEdge());
-      });
-      TopologyModelTestUtils.assertClassified(this.topology);
-   }
+		// With a 1-hop view, the LMST always contains all incident edges of a node
+		topology.getEdges().forEach(edge -> {
+			TopologyModelTestUtils.assertActive(edge);
+			TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+		});
+		TopologyModelTestUtils.assertClassified(this.topology);
+	}
 
-   @Test
-   public void testRun_D8_2HopView() throws Exception
-   {
-      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
-      reader.read(this.topology, getPathToDistanceTestGraph(8));
-      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
-      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
-      this.algorithm.runOnTopology(topology);
+	@Test
+	public void testRun_D8_2HopView() throws Exception {
+		final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+		reader.read(this.topology, getPathToDistanceTestGraph(8));
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
+		this.algorithm.runOnTopology(topology);
 
-      // With a 1-hop view, the LMST always contains all incident edges of a node
-      Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e7-8", "e8-9", "e9-10", "e10-11").stream()//
-            .map(id -> topology.getEdgeById(id))//
-            .forEach(edge -> {
-               TopologyModelTestUtils.assertActive(edge);
-               TopologyModelTestUtils.assertActive(edge.getReverseEdge());
-            });
-      TopologyModelTestUtils.assertClassified(this.topology);
-   }
-   
-   @Test
-   public void testRun_D8_3HopView() throws Exception
-   {
-      final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
-      reader.read(this.topology, getPathToDistanceTestGraph(8));
-      EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
-      this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
-      this.algorithm.runOnTopology(topology);
-      
-      // With a 1-hop view, the LMST always contains all incident edges of a node
-      Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e8-9", "e9-10", "e10-11").stream()//
-      .map(id -> topology.getEdgeById(id))//
-      .forEach(edge -> {
-         TopologyModelTestUtils.assertActive(edge);
-         TopologyModelTestUtils.assertActive(edge.getReverseEdge());
-      });
-      TopologyModelTestUtils.assertClassified(this.topology);
-   }
+		// With a 1-hop view, the LMST always contains all incident edges of a node
+		Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e7-8", "e8-9", "e9-10", "e10-11")
+				.stream()//
+				.map(id -> topology.getEdgeById(id))//
+				.forEach(edge -> {
+					TopologyModelTestUtils.assertActive(edge);
+					TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+				});
+		TopologyModelTestUtils.assertClassified(this.topology);
+	}
 
-   private Edge createDirectedEdge(int i, int j, double d)
-   {
-      final Edge edge = topology.addDirectedEdge("e" + i + "" + j, this.nodes.get(i - 1), this.nodes.get(j - 1));
-      edge.setWeight(d);
-      return edge;
-   }
+	@Test
+	public void testRun_D8_3HopView() throws Exception {
+		final TopologyModelGraphTReader reader = new TopologyModelGraphTReader();
+		reader.read(this.topology, getPathToDistanceTestGraph(8));
+		EdgeWeightProviders.apply(this.topology, EdgeWeightProviders.DISTANCE_PROVIDER);
+		this.topology.getNodes().forEach(node -> node.setLocalViewHorizon(2));
+		this.algorithm.runOnTopology(topology);
 
-   private Edge createUndirectedEdge(int i, int j, double weight)
-   {
-      final Edge edge = topology.addUndirectedEdge("e" + i + "" + j, "e" + j + "" + i, this.nodes.get(i - 1), this.nodes.get(j - 1));
-      edge.setWeight(weight);
-      edge.getReverseEdge().setWeight(weight);
-      return edge;
-   }
+		// With a 1-hop view, the LMST always contains all incident edges of a node
+		Arrays.asList("e1-2", "e1-7", "e2-3", "e3-4", "e3-10", "e4-5", "e5-6", "e8-9", "e9-10", "e10-11").stream()//
+				.map(id -> topology.getEdgeById(id))//
+				.forEach(edge -> {
+					TopologyModelTestUtils.assertActive(edge);
+					TopologyModelTestUtils.assertActive(edge.getReverseEdge());
+				});
+		TopologyModelTestUtils.assertClassified(this.topology);
+	}
 
-   private void addNodes(int n)
-   {
-      for (int i = 0; i < n; ++i)
-      {
-         topology.getNodes().add(this.nodes.get(i));
-      }
-   }
+	private Edge createDirectedEdge(int i, int j, double d) {
+		final Edge edge = topology.addDirectedEdge("e" + i + "" + j, this.nodes.get(i - 1), this.nodes.get(j - 1));
+		edge.setWeight(d);
+		return edge;
+	}
+
+	private Edge createUndirectedEdge(int i, int j, double weight) {
+		final Edge edge = topology.addUndirectedEdge("e" + i + "" + j, "e" + j + "" + i, this.nodes.get(i - 1),
+				this.nodes.get(j - 1));
+		edge.setWeight(weight);
+		edge.getReverseEdge().setWeight(weight);
+		return edge;
+	}
+
+	private void addNodes(int n) {
+		for (int i = 0; i < n; ++i) {
+			topology.getNodes().add(this.nodes.get(i));
+		}
+	}
 }

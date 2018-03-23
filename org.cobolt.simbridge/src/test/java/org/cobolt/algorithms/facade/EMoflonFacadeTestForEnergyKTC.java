@@ -23,16 +23,16 @@ import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 import org.cobolt.algorithms.facade.EMoflonFacade;
 
 /**
- * Unit tests for {@link EMoflonFacade}, using {@link UnderlayTopologyControlAlgorithms#E_KTC}.
+ * Unit tests for {@link EMoflonFacade}, using
+ * {@link UnderlayTopologyControlAlgorithms#E_KTC}.
  */
 public class EMoflonFacadeTestForEnergyKTC extends AbstractEMoflonFacadeTest {
 
 	@Override
-	protected TopologyControlAlgorithmID getAlgorithmID()
-	{
-	   return UnderlayTopologyControlAlgorithms.E_KTC;
+	protected TopologyControlAlgorithmID getAlgorithmID() {
+		return UnderlayTopologyControlAlgorithms.E_KTC;
 	}
-	
+
 	@Test
 	public void testWithTestgraphE1() throws Exception {
 		readTestCase(1);

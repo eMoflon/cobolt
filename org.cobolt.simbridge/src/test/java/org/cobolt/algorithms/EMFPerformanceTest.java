@@ -28,8 +28,8 @@ public class EMFPerformanceTest {
 		int numberOfNodes = 10;
 		for (int nodeCount = 2; nodeCount <= numberOfNodes; ++nodeCount) {
 			Node next = TopologyUtils.addNode(topology, "n" + nodeCount, Double.NaN);
-			TopologyUtils.addEdge(topology, "e" + (nodeCount - 1) + "->" + nodeCount, previous, next, Math.random() * 100,
-					Double.NaN);
+			TopologyUtils.addEdge(topology, "e" + (nodeCount - 1) + "->" + nodeCount, previous, next,
+					Math.random() * 100, Double.NaN);
 			previous = next;
 		}
 		Assert.assertEquals(numberOfNodes, topology.getNodeCount());

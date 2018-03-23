@@ -32,7 +32,7 @@ public class PlainKTCTest {
 
 	private EdgeStateBasedConnectivityConstraint strongConnectivityConstraint;
 
-   private TopologyModelGraphTReader reader;
+	private TopologyModelGraphTReader reader;
 
 	@Before
 	public void setUp() {
@@ -47,7 +47,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnTopology() throws Exception {
-	   this.reader.read(topology, getPathToDistanceTestGraph(5));
+		this.reader.read(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 
 		algorithm.runOnTopology(topology);
@@ -59,7 +59,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testAlgorithmWithTestgraph1_RunOnNode() throws Exception {
-	   this.reader.read(topology, getPathToDistanceTestGraph(5));
+		this.reader.read(topology, getPathToDistanceTestGraph(5));
 		algorithm.setK(1.1);
 		algorithm.initializeConstraints();
 
@@ -77,7 +77,7 @@ public class PlainKTCTest {
 
 	@Test
 	public void testPredicateWithTestgraph1() throws Exception {
-	   this.reader.read(topology, getPathToDistanceTestGraph(5));
+		this.reader.read(topology, getPathToDistanceTestGraph(5));
 		EdgeWeightProviders.apply(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
 
 		final Edge e13 = getEdgeById(topology, "e1-3");

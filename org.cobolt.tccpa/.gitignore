@@ -5,6 +5,6 @@
 /**/.cpa.options
 /**/*output*.xmi
 /src/**/2018.*-*
-/output/
+/output*
 null.ggx
 !/**/.keep*

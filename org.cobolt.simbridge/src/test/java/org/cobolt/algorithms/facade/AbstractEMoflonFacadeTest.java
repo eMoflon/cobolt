@@ -8,20 +8,18 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlFacadeFactory;
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode;
 import de.tudarmstadt.maki.simonstrator.tc.io.FacadeGraphTReader;
 
-public abstract class AbstractEMoflonFacadeTest
-{
-   protected EMoflonFacade facade;
-   protected FacadeGraphTReader reader;
+public abstract class AbstractEMoflonFacadeTest {
+	protected EMoflonFacade facade;
+	protected FacadeGraphTReader reader;
 
-   @Before
-   public void setup() {
+	@Before
+	public void setup() {
 
-      this.facade = (EMoflonFacade) TopologyControlFacadeFactory
-            .create("org.cobolt.algorithms.facade.EMoflonFacade");
-      this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
-      this.facade.configureAlgorithm(getAlgorithmID());
-      this.reader = new FacadeGraphTReader();
-   }
+		this.facade = (EMoflonFacade) TopologyControlFacadeFactory.create("org.cobolt.algorithms.facade.EMoflonFacade");
+		this.facade.setOperationMode(TopologyControlOperationMode.INCREMENTAL);
+		this.facade.configureAlgorithm(getAlgorithmID());
+		this.reader = new FacadeGraphTReader();
+	}
 
-   protected abstract TopologyControlAlgorithmID getAlgorithmID();
+	protected abstract TopologyControlAlgorithmID getAlgorithmID();
 }

@@ -21,15 +21,15 @@ import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 import org.cobolt.algorithms.facade.EMoflonFacade;
 
 /**
- * Unit tests for {@link EMoflonFacade}, using {@link UnderlayTopologyControlAlgorithms#D_KTC}.
+ * Unit tests for {@link EMoflonFacade}, using
+ * {@link UnderlayTopologyControlAlgorithms#D_KTC}.
  */
 public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 
-   @Override
-   protected TopologyControlAlgorithmID getAlgorithmID()
-   {
-      return UnderlayTopologyControlAlgorithms.D_KTC;
-   }
+	@Override
+	protected TopologyControlAlgorithmID getAlgorithmID() {
+		return UnderlayTopologyControlAlgorithms.D_KTC;
+	}
 
 	@Test
 	public void testUsageExample_GraphModifications() throws Exception {
@@ -66,7 +66,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 		TopologyUtils.addUndirectedEdge(topology, "e13", "e31", n1, n3, 120.0, 5.0);
 		TopologyUtils.addUndirectedEdge(topology, "e23", "e32", n2, n3, 150.0, 5.0);
 		EdgeWeightProviders.apply(topology, EdgeWeightProviders.DISTANCE_PROVIDER);
-		
+
 		TopologyModelTestUtils.assertNodeAndEdgeCount(topology, 3, 6);
 
 		TopologyModelTestUtils.assertIsStatewiseSymmetric(topology);
@@ -85,7 +85,7 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 
 		readTestCase(1);
 		double k = 1.1;
-      final double k1 = k;
+		final double k1 = k;
 		TopologyControlAlgorithmsTestUtils.runFacadeKTC(facade, k1);
 
 		final Topology topology = facade.getTopology();
@@ -127,8 +127,10 @@ public class EMoflonFacadeTestForDistanceKTC extends AbstractEMoflonFacadeTest {
 	}
 
 	private void readTestCase(int id) throws FileNotFoundException {
-		reader.read(facade, new FileInputStream(new File(TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph(id))));
-		de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders.apply(facade, DistanceEdgeWeightProvider.getInstance());
+		reader.read(facade,
+				new FileInputStream(new File(TopologyControlAlgorithmsTestUtils.getPathToDistanceTestGraph(id))));
+		de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders.apply(facade,
+				DistanceEdgeWeightProvider.getInstance());
 	}
 
 }

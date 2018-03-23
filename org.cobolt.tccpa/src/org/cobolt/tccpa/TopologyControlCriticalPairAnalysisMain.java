@@ -98,8 +98,8 @@ public class TopologyControlCriticalPairAnalysisMain {
 						final int numPairs = result.getCriticalPairs().size();
 						final String rightName = ruleRight.getName();
 						final String leftName = ruleLeft.getName();
-						System.out.printf("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs, leftName,
-								rightName, durationMillis);
+						System.out.printf("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs,
+								leftName, rightName, durationMillis);
 						final String header = StringUtils.join(
 								Arrays.asList("InteractionType", "RuleLeft", "RuleRight", "NumPairs", "DurationMillis"),
 								CSV_SEP);

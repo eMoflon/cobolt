@@ -39,11 +39,13 @@ public class TopologyTest {
 	@Ignore("Performance test for unclassification effort")
 	@Test
 	public void testRuntimeOfLinkUnclassification() throws Exception {
-		for (int edgeCount : Arrays.asList((int) 1e3, (int) 1e4, (int)5e4, (int) 1e5, (int) 2e5, (int) 5e5, (int) 1e6)) {
+		for (int edgeCount : Arrays.asList((int) 1e3, (int) 1e4, (int) 5e4, (int) 1e5, (int) 2e5, (int) 5e5,
+				(int) 1e6)) {
 			Node previousNode = TopologyUtils.addNode(this.topology, "n" + 1, 0.0);
 			for (int i = 2; i <= edgeCount; ++i) {
 				Node currentNode = TopologyUtils.addNode(this.topology, "n" + i, 0.0);
-				TopologyUtils.addEdge(this.topology, "e" + (i - 1) + "-" + i, previousNode, currentNode, 1, 1, EdgeState.ACTIVE);
+				TopologyUtils.addEdge(this.topology, "e" + (i - 1) + "-" + i, previousNode, currentNode, 1, 1,
+						EdgeState.ACTIVE);
 				previousNode = currentNode;
 			}
 

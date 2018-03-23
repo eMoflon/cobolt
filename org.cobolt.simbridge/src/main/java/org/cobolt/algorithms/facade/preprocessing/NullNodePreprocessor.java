@@ -5,14 +5,13 @@ import org.cobolt.model.Node;
 
 /**
  * Null implementation of {@link NodePreprocessorImpl}
+ * 
  * @author Roland Kluge - Initial implementation
  *
  */
-public class NullNodePreprocessor extends NodePreprocessorImpl
-{
-   @Override
-   public void preprocess(Node node)
-   {
-      // Nop
-   }
+public class NullNodePreprocessor extends NodePreprocessorImpl {
+	@Override
+	public void preprocess(Node node) {
+		// Nop
+	}
 }
