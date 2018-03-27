@@ -70,6 +70,7 @@ public class TopologyControlCriticalPairAnalysisMain {
 			for (final Rule ruleLeft : rulesLeft) {
 				for (final Rule ruleRight : rulesRight) {
 					try {
+						// Last successful analysis: C/inactivateLink/handleLinkRemoval
 						final long startTimeMillis = System.currentTimeMillis();
 						final ICriticalPairAnalysis cpa = new CpaByAGG();
 
