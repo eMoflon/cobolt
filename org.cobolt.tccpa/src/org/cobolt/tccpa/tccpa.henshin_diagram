@@ -808,82 +808,6 @@
     <element xmi:type="henshin:Rule" href="tccpa.henshin#_TvZ4YBuWEeiIo90lHmPnNg"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TvbGgRuWEeiIo90lHmPnNg" x="720" y="564" width="872" height="356"/>
   </children>
-  <children xmi:type="notation:Shape" xmi:id="_5I1H4DKKEei5TovaAqGaaQ" type="2001" italic="true" lineColor="0">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_IP9fEzKLEei5TovaAqGaaQ" source="defaultAction">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_IP9fFDKLEei5TovaAqGaaQ" key="value" value="preserve"/>
-    </eAnnotations>
-    <children xmi:type="notation:DecorationNode" xmi:id="_5I1H4jKKEei5TovaAqGaaQ" type="5001"/>
-    <children xmi:type="notation:DecorationNode" xmi:id="_5I1H4zKKEei5TovaAqGaaQ" type="7001">
-      <children xmi:type="notation:Shape" xmi:id="_IQHQEDKLEei5TovaAqGaaQ" type="3001">
-        <children xmi:type="notation:DecorationNode" xmi:id="_IQHQEjKLEei5TovaAqGaaQ" type="5002"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_IQHQEzKLEei5TovaAqGaaQ" type="5003"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_IQHQFDKLEei5TovaAqGaaQ" type="7002">
-          <styles xmi:type="notation:SortingStyle" xmi:id="_IQHQFTKLEei5TovaAqGaaQ"/>
-          <styles xmi:type="notation:FilteringStyle" xmi:id="_IQHQFjKLEei5TovaAqGaaQ"/>
-        </children>
-        <element xmi:type="henshin:Node" href="tccpa.henshin#_IP9fEDKLEei5TovaAqGaaQ"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IQHQETKLEei5TovaAqGaaQ" x="30" y="12"/>
-      </children>
-      <children xmi:type="notation:Shape" xmi:id="_JKnJcDKLEei5TovaAqGaaQ" type="3001">
-        <children xmi:type="notation:DecorationNode" xmi:id="_JKnJcjKLEei5TovaAqGaaQ" type="5002"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_JKnJczKLEei5TovaAqGaaQ" type="5003"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_JKnJdDKLEei5TovaAqGaaQ" type="7002">
-          <children xmi:type="notation:Node" xmi:id="_KLfXojKLEei5TovaAqGaaQ" type="3002">
-            <element xmi:type="henshin:Attribute" href="tccpa.henshin#_KLfXoDKLEei5TovaAqGaaQ"/>
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_KLfXozKLEei5TovaAqGaaQ"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_LqynMjKLEei5TovaAqGaaQ" type="3002">
-            <element xmi:type="henshin:Attribute" href="tccpa.henshin#_LqynMDKLEei5TovaAqGaaQ"/>
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_LqynMzKLEei5TovaAqGaaQ"/>
-          </children>
-          <styles xmi:type="notation:SortingStyle" xmi:id="_JKnJdTKLEei5TovaAqGaaQ"/>
-          <styles xmi:type="notation:FilteringStyle" xmi:id="_JKnJdjKLEei5TovaAqGaaQ"/>
-        </children>
-        <element xmi:type="henshin:Node" href="tccpa.henshin#_JKd_gDKLEei5TovaAqGaaQ"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JKnJcTKLEei5TovaAqGaaQ" x="268"/>
-      </children>
-    </children>
-    <element xmi:type="henshin:Rule" href="tccpa.henshin#_5IyEkDKKEei5TovaAqGaaQ"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5I1H4TKKEei5TovaAqGaaQ" x="699" y="1159" width="426" height="123"/>
-  </children>
-  <children xmi:type="notation:Shape" xmi:id="_DphNgDKNEei5TovaAqGaaQ" type="2001" italic="true" lineColor="0">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_IR3RozKNEei5TovaAqGaaQ" source="defaultAction">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_IR3RpDKNEei5TovaAqGaaQ" key="value" value="preserve"/>
-    </eAnnotations>
-    <children xmi:type="notation:DecorationNode" xmi:id="_Dph0kDKNEei5TovaAqGaaQ" type="5001"/>
-    <children xmi:type="notation:DecorationNode" xmi:id="_Dph0kTKNEei5TovaAqGaaQ" type="7001">
-      <children xmi:type="notation:Shape" xmi:id="_IR4fwDKNEei5TovaAqGaaQ" type="3001">
-        <children xmi:type="notation:DecorationNode" xmi:id="_IR4fwjKNEei5TovaAqGaaQ" type="5002"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_IR4fwzKNEei5TovaAqGaaQ" type="5003"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_IR4fxDKNEei5TovaAqGaaQ" type="7002">
-          <styles xmi:type="notation:SortingStyle" xmi:id="_IR4fxTKNEei5TovaAqGaaQ"/>
-          <styles xmi:type="notation:FilteringStyle" xmi:id="_IR4fxjKNEei5TovaAqGaaQ"/>
-        </children>
-        <element xmi:type="henshin:Node" href="tccpa.henshin#_IR3RoDKNEei5TovaAqGaaQ"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IR4fwTKNEei5TovaAqGaaQ" x="5" y="19"/>
-      </children>
-      <children xmi:type="notation:Shape" xmi:id="_JnTakzKNEei5TovaAqGaaQ" type="3001">
-        <children xmi:type="notation:DecorationNode" xmi:id="_JnTalTKNEei5TovaAqGaaQ" type="5002"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_JnTaljKNEei5TovaAqGaaQ" type="5003"/>
-        <children xmi:type="notation:DecorationNode" xmi:id="_JnTalzKNEei5TovaAqGaaQ" type="7002">
-          <children xmi:type="notation:Node" xmi:id="_MqPAEDKNEei5TovaAqGaaQ" type="3002">
-            <element xmi:type="henshin:Attribute" href="tccpa.henshin#_MqF2IDKNEei5TovaAqGaaQ"/>
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_MqPAETKNEei5TovaAqGaaQ"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_NSlZgDKNEei5TovaAqGaaQ" type="3002">
-            <element xmi:type="henshin:Attribute" href="tccpa.henshin#_NScPkDKNEei5TovaAqGaaQ"/>
-            <layoutConstraint xmi:type="notation:Location" xmi:id="_NSlZgTKNEei5TovaAqGaaQ"/>
-          </children>
-          <styles xmi:type="notation:SortingStyle" xmi:id="_JnTamDKNEei5TovaAqGaaQ"/>
-          <styles xmi:type="notation:FilteringStyle" xmi:id="_JnTamTKNEei5TovaAqGaaQ"/>
-        </children>
-        <element xmi:type="henshin:Node" href="tccpa.henshin#_JnTakDKNEei5TovaAqGaaQ"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JnTalDKNEei5TovaAqGaaQ" x="274" y="19"/>
-      </children>
-    </children>
-    <element xmi:type="henshin:Rule" href="tccpa.henshin#_DpeKMDKNEei5TovaAqGaaQ"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DphNgTKNEei5TovaAqGaaQ" x="701" y="1293" height="125"/>
-  </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_-JtWYRGREei2nc2ybxl-XA"/>
   <element xmi:type="henshin:Module" href="tccpa.henshin#_XF6w8H_5EeKZZICbS5P5TQ"/>
   <edges xmi:type="notation:Connector" xmi:id="_-Qy10BGREei2nc2ybxl-XA" type="4001" source="_-Pkt0BGREei2nc2ybxl-XA" target="_-PlU4BGREei2nc2ybxl-XA">
@@ -1518,28 +1442,5 @@
     <element xmi:type="henshin:Edge" href="tccpa.henshin#_WQ9AgDJ-Eei5TovaAqGaaQ"/>
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_WQ9AhDJ-Eei5TovaAqGaaQ" points="[-86, 41, 103, -37]$[-189, 78, 0, 0]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_WQ9AiTJ-Eei5TovaAqGaaQ" id="(1.0,0.8936170212765957)"/>
-  </edges>
-  <edges xmi:type="notation:Connector" xmi:id="_KtWukDKLEei5TovaAqGaaQ" type="4001" source="_IQHQEDKLEei5TovaAqGaaQ" target="_JKnJcDKLEei5TovaAqGaaQ">
-    <children xmi:type="notation:DecorationNode" xmi:id="_KtWukzKLEei5TovaAqGaaQ" type="6001">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_KtWulDKLEei5TovaAqGaaQ" x="1" y="-9"/>
-    </children>
-    <children xmi:type="notation:DecorationNode" xmi:id="_KtWulTKLEei5TovaAqGaaQ" type="6002">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_KtWuljKLEei5TovaAqGaaQ" x="1" y="11"/>
-    </children>
-    <styles xmi:type="notation:FontStyle" xmi:id="_KtWukTKLEei5TovaAqGaaQ"/>
-    <element xmi:type="henshin:Edge" href="tccpa.henshin#_KtM9kDKLEei5TovaAqGaaQ"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KtWukjKLEei5TovaAqGaaQ" points="[54, 4, -134, -18]$[187, -1, -1, -23]"/>
-  </edges>
-  <edges xmi:type="notation:Connector" xmi:id="_KuP0gjKNEei5TovaAqGaaQ" type="4001" source="_IR4fwDKNEei5TovaAqGaaQ" target="_JnTakzKNEei5TovaAqGaaQ">
-    <children xmi:type="notation:DecorationNode" xmi:id="_KuP0hTKNEei5TovaAqGaaQ" type="6001">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_KuP0hjKNEei5TovaAqGaaQ" x="-1" y="-8"/>
-    </children>
-    <children xmi:type="notation:DecorationNode" xmi:id="_KuP0hzKNEei5TovaAqGaaQ" type="6002">
-      <layoutConstraint xmi:type="notation:Location" xmi:id="_KuP0iDKNEei5TovaAqGaaQ" x="-1" y="12"/>
-    </children>
-    <styles xmi:type="notation:FontStyle" xmi:id="_KuP0gzKNEei5TovaAqGaaQ"/>
-    <element xmi:type="henshin:Edge" href="tccpa.henshin#_KuP0gDKNEei5TovaAqGaaQ"/>
-    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KuP0hDKNEei5TovaAqGaaQ" points="[54, -4, -80, 0]$[121, -8, -13, -4]"/>
-    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KuP0iTKNEei5TovaAqGaaQ" id="(0.2,0.375)"/>
   </edges>
 </notation:Diagram>

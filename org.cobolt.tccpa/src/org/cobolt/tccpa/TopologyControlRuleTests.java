@@ -64,7 +64,7 @@ public class TopologyControlRuleTests {
 
 	/**
 	 * Creates and saves the test input model
-	 * 
+	 *
 	 * @param args
 	 *            ignored
 	 * @throws IOException
@@ -175,7 +175,7 @@ public class TopologyControlRuleTests {
 		final String e13 = createLinkId(1, 3);
 		final String e12 = createLinkId(1, 2);
 		Assert.assertTrue(containsUnmarkedLinkWithId(topology, e13));
-		
+
 		setSelf("n1", graph, topology);
 		Assert.assertTrue(prepareLinkInactivation(e13, graph, topology, engine, rulesModule).execute(null));
 		Assert.assertTrue(containsInactiveLinkWithId(topology, e13));
@@ -220,7 +220,7 @@ public class TopologyControlRuleTests {
 		Assert.assertTrue(prepareLinkInactivation(e46, graph, topology, engine, rulesModule).execute(null));
 		Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
 		unsetSelf("n4", graph, topology);
-		
+
 		setSelf("n4", graph, topology);
 		Assert.assertFalse(prepareLinkRemovalHandlerSelf(e45, graph, topology, engine, rulesModule).execute(null));
 		Assert.assertTrue(containsInactiveLinkWithId(topology, e46));
@@ -252,7 +252,7 @@ public class TopologyControlRuleTests {
 	void testLinkAdditionPositive(final String linkIdToAdd) throws Exception {
 		final EGraph graph = new EGraphImpl(testTopologyResource);
 		final EObject topology = graph.getRoots().get(0);
-		
+
 		final String sourceId = extractSourceNodeId(linkIdToAdd);
 		setSelf(sourceId, graph, topology);
 
@@ -453,11 +453,11 @@ public class TopologyControlRuleTests {
 		final String nodeId = "n1";
 		final EObject nodeObject = findNodeWithId(nodeId, topology).get();
 		Assert.assertEquals(false, nodeObject.eGet(findIsSelfStructuralFeature(nodeObject)));
-		
+
 		setSelf(nodeId, graph, topology);
-		
+
 		Assert.assertEquals(true, nodeObject.eGet(findIsSelfStructuralFeature(nodeObject)));
-		
+
 		unsetSelf(nodeId, graph, topology);
 
 		Assert.assertEquals(false, nodeObject.eGet(findIsSelfStructuralFeature(nodeObject)));
@@ -532,7 +532,7 @@ public class TopologyControlRuleTests {
 	private static EStructuralFeature findIdStructuralFeature(final EObject o) {
 		return findFeatureByName(o, "id");
 	}
-	
+
 	private static EStructuralFeature findIsSelfStructuralFeature(final EObject o) {
 		return findFeatureByName(o, "isSelf");
 	}
@@ -686,7 +686,7 @@ public class TopologyControlRuleTests {
 	private static String createLinkId(final int sourceNode, final int targetNode) {
 		return String.format("n%d%sn%d", sourceNode, NODE_ID_SEPARATOR, targetNode);
 	}
-	
+
 	private static String[] extractNodeIds(final String linkId) {
 		return linkId.split(Pattern.quote(NODE_ID_SEPARATOR));
 	}
@@ -694,7 +694,7 @@ public class TopologyControlRuleTests {
 	private static String extractSourceNodeId(final String linkId) {
 		return extractNodeIds(linkId)[0];
 	}
-	
+
 	private static String extractTargetNodeId(final String linkId) {
 		return extractNodeIds(linkId)[1];
 	}
