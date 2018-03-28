@@ -61,8 +61,11 @@ public class TopologyControlCriticalPairAnalysisMain {
 		resultDir.mkdirs();
 		final String resultsPath = resultDir.getAbsolutePath();
 
-		final List<Rule> rules = module.getUnits().stream().filter(unit -> unit instanceof Rule)
+		//@formatter:off
+		final List<Rule> rules = module.getUnits().stream()
+				.filter(unit -> unit instanceof Rule)
 				.map(unit -> (Rule) unit).collect(Collectors.toList());
+		//@formatter:on
 		logger.info("Start CPA.");
 		for (final String analysisGoal : Arrays.asList("C", "D")) {
 			final List<Rule> rulesLeft = rules;
@@ -70,7 +73,6 @@ public class TopologyControlCriticalPairAnalysisMain {
 			for (final Rule ruleLeft : rulesLeft) {
 				for (final Rule ruleRight : rulesRight) {
 					try {
-						// Last successful analysis: C/inactivateLink/handleLinkRemoval
 						final long startTimeMillis = System.currentTimeMillis();
 						final ICriticalPairAnalysis cpa = new CpaByAGG();
 

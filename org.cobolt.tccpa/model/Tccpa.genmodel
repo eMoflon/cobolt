@@ -13,6 +13,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/topology"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/outgoingLinks"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/incomingLinks"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Node/isSelf"/>
     </genClasses>
     <genClasses ecoreClass="platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/org.cobolt.tccpa/model/Tccpa.ecore#//Link/weight"/>
