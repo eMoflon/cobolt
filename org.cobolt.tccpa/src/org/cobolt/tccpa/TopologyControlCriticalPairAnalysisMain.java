@@ -1,6 +1,23 @@
+/**
+ * <copyright>
+ * Copyright (c) 2010-2016 Henshin developers. All rights reserved.
+ * This program and the accompanying materials are made available
+ * under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * </copyright>
+ */
 package org.cobolt.tccpa;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +37,8 @@ import org.eclipse.emf.henshin.model.Rule;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceFactory;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 
-public class TopologyControlCriticalPairAnalysisMain {
+public class TopologyControlCriticalPairAnalysisMain
+{
    private static final String STATISTICS_FILE_NAME = "statistics.csv";
 
    static final Logger logger = Logger.getLogger(TopologyControlCriticalPairAnalysisMain.class);
@@ -32,15 +50,18 @@ public class TopologyControlCriticalPairAnalysisMain {
 
    private static final String CSV_SEP = ";";
 
+   private static final String METAMODEL_FILENAME = "tccpa.ecore";
+
    /**
     * Runs some tests with the specified rules
     *
-    * @param path
+    * @param rulesDirectory the directory containing the .henshin file etc.
     * @param saveResult
     */
-   public static void run(String path, boolean saveResult) {
+   public static void run(final String rulesDirectory, final boolean saveResult)
+   {
       // Create a resource set with a base directory:
-      HenshinResourceSet resourceSet = new HenshinResourceSet(path);
+      HenshinResourceSet resourceSet = new HenshinResourceSet(rulesDirectory);
 
       // Load the module:
       Module module = resourceSet.getModule("tccpa.henshin", false);
@@ -53,17 +74,21 @@ public class TopologyControlCriticalPairAnalysisMain {
       final String resultsPath = resultDir.getAbsolutePath();
 
       //@formatter:off
-      final List<Rule> rules = module.getUnits().stream()
-            .filter(unit -> unit instanceof Rule)
-            .map(unit -> (Rule) unit).collect(Collectors.toList());
-      //@formatter:on
+		final List<Rule> rules = module.getUnits().stream()
+				.filter(unit -> unit instanceof Rule)
+				.map(unit -> (Rule) unit).collect(Collectors.toList());
+		//@formatter:on
       logger.info("Start CPA.");
-      for (final String analysisGoal : Arrays.asList("C", "D")) {
+      for (final String analysisGoal : Arrays.asList("C", "D"))
+      {
          final List<Rule> rulesLeft = rules;
          final List<Rule> rulesRight = rules;
-         for (final Rule ruleLeft : rulesLeft) {
-            for (final Rule ruleRight : rulesRight) {
-               try {
+         for (final Rule ruleLeft : rulesLeft)
+         {
+            for (final Rule ruleRight : rulesRight)
+            {
+               try
+               {
                   final long startTimeMillis = System.currentTimeMillis();
                   final ICriticalPairAnalysis cpa = new CpaByAGG();
 
@@ -76,7 +101,8 @@ public class TopologyControlCriticalPairAnalysisMain {
                   cpa.init(Arrays.asList(ruleLeft), Arrays.asList(ruleRight), options);
 
                   final CPAResult result;
-                  switch (analysisGoal) {
+                  switch (analysisGoal)
+                  {
                   case "D":
                      result = cpa.runDependencyAnalysis();
                      break;
@@ -86,26 +112,28 @@ public class TopologyControlCriticalPairAnalysisMain {
                   default:
                      throw new IllegalStateException(analysisGoal);
                   }
-                  CPAUtility.persistCpaResult(result, resultsPath);
+                  if (!result.getCriticalPairs().isEmpty())
+                  {
+                     CPAUtility.persistCpaResult(result, resultsPath);
+                     copyMetamodelToResultDirectory(rulesDirectory, resultDir);
+                  }
                   final long endTimeMillis = System.currentTimeMillis();
                   final long durationMillis = endTimeMillis - startTimeMillis;
                   final int numPairs = result.getCriticalPairs().size();
                   final String rightName = ruleRight.getName();
                   final String leftName = ruleLeft.getName();
-                  System.out.printf("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs,
-                        leftName, rightName, durationMillis);
-                  final String header = StringUtils.join(
-                        Arrays.asList("InteractionType", "RuleLeft", "RuleRight", "NumPairs", "DurationMillis"),
-                        CSV_SEP);
+                  logger.info(String.format("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs, leftName, rightName, durationMillis));
+                  final String header = StringUtils.join(Arrays.asList("InteractionType", "RuleLeft", "RuleRight", "NumPairs", "DurationMillis"), CSV_SEP);
                   final File statisticsFile = new File(resultDir, STATISTICS_FILE_NAME);
-                  if (!statisticsFile.exists()) {
+                  if (!statisticsFile.exists())
+                  {
                      FileUtils.writeLines(statisticsFile, Arrays.asList(header));
                   }
-                  final String dataLine = StringUtils.join(
-                        Arrays.asList(analysisGoal, leftName, rightName, numPairs, durationMillis), CSV_SEP);
+                  final String dataLine = StringUtils.join(Arrays.asList(analysisGoal, leftName, rightName, numPairs, durationMillis), CSV_SEP);
                   FileUtils.writeLines(statisticsFile, Arrays.asList(dataLine), true);
 
-               } catch (final Exception e) {
+               } catch (final Exception e)
+               {
                   e.printStackTrace();
                }
             }
@@ -114,7 +142,39 @@ public class TopologyControlCriticalPairAnalysisMain {
 
    }
 
-   public static void main(String[] args) {
+   private static Path copyMetamodelToResultDirectory(final String path, final File resultDir) throws IOException
+   {
+      return Files.walkFileTree(resultDir.toPath(), new SimpleFileVisitor<Path>() {
+         @Override
+         public FileVisitResult preVisitDirectory(final Path directory, final BasicFileAttributes attributes) throws IOException
+         {
+            File[] minimalEcoreFiles = directory.toFile().listFiles(new FilenameFilter() {
+
+               @Override
+               public boolean accept(File dir, String name)
+               {
+                  return "minimal-model.ecore".equals(name);
+               }
+            });
+            File[] metamodelFiles = directory.toFile().listFiles(new FilenameFilter() {
+
+               @Override
+               public boolean accept(File dir, String name)
+               {
+                  return METAMODEL_FILENAME.equals(name);
+               }
+            });
+            if (minimalEcoreFiles.length != 0 && metamodelFiles.length == 0)
+            {
+               FileUtils.copyFile(new File(path, METAMODEL_FILENAME), new File(directory.toFile(), METAMODEL_FILENAME));
+            }
+            return FileVisitResult.CONTINUE;
+         }
+      });
+   }
+
+   public static void main(String[] args)
+   {
       run(PATH, true); // we assume the working directory is the root of the plug-in
    }
 }
