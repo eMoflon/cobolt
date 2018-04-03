@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
@@ -122,7 +121,8 @@ public class TopologyControlCriticalPairAnalysisMain
                   final int numPairs = result.getCriticalPairs().size();
                   final String rightName = ruleRight.getName();
                   final String leftName = ruleLeft.getName();
-                  logger.info(String.format("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs, leftName, rightName, durationMillis));
+                  logger.info(
+                        String.format("%s: Saved %d critical pairs of (%s,%s) after %dms\n", analysisGoal, numPairs, leftName, rightName, durationMillis));
                   final String header = StringUtils.join(Arrays.asList("InteractionType", "RuleLeft", "RuleRight", "NumPairs", "DurationMillis"), CSV_SEP);
                   final File statisticsFile = new File(resultDir, STATISTICS_FILE_NAME);
                   if (!statisticsFile.exists())
@@ -148,23 +148,9 @@ public class TopologyControlCriticalPairAnalysisMain
          @Override
          public FileVisitResult preVisitDirectory(final Path directory, final BasicFileAttributes attributes) throws IOException
          {
-            File[] minimalEcoreFiles = directory.toFile().listFiles(new FilenameFilter() {
-
-               @Override
-               public boolean accept(File dir, String name)
-               {
-                  return "minimal-model.ecore".equals(name);
-               }
-            });
-            File[] metamodelFiles = directory.toFile().listFiles(new FilenameFilter() {
-
-               @Override
-               public boolean accept(File dir, String name)
-               {
-                  return METAMODEL_FILENAME.equals(name);
-               }
-            });
-            if (minimalEcoreFiles.length != 0 && metamodelFiles.length == 0)
+            final boolean containsConflictMetamodel = containsConflictMetamodel(directory);
+            final boolean containsMetamodel = containsMetamodel(directory);
+            if (containsConflictMetamodel && !containsMetamodel)
             {
                FileUtils.copyFile(new File(path, METAMODEL_FILENAME), new File(directory.toFile(), METAMODEL_FILENAME));
             }
@@ -176,5 +162,33 @@ public class TopologyControlCriticalPairAnalysisMain
    public static void main(String[] args)
    {
       run(PATH, true); // we assume the working directory is the root of the plug-in
+   }
+
+   private static boolean containsMetamodel(final Path directory)
+   {
+      File[] metamodelFiles = directory.toFile().listFiles(new FilenameFilter() {
+
+         @Override
+         public boolean accept(File dir, String name)
+         {
+            return METAMODEL_FILENAME.equals(name);
+         }
+      });
+      final boolean containsMetamodel = metamodelFiles.length != 0;
+      return containsMetamodel;
+   }
+
+   private static boolean containsConflictMetamodel(final Path directory)
+   {
+      File[] minimalEcoreFiles = directory.toFile().listFiles(new FilenameFilter() {
+
+         @Override
+         public boolean accept(File dir, String name)
+         {
+            return "minimal-model.ecore".equals(name);
+         }
+      });
+      final boolean containsConflictMetamodel = minimalEcoreFiles.length != 0;
+      return containsConflictMetamodel;
    }
 }
