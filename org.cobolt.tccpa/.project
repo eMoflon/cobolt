@@ -5,11 +5,11 @@
 	<projects>
 	</projects>
 	<buildSpec>
-        <buildCommand>
-            <name>org.moflon.emf.build.MoflonEmfBuilder</name>
-            <arguments>
-            </arguments>
-        </buildCommand>
+		<buildCommand>
+			<name>org.moflon.emf.build.MoflonEmfBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -25,9 +25,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
-        <nature>org.moflon.emf.build.MoflonEmfNature</nature>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+		<nature>org.moflon.emf.build.MoflonEmfNature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
