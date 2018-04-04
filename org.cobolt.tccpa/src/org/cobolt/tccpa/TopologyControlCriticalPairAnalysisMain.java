@@ -67,11 +67,19 @@ public class TopologyControlCriticalPairAnalysisMain {
 				.map(unit -> (Rule) unit).collect(Collectors.toList());
 		//@formatter:on
 		logger.info("Start CPA.");
+		boolean shallSkip = true;
 		for (final String analysisGoal : Arrays.asList("C", "D")) {
 			final List<Rule> rulesLeft = rules;
 			final List<Rule> rulesRight = rules;
 			for (final Rule ruleLeft : rulesLeft) {
 				for (final Rule ruleRight : rulesRight) {
+					
+					if (shallSkip && analysisGoal.equals("C") && ruleLeft.getName().equals("inactivateLink") && ruleRight.getName().equals("handleLinkRemoval2"))
+						shallSkip = false;
+					
+					if (shallSkip)
+						continue;
+					
 					try {
 						final long startTimeMillis = System.currentTimeMillis();
 						final ICriticalPairAnalysis cpa = new CpaByAGG();
