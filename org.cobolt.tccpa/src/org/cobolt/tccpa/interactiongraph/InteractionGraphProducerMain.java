@@ -1,4 +1,19 @@
-package org.cobolt.tccpa;
+package org.cobolt.tccpa.interactiongraph;
+
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_A;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_FIND_U;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_I;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_E;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH1;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH2;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_W;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH1;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH2;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH3;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH4;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_E;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH1;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,11 +21,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Spliterator;
 import java.util.Vector;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
-import org.cobolt.tccpa.InteractionGraphProducerMain.LoopType;
+import org.apache.commons.math3.stat.Frequency;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -21,141 +40,9 @@ import de.normalisiert.utils.graphs.ElementaryCyclesSearch;
 public class InteractionGraphProducerMain
 {
 
-   private static final String R_MOD_WH4 = "Rmod-w,h,4";
-
-   private static final String R_MOD_WH3 = "Rmod-w,h,3";
-
-   private static final String R_MOD_WH2 = "Rmod-w,h,2";
-
-   private static final String R_MOD_WH1 = "Rmod-w,h,1";
-
-   private static final String R_MOD_W = "Rmod-w";
-
-   private static final String R_PLUS_EH2 = "R+e,h,2";
-
-   private static final String R_PLUS_EH1 = "R+e,h,1";
-
-   private static final String R_PLUS_E = "R+e";
-
-   private static final String R_MINUS_EH2 = "R-e,h,2";
-
-   private static final String R_MINUS_EH1 = "R-e,h,1";
-
-   private static final String R_MINUS_E = "R-e";
-
-   private static final String R_FIND_U = "Rfind-u";
-
-   private static final String R_I = "Ri";
-
-   private static final String R_A = "Ra";
-
    private final boolean usePaperRulesOnly = true;
 
    private final boolean ignoreLoops = true;
-
-   public class LoopCondition
-   {
-      private final String conditionRuleName;
-
-      private final LoopType type;
-
-      public LoopCondition(final String conditionRuleName, final LoopType type)
-      {
-         this.conditionRuleName = conditionRuleName;
-         this.type = type;
-      }
-
-      public String getConditionRuleName()
-      {
-         return conditionRuleName;
-      }
-
-      public LoopType getType()
-      {
-         return type;
-      }
-
-      @Override
-      public String toString()
-      {
-         return String.format("%s ==%s==> ...", this.getConditionRuleName(), this.type);
-      }
-   }
-
-   public enum LoopType {
-      SUCCESS("[S]"), FAILURE("[F]");
-
-      private String mnemonic;
-
-      private LoopType(final String mnemonic)
-      {
-         this.mnemonic = mnemonic;
-      }
-
-      @Override
-      public String toString()
-      {
-         return this.mnemonic;
-      }
-   }
-
-   public enum Interaction {
-      CM(InteractionType.CONFLICT, InteractionCategory.SAME_MATCH), CS(InteractionType.CONFLICT, InteractionCategory.SELF), CR(InteractionType.CONFLICT,
-            InteractionCategory.REMOTE), DM(InteractionType.DEPENDENCY, InteractionCategory.SAME_MATCH), DS(InteractionType.DEPENDENCY,
-                  InteractionCategory.SELF), DR(InteractionType.DEPENDENCY, InteractionCategory.REMOTE), NONE(null, null);
-
-      private InteractionType interactionType;
-
-      private InteractionCategory interactionCategory;
-
-      private Interaction(final InteractionType interactionType, final InteractionCategory interactionCategory)
-      {
-         this.interactionType = interactionType;
-         this.interactionCategory = interactionCategory;
-      }
-
-      public InteractionCategory getInteractionCategory()
-      {
-         return interactionCategory;
-      }
-
-      public InteractionType getInteractionType()
-      {
-         return interactionType;
-      }
-   }
-
-   public enum InteractionType {
-      CONFLICT("C"), DEPENDENCY("D");
-
-      private String mnemonic;
-
-      private InteractionType(final String mnemonic)
-      {
-         this.mnemonic = mnemonic;
-      }
-
-      public String getMnemonic()
-      {
-         return mnemonic;
-      }
-   }
-
-   public enum InteractionCategory {
-      SAME_MATCH("m"), SELF("s"), REMOTE("r");
-      private String mnemonic;
-
-      private InteractionCategory(final String mnemonic)
-      {
-         this.mnemonic = mnemonic;
-      }
-
-      public String getMnemonic()
-      {
-         return mnemonic;
-      }
-
-   }
 
    public static void main(String[] args)
    {
@@ -163,6 +50,44 @@ public class InteractionGraphProducerMain
    }
 
    private void run()
+   {
+      final Graph graph = calculateInteractionGraph();
+      final List<LoopCondition> loopConditions = getLoopConditions();
+
+      System.out.println("Rule;Type;RemoteInteractions;InteractionTriple");
+      for (final LoopCondition loopCondition : loopConditions)
+      {
+         final String loopRule = loopCondition.getConditionRuleName();
+         final LoopType loopType = loopCondition.getType();
+         Interaction interactionType = LoopType.SUCCESS == loopType ? Interaction.DR : Interaction.CR;
+         final Node loopRuleNode = graph.getNode(loopRule);
+         if (loopRuleNode != null)
+         {
+            final List<Edge> remoteInteractions = StreamSupport.stream(loopRuleNode.getEachEnteringEdge().spliterator(), false).filter(edge -> {
+               final String edgeLabel = getUiLabel(edge);
+               return edgeLabel.contains(interactionType.format());
+            }).collect(Collectors.toList());
+            final List<String> interactionTriples = new ArrayList<>();
+            for (final Edge remoteInteraction : remoteInteractions)
+            {
+               // Find each incoming dependency
+               StreamSupport.stream(streamOutgoingEdges(graph, remoteInteraction.getSourceNode()), false)
+                     .filter(edge -> getUiLabel(edge).contains(Interaction.DR.toString()) || getUiLabel(edge).contains(Interaction.DS.toString()))
+                     .forEach(edge -> interactionTriples.add("(" + cleanCommas(edge.getSourceNode()) + ") --" + edge.getAttribute("ui.label") + "--> ("
+                           + cleanCommas(remoteInteraction.getSourceNode()) + ") --" + interactionType + "--> (" + cleanCommas(loopRuleNode) + ")"));
+            }
+            List<String> formattedRemoteInteractions = remoteInteractions.stream().map(edge -> (Node)edge.getSourceNode()).map(node -> cleanCommas(node))
+                  .collect(Collectors.toList());
+            System.out.printf("%s;%s;%s;%s\n", loopRule, loopType, formattedRemoteInteractions, interactionTriples);
+         }
+      }
+
+      //      determineCycles(graph, loopConditions);
+
+      //      showGraph(graph);
+   }
+
+   public Graph calculateInteractionGraph()
    {
       int factor = 300;
       int tcRuleColumn = 0;
@@ -175,25 +100,8 @@ public class InteractionGraphProducerMain
       int row4 = -3 * factor;
       int row5 = -4 * factor;
       Graph graph = new MultiGraph("InteractionGraph");
-      graph.addAttribute("ui.quality");
-      graph.addAttribute("ui.antialias");
       graph.setNullAttributesAreErrors(true);
-      graph.setAttribute("ui.stylesheet", "node {" + //
-            "text-alignment: center; " + //
-            "text-color: black; " + //
-            "text-style: bold;" + //
-            "text-size: 14px;" + //
-            "size: 10px, 10px;" + //
-            "fill-mode: plain; /* Default. */" + //
-            "fill-color: black; /* Default is black.*/" + //
-            "stroke-mode: plain; /* Default is none.*/" + //
-            "stroke-color: blue; /* Default is black.*/}" + //
-            //            "node#Ra {fill-color: red;text-background-mode: plain;text-background-color:white;}" + //
-            "edge { shape:blob;" + //
-            "text-alignment: along;\n" + //
-            "text-size: 14px;" + //
-            "arrow-shape: arrow;" + //
-            "shape: cubic-curve;}");
+      configureLayout(graph);
 
       // What rules exist in the specification?
       addRuleNode(R_A, tcRuleColumn, row1, graph);
@@ -288,7 +196,7 @@ public class InteractionGraphProducerMain
          final String lhs = R_MINUS_EH2;
          addInteraction(lhs, R_A, graph, Interaction.NONE); // Reason: The unmarked link is not eligible for activation
          addInteraction(lhs, R_I, graph, Interaction.DS); // Reasons: This rule is only applicable if e12 is inactive
-         addInteraction(lhs, R_FIND_U, graph, Interaction.DS); // Reason: Newly unmarked link
+         addInteraction(lhs, R_FIND_U, graph, Interaction.DR); // Reason: Newly unmarked link
          addInteraction(lhs, R_MINUS_E, graph, Interaction.DS, Interaction.DR); // Reasons: Prepares self or remote link removal
          addInteraction(lhs, R_MINUS_EH1, graph, Interaction.CR); // Reasons: Inactivates a link that would have been inactivated on a remote node
          addInteraction(lhs, R_MINUS_EH2, graph, Interaction.CM, Interaction.CS, Interaction.CR); // Reason: Unmarks a link that would have been unmarked from remote or due to another pending link removal
@@ -448,8 +356,11 @@ public class InteractionGraphProducerMain
          addInteraction(lhs, R_MOD_WH3, graph, null); // Reason:
          addInteraction(lhs, R_MOD_WH4, graph, null); // Reason:
       }
+      return graph;
+   }
 
-      // What kinds of loops exist in the specification
+   public List<LoopCondition> getLoopConditions()
+   {
       //@formatter:off
       final List<LoopCondition> loopConditions = Arrays.asList(
             new LoopCondition(R_FIND_U, LoopType.SUCCESS),
@@ -466,8 +377,31 @@ public class InteractionGraphProducerMain
             new LoopCondition(R_MOD_W, LoopType.FAILURE)
             );
       //@formatter:on
+      return loopConditions;
+   }
 
-      // Which circles exist? (Use Johnson's algorithm)
+   public static String cleanCommas(Node node)
+   {
+      return node.getId().replaceAll(Pattern.quote(","), "");
+   }
+
+   public Spliterator<Edge> streamOutgoingEdges(Graph graph, final Node node)
+   {
+      return node.getEachEnteringEdge().spliterator();
+   }
+
+   public String getUiLabel(Edge edge)
+   {
+      return edge.getAttribute("ui.label").toString();
+   }
+
+   public void showGraph(Graph graph)
+   {
+      graph.display(false);
+   }
+
+   public void determineCycles(Graph graph, final List<LoopCondition> loopConditions)
+   {
       final int nodeCount = graph.getNodeCount();
       final Node[] nodes = graph.getNodeSet().toArray(new Node[nodeCount]);
       final Map<Node, Integer> nodeToIndex = new HashMap<>();
@@ -487,8 +421,9 @@ public class InteractionGraphProducerMain
 
       final ElementaryCyclesSearch ecs = new ElementaryCyclesSearch(adjMatrix, nodes);
       final List<Vector<Node>> cyclesAsNodes = ecs.getElementaryCycles();
+      cyclesAsNodes.forEach(c -> closeCycle(c));
 
-      final List<List<Edge>> cyclesAsEdges = buildEdgeBasedCycles(cyclesAsNodes);
+      final List<List<Edge>> cyclesAsEdges = asEdgeBasedCycles(cyclesAsNodes);
 
       for (final List<Edge> cycleAsEdges : cyclesAsEdges)
       {
@@ -504,9 +439,11 @@ public class InteractionGraphProducerMain
                final StringBuilder sb = new StringBuilder();
                sb.append(edge.getSourceNode().getId());
                sb.append(" -");
-               if (isReason) sb.append("**");
+               if (isReason)
+                  sb.append("**");
                sb.append(extractLabel(edge));
-               if (isReason) sb.append("**");
+               if (isReason)
+                  sb.append("**");
                sb.append("-> ");
 
                if (!iter.hasNext())
@@ -517,8 +454,28 @@ public class InteractionGraphProducerMain
             System.out.print("\n");
          }
       }
+   }
 
-      graph.display(false);
+   private void configureLayout(Graph graph)
+   {
+      graph.addAttribute("ui.quality");
+      graph.addAttribute("ui.antialias");
+      graph.setAttribute("ui.stylesheet", "node {" + //
+            "text-alignment: center; " + //
+            "text-color: black; " + //
+            "text-style: bold;" + //
+            "text-size: 14px;" + //
+            "size: 10px, 10px;" + //
+            "fill-mode: plain; /* Default. */" + //
+            "fill-color: black; /* Default is black.*/" + //
+            "stroke-mode: plain; /* Default is none.*/" + //
+            "stroke-color: blue; /* Default is black.*/}" + //
+            //            "node#Ra {fill-color: red;text-background-mode: plain;text-background-color:white;}" + //
+            "edge { shape:blob;" + //
+            "text-alignment: along;\n" + //
+            "text-size: 14px;" + //
+            "arrow-shape: arrow;" + //
+            "shape: cubic-curve;}");
    }
 
    private List<String> extractLabel(final Edge edge)
@@ -561,24 +518,23 @@ public class InteractionGraphProducerMain
       return edgeLabel.stream().anyMatch(interaction -> interaction.startsWith("D"));
    }
 
-   private List<List<Edge>> buildEdgeBasedCycles(final List<Vector<Node>> cyclesAsNodes)
+   private List<List<Edge>> asEdgeBasedCycles(final List<Vector<Node>> cyclesAsNodes)
    {
-      List<List<Edge>> cyclesAsEdges = new ArrayList<>(cyclesAsNodes.size());
-      for (final Vector<Node> cycleAsNodes : cyclesAsNodes)
-      {
-         closeCycle(cycleAsNodes);
-         final ArrayList<Edge> cycleAsEdges = new ArrayList<Edge>();
-         cyclesAsEdges.add(cycleAsEdges);
-         Node previousNode = null;
-         for (final Node node : cycleAsNodes)
-         {
-            if (previousNode != null)
-               cycleAsEdges.add(previousNode.getEdgeToward(node));
+      return cyclesAsNodes.stream().map(InteractionGraphProducerMain::asEdgeBasedCycle).collect(Collectors.toList());
+   }
 
-            previousNode = node;
-         }
+   private static ArrayList<Edge> asEdgeBasedCycle(final Vector<Node> cycleAsNodes)
+   {
+      final ArrayList<Edge> cycleAsEdges = new ArrayList<Edge>();
+      Node previousNode = null;
+      for (final Node node : cycleAsNodes)
+      {
+         if (previousNode != null)
+            cycleAsEdges.add(previousNode.getEdgeToward(node));
+
+         previousNode = node;
       }
-      return cyclesAsEdges;
+      return cycleAsEdges;
    }
 
    private boolean closeCycle(final Vector<Node> cycle)
@@ -609,18 +565,23 @@ public class InteractionGraphProducerMain
       if (interactions == null)
          return;
 
-      if (interactions.length == 1 && interactions[0] == Interaction.NONE)
-         return;
-
       if (!containsNode(graph, sourceId) || !containsNode(graph, targetId))
          return;
 
       if (this.ignoreLoops && sourceId.equals(targetId))
          return;
 
-      final String edgeId = sourceId + "->" + targetId;
-      final Edge edge = graph.addEdge(edgeId, sourceId, targetId, true);
-      edge.setAttribute("ui.label", formatEdgeLabel(interactions));
+      final Frequency freqDist = new Frequency();
+      Arrays.stream(interactions).forEach(interaction -> freqDist.addValue(formatEdgeLabel(interaction).get(0)));
+      final Iterator<Entry<Comparable<?>, Long>> iter = freqDist.entrySetIterator();
+      while (iter.hasNext())
+      {
+         final Entry<Comparable<?>, Long> next = iter.next();
+         final Comparable<?> label = next.getKey() + (next.getValue() > 1 ? "*" + next.getValue() : "");
+         final String edgeId = sourceId + "-" + label + "->" + targetId;
+         final Edge edge = graph.addEdge(edgeId, sourceId, targetId, true);
+         edge.setAttribute("ui.label", label);
+      }
    }
 
    private static boolean containsNode(final Graph graph, final String sourceId)
@@ -630,8 +591,6 @@ public class InteractionGraphProducerMain
 
    private static List<String> formatEdgeLabel(final Interaction... interactions)
    {
-      return Arrays.stream(interactions)
-            .map(interaction -> String.format("%s%s", interaction.getInteractionType().getMnemonic(), interaction.getInteractionCategory().getMnemonic()))
-            .collect(Collectors.toList());
+      return Arrays.stream(interactions).map(Interaction::format).collect(Collectors.toList());
    }
 }
