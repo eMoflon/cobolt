@@ -3,3 +3,4 @@
 /model/*
 !/**/.keep*
 /target/
+/.settings/
