@@ -23,9 +23,6 @@ class LinkActivationContentAdapter extends GraphContentAdapter {
 
 	@Override
 	protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
-		if (!(edge instanceof Edge))
-			throw new IllegalArgumentException("Expected an instance of " + Edge.class.getName());
-
 		super.edgeAttributeChanged(edge, attribute, oldValue);
 
 		final IEdge simEdge = facade.getSimonstratorLinkForTopologyModelLink(edge);
