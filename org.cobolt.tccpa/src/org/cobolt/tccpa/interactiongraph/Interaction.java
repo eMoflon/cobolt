@@ -1,51 +1,86 @@
 package org.cobolt.tccpa.interactiongraph;
 
-public enum Interaction {
-   CM(InteractionType.CONFLICT, InteractionCategory.SAME_MATCH), CS(InteractionType.CONFLICT, InteractionCategory.LOCAL), CR(InteractionType.CONFLICT,
-         InteractionCategory.REMOTE), DM(InteractionType.DEPENDENCY, InteractionCategory.SAME_MATCH), DS(InteractionType.DEPENDENCY,
-               InteractionCategory.LOCAL), DR(InteractionType.DEPENDENCY, InteractionCategory.REMOTE);
+public class Interaction
+{
+   private final InteractionType interactionType;
 
-   public static final Interaction[] NONE = new Interaction[] {};
+   private final InteractionCategory interactionCategory;
 
-   private InteractionType interactionType;
+   private final String lhsRule;
 
-   private InteractionCategory interactionCategory;
+   private final String rhsRule;
 
-   private Interaction(final InteractionType interactionType, final InteractionCategory interactionCategory)
+   private final String reason;
+
+   private Interaction(final String lhsRule, final String rhsRule, final InteractionType interactionType, final InteractionCategory interactionCategory,
+         final String reason)
    {
+      this.lhsRule = lhsRule;
+      this.rhsRule = rhsRule;
       this.interactionType = interactionType;
       this.interactionCategory = interactionCategory;
+      this.reason = reason;
    }
 
-   public InteractionCategory getInteractionCategory()
+   public static Interaction create(final String lhsRule, final String rhsRule, final String interactionSpecification, final String reason)
+   {
+      return new Interaction(lhsRule, rhsRule, InteractionType.fromString(interactionSpecification.charAt(0)),
+            InteractionCategory.fromString(interactionSpecification.charAt(1)), reason);
+   }
+
+   public String getLhsRule()
+   {
+      return lhsRule;
+   }
+
+   public String getRhsRule()
+   {
+      return rhsRule;
+   }
+
+   public InteractionCategory getCategory()
    {
       return interactionCategory;
    }
 
-   public InteractionType getInteractionType()
+   public InteractionType getType()
    {
       return interactionType;
    }
 
-   public String format()
+   public boolean isLocal()
    {
-      return String.format("%s%s", this.getInteractionType().getMnemonic(), this.getInteractionCategory().getMnemonic());
+      switch (this.getCategory())
+      {
+      case LOCAL:
+      case SAME_MATCH:
+         return true;
+      case REMOTE:
+         return false;
+      default:
+         throw new IllegalArgumentException("Cannot decide on locality for " + this.getCategory());
+      }
    }
 
-   public static Interaction fromString(final String interactionStr)
+   public String getReason()
    {
-      for (final Interaction interaction : Interaction.values())
-      {
-         if (interaction.format().toLowerCase().equals(interactionStr))
-            return interaction;
-      }
-   
-      throw new IllegalArgumentException("Cannot find Interaction for string '"  + interactionStr + "'");
+      return reason;
+   }
+
+   public String formatType()
+   {
+      return String.format("%s%s", this.getType().getMnemonic(), this.getCategory().getMnemonic());
+   }
+
+   public String format()
+   {
+      return getLhsRule() + " --" + formatType() + "--> " + getRhsRule();
    }
 
    @Override
    public String toString()
    {
-      return format();
+      return format() + " (Reason: " + getReason() + ")";
    }
+
 }

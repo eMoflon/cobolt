@@ -14,4 +14,14 @@ public enum InteractionCategory {
       return mnemonic;
    }
 
+   public static InteractionCategory fromString(char mnemonic)
+   {
+      for (final InteractionCategory interactionCategory : values())
+      {
+         if (interactionCategory.getMnemonic().equals(Character.toString(mnemonic)))
+            return interactionCategory;
+      }
+      throw new IllegalArgumentException("Cannot parse '" + mnemonic + "'.");
+   }
+
 }
