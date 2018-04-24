@@ -1,9 +1,9 @@
 package org.cobolt.tccpa.interactiongraph;
 
 public enum Interaction {
-   CM(InteractionType.CONFLICT, InteractionCategory.SAME_MATCH), CS(InteractionType.CONFLICT, InteractionCategory.SELF), CR(InteractionType.CONFLICT,
+   CM(InteractionType.CONFLICT, InteractionCategory.SAME_MATCH), CS(InteractionType.CONFLICT, InteractionCategory.LOCAL), CR(InteractionType.CONFLICT,
          InteractionCategory.REMOTE), DM(InteractionType.DEPENDENCY, InteractionCategory.SAME_MATCH), DS(InteractionType.DEPENDENCY,
-               InteractionCategory.SELF), DR(InteractionType.DEPENDENCY, InteractionCategory.REMOTE);
+               InteractionCategory.LOCAL), DR(InteractionType.DEPENDENCY, InteractionCategory.REMOTE);
 
    public static final Interaction[] NONE = new Interaction[] {};
 
@@ -30,6 +30,17 @@ public enum Interaction {
    public String format()
    {
       return String.format("%s%s", this.getInteractionType().getMnemonic(), this.getInteractionCategory().getMnemonic());
+   }
+
+   public static Interaction fromString(final String interactionStr)
+   {
+      for (final Interaction interaction : Interaction.values())
+      {
+         if (interaction.format().toLowerCase().equals(interactionStr))
+            return interaction;
+      }
+   
+      throw new IllegalArgumentException("Cannot find Interaction for string '"  + interactionStr + "'");
    }
 
    @Override

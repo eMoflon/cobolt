@@ -1,7 +1,7 @@
 package org.cobolt.tccpa.interactiongraph;
 
 public enum InteractionType {
-   CONFLICT("C"), DEPENDENCY("D");
+   CONFLICT("c"), DEPENDENCY("d");
 
    private String mnemonic;
 
@@ -13,5 +13,9 @@ public enum InteractionType {
    public String getMnemonic()
    {
       return mnemonic;
+   }
+
+   public String format() {
+      return this.getMnemonic();
    }
 }
