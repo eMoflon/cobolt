@@ -63,12 +63,13 @@ public final class TopologyControlExecutorMain {
 	// Solution from https://stackoverflow.com/a/723914
 	public static int exec(final Class<? extends TopologyControlCriticalPairAnalysisMain> runnerClass, String ruleLeftStr, String ruleRightStr, String analysisGoal)
 			throws IOException, InterruptedException {
+		final String memoryConfiguration = "-Xmx6000m";
 		final String javaHome = System.getProperty("java.home");
 		final String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
 		final String classpath = System.getProperty("java.class.path");
 		final String className = runnerClass.getCanonicalName();
 
-		final ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, className, ruleLeftStr, ruleRightStr, analysisGoal);
+		final ProcessBuilder builder = new ProcessBuilder(javaBin, "-cp", classpath, memoryConfiguration, className, ruleLeftStr, ruleRightStr, analysisGoal);
 		builder.inheritIO();
 
 		final Process process = builder.start();
