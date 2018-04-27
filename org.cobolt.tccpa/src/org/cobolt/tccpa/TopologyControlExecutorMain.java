@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.henshin.model.Module;
 
 public final class TopologyControlExecutorMain {
 
+	private static final Logger logger = Logger.getLogger(TopologyControlExecutorMain.class);
+	
 	public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
 
 		if (args.length != 1)
@@ -43,12 +46,18 @@ public final class TopologyControlExecutorMain {
 		}
 		System.out.println("Validation successful.");
 		
-		for (final Triple specification : specifications) {
+		System.out.println("Starting CPA runs.");
+		final int numRuns = specifications.size();
+		for (int i = 0; i < numRuns; i++) {
+			final double progressInPct = 100.0 * i / numRuns;
+			final Triple specification = specifications.get(i);
 			final String ruleLeftStr = specification.first;
 			final String ruleRightStr = specification.second;
 			final String analysisGoal = specification.third;
+			logger.info(String.format("Starting process %d of %d (%.1f%%) with %s", i, numRuns, progressInPct, specification));
 			TopologyControlExecutorMain.exec(TopologyControlCriticalPairAnalysisMain.class, ruleLeftStr, ruleRightStr, analysisGoal);
 		}
+		System.out.println("All CPA runs finished.");
 	}
 	
 	// Solution from https://stackoverflow.com/a/723914
@@ -77,5 +86,11 @@ public final class TopologyControlExecutorMain {
 			this.second = second;
 			this.third = third;
 		}
+
+		@Override
+		public String toString() {
+			return "(" + first + ", " + second + ", " + third + ")";
+		}
+		
 	}
 }
