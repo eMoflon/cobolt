@@ -6,19 +6,19 @@ import java.util.Vector;
 
 
 /**
- * Searchs all elementary cycles in a given directed graph. The implementation
+ * Searches all elementary cycles in a given directed graph. The implementation
  * is independent from the concrete objects that represent the graphnodes, it
  * just needs an array of the objects representing the nodes the graph
  * and an adjacency-matrix of type boolean, representing the edges of the
  * graph. It then calculates based on the adjacency-matrix the elementary
  * cycles and returns a list, which contains lists itself with the objects of the
- * concrete graphnodes-implementation. Each of these lists represents an
+ * concrete graph nodes implementation. Each of these lists represents an
  * elementary cycle.<br><br>
  *
  * The implementation uses the algorithm of Donald B. Johnson for the search of
  * the elementary cycles. For a description of the algorithm see:<br>
  * Donald B. Johnson: Finding All the Elementary Circuits of a Directed Graph.
- * SIAM Journal on Computing. Volumne 4, Nr. 1 (1975), pp. 77-84.<br><br>
+ * SIAM Journal on Computing. Volume 4, No. 1 (1975), pages 77-84.<br><br>
  *
  * The algorithm of Johnson is based on the search for strong connected
  * components in a graph. For a description of this part see:<br>
@@ -28,6 +28,9 @@ import java.util.Vector;
  * @author Frank Meyer, web_at_normalisiert_dot_de
  * @version 1.2, 22.03.2009
  *
+ * @author Roland Kluge - Introduce generics, fix typos.
+ *
+ * @param T the type of the node objects
  */
 public class ElementaryCyclesSearch<T> {
 	/** List of cycles */
@@ -36,20 +39,20 @@ public class ElementaryCyclesSearch<T> {
 	/** Adjacency-list of graph */
 	private int[][] adjList = null;
 
-	/** Graphnodes */
+	/** Graph nodes */
 	private T[] graphNodes = null;
 
 	/** Blocked nodes, used by the algorithm of Johnson */
 	private boolean[] blocked = null;
 
 	/** B-Lists, used by the algorithm of Johnson */
-	private Vector[] B = null;
+	private Vector<Integer>[] B = null;
 
 	/** Stack for nodes, used by the algorithm of Johnson */
 	private Vector<Integer> stack = null;
 
 	/**
-	 * Constructor.
+	 * Initializes this algorithm with an adjacency matrix and the corresponding node objects
 	 *
 	 * @param matrix adjacency-matrix of the graph
 	 * @param graphNodes array of the graph nodes of the graph; this is used to
@@ -70,7 +73,7 @@ public class ElementaryCyclesSearch<T> {
 	public List<Vector<T>> getElementaryCycles() {
 		this.cycles = new Vector<>();
 		this.blocked = new boolean[this.adjList.length];
-		this.B = new Vector<?>[this.adjList.length];
+		this.B = new Vector[this.adjList.length];
 		this.stack = new Vector<>();
 		StrongConnectedComponents sccs = new StrongConnectedComponents(this.adjList);
 		int s = 0;
@@ -135,8 +138,9 @@ public class ElementaryCyclesSearch<T> {
 		} else {
 			for (int i = 0; i < adjList[v].size(); i++) {
 				int w = ((Integer) adjList[v].get(i)).intValue();
-				if (!this.B[w].contains(new Integer(v))) {
-					this.B[w].add(new Integer(v));
+				final Vector<Integer> bList = this.B[w];
+            if (!bList.contains(new Integer(v))) {
+					bList.add(new Integer(v));
 				}
 			}
 		}

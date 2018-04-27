@@ -14,8 +14,9 @@
       </resource>
       <resource>
         <directory>gen</directory>
-        <excludes>
-        </excludes>
+				<includes>
+					<include>**/*.java</include>
+				</includes>
       </resource>
       <resource>
         <directory>resources</directory>
@@ -40,6 +41,11 @@
   		<artifactId>gs-core</artifactId>
   		<version>1.1.1</version>
   	</dependency>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>4.1</version>
+		</dependency>
   	<dependency>
   		<groupId>org.apache.commons</groupId>
   		<artifactId>commons-math3</artifactId>
