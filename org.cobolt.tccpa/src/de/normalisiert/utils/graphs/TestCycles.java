@@ -2,6 +2,7 @@ package de.normalisiert.utils.graphs;
 
 
 import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -48,10 +49,10 @@ public class TestCycles {
         
         adjMatrix[6][1] = true;
 
-		ElementaryCyclesSearch ecs = new ElementaryCyclesSearch(adjMatrix, nodes);
-		List cycles = ecs.getElementaryCycles();
+        final ElementaryCyclesSearch<String> ecs = new ElementaryCyclesSearch<>(adjMatrix, nodes);
+		final List<Vector<String>> cycles = ecs.getElementaryCycles();
 		for (int i = 0; i < cycles.size(); i++) {
-			List cycle = (List) cycles.get(i);
+			final Vector<String> cycle = cycles.get(i);
 			for (int j = 0; j < cycle.size(); j++) {
 				String node = (String) cycle.get(j);
 				if (j < cycle.size() - 1) {

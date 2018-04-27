@@ -17,6 +17,11 @@
         <excludes>
         </excludes>
       </resource>
+      <resource>
+        <directory>resources</directory>
+        <excludes>
+        </excludes>
+      </resource>
     </resources>
     <plugins>
       <plugin>
