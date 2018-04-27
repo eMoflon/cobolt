@@ -2,14 +2,12 @@ package org.cobolt.tccpa.interactiongraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.math3.util.Pair;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
