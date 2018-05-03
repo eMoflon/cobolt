@@ -1135,4 +1135,98 @@
     <mappings xmi:id="_eHhCIC5iEeiKItyE65g4iQ" origin="_aIIbcC5iEeiKItyE65g4iQ" image="_eHgbEC5iEeiKItyE65g4iQ"/>
     <mappings xmi:id="_eysGEi5iEeiKItyE65g4iQ" origin="_eysGEC5iEeiKItyE65g4iQ" image="_eysGES5iEeiKItyE65g4iQ"/>
   </units>
+  <units xsi:type="henshin:Rule" xmi:id="_fPsWcE60EeiQEb4GY-LZxQ" name="setSelf">
+    <parameters xmi:id="_jcCbEE60EeiQEb4GY-LZxQ" name="nodeId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_jcCbEU60EeiQEb4GY-LZxQ" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+    </parameters>
+    <parameters xmi:id="_m_Z0IE60EeiQEb4GY-LZxQ" name="x" kind="VAR">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </parameters>
+    <lhs xmi:id="_fRAlEE60EeiQEb4GY-LZxQ" name="Lhs">
+      <nodes xmi:id="_kDCwsE60EeiQEb4GY-LZxQ" name="topology" outgoing="_py0W8E60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_nlI-cE60EeiQEb4GY-LZxQ" incoming="_py0W8E60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Node"/>
+        <attributes xmi:id="_ocyYIE60EeiQEb4GY-LZxQ" value="x">
+          <type href="tccpa.ecore#//Node/isSelf"/>
+        </attributes>
+        <attributes xmi:id="_3OIskE60EeiQEb4GY-LZxQ" value="nodeId">
+          <type href="tccpa.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_py0W8E60EeiQEb4GY-LZxQ" source="_kDCwsE60EeiQEb4GY-LZxQ" target="_nlI-cE60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_fRBMIE60EeiQEb4GY-LZxQ" name="Rhs">
+      <nodes xmi:id="_kDDXwE60EeiQEb4GY-LZxQ" name="topology" outgoing="_py0W8U60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_nlJlgE60EeiQEb4GY-LZxQ" incoming="_py0W8U60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Node"/>
+        <attributes xmi:id="_ocy_ME60EeiQEb4GY-LZxQ" value="true">
+          <type href="tccpa.ecore#//Node/isSelf"/>
+        </attributes>
+        <attributes xmi:id="_3OIskU60EeiQEb4GY-LZxQ" value="nodeId">
+          <type href="tccpa.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_py0W8U60EeiQEb4GY-LZxQ" source="_kDDXwE60EeiQEb4GY-LZxQ" target="_nlJlgE60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_kDDXwU60EeiQEb4GY-LZxQ" origin="_kDCwsE60EeiQEb4GY-LZxQ" image="_kDDXwE60EeiQEb4GY-LZxQ"/>
+    <mappings xmi:id="_nlJlgU60EeiQEb4GY-LZxQ" origin="_nlI-cE60EeiQEb4GY-LZxQ" image="_nlJlgE60EeiQEb4GY-LZxQ"/>
+  </units>
+  <units xsi:type="henshin:Rule" xmi:id="_vDHL4E60EeiQEb4GY-LZxQ" name="unsetSelf">
+    <parameters xmi:id="_zXnuAE60EeiQEb4GY-LZxQ" name="nodeId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_zXnuAU60EeiQEb4GY-LZxQ" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+    </parameters>
+    <parameters xmi:id="_zXnuAk60EeiQEb4GY-LZxQ" name="x" kind="VAR">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </parameters>
+    <lhs xmi:id="_vDNSgE60EeiQEb4GY-LZxQ" name="Lhs">
+      <nodes xmi:id="_z6cuQE60EeiQEb4GY-LZxQ" name="topology" outgoing="_4cNpQE60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_1EEBsE60EeiQEb4GY-LZxQ" incoming="_4cNpQE60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Node"/>
+        <attributes xmi:id="_1tgnUE60EeiQEb4GY-LZxQ" value="x">
+          <type href="tccpa.ecore#//Node/isSelf"/>
+        </attributes>
+        <attributes xmi:id="_3otIsE60EeiQEb4GY-LZxQ" value="nodeId">
+          <type href="tccpa.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_4cNpQE60EeiQEb4GY-LZxQ" source="_z6cuQE60EeiQEb4GY-LZxQ" target="_1EEBsE60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_vDN5kE60EeiQEb4GY-LZxQ" name="Rhs">
+      <nodes xmi:id="_z6cuQU60EeiQEb4GY-LZxQ" name="topology" outgoing="_4cNpQU60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_1EEBsU60EeiQEb4GY-LZxQ" incoming="_4cNpQU60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Node"/>
+        <attributes xmi:id="_1tgnUU60EeiQEb4GY-LZxQ" value="false">
+          <type href="tccpa.ecore#//Node/isSelf"/>
+        </attributes>
+        <attributes xmi:id="_3otIsU60EeiQEb4GY-LZxQ" value="nodeId">
+          <type href="tccpa.ecore#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_4cNpQU60EeiQEb4GY-LZxQ" source="_z6cuQU60EeiQEb4GY-LZxQ" target="_1EEBsU60EeiQEb4GY-LZxQ">
+        <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_z6dVUE60EeiQEb4GY-LZxQ" origin="_z6cuQE60EeiQEb4GY-LZxQ" image="_z6cuQU60EeiQEb4GY-LZxQ"/>
+    <mappings xmi:id="_1EEBsk60EeiQEb4GY-LZxQ" origin="_1EEBsE60EeiQEb4GY-LZxQ" image="_1EEBsU60EeiQEb4GY-LZxQ"/>
+  </units>
 </henshin:Module>
