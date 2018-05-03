@@ -490,6 +490,32 @@ public class TopologyControlRuleTests
       Assert.assertEquals(false, nodeObject.eGet(findIsSelfStructuralFeature(nodeObject)));
    }
 
+   /**
+    * In this test, we identify (and activate) all unmarked links in the initial topology
+    */
+   @Test
+   void testFindUnmarkedLink() throws Exception
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      final int linkCount = 18;
+
+      for (int i = 0; i < linkCount; ++i)
+      {
+         final UnitApplication unit = prepareFindUnmarkedLink(graph, topology, engine, rulesModule);
+         Assert.assertTrue(unit.execute(null));
+         Object unmarkedLinkObject = unit.getResultParameterValue("unmarkedLink");
+         Assert.assertTrue(unmarkedLinkObject instanceof EObject);
+         final EObject unmarkedLink = EObject.class.cast(unmarkedLinkObject);
+         EStructuralFeature stateFeature = findStateStructuralFeature(unmarkedLink);
+         Assert.assertEquals(LinkState.UNMARKED, unmarkedLink.eGet(stateFeature));
+         unmarkedLink.eSet(stateFeature, 1);
+         Assert.assertNotEquals(LinkState.UNMARKED, unmarkedLink.eGet(stateFeature));
+      }
+      final UnitApplication unit = prepareFindUnmarkedLink(graph, topology, engine, rulesModule);
+      Assert.assertFalse(unit.execute(null));
+   }
+
    private void setSelf(final String nodeId, final EGraph graph, final EObject topology)
    {
       final UnitApplication unit = prepareSetSelf(nodeId, graph, topology, engine, rulesModule);
@@ -498,8 +524,8 @@ public class TopologyControlRuleTests
 
    private void unsetSelf(final String nodeId, final EGraph graph, final EObject topology)
    {
-      final UnitApplication unit2 = prepareUnsetSelf(nodeId, graph, topology, engine, rulesModule);
-      Assert.assertTrue(unit2.execute(null));
+      final UnitApplication unit = prepareUnsetSelf(nodeId, graph, topology, engine, rulesModule);
+      Assert.assertTrue(unit.execute(null));
    }
 
    private static boolean containsNodeWithId(final EObject topology, final String nodeIdToCheck)
@@ -605,7 +631,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"addNode"));
+      unit.setUnit(getUnitChecked(rulesModule, "addNode"));
       unit.setParameterValue("nodeId", nodeIdToAdd);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -616,7 +642,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"removeNode"));
+      unit.setUnit(getUnitChecked(rulesModule, "removeNode"));
       unit.setParameterValue("nodeId", nodeIdToRemove);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -627,7 +653,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"removeLink"));
+      unit.setUnit(getUnitChecked(rulesModule, "removeLink"));
       unit.setParameterValue("linkId", linkIdToRemove);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -638,7 +664,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"handleLinkRemoval1"));
+      unit.setUnit(getUnitChecked(rulesModule, "handleLinkRemoval1"));
       unit.setParameterValue("linkId", linkIdToRemove);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -649,7 +675,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"handleLinkRemoval2"));
+      unit.setUnit(getUnitChecked(rulesModule, "handleLinkRemoval2"));
       unit.setParameterValue("linkId", linkIdToRemove);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -663,7 +689,7 @@ public class TopologyControlRuleTests
       final double weight = 1.0;
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"addLink"));
+      unit.setUnit(getUnitChecked(rulesModule, "addLink"));
       unit.setParameterValue("srcId", srcId);
       unit.setParameterValue("trgId", trgId);
       unit.setParameterValue("linkId", linkIdToAdd);
@@ -677,9 +703,18 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"modifyLinkWeight"));
+      unit.setUnit(getUnitChecked(rulesModule, "modifyLinkWeight"));
       unit.setParameterValue("linkId", linkIdToBeModified);
       unit.setParameterValue("newWeight", newWeight);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareFindUnmarkedLink(final EGraph graph, final EObject topology, final Engine engine, final Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(getUnitChecked(rulesModule, "findUnmarkedLink"));
       unit.setParameterValue("topology", topology);
       return unit;
    }
@@ -689,7 +724,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"activateLink"));
+      unit.setUnit(getUnitChecked(rulesModule, "activateLink"));
       unit.setParameterValue("linkId", linkIdToBeModified);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -700,7 +735,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"inactivateLink"));
+      unit.setUnit(getUnitChecked(rulesModule, "inactivateLink"));
       unit.setParameterValue("linkId", linkIdToBeModified);
       unit.setParameterValue("topology", topology);
       return unit;
@@ -721,7 +756,7 @@ public class TopologyControlRuleTests
    {
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
-      unit.setUnit(getUnitChecked(rulesModule,"unsetSelf"));
+      unit.setUnit(getUnitChecked(rulesModule, "unsetSelf"));
       unit.setParameterValue("nodeId", nodeId);
       unit.setParameterValue("topology", topology);
       return unit;
