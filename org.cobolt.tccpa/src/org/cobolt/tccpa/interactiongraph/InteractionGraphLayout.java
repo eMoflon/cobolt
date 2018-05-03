@@ -15,6 +15,7 @@ import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_E;
 import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH1;
 import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH2;
 import static org.cobolt.tccpa.interactiongraph.RuleNames.R_UNLOCK;
+import static org.cobolt.tccpa.interactiongraph.RuleNames.R_DELETE_LOCK;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,36 +66,7 @@ public class InteractionGraphLayout
       RULE_NODE_POSITIONS.put(R_MOD_WH3, Pair.create(modwColumn, row4));
       RULE_NODE_POSITIONS.put(R_MOD_WH4, Pair.create(modwColumn, row5));
       RULE_NODE_POSITIONS.put(R_UNLOCK, Pair.create(unlockColumn, row1));
-   }
-
-   static final String LATEX_BACKSLASH = "\\\\\\";
-
-   static final String LATEX_LINEEND = LATEX_BACKSLASH + "\\\\";
-
-   static final String LATEX_GTR_PREFIX = LATEX_BACKSLASH + "gtr";
-
-   static final Map<String, String> RULE_NAME_TO_LATEX = new HashMap<>();
-   static
-   {
-      RULE_NAME_TO_LATEX.put(R_I, "I");
-      RULE_NAME_TO_LATEX.put(R_A, "A");
-      RULE_NAME_TO_LATEX.put(R_UNLOCK, "Unlock");
-      RULE_NAME_TO_LATEX.put(R_MOD_WH4, "HandleLinkWeightModificationSelfI");
-      RULE_NAME_TO_LATEX.put(R_MOD_WH3, "HandleLinkWeightModificationRemoteI");
-      RULE_NAME_TO_LATEX.put(R_MOD_WH2, "HandleLinkWeightModificationSelfA");
-      RULE_NAME_TO_LATEX.put(R_MOD_WH1, "HandleLinkWeightModificationRemoteA");
-      RULE_NAME_TO_LATEX.put(R_MOD_W, "LinkWeightModification");
-      RULE_NAME_TO_LATEX.put(R_PLUS_EH2, "HandleLinkAdditionRemote");
-      RULE_NAME_TO_LATEX.put(R_PLUS_EH1, "HandleLinkAdditionSelf");
-      RULE_NAME_TO_LATEX.put(R_PLUS_E, "LinkAddtion");
-      RULE_NAME_TO_LATEX.put(R_MINUS_EH2, "HandleLinkRemovalRemote");
-      RULE_NAME_TO_LATEX.put(R_MINUS_EH1, "HandleLinkRemovalSelf");
-      RULE_NAME_TO_LATEX.put(R_MINUS_E, "LinkRemoval");
-      RULE_NAME_TO_LATEX.put(R_FIND_U, "FindU");
-
-      // Add common prefix to all rules
-      RULE_NAME_TO_LATEX.keySet()
-            .forEach(key -> RULE_NAME_TO_LATEX.put(key, LATEX_GTR_PREFIX + RULE_NAME_TO_LATEX.get(key)));
+      RULE_NODE_POSITIONS.put(R_DELETE_LOCK, Pair.create(unlockColumn, row2));
    }
 
    public static Pair<Integer, Integer> getPosition(String ruleName)

@@ -67,14 +67,14 @@ public class Interaction
       return reason;
    }
 
-   public String formatType()
+   public String formatTypeAndLocality()
    {
       return String.format("%s%s", this.getType().getMnemonic(), this.getCategory().getMnemonic());
    }
 
    public String format()
    {
-      return getLhsRule() + " --" + formatType() + "--> " + getRhsRule();
+      return getLhsRule() + " --" + formatTypeAndLocality() + "--> " + getRhsRule();
    }
 
    @Override

@@ -1,36 +1,184 @@
 lhsRule;rhsRule;interaction;reason
-Ra;Ra;cl;e12 no longer inactive
-Ra;Rfind-u;cl;e12 no longer unmarked
-Ri;Ri;cl;(e12)
-Ri;Rfind-u;cl;(e12)
-Ri;R-e,h,1;dl;(e12-e13)
-Ri;R-e,h,2;dr;(e12-e32)
-R-e,h,1;Ri;dl;(e13-e12)
-R-e,h,1;Rfind-u;dl;(e13-e12)
-R-e,h,1;R-e,h,1;cl;(e12)
-R-e,h,1;R-e,h,2;cr;(e13-e32)
-R-e,h,1;R-e;dl;(e13)
-R-e,h,1;R-e;dr;(e13-e32)
-R-e,h,2;Rfind-u;dr;(e32-e12)
-R-e,h,2;R-e,h,1;cr;(e32-e13)
-R-e,h,2;R-e,h,2;cl;(e32)
-R-e,h,2;R-e;dl;(e32)
-R-e,h,2;Runlock;dr;(e32-e23)
-R-e;Ri;cl;(e12)
-R-e;Ri;cl;(e13)
-R-e;Ri;cr;(e32)
-R-e;Ra;dl;(e13)
-R-e;Ra;dr;(e32)
-R-e;Rfind-u;cl;(e12)
-R-e;R-e,h,1;dl;(e13)
-R-e;R-e,h,1;dr;(e43)
-R-e;R-e,h,1;cl;(e12)
-R-e;R-e,h,1;cl;(e13)
-R-e;R-e,h,2;dr;(e34)
-R-e;R-e,h,2;dr;(e42)
-R-e;R-e,h,2;cl;(e12)
-R-e;R-e,h,2;cl;(e32)
-R-e;R-e;cl;(e12)
-R-e;Runlock;cr;(e23)
-Runlock;Ri;dr;(e12)
-Runlock;Runlock;cl;(e12)
+# * Filter assumption: Each link is affected by at most one context event in parallel (no -e & mod-w for the same link) (see marker SINGLE_CE)
+# * Interactions that are added due to the refinement are marked with REF-NEW
+# * Interactions that are removed due to the refinement are marked with REF-REMOVED
+# ---
+# Conflicts to Ra
+# ---
+R-e;Ra;cl;e12 gone, LHS match gone
+Ra;Ra;cm;e12 marked, LHS match gone
+R+e;Ra;cl;e13 created, NAC violated
+R+e;Ra;cr;e32 created, NAC violated
+Rmod-w;Ra;cl;w13 modified, NAC violated
+Rmod-w;Ra;cr;w32 modified, NAC violated
+Rmod-w;Ra;cl;w12 modified, NAC violated
+R+e,h,2;Ra;cr;e12 locked by CEH (REF-NEW)
+Rmod-w,h,2;Ra;cr;e12 locked by CEH (REF-NEW)
+# ---
+# Dependency to Ra
+# ---
+R+e;Ra;dl;e12 created, new LHS match
+R+e,h,1;Ra;dl;e12 unmarked, new LHS match
+#   R+e,h,2;Ra;dr;e12 unmarked, new LHS match, REF-REMOVED
+Rmod-w,h,3;Ra;dl;e12 unmarked, new LHS match
+#   Rmod-w,h,4;Ra;dr;e12 unmarked, new LHS match, REF-REMOVED
+R-e;Ra;dl;e13 gone, NAC becoming fulfilled
+R-e;Ra;dr;e32 gone, NAC becoming fulfilled
+Rmod-w;Ra;dl;w12 modified
+Rmod-w;Ra;dl;w13 modified
+Rmod-w;Ra;dr;w32 modified
+# ---
+# Conflicts to Ri
+# ---
+R-e;Ri;cl;e12 gone, LHS match gone
+Ri;Ri;cm;e12 inactive
+R-e;Ri;cl;e13 gone, PAC violated
+R-e;Ri;cr;e32 gone, PAC violated
+Rmod-w;Ri;cl;w12 changed, PAC violated
+Rmod-w;Ri;cl;w13 changed, PAC violated
+Rmod-w;Ri;cr;w32 changed, PAC violated
+R-e,h,2;Ri;cr;e12 locked during CEH, REF-NEW
+Rmod-w,h,2;Ri;cr;e12 locked during CEH, REF-NEW
+# ---
+# Dependencies to Ri
+# ---
+R+e;Ri;dl;e12 created, new LHS match
+R-e,h,1;Ri;dl;e12 unmarked during CEH
+#   R-e,h,2;Ri;dr;e12 unmarked during CEH, REF-REMOVED
+Rmod-w,h,1;Ri;dl;e12 unmarked during CEH
+#   Rmod-w,h,2;Ri;dr;e12 unmarked during CEH, REF-REMOVED
+R+e;Ri;dl;e13 created, PAC fulfilled
+R+e;Ri;dr;e32 created, PAC fulfilled
+Rmod-w;Ri;dl;w12 changed, PAC fulfilled
+Rmod-w;Ri;dl;w13 changed, PAC fulfilled
+Rmod-w;Ri;dr;w32 changed, PAC fulfilled
+# ---
+# Conflicts to Rfind-u
+# ---
+R-e;Rfind-u;cl;e12 gone, LHS match gone
+Ra;Rfind-u;cl;e12 activated, LHS match gone
+Ri;Rfind-u;cl;e12 inactivated, LHS match gone
+# ---
+# Dependencies to Rfind-u
+# ---
+R-e,h,1;Rfind-u;dl;e12 unmarked during CEH, new LHS match
+R-e,h,2;Rfind-u;dr;e12 unmarked during CEH, new LHS match
+R+e,h,1;Rfind-u;dl;e12 unmarked during CEH, new LHS match
+R+e,h,2;Rfind-u;dr;e12 unmarked during CEH, new LHS match
+Rmod-w,h,1;Rfind-u;dl;e12 unmarked during CEH, new LHS match
+Rmod-w,h,2;Rfind-u;dr;e12 unmarked during CEH, new LHS match
+Rmod-w,h,3;Rfind-u;dl;e12 unmarked during CEH, new LHS match
+Rmod-w,h,4;Rfind-u;dr;e12 unmarked during CEH, new LHS match
+Rmod-w;Rfind-u;dl;e12 unmarked by CE, new LHS match
+R+e;Rfind-u;dl;e12 created, new LHS match
+# ---
+# Conflicts to R-e
+# ---
+R-e;R-e;cm;e12 gone, LHS match
+Ri;R-e;cl;s(e13)=I, PAC_1-p
+#   R-e;R-e;cl;e14 gone, PAC_1-c,   SINGLE_CE
+R-e;R-e;cr;e43 gone, PAC_1-c
+#   Rmod-w;R-e;cl;w14 modified, PAC_1-c,   SINGLE_CE
+Rmod-w;R-e;cr;w43 modified, PAC_1-c
+Ri;R-e;cr;s(32)=I, PAC_2-p
+R-e;R-e;cr;e34 gone, PAC_2-c
+R-e;R-e;cr;e42 gone, PAC_2-c
+Rmod-w;R-e;cr;w34 modified, PAC_2-c
+Rmod-w;R-e;cr;w42 modified, PAC_2-c
+R-e,h,2;R-e;cr;e12 locked and cannot be removed, REF-NEW
+R+e,h,2;R-e;cr;e12 locked and cannot be removed, REF-NEW
+Rmod-w,h,2;R-e;cr;e12 locked, dangling edge condition violated, REF-NEW
+Rmod-w,h,4;R-e;cr;e12 locked, dangling edge condition violated, REF-NEW
+# ---
+# Dependencies to R-e
+# ---
+R+e;R-e;dl;e12 created, new LHS match
+R-e;R-e;dl;e13 gone, inextensible PAC_1-p match destroyed
+#   Rmod-w;R-e;dl;w13 modified, inextensible PAC_1-p match destroyed,  SINGLE_CE
+R-e,h,1;R-e;dl;s(e13)=U during CEH on self
+R-e,h,2;R-e;dr;s(e13)=U during CEH on n2
+#   Rmod-w,h,1;R-e;dl; PAC_1-p, SINGLE_CE
+Rmod-w,h,2;R-e;dr;pending modification of w12 (must be triangle), PAC_1-p
+R+e;R-e;dl;e14 created, PAC_1-c match created
+R+e;R-e;dr;e43 created, PAC_1-c match created
+#   Rmod-w;R-e;dl;w14 modified, PAC_1-c match created, SINGLE_CE
+Rmod-w;R-e;dr;w43 modified, PAC_1-c match created
+R-e;R-e;dr;e32 gone, inextensible PAC_2-p match destroyed
+Rmod-w;R-e;dr;w32 modified, inextensible PAC_2-p match destroyed
+R-e,h,1;R-e;dr;s(e32)=U during CEH on n3
+R-e,h,2;R-e;dr;s(e32)=U during CEH on n4
+Rmod-w,h,1;R-e;dr;pending modification of w31 (must be triangle), PAC_2-p
+#   Rmod-w,h,2;R-e; PAC_2-p, SINGLE_CE
+R+e;R-e;dr;e43 created, PAC_2-c match created
+R+e;R-e;dr;e42 created, PAC_2-c match created
+Rmod-w;R-e;dr;w43 modified, PAC_2-c match created
+Rmod-w;R-e;dr;w42 modified, PAC_2-c match created
+Runlock;R-e;dr;e12 unlocked, dangling edge condition fulfilled, REF-NEW
+Rdellock;R-e;dl;e12 unlocked, dangling edge condition fulfilled, REF-NEW
+# ---
+# Conflicts to R-e,h,1
+# ---
+R-e;R-e,h,1;dl;e13 gone, LHS match destroyed
+#   Rmod-w;R-e,h,1;dl;s(e13)=U, LHS match destroyed,  SINGLE_CE
+R-e,h,1;R-e,h,1;cm;s(e13)=U during CEH on self, LHS match destroyed
+R-e,h,2;R-e,h,1;cr;s(e13)=U during CEH on n4, LHS match destroyed
+#   Rmod-w,h,1;R-e,h,1; SINGLE_CE
+Rmod-w,h,2;R-e,h,1;cr;s(e13)=U, LHS match destroyed during CEH on n4 for e43
+#   R+e;R-e,h,1;cl;e14 created, NAC violated,  SINGLE_CE
+R+e;R-e,h,1;cr;e43 created, NAC violated
+#   Rmod-w;R-e,h,1;cl;w14 modified, NAC violated,  SINGLE_CE
+Rmod-w;R-e,h,1;cr;w43 modified, NAC violated
+# ---
+# Dependencies to R-e,h,1
+# ---
+Ri;R-e,h,1;dl;s(e13)=U, LHS match created
+R-e;R-e,h,1;dl;e14 gone, NAC fulfilled
+R-e;R-e,h,1;dl;e43 gone, NAC fulfilled
+#   Rmod-w;R-e,h,1;dr;w14, SINGLE_CE
+Rmod-w;R-e,h,1;dr;w43 modified, NAC fulfilled
+# ---
+# Conflicts to R-e,h,2
+# ---
+R-e;R-e,h,2;cr;e32 gone, LHS match destroyed
+Rmod-w;R-e,h,2;cr;w32 modified, LHS match destroyed
+R-e,h,1;R-e,h,2;cr;s(e31)=U, LHS match destroyed
+R-e,h,2;R-e,h,2;cm;s(e12)=U, LHS match destroyed
+Rmod-w,h,1;R-e,h,2;cr;w31 modified, LHS match destroyed
+#   Rmod-w,h,2;R-e,h,2;w12 modified, LHS match destroyed,   SINGLE_CE
+R+e;R-e,h,2;cr;e34 created, NAC violated
+R+e;R-e,h,2;cr;e42 created, NAC violated
+Rmod-w;R-e,h,2;cr;w34 modified, NAC violated
+Rmod-w;R-e,h,2;cr;w42 modified, NAC violated
+# ---
+# Dependencies to R-e,h,2
+# ---
+Ri;R-e,h,2;dr;s(e32)=I, LHS match created
+R-e;R-e,h,2;dr;e34 gone, NAC fulfilled
+R-e;R-e,h,2;dr;e42 gone, NAC fulfilled
+Rmod-w;R-e,h,2;cr;w34 modified, NAC fulfilled
+Rmod-w;R-e,h,2;cr;w42 modified, NAC fulfilled
+# ---
+# Conflicts to Runlock
+# ---
+Runlock;Runlock;cm;lock of e23 removed, REF-NEW
+Rdellock;Runlock;cr;lock removed in preparation of link removal, REF-NEW
+# ---
+# Dependencies to Runlock
+# ---
+R-e,h,2;Runlock;dl;e32 locked, REF-NEW
+R+e,h,2;Runlock;dl;e32 locked, REF-NEW
+Rmod-w,h,2;Runlock;dl;e32 locked, REF-NEW
+Rmod-w,h,4;Runlock;dl;e32 locked, REF-NEW
+# ---
+# Conflicts to Rdellock
+# ---
+Runlock;Rdellock;dr;remove lock from e12, REF-NEW
+Rdellock;Rdellock;dm;remove lock from e12, REF-NEW
+# ---
+# Dependencies to Rdellock
+# ---
+R-e,h,2;Rdellock;dr;e32 locked, REF-NEW
+R+e,h,2;Rdellock;dr;e32 locked, REF-NEW
+Rmod-w,h,2;Rdellock;dr;e32 locked, REF-NEW
+Rmod-w,h,4;Rdellock;dr;e32 locked, REF-NEW
+#

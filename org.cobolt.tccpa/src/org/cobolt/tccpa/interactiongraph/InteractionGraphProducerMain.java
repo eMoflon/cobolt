@@ -20,27 +20,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import org.graphstream.graph.Edge;
+import org.apache.commons.math3.util.Pair;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 
-/*
- * TODO@rkluge: Class for interaction sequence
- * TODO@rkluge: Proper latex output (object to text not text to text)
- * TODO@rkluge: Convert interactions before refinement to CSV
- * TODO@rkluge: Automatically highlight non-local sequences in bold
- */
 public class InteractionGraphProducerMain
 {
 
    private final boolean isLongVersion = false;
 
    private final boolean showGraph = false;
+
+   private final List<Predicate<InteractionSequence>> filterPredicates = Arrays.asList(//
+         InteractionSequence::containsNoContextEventRecreationInteraction, //
+         InteractionSequence::containsNoLocalInteractionsWithProgress
+         );
 
    public static void main(String[] args) throws Exception
    {
@@ -60,78 +57,98 @@ public class InteractionGraphProducerMain
          final Map<LoopCondition, List<InteractionSequence>> interactionSequences = new HashMap<>();
          loopConditions.forEach(loopCondition -> interactionSequences.put(loopCondition, new ArrayList<>()));
 
-         loopConditions.stream().filter(loopCondition -> containsConditionRule(graph, loopCondition)).forEach(loopCondition -> {
-            final String loopRule = loopCondition.getConditionRuleName();
-            final LoopType loopType = loopCondition.getType();
-            final InteractionType continuationInteractionType = loopType.getContinuationInteractionType();
-            streamIncomingEdges(loopRule, graph).filter(edge -> {
-               final Interaction interaction = getEdgeData(edge);
-               return interaction.getType() == continuationInteractionType;
-            }).forEach(continuationInteractionEdge -> {
-               final Interaction continuationInteraction = getEdgeData(continuationInteractionEdge);
-               streamIncomingEdges(continuationInteraction.getLhsRule(), graph).filter(InteractionGraphProducerMain::isDependency).forEach(edge -> {
-                  final InteractionSequence interactionSequence = new InteractionSequence(continuationInteraction, loopCondition);
-                  interactionSequence.extend(getEdgeData(edge));
-                  interactionSequences.get(loopCondition).add(interactionSequence);
+         loopConditions.stream() //
+               .filter(loopCondition -> containsConditionRule(graph, loopCondition))//
+               .forEach(loopCondition -> {
+                  final String loopRule = loopCondition.getConditionRuleName();
+                  final LoopType loopType = loopCondition.getType();
+                  final InteractionType continuationInteractionType = loopType.getContinuationInteractionType();
+                  final List<InteractionSequence> interactionSequencesForLoop = interactionSequences.get(loopCondition);
+                  InteractionGraphUtil.streamIncomingEdges(loopRule, graph)//
+                        .filter(edge -> {
+                           final Interaction interaction = InteractionGraphUtil.getEdgeData(edge);
+                           return interaction.getType() == continuationInteractionType;
+                        }).forEach(continuationInteractionEdge -> {
+                           final Interaction continuationInteraction = InteractionGraphUtil.getEdgeData(continuationInteractionEdge);
+                           InteractionGraphUtil.streamIncomingEdges(continuationInteraction.getLhsRule(), graph) //
+                                 .filter(InteractionGraphUtil::isDependency).forEach(edge -> {
+                                    final InteractionSequence interactionSequence = new InteractionSequence(continuationInteraction, loopCondition);
+                                    interactionSequence.extend(InteractionGraphUtil.getEdgeData(edge));
+                                    interactionSequencesForLoop.add(interactionSequence);
+                                 });
+                        });
+                  Collections.sort(interactionSequencesForLoop);
                });
-            });
 
-         });
+         final Map<LoopCondition, List<InteractionSequence>> filteredSequences = filterInteractionSequences(interactionSequences);
 
-         int sequenceCount = 0;
-         int nonPurelyLocalSequenceCounth1 = 0;
-         final StringBuilder sb = new StringBuilder();
-         sb.append("Legend:\n");
-         sb.append("** : Interaction sequence containing dr or cr.\n");
-         sb.append("Detailed overview:\n");
-         for (final LoopCondition loopCondition : loopConditions)
-         {
-            final List<InteractionSequence> sequences = interactionSequences.get(loopCondition);
-            sequenceCount += sequences.size();
-            Collections.sort(sequences);
-            final List<InteractionSequence> nonPurelylocalSequences = sequences.stream().filter(sequence -> !sequence.isPurelyLocal())
-                  .collect(Collectors.toList());
-            nonPurelyLocalSequenceCounth1 += nonPurelylocalSequences.size();
-            sb.append(String.format("Loop: %s  %s [%d seqs., %d seqs. with (d|c)r]:\n", loopCondition.getConditionRuleName(), loopCondition.getType(),
-                  sequences.size(), nonPurelylocalSequences.size()));
-            for (final InteractionSequence interactionSequence : sequences)
-            {
-               sb.append("\t");
-               if (!interactionSequence.isPurelyLocal())
-                  sb.append("**");
-               else
-                  sb.append("  ");
-               sb.append(String.format("%s\n", interactionSequence.format()));
-            }
-         }
-         System.out.println(sb.toString());
-         System.out.printf("Totals: %d seqs., %d seqs. with (d|c)r\n", sequenceCount, nonPurelyLocalSequenceCounth1);
+         printTextualSummary(interactionSequences, filteredSequences);
+         System.out.println(LatexUtil.formatInteractionTable(interactionSequences, filteredSequences));
 
          if (this.showGraph)
             showGraph(graph);
       }
+
    }
 
-   private Stream<Edge> streamIncomingEdges(final String nodeId, final Graph graph)
+   private void printTextualSummary(final Map<LoopCondition, List<InteractionSequence>> interactionSequences,
+         final Map<LoopCondition, List<InteractionSequence>> filteredSequences)
    {
-      final Node node = graph.getNode(nodeId);
-      return StreamSupport.stream(node.getEachEnteringEdge().spliterator(), false);
+      final StringBuilder sb = new StringBuilder();
+      sb.append("Detailed overview:\n");
+      for (final LoopCondition loopCondition : filteredSequences.keySet())
+      {
+
+         final List<InteractionSequence> allSequences = interactionSequences.get(loopCondition);
+         final List<InteractionSequence> sequences = filteredSequences.get(loopCondition);
+         final String loopConditionRule = loopCondition.getConditionRuleName();
+         final LoopType loopType = loopCondition.getType();
+
+         sb.append(String.format("Loop: %s  %s", loopConditionRule, loopType));
+         sb.append(String.format("[%d filtered seqs., %d seqs.]", sequences.size(), allSequences.size()));
+         sb.append(":\n");
+
+         sequences.forEach(sequence -> sb.append("\t").append(sequence.format()).append("\n"));
+      }
+
+      final int allSequencesCount = countInteractionSequences(interactionSequences);
+      final int filteredSequenceCount = countInteractionSequences(filteredSequences);
+      System.out.println(sb.toString());
+      System.out.printf("Totals: %d filtered seqs., %d all sequences\n", filteredSequenceCount, allSequencesCount);
    }
 
-   private boolean containsConditionRule(final Graph graph, LoopCondition loopCondition)
+   private Integer countInteractionSequences(final Map<LoopCondition, List<InteractionSequence>> interactionSequences)
+   {
+      return interactionSequences.entrySet().stream().map(entry -> entry.getValue().size()).reduce((a, b) -> a + b).orElse(-1);
+   }
+
+   private Map<LoopCondition, List<InteractionSequence>> filterInteractionSequences(final Map<LoopCondition, List<InteractionSequence>> interactionSequences)
+   {
+      final Map<LoopCondition, List<InteractionSequence>> filteredSequences = interactionSequences.entrySet().stream().map(entry -> {
+
+         final LoopCondition loopCondition = entry.getKey();
+         final List<InteractionSequence> originalInteractionSequences = entry.getValue();
+         Stream<InteractionSequence> filterStream = originalInteractionSequences.stream();
+         for (final Predicate<InteractionSequence> filterPredicate : filterPredicates)
+         {
+            filterStream = filterStream.filter(filterPredicate);
+         }
+
+         return new Pair<>(loopCondition, filterStream.collect(Collectors.toList()));
+      }).collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+      return filteredSequences;
+   }
+
+   /**
+    * Returns true if the given interaction graph contains a rule node that matches the given {@link LoopCondition}'s rule name
+    * @param interactionGraph the interaction graph
+    * @param loopCondition the loop condition
+    * @return whether some node in the graph has an ID equal to {@link LoopCondition#getConditionRuleName()}
+    */
+   private boolean containsConditionRule(final Graph interactionGraph, final LoopCondition loopCondition)
    {
       final String nodeId = loopCondition.getConditionRuleName();
-      return GraphUtil.containsNode(graph, nodeId);
-   }
-
-   private static Interaction getEdgeData(Edge edge)
-   {
-      return edge.getAttribute(InteractionGraphCsvReader.EDGE_ATTRIBUTE_INTERACTION);
-   }
-
-   private static boolean isDependency(Edge edge)
-   {
-      return getEdgeData(edge).getType() == InteractionType.DEPENDENCY;
+      return InteractionGraphUtil.containsNode(interactionGraph, nodeId);
    }
 
    public Graph calculateInteractionGraphBeforeRefinement() throws IOException
@@ -168,23 +185,7 @@ public class InteractionGraphProducerMain
       return filteredLoopConditions;
    }
 
-   public static String cleanCommas(Node node)
-   {
-      String nodeId = node.getId();
-      return cleanCommasStr(nodeId);
-   }
-
-   private static String cleanCommasStr(String nodeId)
-   {
-      return nodeId.replaceAll(Pattern.quote(","), "");
-   }
-
-   public String getUiLabel(Edge edge)
-   {
-      return edge.getAttribute("ui.label").toString();
-   }
-
-   public void showGraph(Graph graph)
+   private void showGraph(Graph graph)
    {
       graph.display(false);
    }

@@ -25,8 +25,6 @@ public class InteractionGraphCsvReader
 
    private boolean isLongVersion;
 
-   static final String EDGE_ATTRIBUTE_INTERACTION = "interaction";
-
    /**
     *
     * @param isLongVersion true if all rules shall be read. False if only the short-version rules shall be read
@@ -78,7 +76,7 @@ public class InteractionGraphCsvReader
 
    private void addNodeIfMissing(final String ruleName, Graph graph)
    {
-      if (!GraphUtil.containsNode(graph, ruleName))
+      if (!InteractionGraphUtil.containsNode(graph, ruleName))
       {
          final Pair<Integer, Integer> ruleNodePosition = InteractionGraphLayout.getPosition(ruleName);
          addRuleNode(ruleName, ruleNodePosition.getFirst(), ruleNodePosition.getSecond(), graph);
@@ -97,11 +95,11 @@ public class InteractionGraphCsvReader
    private void addInteraction(final Interaction interaction, final Graph graph)
    {
       int i = 1;
-      final String basicEdgeId = interaction.getLhsRule() + "-" + interaction.formatType() + "->" + interaction.getRhsRule();
-      final String edgeId = GraphUtil.createUniqueEdgeId(graph, i, basicEdgeId);
+      final String basicEdgeId = interaction.getLhsRule() + "-" + interaction.formatTypeAndLocality() + "->" + interaction.getRhsRule();
+      final String edgeId = InteractionGraphUtil.createUniqueEdgeId(graph, i, basicEdgeId);
       final Edge edge = graph.addEdge(edgeId, interaction.getLhsRule(), interaction.getRhsRule(), true);
       edge.setAttribute(InteractionGraphLayout.ELEMENT_ATTRIBUTE_UILABEL, edgeId);
-      edge.setAttribute(InteractionGraphCsvReader.EDGE_ATTRIBUTE_INTERACTION, interaction);
+      edge.setAttribute(InteractionGraphUtil.EDGE_ATTRIBUTE_INTERACTION, interaction);
    }
 
    private static void addRuleNode(final String id, final int x, final int y, Graph graph)
