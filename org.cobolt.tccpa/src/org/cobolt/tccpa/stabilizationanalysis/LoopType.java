@@ -1,4 +1,4 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
 
 public enum LoopType {
    SUCCESS("[S]"), FAILURE("[F]");

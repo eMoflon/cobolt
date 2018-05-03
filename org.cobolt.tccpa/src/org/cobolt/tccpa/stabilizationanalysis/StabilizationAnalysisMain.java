@@ -1,17 +1,17 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
 
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_FIND_U;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_E;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH2;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_W;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH2;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH3;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH4;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_E;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_FIND_U;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_E;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_EH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_EH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_W;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH3;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH4;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_E;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH2;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 import org.apache.commons.math3.util.Pair;
 import org.graphstream.graph.Graph;
 
-public class InteractionGraphProducerMain
+public class StabilizationAnalysisMain
 {
 
    private final boolean isLongVersion = false;
@@ -41,7 +41,7 @@ public class InteractionGraphProducerMain
 
    public static void main(String[] args) throws Exception
    {
-      new InteractionGraphProducerMain().run();
+      new StabilizationAnalysisMain().run();
    }
 
    private void run() throws IOException

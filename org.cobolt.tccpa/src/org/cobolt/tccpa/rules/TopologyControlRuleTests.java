@@ -13,7 +13,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.cobolt.tccpa.HenshinRules;
-import org.cobolt.tccpa.LinkState;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -70,14 +69,14 @@ public class TopologyControlRuleTests
     */
    public static void main(final String[] args) throws IOException
    {
-      final HenshinResourceSet resourceSet = new HenshinResourceSet(HenshinRules.RULES_DIRECTORY);
+      final HenshinResourceSet resourceSet = new HenshinResourceSet(HenshinRules.getRulesDirectory());
 
       final Resource generatedCodeResource = resourceSet.createResource(TEMP_XMI_FILE);
 
       // The schema location is only written if the physical and logical URI differ
       // https://www.eclipse.org/forums/index.php?t=msg&th=126980&goto=390657&#msg_390657
       TccpaPackage package1 = TccpaPackage.eINSTANCE;
-      package1.eResource().setURI(URI.createFileURI("tccpa.ecore"));
+      package1.eResource().setURI(URI.createFileURI(HenshinRules.getMetamodelFileName()));
 
       final TccpaFactory factory = TccpaFactory.eINSTANCE;
       final Topology topology = factory.createTopology();
@@ -111,7 +110,7 @@ public class TopologyControlRuleTests
    @BeforeEach
    void setUp()
    {
-      resourceSet = new HenshinResourceSet(HenshinRules.RULES_DIRECTORY);
+      resourceSet = new HenshinResourceSet(HenshinRules.getRulesDirectory());
       rulesModule = resourceSet.getModule("tccpa.henshin", false);
       engine = new EngineImpl();
 

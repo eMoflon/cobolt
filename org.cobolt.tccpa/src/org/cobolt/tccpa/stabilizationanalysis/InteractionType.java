@@ -1,4 +1,4 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
 
 public enum InteractionType {
    CONFLICT("c"), DEPENDENCY("d");

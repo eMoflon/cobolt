@@ -1,4 +1,21 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
+
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_A;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_DELETE_LOCK;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_FIND_U;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_I;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_E;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_EH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_EH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_W;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH3;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH4;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_E;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH1;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_UNLOCK;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,23 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_A;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_I;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_FIND_U;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_E;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MINUS_EH2;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_E;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_PLUS_EH2;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_W;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH1;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH2;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH3;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_MOD_WH4;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_UNLOCK;
-import static org.cobolt.tccpa.interactiongraph.RuleNames.R_DELETE_LOCK;;
+import java.util.Map;;
 
 public class LatexUtil
 {

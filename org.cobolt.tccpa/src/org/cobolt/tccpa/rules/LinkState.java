@@ -1,4 +1,4 @@
-package org.cobolt.tccpa;
+package org.cobolt.tccpa.rules;
 
 import tccpa.Link;
 

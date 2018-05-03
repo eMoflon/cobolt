@@ -1,4 +1,4 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
 
 import java.io.File;
 import java.io.FileNotFoundException;

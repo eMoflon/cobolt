@@ -1,9 +1,15 @@
-package org.cobolt.tccpa.interactiongraph;
+package org.cobolt.tccpa.stabilizationanalysis;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The rule names and utility methods related to the CSV data format
+ *
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class RuleNames
 {
    public static final String R_FIND_U = "Rfind-u";
