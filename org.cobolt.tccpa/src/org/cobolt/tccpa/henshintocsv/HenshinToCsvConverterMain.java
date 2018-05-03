@@ -6,11 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cobolt.tccpa.CsvUtils;
 import org.cobolt.tccpa.stabilizationanalysis.RuleNames;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.henshin.model.Graph;
+import org.eclipse.emf.henshin.model.Node;
+import org.eclipse.emf.henshin.model.Rule;
+import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 
 /**
  * This class converts a Henshin results folder into a CSV-based interaction list file
@@ -66,29 +73,100 @@ public class HenshinToCsvConverterMain
       Matcher interactionSetMatcher = interactionSetFolderPattern.matcher(folderName);
       interactionSetMatcher.matches();
       final String lhsRule = interactionSetMatcher.group(1);
-      final String lhsTextualRuleName = mapToTextualRuleName(lhsRule);
       final String rhsRule = interactionSetMatcher.group(2);
-      final String rhsTextualRuleName = mapToTextualRuleName(rhsRule);
       for (final File interactionFolder : interactionSetFolder.listFiles(new HenshinInteractionFolderFilenameFilter()))
       {
-         processInteractionFolder(interactionFolder, lhsTextualRuleName, rhsTextualRuleName, outputCsvFile);
+         processInteractionFolder(interactionFolder, lhsRule, rhsRule, outputCsvFile);
       }
    }
 
    private static void processInteractionFolder(final File interactionFolder, final String lhsRuleName, final String rhsRuleName, final File outputCsvFile)
          throws IOException
    {
+
+      final String lhsTextualRuleName = mapToTextualRuleName(lhsRuleName);
+      final String rhsTextualRuleName = mapToTextualRuleName(rhsRuleName);
       final Pattern interactionFolderPattern = Pattern.compile(HenshinInteractionFolderFilenameFilter.REGEX);
       final String interactionFolderName = interactionFolder.getName();
       Matcher interactionMatcher = interactionFolderPattern.matcher(interactionFolderName);
       interactionMatcher.matches();
       final String interactionReason = interactionMatcher.group(2);
       final String interactionType = interactionMatcher.group(3);
+      final String interactionLocality;
       final String interactionTypeShort = mapToTextualInteractionType(interactionType);
       final String reasonString = ("Reason: " + interactionReason + ", Origin:" + interactionFolder.getName()).replaceAll(Pattern.quote(CsvUtils.CSV_SEP), ",");
-      final List<String> csvData = Arrays.asList(lhsRuleName, rhsRuleName, interactionTypeShort, reasonString);
+
+      final HenshinResourceSet resourceSet = new HenshinResourceSet(interactionFolder.getAbsolutePath());
+      final Resource leftResource = resourceSet.getResource(String.format("(1)%s.henshin", lhsRuleName));
+      final Resource rightResource = resourceSet.getResource(String.format("(2)%s.henshin", rhsRuleName));
+      switch (interactionType)
+      {
+      case "conflict":
+      {
+         final List<Node> leftSelfNodeVariables = determineSelfNodeVariables(leftResource, "LHS");
+         final List<Node> rightSelfNodeVariables = determineSelfNodeVariables(rightResource, "LHS");
+
+         interactionLocality = calculateInteractionLocality(leftSelfNodeVariables, rightSelfNodeVariables);
+
+         break;
+      }
+      case "dependency":
+      {
+         final List<Node> leftSelfNodeVariables = determineSelfNodeVariables(leftResource, "RHS");
+         final List<Node> rightSelfNodeVariables = determineSelfNodeVariables(rightResource, "LHS");
+
+         interactionLocality = calculateInteractionLocality(leftSelfNodeVariables, rightSelfNodeVariables);
+
+         break;
+      }
+      default:
+         throw new IllegalArgumentException("Cannot handle " + interactionType);
+      }
+
+      final List<String> csvData = Arrays.asList(lhsTextualRuleName, rhsTextualRuleName, interactionTypeShort + interactionLocality, reasonString);
       final String csvLine = formatCsvLine(csvData);
       FileUtils.writeLines(outputCsvFile, Arrays.asList(csvLine), true);
+   }
+
+   private static String calculateInteractionLocality(final List<Node> leftSelfNodeVariables, final List<Node> rightSelfNodeVariables)
+   {
+      String interactionLocality;
+      if (!leftSelfNodeVariables.isEmpty() && !rightSelfNodeVariables.isEmpty())
+      {
+         final Node leftSelfNodeVariable = leftSelfNodeVariables.get(0);
+         final Node rightSelfNodeVariable = rightSelfNodeVariables.get(0);
+         if (leftSelfNodeVariable.getName().equals(rightSelfNodeVariable.getName()))
+         {
+            interactionLocality = "l";
+         } else
+         {
+            interactionLocality = "r";
+         }
+         //TODO@rkluge: How to determine self conflicts?
+      } else
+      {
+         interactionLocality = "r";
+      }
+      return interactionLocality;
+   }
+
+   private static List<Node> determineSelfNodeVariables(final Resource resource, String side)
+   {
+      final Rule rule = (Rule) resource.getContents().get(0);
+      final Graph pattern = "LHS".equals(side) ? rule.getLhs() : rule.getRhs();
+      final List<Node> leftSelfNodeVariables = extractSelfNodeVariable(pattern);
+      return leftSelfNodeVariables;
+   }
+
+   private static List<Node> extractSelfNodeVariable(final Graph pattern)
+   {
+      final EList<Node> leftNodesList = pattern.getNodes();
+      final List<Node> leftSelfNodeVariables = leftNodesList.stream()//
+            .filter(node -> node.getType().getName().equals("Node"))//
+            .filter(node -> node.getAttributes().stream()
+                  .anyMatch(attribute -> attribute.getType().getName().equals("isSelf") && attribute.getValue().equals("true")))
+            .collect(Collectors.toList());
+      return leftSelfNodeVariables;
    }
 
    /**
