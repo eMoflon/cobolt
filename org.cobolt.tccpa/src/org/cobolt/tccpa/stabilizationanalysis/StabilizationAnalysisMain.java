@@ -13,6 +13,7 @@ import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_E;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH1;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH2;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,31 +25,51 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.math3.util.Pair;
 import org.graphstream.graph.Graph;
 
+/**
+ * Executor class for running the automated part of the stabilization analysis
+ *
+ * @author Roland Kluge - Initial implementation
+ *
+ */
 public class StabilizationAnalysisMain
 {
 
    private final boolean isLongVersion = false;
 
+   private final boolean shallPrintLatexTable = false;
+
    private final boolean showGraph = false;
 
    private final List<Predicate<InteractionSequence>> filterPredicates = Arrays.asList(//
          InteractionSequence::containsNoContextEventRecreationInteraction, //
-         InteractionSequence::containsNoLocalInteractionsWithProgress
-         );
+         InteractionSequence::containsNoLocalInteractionsWithProgress);
 
-   public static void main(String[] args) throws Exception
+   /**
+    * Executes the automated part of the stabilization analysis for the given interaction lists
+    *
+    * @param args the list of CSV files containing interaction lists
+    */
+   public static void main(final String[] args) throws Exception
    {
-      new StabilizationAnalysisMain().run();
+      final List<String> filenames = Arrays.asList(args);
+      new StabilizationAnalysisMain().runForAllFiles(filenames);
    }
 
-   private void run() throws IOException
+   private void runForAllFiles(List<String> filenames) throws IOException
    {
-      final Graph graphBefore = calculateInteractionGraphBeforeRefinement();
-      final Graph graphAfter = calculateInteractionGraphAfterRefinement();
-      for (final Graph graph : Arrays.asList(graphBefore, graphAfter))
+      for (final String filename : filenames)
+      {
+         runForFile(filename);
+      }
+   }
+
+   private void runForFile(final String filename) throws IOException
+   {
+      final Graph graph = readInteractionGraph(filename);
       {
          System.out.println("---");
          System.out.println("Graph: " + graph.getId());
@@ -83,7 +104,8 @@ public class StabilizationAnalysisMain
          final Map<LoopCondition, List<InteractionSequence>> filteredSequences = filterInteractionSequences(interactionSequences);
 
          printTextualSummary(interactionSequences, filteredSequences);
-         System.out.println(LatexUtil.formatInteractionTable(interactionSequences, filteredSequences));
+         if (this.shallPrintLatexTable)
+            System.out.println(LatexUtil.formatInteractionTable(interactionSequences, filteredSequences));
 
          if (this.showGraph)
             showGraph(graph);
@@ -104,11 +126,11 @@ public class StabilizationAnalysisMain
          final String loopConditionRule = loopCondition.getConditionRuleName();
          final LoopType loopType = loopCondition.getType();
 
-         sb.append(String.format("Loop: %s  %s", loopConditionRule, loopType));
+         sb.append(String.format("Loop: %s  %s ", loopConditionRule, loopType));
          sb.append(String.format("[%d filtered seqs., %d seqs.]", sequences.size(), allSequences.size()));
          sb.append(":\n");
 
-         sequences.forEach(sequence -> sb.append("\t").append(sequence.format()).append("\n"));
+         sequences.forEach(sequence -> sb.append("  ").append(sequence.format()).append("\n"));
       }
 
       final int allSequencesCount = countInteractionSequences(interactionSequences);
@@ -151,16 +173,10 @@ public class StabilizationAnalysisMain
       return InteractionGraphUtil.containsNode(interactionGraph, nodeId);
    }
 
-   public Graph calculateInteractionGraphBeforeRefinement() throws IOException
+   private Graph readInteractionGraph(final String filename) throws FileNotFoundException, IOException
    {
-      return new InteractionGraphCsvReader(this.isLongVersion).readInteractionGraphFromCsv("InteractionGraphBeforeRefinement",
-            "resources/InteractionGraphBeforeRefinement.csv");
-   }
-
-   public Graph calculateInteractionGraphAfterRefinement() throws IOException
-   {
-      return new InteractionGraphCsvReader(this.isLongVersion).readInteractionGraphFromCsv("InteractionGraphAfterRefinement",
-            "resources/InteractionGraphAfterRefinement.csv");
+      final String graphName = FilenameUtils.removeExtension(FilenameUtils.getBaseName(filename));
+      return new InteractionGraphCsvReader(this.isLongVersion).readInteractionGraphFromCsv(graphName, filename);
    }
 
    public List<LoopCondition> getLoopConditions()

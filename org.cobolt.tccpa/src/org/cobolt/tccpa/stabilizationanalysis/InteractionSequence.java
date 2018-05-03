@@ -89,7 +89,7 @@ public class InteractionSequence implements Comparable<InteractionSequence>
       while (iter.hasNext())
       {
          final Interaction interaction = iter.next();
-         sb.append("(").append(interaction.getLhsRule()).append(") --[").append(interaction.formatTypeAndLocality()).append("]--> ");
+         sb.append("(").append(interaction.getLhsRule()).append(")  ---[").append(interaction.formatTypeAndLocality()).append("]--->  ");
          if (!iter.hasNext())
          {
             sb.append("(").append(interaction.getRhsRule()).append(")");
