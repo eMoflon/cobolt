@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Rule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_QI-EkBuTEeiIo90lHmPnNg" name="handleLinkRemoval1">
+  <parameters xmi:id="_UQWJoBuTEeiIo90lHmPnNg" name="linkId" kind="IN">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </parameters>
+  <parameters xmi:id="_UQWJoRuTEeiIo90lHmPnNg" name="topology" kind="IN">
+    <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+  </parameters>
+  <parameters xmi:id="_UfioIBvTEeiLEJjbAYhz4A" name="w13" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </parameters>
+  <parameters xmi:id="_SSJjgRvTEeiLEJjbAYhz4A" name="w14" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </parameters>
+  <parameters xmi:id="_SSKKkBvTEeiLEJjbAYhz4A" name="w43" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </parameters>
+  <parameters xmi:id="_7BAV8C5iEeiKItyE65g4iQ" name="w12" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </parameters>
+  <parameters xmi:id="_7BAV8S5iEeiKItyE65g4iQ" name="w23" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </parameters>
+  <lhs xmi:id="_QKMzoBuTEeiIo90lHmPnNg" name="Lhs">
+    <nodes xmi:id="_Wzh4EBuTEeiIo90lHmPnNg" name="1" outgoing="_Ze5SIBuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_XuVTcBuTEeiIo90lHmPnNg" name="2" incoming="_Ze5SIBuTEeiIo90lHmPnNg _OmV90C5jEeiKItyE65g4iQ" outgoing="_z4OVYC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_Yk5IABuTEeiIo90lHmPnNg" value="linkId">
+        <type href="tccpa.ecore#//TopologyElement/id"/>
+      </attributes>
+      <attributes xmi:id="_8fcC0C5iEeiKItyE65g4iQ" value="w12">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_cPo7cBuTEeiIo90lHmPnNg" name="3" outgoing="_juNl0BuTEeiIo90lHmPnNg _OmV90C5jEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+      <attributes xmi:id="_eyKMkDJ-Eei5TovaAqGaaQ" value="true">
+        <type href="tccpa.ecore#//Node/isSelf"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_gif3wBuTEeiIo90lHmPnNg" name="4" incoming="_juNl0BuTEeiIo90lHmPnNg" outgoing="_BMZxEBuzEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_ngm5YBuTEeiIo90lHmPnNg" value="-1">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+      <attributes xmi:id="_VgWk4BvTEeiLEJjbAYhz4A" value="w13">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_882ncBuyEeiLEJjbAYhz4A" name="5" incoming="_BMZxEBuzEeiLEJjbAYhz4A _2_kg0C5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+    </nodes>
+    <nodes xmi:id="_xjZMAC5iEeiKItyE65g4iQ" name="6" incoming="_z4OVYC5iEeiKItyE65g4iQ" outgoing="_2ejecC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+    </nodes>
+    <nodes xmi:id="_vHYckC5iEeiKItyE65g4iQ" name="8" incoming="_2ejecC5iEeiKItyE65g4iQ" outgoing="_2_kg0C5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_9dEvwC5iEeiKItyE65g4iQ" value="w23">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_Ze5SIBuTEeiIo90lHmPnNg" source="_Wzh4EBuTEeiIo90lHmPnNg" target="_XuVTcBuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+    <edges xmi:id="_juNl0BuTEeiIo90lHmPnNg" source="_cPo7cBuTEeiIo90lHmPnNg" target="_gif3wBuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+    <edges xmi:id="_BMZxEBuzEeiLEJjbAYhz4A" source="_gif3wBuTEeiIo90lHmPnNg" target="_882ncBuyEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_z4OVYC5iEeiKItyE65g4iQ" source="_XuVTcBuTEeiIo90lHmPnNg" target="_xjZMAC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_2ejecC5iEeiKItyE65g4iQ" source="_xjZMAC5iEeiKItyE65g4iQ" target="_vHYckC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+    <edges xmi:id="_2_kg0C5iEeiKItyE65g4iQ" source="_vHYckC5iEeiKItyE65g4iQ" target="_882ncBuyEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_OmV90C5jEeiKItyE65g4iQ" source="_cPo7cBuTEeiIo90lHmPnNg" target="_XuVTcBuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+    <formula xsi:type="henshin:Not" xmi:id="_882ncxuyEeiLEJjbAYhz4A">
+      <child xsi:type="henshin:NestedCondition" xmi:id="_882ndBuyEeiLEJjbAYhz4A">
+        <conclusion xmi:id="_882ndRuyEeiLEJjbAYhz4A">
+          <nodes xmi:id="_882ndhuyEeiLEJjbAYhz4A" name="1" outgoing="_883OghuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Topology"/>
+          </nodes>
+          <nodes xmi:id="_882neBuyEeiLEJjbAYhz4A" name="Link" incoming="_883OghuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link"/>
+            <attributes xmi:id="_883OgBuyEeiLEJjbAYhz4A" value="linkId">
+              <type href="tccpa.ecore#//TopologyElement/id"/>
+            </attributes>
+            <attributes xmi:id="_8fcC0i5iEeiKItyE65g4iQ" value="w12">
+              <type href="tccpa.ecore#//Link/weight"/>
+            </attributes>
+          </nodes>
+          <nodes xmi:id="_883OgxuyEeiLEJjbAYhz4A" name="Node" outgoing="_883OiRuyEeiLEJjbAYhz4A __vNaUBuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node"/>
+            <attributes xmi:id="_eyKMkjJ-Eei5TovaAqGaaQ" value="true">
+              <type href="tccpa.ecore#//Node/isSelf"/>
+            </attributes>
+          </nodes>
+          <nodes xmi:id="_883OhhuyEeiLEJjbAYhz4A" name="Link" incoming="_883OiRuyEeiLEJjbAYhz4A" outgoing="_NEGX0RuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link"/>
+            <attributes xmi:id="_883OhxuyEeiLEJjbAYhz4A" value="-1">
+              <type href="tccpa.ecore#//Link/state"/>
+            </attributes>
+            <attributes xmi:id="_VgWk4hvTEeiLEJjbAYhz4A" value="w13">
+              <type href="tccpa.ecore#//Link/weight"/>
+            </attributes>
+          </nodes>
+          <nodes xmi:id="_9aQVIBuyEeiLEJjbAYhz4A" name="Node" incoming="_AEixIBuzEeiLEJjbAYhz4A" outgoing="_AfF_IBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node"/>
+          </nodes>
+          <nodes xmi:id="_-Of1gBuyEeiLEJjbAYhz4A" name="Link" incoming="__vNaUBuyEeiLEJjbAYhz4A" outgoing="_AEixIBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link"/>
+            <attributes xmi:id="_WUQHABvTEeiLEJjbAYhz4A" value="w14">
+              <type href="tccpa.ecore#//Link/weight"/>
+            </attributes>
+          </nodes>
+          <nodes xmi:id="_D588cBuzEeiLEJjbAYhz4A" name="8" incoming="_AfF_IBuzEeiLEJjbAYhz4A" outgoing="_Ay3PsBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link"/>
+            <attributes xmi:id="_XQXxABvTEeiLEJjbAYhz4A" value="w43">
+              <type href="tccpa.ecore#//Link/weight"/>
+            </attributes>
+          </nodes>
+          <nodes xmi:id="_NEFwwBuzEeiLEJjbAYhz4A" name="6" incoming="_NEGX0RuzEeiLEJjbAYhz4A _Ay3PsBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node"/>
+          </nodes>
+          <edges xmi:id="_883OghuyEeiLEJjbAYhz4A" source="_882ndhuyEeiLEJjbAYhz4A" target="_882neBuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Topology/links"/>
+          </edges>
+          <edges xmi:id="_883OiRuyEeiLEJjbAYhz4A" source="_883OgxuyEeiLEJjbAYhz4A" target="_883OhhuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node/outgoingLinks"/>
+          </edges>
+          <edges xmi:id="__vNaUBuyEeiLEJjbAYhz4A" source="_883OgxuyEeiLEJjbAYhz4A" target="_-Of1gBuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node/outgoingLinks"/>
+          </edges>
+          <edges xmi:id="_AEixIBuzEeiLEJjbAYhz4A" source="_-Of1gBuyEeiLEJjbAYhz4A" target="_9aQVIBuyEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link/target"/>
+          </edges>
+          <edges xmi:id="_AfF_IBuzEeiLEJjbAYhz4A" source="_9aQVIBuyEeiLEJjbAYhz4A" target="_D588cBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Node/outgoingLinks"/>
+          </edges>
+          <edges xmi:id="_NEGX0RuzEeiLEJjbAYhz4A" source="_883OhhuyEeiLEJjbAYhz4A" target="_NEFwwBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link/target"/>
+          </edges>
+          <edges xmi:id="_Ay3PsBuzEeiLEJjbAYhz4A" source="_D588cBuzEeiLEJjbAYhz4A" target="_NEFwwBuzEeiLEJjbAYhz4A">
+            <type href="tccpa.ecore#//Link/target"/>
+          </edges>
+        </conclusion>
+        <mappings xmi:id="_882ndxuyEeiLEJjbAYhz4A" origin="_Wzh4EBuTEeiIo90lHmPnNg" image="_882ndhuyEeiLEJjbAYhz4A"/>
+        <mappings xmi:id="_883OgRuyEeiLEJjbAYhz4A" origin="_XuVTcBuTEeiIo90lHmPnNg" image="_882neBuyEeiLEJjbAYhz4A"/>
+        <mappings xmi:id="_883OhBuyEeiLEJjbAYhz4A" origin="_cPo7cBuTEeiIo90lHmPnNg" image="_883OgxuyEeiLEJjbAYhz4A"/>
+        <mappings xmi:id="_883OiBuyEeiLEJjbAYhz4A" origin="_gif3wBuTEeiIo90lHmPnNg" image="_883OhhuyEeiLEJjbAYhz4A"/>
+        <mappings xmi:id="_NEGX0BuzEeiLEJjbAYhz4A" origin="_882ncBuyEeiLEJjbAYhz4A" image="_NEFwwBuzEeiLEJjbAYhz4A"/>
+      </child>
+    </formula>
+  </lhs>
+  <rhs xmi:id="_QKOBwBuTEeiIo90lHmPnNg" name="Rhs">
+    <nodes xmi:id="_WzlicBuTEeiIo90lHmPnNg" name="topology" outgoing="_Ze5SIRuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_XuVTcRuTEeiIo90lHmPnNg" name="e12" incoming="_Ze5SIRuTEeiIo90lHmPnNg _OmWk4C5jEeiKItyE65g4iQ" outgoing="_z4OVYS5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_Yk5IARuTEeiIo90lHmPnNg" value="linkId">
+        <type href="tccpa.ecore#//TopologyElement/id"/>
+      </attributes>
+      <attributes xmi:id="_8fcC0S5iEeiKItyE65g4iQ" value="w12">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_cPpigBuTEeiIo90lHmPnNg" name="n1" outgoing="_juNl0RuTEeiIo90lHmPnNg _OmWk4C5jEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+      <attributes xmi:id="_eyKMkTJ-Eei5TovaAqGaaQ" value="true">
+        <type href="tccpa.ecore#//Node/isSelf"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_gif3wRuTEeiIo90lHmPnNg" name="e13" incoming="_juNl0RuTEeiIo90lHmPnNg" outgoing="_D59jhRuzEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_ngngcBuTEeiIo90lHmPnNg" value="0">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+      <attributes xmi:id="_VgWk4RvTEeiLEJjbAYhz4A" value="w13">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_D59jgBuzEeiLEJjbAYhz4A" name="n3" incoming="_D59jhRuzEeiLEJjbAYhz4A _2_lH4C5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+    </nodes>
+    <nodes xmi:id="_yahoUC5iEeiKItyE65g4iQ" name="n2" incoming="_z4OVYS5iEeiKItyE65g4iQ" outgoing="_2ejecS5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node"/>
+    </nodes>
+    <nodes xmi:id="_1PxXIC5iEeiKItyE65g4iQ" name="e23" incoming="_2ejecS5iEeiKItyE65g4iQ" outgoing="_2_lH4C5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_9dFW0C5iEeiKItyE65g4iQ" value="w23">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_Ze5SIRuTEeiIo90lHmPnNg" source="_WzlicBuTEeiIo90lHmPnNg" target="_XuVTcRuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+    <edges xmi:id="_juNl0RuTEeiIo90lHmPnNg" source="_cPpigBuTEeiIo90lHmPnNg" target="_gif3wRuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+    <edges xmi:id="_D59jhRuzEeiLEJjbAYhz4A" source="_gif3wRuTEeiIo90lHmPnNg" target="_D59jgBuzEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_z4OVYS5iEeiKItyE65g4iQ" source="_XuVTcRuTEeiIo90lHmPnNg" target="_yahoUC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_2ejecS5iEeiKItyE65g4iQ" source="_yahoUC5iEeiKItyE65g4iQ" target="_1PxXIC5iEeiKItyE65g4iQ">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+    <edges xmi:id="_2_lH4C5iEeiKItyE65g4iQ" source="_1PxXIC5iEeiKItyE65g4iQ" target="_D59jgBuzEeiLEJjbAYhz4A">
+      <type href="tccpa.ecore#//Link/target"/>
+    </edges>
+    <edges xmi:id="_OmWk4C5jEeiKItyE65g4iQ" source="_cPpigBuTEeiIo90lHmPnNg" target="_XuVTcRuTEeiIo90lHmPnNg">
+      <type href="tccpa.ecore#//Node/outgoingLinks"/>
+    </edges>
+  </rhs>
+  <attributeConditions xmi:id="_MHh0UBvTEeiLEJjbAYhz4A" name="kTC condition" conditionText="w13 > w14 &amp;&amp; w13 > w43 &amp;&amp; w13 > w12 &amp;&amp; w13 > w23"/>
+  <mappings xmi:id="_WzlicRuTEeiIo90lHmPnNg" origin="_Wzh4EBuTEeiIo90lHmPnNg" image="_WzlicBuTEeiIo90lHmPnNg"/>
+  <mappings xmi:id="_XuVTchuTEeiIo90lHmPnNg" origin="_XuVTcBuTEeiIo90lHmPnNg" image="_XuVTcRuTEeiIo90lHmPnNg"/>
+  <mappings xmi:id="_cPpigRuTEeiIo90lHmPnNg" origin="_cPo7cBuTEeiIo90lHmPnNg" image="_cPpigBuTEeiIo90lHmPnNg"/>
+  <mappings xmi:id="_gige0BuTEeiIo90lHmPnNg" origin="_gif3wBuTEeiIo90lHmPnNg" image="_gif3wRuTEeiIo90lHmPnNg"/>
+  <mappings xmi:id="_D59jgRuzEeiLEJjbAYhz4A" origin="_882ncBuyEeiLEJjbAYhz4A" image="_D59jgBuzEeiLEJjbAYhz4A"/>
+  <mappings xmi:id="_yahoUS5iEeiKItyE65g4iQ" origin="_xjZMAC5iEeiKItyE65g4iQ" image="_yahoUC5iEeiKItyE65g4iQ"/>
+  <mappings xmi:id="_1PxXIS5iEeiKItyE65g4iQ" origin="_vHYckC5iEeiKItyE65g4iQ" image="_1PxXIC5iEeiKItyE65g4iQ"/>
+</henshin:Rule>

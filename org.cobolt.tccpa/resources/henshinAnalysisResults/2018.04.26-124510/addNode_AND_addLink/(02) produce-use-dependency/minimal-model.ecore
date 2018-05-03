@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="addNode, addLink" nsURI="http://cpapackage/addNode/addLink/produce-use-dependency"
+    nsPrefix="CPAPackage">
+  <eClassifiers xsi:type="ecore:EClass" name="1:Topology">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="#topologyNodes#" eType="#//2%3A%23Node%23"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topologyNodes" eType="#//3%3ANode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="2:#Node#">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id = r1_nodeId_r2_trgId"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="#nodeTopology#" eType="#//1%3ATopology"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="3:Node">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id = r2_srcId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSelf = true" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTopology" eType="#//1%3ATopology"/>
+  </eClassifiers>
+</ecore:EPackage>

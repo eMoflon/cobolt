@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="handleLinkRemoval2, handleLinkRemoval2" nsURI="http://cpapackage/handleLinkRemoval2/handleLinkRemoval2/change-use-attr-conflict"
+    nsPrefix="CPAPackage">
+  <eClassifiers xsi:type="ecore:EClass" name="1:Topology">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topologyLinks" eType="#//2%3ALink"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topologyLinks" eType="#//8%3ALink"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="2:Link">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id = r1_linkId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTarget" eType="#//3%3ANode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTopology" eType="#//1%3ATopology"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkSource" eType="#//7%3ANode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="3:Node">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeIncomingLinks" eType="#//4%3A%23Link%23"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeIncomingLinks" eType="#//2%3ALink"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeIncomingLinks" eType="#//8%3ALink"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="4:#Link#">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight = r1_w32_r2_w32"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state = -1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkSource" eType="#//5%3ANode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTarget" eType="#//3%3ANode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="5:Node">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeOutgoingLinks" eType="#//6%3ALink"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeOutgoingLinks" eType="#//4%3A%23Link%23"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="6:Link">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTarget" eType="#//7%3ANode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkSource" eType="#//5%3ANode"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="7:Node">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSelf = true" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeOutgoingLinks" eType="#//2%3ALink"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeIncomingLinks" eType="#//6%3ALink"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeOutgoingLinks" eType="#//8%3ALink"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="8:Link">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id = r2_linkId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTarget" eType="#//3%3ANode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkTopology" eType="#//1%3ATopology"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="linkSource" eType="#//7%3ANode"/>
+  </eClassifiers>
+</ecore:EPackage>

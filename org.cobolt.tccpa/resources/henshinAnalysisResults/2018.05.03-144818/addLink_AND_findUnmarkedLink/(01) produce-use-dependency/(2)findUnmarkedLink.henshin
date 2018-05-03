@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Rule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_h-5QME7LEeinmpyNBNIWSA" name="findUnmarkedLink">
+  <parameters xmi:id="_lA7d0E7LEeinmpyNBNIWSA" name="topology" kind="IN">
+    <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+  </parameters>
+  <parameters xmi:id="_TZl-QE7MEeinmpyNBNIWSA" name="unmarkedLink" kind="OUT">
+    <type xsi:type="ecore:EClass" href="tccpa.ecore#//Link"/>
+  </parameters>
+  <lhs xmi:id="_h_H5sE7LEeinmpyNBNIWSA" name="Lhs">
+    <nodes xmi:id="_ljpwYE7LEeinmpyNBNIWSA" name="3" outgoing="_pEoj0E7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_nL9K8E7LEeinmpyNBNIWSA" name="1" incoming="_pEoj0E7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_nwEkoE7LEeinmpyNBNIWSA" value="0">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_pEoj0E7LEeinmpyNBNIWSA" source="_ljpwYE7LEeinmpyNBNIWSA" target="_nL9K8E7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+  </lhs>
+  <rhs xmi:id="_h_H5sU7LEeinmpyNBNIWSA" name="Rhs">
+    <nodes xmi:id="_ljpwYU7LEeinmpyNBNIWSA" name="topology" outgoing="_pEpK4E7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_nL9K8U7LEeinmpyNBNIWSA" name="unmarkedLink" incoming="_pEpK4E7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_nwFLsE7LEeinmpyNBNIWSA" value="0">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_pEpK4E7LEeinmpyNBNIWSA" source="_ljpwYU7LEeinmpyNBNIWSA" target="_nL9K8U7LEeinmpyNBNIWSA">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+  </rhs>
+  <mappings xmi:id="_ljpwYk7LEeinmpyNBNIWSA" origin="_ljpwYE7LEeinmpyNBNIWSA" image="_ljpwYU7LEeinmpyNBNIWSA"/>
+  <mappings xmi:id="_nL9K8k7LEeinmpyNBNIWSA" origin="_nL9K8E7LEeinmpyNBNIWSA" image="_nL9K8U7LEeinmpyNBNIWSA"/>
+</henshin:Rule>

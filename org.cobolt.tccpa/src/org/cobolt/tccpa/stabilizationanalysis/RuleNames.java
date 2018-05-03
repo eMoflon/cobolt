@@ -40,6 +40,10 @@ public class RuleNames
 
    public static final String R_MOD_WH4 = "Rmod-w,h,4";
 
+   public static final String R_PLUS_N = "R+n";
+
+   public static final String R_MINUS_N = "R-n";
+
    public static final String R_UNLOCK = "Runlock";
 
    public static final String R_DELETE_LOCK = "Rdellock";

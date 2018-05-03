@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ASCII"?>
+<henshin:Rule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_ylAqMBfeEeivYOgNged4Ww" name="modifyLinkWeight">
+  <parameters xmi:id="_2SnkYBfeEeivYOgNged4Ww" name="linkId" kind="IN">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </parameters>
+  <parameters xmi:id="_2SnkYRfeEeivYOgNged4Ww" name="newWeight" kind="IN">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </parameters>
+  <parameters xmi:id="_2SnkYhfeEeivYOgNged4Ww" name="topology" kind="IN">
+    <type xsi:type="ecore:EClass" href="tccpa.ecore#//Topology"/>
+  </parameters>
+  <parameters xmi:id="_uqOA4BfkEeivYOgNged4Ww" name="x" kind="VAR">
+    <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </parameters>
+  <lhs xmi:id="_ylFisBfeEeivYOgNged4Ww" name="Lhs">
+    <nodes xmi:id="_24U5gBfeEeivYOgNged4Ww" name="1" outgoing="_6QUJABfeEeivYOgNged4Ww">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_4k0QgBfeEeivYOgNged4Ww" name="2" incoming="_6QUJABfeEeivYOgNged4Ww" outgoing="_WQ9AgDJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_5a2goBfeEeivYOgNged4Ww" value="linkId">
+        <type href="tccpa.ecore#//TopologyElement/id"/>
+      </attributes>
+      <attributes xmi:id="__YVZcBfjEeivYOgNged4Ww" value="x">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+      <attributes xmi:id="_gjEzMBmpEeiSQamcGPWslw" value="0">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_TC3T4DJ-Eei5TovaAqGaaQ" name="3" incoming="_WQ9AgDJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Node"/>
+      <attributes xmi:id="_UEODMDJ-Eei5TovaAqGaaQ" value="true">
+        <type href="tccpa.ecore#//Node/isSelf"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_6QUJABfeEeivYOgNged4Ww" source="_24U5gBfeEeivYOgNged4Ww" target="_4k0QgBfeEeivYOgNged4Ww">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+    <edges xmi:id="_WQ9AgDJ-Eei5TovaAqGaaQ" source="_4k0QgBfeEeivYOgNged4Ww" target="_TC3T4DJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Link/source"/>
+    </edges>
+  </lhs>
+  <rhs xmi:id="_ylFisRfeEeivYOgNged4Ww" name="Rhs">
+    <nodes xmi:id="_24U5gRfeEeivYOgNged4Ww" name="topology" outgoing="_6QUJARfeEeivYOgNged4Ww">
+      <type href="tccpa.ecore#//Topology"/>
+    </nodes>
+    <nodes xmi:id="_4k0QgRfeEeivYOgNged4Ww" incoming="_6QUJARfeEeivYOgNged4Ww" outgoing="_WQ9AgTJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Link"/>
+      <attributes xmi:id="_5a2goRfeEeivYOgNged4Ww" value="linkId">
+        <type href="tccpa.ecore#//TopologyElement/id"/>
+      </attributes>
+      <attributes xmi:id="__YYcwBfjEeivYOgNged4Ww" value="newWeight">
+        <type href="tccpa.ecore#//Link/weight"/>
+      </attributes>
+      <attributes xmi:id="_gjEzMRmpEeiSQamcGPWslw" value="0">
+        <type href="tccpa.ecore#//Link/state"/>
+      </attributes>
+    </nodes>
+    <nodes xmi:id="_TC3T4TJ-Eei5TovaAqGaaQ" name="n1" incoming="_WQ9AgTJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Node"/>
+      <attributes xmi:id="_UEODMTJ-Eei5TovaAqGaaQ" value="true">
+        <type href="tccpa.ecore#//Node/isSelf"/>
+      </attributes>
+    </nodes>
+    <edges xmi:id="_6QUJARfeEeivYOgNged4Ww" source="_24U5gRfeEeivYOgNged4Ww" target="_4k0QgRfeEeivYOgNged4Ww">
+      <type href="tccpa.ecore#//Topology/links"/>
+    </edges>
+    <edges xmi:id="_WQ9AgTJ-Eei5TovaAqGaaQ" source="_4k0QgRfeEeivYOgNged4Ww" target="_TC3T4TJ-Eei5TovaAqGaaQ">
+      <type href="tccpa.ecore#//Link/source"/>
+    </edges>
+  </rhs>
+  <mappings xmi:id="_24VgkBfeEeivYOgNged4Ww" origin="_24U5gBfeEeivYOgNged4Ww" image="_24U5gRfeEeivYOgNged4Ww"/>
+  <mappings xmi:id="_4k0QghfeEeivYOgNged4Ww" origin="_4k0QgBfeEeivYOgNged4Ww" image="_4k0QgRfeEeivYOgNged4Ww"/>
+  <mappings xmi:id="_TC3T4jJ-Eei5TovaAqGaaQ" origin="_TC3T4DJ-Eei5TovaAqGaaQ" image="_TC3T4TJ-Eei5TovaAqGaaQ"/>
+</henshin:Rule>
