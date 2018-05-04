@@ -15,6 +15,8 @@ import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MOD_WH4;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_E;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH1;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_EH2;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_PLUS_N;
+import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_MINUS_N;
 import static org.cobolt.tccpa.stabilizationanalysis.RuleNames.R_UNLOCK;
 
 import java.util.HashMap;
@@ -26,29 +28,33 @@ import org.graphstream.graph.Graph;
 public class InteractionGraphLayout
 {
 
-   static final int factor = 300;
+   private static final int factor = 300;
 
-   static final int tcRuleColumn = 0 * factor;
+   private static final int tcRuleColumn = 0 * factor;
 
-   static final int minusEColumn = 1 * factor;
+   private static final int minusEColumn = 1 * factor;
 
-   static final int plusEColumn = 2 * factor;
+   private static final int plusEColumn = 2 * factor;
 
-   static final int modwColumn = 3 * factor;
+   private static final int modwColumn = 3 * factor;
 
-   static final int unlockColumn = 4 * factor;
+   private static final int plusNColumn = 4 * factor;
 
-   static final int row1 = -1 * factor;
+   private static final int minusNColumn = 5 * factor;
 
-   static final int row2 = -2 * factor;
+   private static final int unlockColumn = 6 * factor;
 
-   static final int row3 = -3 * factor;
+   private static final int row1 = -1 * factor;
 
-   static final int row4 = -4 * factor;
+   private static final int row2 = -2 * factor;
 
-   static final int row5 = -5 * factor;
+   private static final int row3 = -3 * factor;
 
-   static final Map<String, Pair<Integer, Integer>> RULE_NODE_POSITIONS = new HashMap<>();
+   private static final int row4 = -4 * factor;
+
+   private static final int row5 = -5 * factor;
+
+   private static final Map<String, Pair<Integer, Integer>> RULE_NODE_POSITIONS = new HashMap<>();
    static
    {
       RULE_NODE_POSITIONS.put(R_A, Pair.create(tcRuleColumn, row1));
@@ -65,9 +71,15 @@ public class InteractionGraphLayout
       RULE_NODE_POSITIONS.put(R_MOD_WH2, Pair.create(modwColumn, row3));
       RULE_NODE_POSITIONS.put(R_MOD_WH3, Pair.create(modwColumn, row4));
       RULE_NODE_POSITIONS.put(R_MOD_WH4, Pair.create(modwColumn, row5));
+      RULE_NODE_POSITIONS.put(R_PLUS_N, Pair.create(plusNColumn, row1));
+      RULE_NODE_POSITIONS.put(R_MINUS_N, Pair.create(minusNColumn, row2));
       RULE_NODE_POSITIONS.put(R_UNLOCK, Pair.create(unlockColumn, row1));
       RULE_NODE_POSITIONS.put(R_DELETE_LOCK, Pair.create(unlockColumn, row2));
    }
+
+   static final String ELEMENT_ATTRIBUTE_UILABEL = "ui.label";
+
+   static final String NODE_ATTRIBUTE_XYZ = "xyz";
 
    public static Pair<Integer, Integer> getPosition(String ruleName)
    {
@@ -101,7 +113,4 @@ public class InteractionGraphLayout
             "shape: cubic-curve;}");
    }
 
-   static final String ELEMENT_ATTRIBUTE_UILABEL = "ui.label";
-
-   static final String NODE_ATTRIBUTE_XYZ = "xyz";
 }

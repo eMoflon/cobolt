@@ -8,7 +8,7 @@ import java.util.Optional;
  *
  * @author Roland Kluge - Initial implementation
  */
-enum AnalysisGoal {
+public enum AnalysisGoal {
 	CONFLICT, DEPENDENCY;
 
    static Optional<AnalysisGoal> getAnalysisGoalByName(final String analysisGoalStr) {

@@ -99,7 +99,7 @@
       <formula xsi:type="henshin:Not" xmi:id="_O8QrUBmaEeiSQamcGPWslw">
         <child xsi:type="henshin:NestedCondition" xmi:id="_O8QrURmaEeiSQamcGPWslw">
           <conclusion xmi:id="_O8QrUhmaEeiSQamcGPWslw">
-            <nodes xmi:id="_O8QrUxmaEeiSQamcGPWslw" name="source" incoming="_O8QrWBmaEeiSQamcGPWslw">
+            <nodes xmi:id="_O8QrUxmaEeiSQamcGPWslw" name="source" incoming="_O8QrWBmaEeiSQamcGPWslw" outgoing="_wPNQsE9mEei1OtEnTGWIFw">
               <type href="tccpa.ecore#//Node"/>
               <attributes xmi:id="_O8QrVBmaEeiSQamcGPWslw" value="srcId">
                 <type href="tccpa.ecore#//TopologyElement/id"/>
@@ -111,13 +111,13 @@
             <nodes xmi:id="_O8QrVhmaEeiSQamcGPWslw" name="topology" outgoing="_O8QrWBmaEeiSQamcGPWslw _O8RSYRmaEeiSQamcGPWslw _PpPGEBmaEeiSQamcGPWslw">
               <type href="tccpa.ecore#//Topology"/>
             </nodes>
-            <nodes xmi:id="_O8QrWRmaEeiSQamcGPWslw" name="target" incoming="_O8RSYRmaEeiSQamcGPWslw">
+            <nodes xmi:id="_O8QrWRmaEeiSQamcGPWslw" name="target" incoming="_O8RSYRmaEeiSQamcGPWslw _wxBkUE9mEei1OtEnTGWIFw">
               <type href="tccpa.ecore#//Node"/>
               <attributes xmi:id="_O8QrWhmaEeiSQamcGPWslw" value="trgId">
                 <type href="tccpa.ecore#//TopologyElement/id"/>
               </attributes>
             </nodes>
-            <nodes xmi:id="_LgJw0BmaEeiSQamcGPWslw" name="forbidden" incoming="_PpPGEBmaEeiSQamcGPWslw">
+            <nodes xmi:id="_LgJw0BmaEeiSQamcGPWslw" name="forbidden" incoming="_PpPGEBmaEeiSQamcGPWslw _wPNQsE9mEei1OtEnTGWIFw" outgoing="_wxBkUE9mEei1OtEnTGWIFw">
               <type href="tccpa.ecore#//Link"/>
               <attributes xmi:id="_NTLNoBmaEeiSQamcGPWslw" value="linkId">
                 <type href="tccpa.ecore#//TopologyElement/id"/>
@@ -132,6 +132,12 @@
             <edges xmi:id="_PpPGEBmaEeiSQamcGPWslw" source="_O8QrVhmaEeiSQamcGPWslw" target="_LgJw0BmaEeiSQamcGPWslw">
               <type href="tccpa.ecore#//Topology/links"/>
             </edges>
+            <edges xmi:id="_wPNQsE9mEei1OtEnTGWIFw" source="_O8QrUxmaEeiSQamcGPWslw" target="_LgJw0BmaEeiSQamcGPWslw">
+              <type href="tccpa.ecore#//Node/outgoingLinks"/>
+            </edges>
+            <edges xmi:id="_wxBkUE9mEei1OtEnTGWIFw" source="_LgJw0BmaEeiSQamcGPWslw" target="_O8QrWRmaEeiSQamcGPWslw">
+              <type href="tccpa.ecore#//Link/target"/>
+            </edges>
           </conclusion>
           <mappings xmi:id="_O8QrVRmaEeiSQamcGPWslw" origin="_JoeiwBFxEei5o9tPb1r_qA" image="_O8QrUxmaEeiSQamcGPWslw"/>
           <mappings xmi:id="_O8QrVxmaEeiSQamcGPWslw" origin="_MOe7sBFxEei5o9tPb1r_qA" image="_O8QrVhmaEeiSQamcGPWslw"/>
@@ -140,7 +146,7 @@
       </formula>
     </lhs>
     <rhs xmi:id="_MYHOQRFwEei5o9tPb1r_qA" name="Rhs">
-      <nodes xmi:id="_6xoDQBFwEei5o9tPb1r_qA" name="newLink" incoming="_RwqK0BFxEei5o9tPb1r_qA" outgoing="_Pyt3cBFxEei5o9tPb1r_qA _LWhDABGfEei2nc2ybxl-XA">
+      <nodes xmi:id="_6xoDQBFwEei5o9tPb1r_qA" name="newLink" incoming="_RwqK0BFxEei5o9tPb1r_qA _yjSzME9mEei1OtEnTGWIFw" outgoing="_Pyt3cBFxEei5o9tPb1r_qA">
         <type href="tccpa.ecore#//Link"/>
         <attributes xmi:id="_-R7hQBFwEei5o9tPb1r_qA" value="linkId">
           <type href="tccpa.ecore#//TopologyElement/id"/>
@@ -152,7 +158,7 @@
           <type href="tccpa.ecore#//Link/state"/>
         </attributes>
       </nodes>
-      <nodes xmi:id="_KiiXQBFxEei5o9tPb1r_qA" name="source" incoming="_LWhDABGfEei2nc2ybxl-XA _tLeRYRmZEeiSQamcGPWslw">
+      <nodes xmi:id="_KiiXQBFxEei5o9tPb1r_qA" name="source" incoming="_tLeRYRmZEeiSQamcGPWslw" outgoing="_yjSzME9mEei1OtEnTGWIFw">
         <type href="tccpa.ecore#//Node"/>
         <attributes xmi:id="_A0UJABFyEei5o9tPb1r_qA" value="srcId">
           <type href="tccpa.ecore#//TopologyElement/id"/>
@@ -176,14 +182,14 @@
       <edges xmi:id="_RwqK0BFxEei5o9tPb1r_qA" source="_MOe7sRFxEei5o9tPb1r_qA" target="_6xoDQBFwEei5o9tPb1r_qA">
         <type href="tccpa.ecore#//Topology/links"/>
       </edges>
-      <edges xmi:id="_LWhDABGfEei2nc2ybxl-XA" source="_6xoDQBFwEei5o9tPb1r_qA" target="_KiiXQBFxEei5o9tPb1r_qA">
-        <type href="tccpa.ecore#//Link/source"/>
-      </edges>
       <edges xmi:id="_tLeRYRmZEeiSQamcGPWslw" source="_MOe7sRFxEei5o9tPb1r_qA" target="_KiiXQBFxEei5o9tPb1r_qA">
         <type href="tccpa.ecore#//Topology/nodes"/>
       </edges>
       <edges xmi:id="_tc2VQRmZEeiSQamcGPWslw" source="_MOe7sRFxEei5o9tPb1r_qA" target="_N2olQRFxEei5o9tPb1r_qA">
         <type href="tccpa.ecore#//Topology/nodes"/>
+      </edges>
+      <edges xmi:id="_yjSzME9mEei1OtEnTGWIFw" source="_KiiXQBFxEei5o9tPb1r_qA" target="_6xoDQBFwEei5o9tPb1r_qA">
+        <type href="tccpa.ecore#//Node/outgoingLinks"/>
       </edges>
     </rhs>
     <mappings xmi:id="_KiiXQRFxEei5o9tPb1r_qA" origin="_JoeiwBFxEei5o9tPb1r_qA" image="_KiiXQBFxEei5o9tPb1r_qA"/>
