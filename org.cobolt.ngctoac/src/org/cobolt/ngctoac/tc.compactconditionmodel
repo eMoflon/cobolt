@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compactconditionmodel:CompactConditionModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compactconditionmodel="http://www.example.org/CompactConditionModel" xmlns:laxcondition="http://www.example.org/laxcondition" name="TC Condition Model">
+  <compactconditions name="No Triangle">
+    <typeGraph href="http://www.coboltmetamodel.org/#/"/>
+    <laxCondition xsi:type="laxcondition:QuantifiedLaxCondition" quantifier="FORALL">
+      <graph>
+        <nodes name="e12p">
+          <type href="http://www.coboltmetamodel.org/#//Link"/>
+        </nodes>
+      </graph>
+      <condition xsi:type="laxcondition:Formula">
+        <arguments xsi:type="laxcondition:QuantifiedLaxCondition">
+          <graph name="">
+            <nodes name="n1">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes name="n2">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes name="n3">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes name="e12">
+              <attributes op="=" value="w12">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <nodes name="e13">
+              <attributes op="=" value="w13">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <nodes name="e32">
+              <attributes op="=" value="w32">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+          </graph>
+          <condition xsi:type="laxcondition:True"/>
+          <variables name="w12"/>
+          <variables name="w13"/>
+          <variables name="w32"/>
+        </arguments>
+      </condition>
+    </laxCondition>
+  </compactconditions>
+  <typeGraph href="http://www.coboltmetamodel.org/#/"/>
+</compactconditionmodel:CompactConditionModel>

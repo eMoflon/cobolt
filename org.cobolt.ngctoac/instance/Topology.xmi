@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.cobolt.tc:Topology
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:org.cobolt.tc="http://www.coboltmetamodel.org/"
+    xsi:schemaLocation="http://www.coboltmetamodel.org/ tc.ecore">
+  <nodes id="1"/>
+  <nodes id="2"/>
+</org.cobolt.tc:Topology>
