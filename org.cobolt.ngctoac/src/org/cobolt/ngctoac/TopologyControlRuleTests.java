@@ -1,5 +1,6 @@
 package org.cobolt.ngctoac;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -47,6 +48,14 @@ public class TopologyControlRuleTests
    }
 
    @Test
+   public void testTestmodelValidity() {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+      Assert.assertEquals(3, getNodes(topology).size());
+      Assert.assertEquals(0, getLinks(topology).size());
+   }
+
+   @Test
    public void testAddLinkBetweenNodes() {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
@@ -59,6 +68,30 @@ public class TopologyControlRuleTests
       Assert.assertTrue(containsLinkWithId(topology, linkIdToAdd));
       Assert.assertTrue(containsLinkWithIdAndWeight(topology, linkIdToAdd, 1));
       Assert.assertTrue(containsLinkWithStateAndId(topology, linkIdToAdd, LinkState.UNMARKED));
+   }
+
+   @Test
+   public void testCreateTriangleSuccessful() {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      for (final String linkIdToAdd : Arrays.asList("1->2", "1->3", "3->2")) {
+         Assert.assertTrue(prepareLinkAddition(linkIdToAdd, graph, topology, engine, rulesModule).execute(null));
+      }
+      Assert.assertEquals(3, getLinks(topology).size());
+   }
+
+   @Test
+   public void testCreateTriangleForbiddenByApplicationCondition() {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      for (final String linkIdToAdd : Arrays.asList("1->2", "1->3")) {
+         Assert.assertTrue(prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd, graph, topology, engine, rulesModule).execute(null));
+      }
+
+      Assert.assertFalse(prepareLinkAdditionWithTrianglePreventingAC("3->2", graph, topology, engine, rulesModule).execute(null));
+      Assert.assertEquals(2, getLinks(topology).size());
    }
 
 
@@ -76,13 +109,13 @@ public class TopologyControlRuleTests
       }).findAny().isPresent();
    }
 
-   private boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final int state)
+   private static boolean containsLinkWithStateAndId(final EObject topology, final String linkId, final int state)
    {
       return getLinks(topology).stream().filter(o -> linkId.equals(o.eGet(findIdStructuralFeature(o)))).filter(link -> hasState(link, state)).findAny()
             .isPresent();
    }
 
-   private boolean hasState(final EObject link, final Integer expectedState)
+   private static boolean hasState(final EObject link, final Integer expectedState)
    {
       return expectedState.equals(link.eGet(findStateStructuralFeature(link)));
    }
@@ -91,6 +124,12 @@ public class TopologyControlRuleTests
    private static List<? extends EObject> getLinks(final EObject topology)
    {
       return (List<EObject>) topology.eGet(findFeatureByName(topology, "links"));
+   }
+
+   @SuppressWarnings("unchecked")
+   private static List<? extends EObject> getNodes(final EObject topology)
+   {
+      return (List<EObject>) topology.eGet(findFeatureByName(topology, "nodes"));
    }
 
    private static EStructuralFeature findIdStructuralFeature(final EObject o)
@@ -129,6 +168,23 @@ public class TopologyControlRuleTests
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
       unit.setUnit(getUnitChecked(rulesModule, "addLink"));
+      unit.setParameterValue("srcId", srcId);
+      unit.setParameterValue("trgId", trgId);
+      unit.setParameterValue("linkId", linkIdToAdd);
+      unit.setParameterValue("weight", weight);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareLinkAdditionWithTrianglePreventingAC(final String linkIdToAdd, final EGraph graph, final EObject topology, final Engine engine,
+         final Module rulesModule)
+   {
+      final String srcId = extractSourceNodeId(linkIdToAdd);
+      final String trgId = extractTargetNodeId(linkIdToAdd);
+      final double weight = 1.0;
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(getUnitChecked(rulesModule, "addLink_updated_No Triangle"));
       unit.setParameterValue("srcId", srcId);
       unit.setParameterValue("trgId", trgId);
       unit.setParameterValue("linkId", linkIdToAdd);

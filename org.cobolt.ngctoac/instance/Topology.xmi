@@ -6,4 +6,5 @@
     xsi:schemaLocation="http://www.coboltmetamodel.org/ tc.ecore">
   <nodes id="1"/>
   <nodes id="2"/>
+  <nodes id="3"/>
 </org.cobolt.tc:Topology>
