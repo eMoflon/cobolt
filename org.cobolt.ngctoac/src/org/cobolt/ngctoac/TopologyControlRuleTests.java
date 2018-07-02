@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.henshin.interpreter.EGraph;
 import org.eclipse.emf.henshin.interpreter.Engine;
 import org.eclipse.emf.henshin.interpreter.UnitApplication;
 import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
@@ -31,26 +30,26 @@ public class TopologyControlRuleTests
 
    private HenshinResourceSet resourceSet;
 
-   private Resource testTopologyResource;
-
    private Module rulesModule;
 
    private Engine engine;
 
+   private EGraphImpl graph;
+
    @BeforeEach
    void setUp()
    {
-      resourceSet = new HenshinResourceSet(HenshinRules.getRulesDirectory());
-      rulesModule = resourceSet.getModule(RULES_FILE, false);
-      engine = new EngineImpl();
-      testTopologyResource = resourceSet.getResource(TOPOLOGY_INSTANCE_TWO_NODES);
+      this.resourceSet = new HenshinResourceSet(HenshinRules.getRulesDirectory());
+      this.rulesModule = resourceSet.getModule(RULES_FILE, false);
+      this.engine = new EngineImpl();
+      final Resource testTopologyResource = resourceSet.getResource(TOPOLOGY_INSTANCE_TWO_NODES);
+      this.graph = new EGraphImpl(testTopologyResource);
    }
 
    @Test
    public void testTestmodelValidity()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
-      final EObject topology = extractTopology(graph);
+      final EObject topology = getTopology();
       Assert.assertEquals(3, getNodes(topology).size());
       Assert.assertEquals(0, getLinks(topology).size());
    }
@@ -58,14 +57,12 @@ public class TopologyControlRuleTests
    @Test
    public void testAddLinkBetweenNodes()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
-      final EObject topology = extractTopology(graph);
+      final EObject topology = getTopology();
 
       final String linkIdToAdd = "1->2";
 
       Assert.assertFalse(containsLinkWithId(topology, linkIdToAdd));
-      final UnitApplication unit = prepareLinkAddition(linkIdToAdd, graph, engine, rulesModule);
-      Assert.assertTrue(unit.execute(null));
+      Assert.assertTrue(addLink(linkIdToAdd));
       Assert.assertTrue(containsLinkWithId(topology, linkIdToAdd));
       Assert.assertTrue(containsLinkWithIdAndWeight(topology, linkIdToAdd, 1));
       Assert.assertTrue(containsLinkWithStateAndId(topology, linkIdToAdd, LinkState.UNMARKED));
@@ -74,57 +71,53 @@ public class TopologyControlRuleTests
    @Test
    public void testSetLinkState()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
-      final EObject topology = extractTopology(graph);
+      final EObject topology = getTopology();
 
       final String linkId = "1->2";
 
-      Assert.assertTrue(prepareLinkAddition(linkId, graph, engine, rulesModule).execute(null));
-      Assert.assertTrue(prepareSetLinkState(linkId, LinkState.INACTIVE, graph, engine, rulesModule).execute(null));
+      Assert.assertTrue(addLink(linkId));
+      Assert.assertTrue(setLinkState(linkId, LinkState.INACTIVE));
       Assert.assertTrue(containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE));
-      Assert.assertTrue(prepareSetLinkState(linkId, LinkState.ACTIVE, graph, engine, rulesModule).execute(null));
+      Assert.assertTrue(setLinkState(linkId, LinkState.ACTIVE));
       Assert.assertTrue(containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE));
    }
 
    @Test
    public void testCreateTriangleSuccessful()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
-      final EObject topology = extractTopology(graph);
+      final EObject topology = getTopology();
 
       for (final String linkIdToAdd : Arrays.asList("1->2", "1->3", "3->2"))
       {
-         Assert.assertTrue(prepareLinkAddition(linkIdToAdd, graph, engine, rulesModule).execute(null));
+         Assert.assertTrue(addLink(linkIdToAdd));
       }
       Assert.assertEquals(3, getLinks(topology).size());
    }
 
+   /**
+    * This test case illustrates that closing creating a triangle on top of an inactive link is allowed
+    */
    @Test
    public void testCreateTriangleAllowedByApplicationCondition()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2"));
+      Assert.assertTrue(setLinkState("1->2", LinkState.INACTIVE));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3"));
 
-      for (final String linkIdToAdd : Arrays.asList("1->2", "1->3"))
-      {
-         Assert.assertTrue(prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd, graph, engine, rulesModule).execute(null));
-      }
-      Assert.assertTrue(prepareSetLinkState("1->2", LinkState.INACTIVE, graph, engine, rulesModule).execute(null));
-
-      Assert.assertTrue(prepareLinkAdditionWithTrianglePreventingAC("3->2", graph, engine, rulesModule).execute(null));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("3->2"));
    }
 
+   /**
+    * This test case illustrates that closing creating a triangle on top of an active link is forbidden
+    */
    @Test
    public void testCreateTriangleForbiddenByApplicationCondition()
    {
-      final EGraph graph = new EGraphImpl(testTopologyResource);
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2"));
+      Assert.assertTrue(setLinkState("1->2", LinkState.ACTIVE));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3"));
 
-      for (final String linkIdToAdd : Arrays.asList("1->2", "1->3"))
-      {
-         Assert.assertTrue(prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd, graph, engine, rulesModule).execute(null));
-      }
-      Assert.assertTrue(prepareSetLinkState("1->2", LinkState.ACTIVE, graph, engine, rulesModule).execute(null));
-
-      Assert.assertFalse(prepareLinkAdditionWithTrianglePreventingAC("3->2", graph, engine, rulesModule).execute(null));
+      Assert.assertFalse(addLinkWithTrianglePreventingAC("3->2"));
    }
 
    private static boolean containsLinkWithId(final EObject topology, final String linkId)
@@ -191,9 +184,14 @@ public class TopologyControlRuleTests
       }
    }
 
-   private static UnitApplication prepareLinkAddition(final String linkIdToAdd, final EGraph graph, final Engine engine, final Module rulesModule)
+   private boolean addLink(final String linkIdToAdd)
    {
-      final EObject topology = extractTopology(graph);
+      return prepareLinkAddition(linkIdToAdd).execute(null);
+   }
+
+   private UnitApplication prepareLinkAddition(final String linkIdToAdd)
+   {
+      final EObject topology = getTopology();
       final String srcId = extractSourceNodeId(linkIdToAdd);
       final String trgId = extractTargetNodeId(linkIdToAdd);
       final double weight = 1.0;
@@ -208,10 +206,14 @@ public class TopologyControlRuleTests
       return unit;
    }
 
-   private static UnitApplication prepareLinkAdditionWithTrianglePreventingAC(final String linkIdToAdd, final EGraph graph, final Engine engine,
-         final Module rulesModule)
+   private boolean addLinkWithTrianglePreventingAC(final String linkIdToAdd)
    {
-      final EObject topology = extractTopology(graph);
+      return prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd).execute(null);
+   }
+
+   private UnitApplication prepareLinkAdditionWithTrianglePreventingAC(final String linkIdToAdd)
+   {
+      final EObject topology = getTopology();
       final String srcId = extractSourceNodeId(linkIdToAdd);
       final String trgId = extractTargetNodeId(linkIdToAdd);
       final double weight = 1.0;
@@ -226,10 +228,14 @@ public class TopologyControlRuleTests
       return unit;
    }
 
-   private static UnitApplication prepareSetLinkState(final String linkId, final int newState, final EGraph graph, final Engine engine,
-         final Module rulesModule)
+   private boolean setLinkState(final String linkId, final int newState)
    {
-      final EObject topology = extractTopology(graph);
+      return prepareSetLinkState(linkId, newState).execute(null);
+   }
+
+   private UnitApplication prepareSetLinkState(final String linkId, final int newState)
+   {
+      final EObject topology = getTopology();
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
       unit.setUnit(getUnitChecked(rulesModule, "setLinkState"));
@@ -241,6 +247,8 @@ public class TopologyControlRuleTests
 
    private static String[] extractNodeIds(final String linkId)
    {
+      if (!linkId.contains(NODE_ID_SEPARATOR))
+         throw new IllegalArgumentException(String.format("Link ID %s should contain separator token %s", linkId, NODE_ID_SEPARATOR));
       return linkId.split(Pattern.quote(NODE_ID_SEPARATOR));
    }
 
@@ -272,13 +280,12 @@ public class TopologyControlRuleTests
    }
 
    /**
-    * Extracts the topology object from the given graph.
+    * Extracts the topology object from the graph.
     * By convention, the topology is always the first root.
-    * @param graph the graph
     * @return the extracted topology
     */
-   private static EObject extractTopology(final EGraph graph)
+   private EObject getTopology()
    {
-      return graph.getRoots().get(0);
+      return this.graph.getRoots().get(0);
    }
 }
