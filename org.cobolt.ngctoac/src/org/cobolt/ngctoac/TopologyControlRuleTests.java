@@ -71,6 +71,21 @@ public class TopologyControlRuleTests
    }
 
    @Test
+   public void testSetLinkState()
+   {
+      final EGraph graph = new EGraphImpl(testTopologyResource);
+      final EObject topology = graph.getRoots().get(0);
+
+      final String linkId = "1->2";
+
+      Assert.assertTrue(prepareLinkAddition(linkId, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(prepareSetLinkState(linkId, LinkState.INACTIVE, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE));
+      Assert.assertTrue(prepareSetLinkState(linkId, LinkState.ACTIVE, graph, topology, engine, rulesModule).execute(null));
+      Assert.assertTrue(containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE));
+   }
+
+   @Test
    public void testCreateTriangleSuccessful() {
       final EGraph graph = new EGraphImpl(testTopologyResource);
       final EObject topology = graph.getRoots().get(0);
@@ -89,6 +104,7 @@ public class TopologyControlRuleTests
       for (final String linkIdToAdd : Arrays.asList("1->2", "1->3")) {
          Assert.assertTrue(prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd, graph, topology, engine, rulesModule).execute(null));
       }
+      Assert.assertTrue(prepareSetLinkState("1->2", 1, graph, topology, engine, rulesModule).execute(null));
 
       Assert.assertFalse(prepareLinkAdditionWithTrianglePreventingAC("3->2", graph, topology, engine, rulesModule).execute(null));
       Assert.assertEquals(2, getLinks(topology).size());
@@ -189,6 +205,18 @@ public class TopologyControlRuleTests
       unit.setParameterValue("trgId", trgId);
       unit.setParameterValue("linkId", linkIdToAdd);
       unit.setParameterValue("weight", weight);
+      unit.setParameterValue("topology", topology);
+      return unit;
+   }
+
+   private static UnitApplication prepareSetLinkState(final String linkId, final int newState, final EGraph graph, final EObject topology,
+         final Engine engine, final Module rulesModule)
+   {
+      final UnitApplication unit = new UnitApplicationImpl(engine);
+      unit.setEGraph(graph);
+      unit.setUnit(getUnitChecked(rulesModule, "setLinkState"));
+      unit.setParameterValue("linkId", linkId);
+      unit.setParameterValue("newState", newState);
       unit.setParameterValue("topology", topology);
       return unit;
    }

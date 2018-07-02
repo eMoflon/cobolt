@@ -4,7 +4,10 @@
     <typeGraph href="http://www.coboltmetamodel.org/#/"/>
     <laxCondition xsi:type="laxcondition:QuantifiedLaxCondition" quantifier="FORALL">
       <graph>
-        <nodes name="e12p">
+        <nodes name="e12">
+          <attributes op="=" value="1">
+            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+          </attributes>
           <type href="http://www.coboltmetamodel.org/#//Link"/>
         </nodes>
       </graph>
