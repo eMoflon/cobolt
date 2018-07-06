@@ -45,6 +45,12 @@
               <attributes op="=" value="w12">
                 <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
               </attributes>
+              <attributes op=">" value="w13">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <attributes op=">" value="w32">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
               <type href="http://www.coboltmetamodel.org/#//Link"/>
             </nodes>
             <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.3" name="e13" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.2">

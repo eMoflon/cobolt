@@ -100,11 +100,11 @@ public class TopologyControlRuleTests
    @Test
    public void testCreateTriangleAllowedByApplicationCondition()
    {
-      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2"));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2", 7));
       Assert.assertTrue(setLinkState("1->2", LinkState.INACTIVE));
-      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3"));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3", 2));
 
-      Assert.assertTrue(addLinkWithTrianglePreventingAC("3->2"));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("3->2", 3));
    }
 
    /**
@@ -113,11 +113,11 @@ public class TopologyControlRuleTests
    @Test
    public void testCreateTriangleForbiddenByApplicationCondition()
    {
-      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2"));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->2", 7));
       Assert.assertTrue(setLinkState("1->2", LinkState.ACTIVE));
-      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3"));
+      Assert.assertTrue(addLinkWithTrianglePreventingAC("1->3", 1));
 
-      Assert.assertFalse(addLinkWithTrianglePreventingAC("3->2"));
+      Assert.assertFalse(addLinkWithTrianglePreventingAC("3->2", 6));
    }
 
    private static boolean containsLinkWithId(final EObject topology, final String linkId)
@@ -206,17 +206,16 @@ public class TopologyControlRuleTests
       return unit;
    }
 
-   private boolean addLinkWithTrianglePreventingAC(final String linkIdToAdd)
+   private boolean addLinkWithTrianglePreventingAC(final String linkIdToAdd, final double weight)
    {
-      return prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd).execute(null);
+      return prepareLinkAdditionWithTrianglePreventingAC(linkIdToAdd, weight).execute(null);
    }
 
-   private UnitApplication prepareLinkAdditionWithTrianglePreventingAC(final String linkIdToAdd)
+   private UnitApplication prepareLinkAdditionWithTrianglePreventingAC(final String linkIdToAdd, final double weight)
    {
       final EObject topology = getTopology();
       final String srcId = extractSourceNodeId(linkIdToAdd);
       final String trgId = extractTargetNodeId(linkIdToAdd);
-      final double weight = 1.0;
       final UnitApplication unit = new UnitApplicationImpl(engine);
       unit.setEGraph(graph);
       unit.setUnit(getUnitChecked(rulesModule, "addLink_updated_No Triangle"));
