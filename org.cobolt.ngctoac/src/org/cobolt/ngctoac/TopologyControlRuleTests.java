@@ -17,8 +17,8 @@ import org.eclipse.emf.henshin.model.Module;
 import org.eclipse.emf.henshin.model.Unit;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 public class TopologyControlRuleTests
 {
@@ -36,8 +36,8 @@ public class TopologyControlRuleTests
 
    private EGraphImpl graph;
 
-   @BeforeEach
-   void setUp()
+   @Before
+   public void setUp()
    {
       this.resourceSet = new HenshinResourceSet(HenshinRules.getRulesDirectory());
       this.rulesModule = resourceSet.getModule(RULES_FILE, false);
