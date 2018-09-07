@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.cobolt.ngctoac
+Automatic-Module-Name: org.cobolt.ngctoac
 Bundle-SymbolicName: org.cobolt.ngctoac
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
