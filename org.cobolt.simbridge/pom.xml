@@ -57,11 +57,6 @@
 		</dependency>
 		<dependency>
 			<groupId>maki</groupId>
-			<artifactId>simonstrator-overlays</artifactId>
-			<version>${simonstrator-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>maki</groupId>
 			<artifactId>simonstrator-peerfactsim</artifactId>
 			<version>${simonstrator-version}</version>
 		</dependency>

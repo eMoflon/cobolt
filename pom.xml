@@ -12,6 +12,7 @@
     <module>org.cobolt.model</module>
     <module>org.cobolt.simbridge</module>
     <module>org.cobolt.tccpa</module>
+    <module>org.cobolt.releng.target</module>
   </modules>
 
   <properties>
