@@ -16,3 +16,4 @@ Bundle-ManifestVersion: 2
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Roland Kluge, TU Darmstadt
+Automatic-Module-Name: org.cobolt.algorithms
