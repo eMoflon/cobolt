@@ -66,6 +66,7 @@
         </arguments>
       </condition>
     </laxCondition>
+    <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
   </compactconditions>
   <compactconditions name="InactiveLinkIsLongestLinkInTriangle">
     <typeGraph href="http://www.coboltmetamodel.org/#/"/>
@@ -131,6 +132,7 @@
         <variables name="w32"/>
       </condition>
     </laxCondition>
+    <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
   </compactconditions>
   <typeGraph href="http://www.coboltmetamodel.org/#/"/>
 </compactconditionmodel:CompactConditionModel>

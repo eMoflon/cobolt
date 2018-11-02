@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ASCII"?>
+<nestedconstraintmodel:NestedConstraintModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nestedcondition="http://www.example.org/nestedcondition" xmlns:nestedconstraintmodel="http://www.example.org/nestedconstraintmodel" name="tcConstraints">
+  <nestedconstrainmodels name="ActiveLinkIsNotLongestLinkInTriangle">
+    <typeGraph href="http://www.coboltmetamodel.org/#/"/>
+    <condition xsi:type="nestedcondition:QuantifiedCondition" domain="//@nestedconstrainmodels.0/@domain" quantifier="FORALL">
+      <variables name="w32"/>
+      <variables name="w13"/>
+      <variables name="w12"/>
+      <condition xsi:type="nestedcondition:Formula" domain="//@nestedconstrainmodels.0/@condition/@codomain">
+        <arguments xsi:type="nestedcondition:QuantifiedCondition" domain="//@nestedconstrainmodels.0/@condition/@codomain">
+          <morphism from="//@nestedconstrainmodels.0/@condition/@codomain" to="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain">
+            <nodeMappings origin="//@nestedconstrainmodels.0/@condition/@codomain/@nodes.0" image="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.0"/>
+          </morphism>
+          <codomain>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.1" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.0">
+              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+            </edges>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.0" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.2">
+              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+            </edges>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.1" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.4">
+              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+            </edges>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.4" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.3">
+              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+            </edges>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.3" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.5">
+              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+            </edges>
+            <edges source="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.5" target="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@nodes.2">
+              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+            </edges>
+            <nodes outgoing="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.1" name="e12" incoming="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.0">
+              <attributes op="=" value="1">
+                <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+              </attributes>
+              <attributes op="=" value="w12">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <nodes outgoing="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.0 //@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.2" name="n1">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes name="n2" incoming="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.1 //@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.5">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes outgoing="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.4" name="n3" incoming="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.3">
+              <type href="http://www.coboltmetamodel.org/#//Node"/>
+            </nodes>
+            <nodes outgoing="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.3" name="e13" incoming="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.2">
+              <attributes op="=" value="w13">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <nodes outgoing="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.5" name="e32" incoming="//@nestedconstrainmodels.0/@condition/@condition/@arguments.0/@codomain/@edges.4">
+              <attributes op="=" value="w32">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <typegraph href="http://www.coboltmetamodel.org/#/"/>
+          </codomain>
+        </arguments>
+      </condition>
+      <morphism from="//@nestedconstrainmodels.0/@domain" to="//@nestedconstrainmodels.0/@condition/@codomain"/>
+      <codomain>
+        <nodes name="e12">
+          <attributes op="=" value="1">
+            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+          </attributes>
+          <type href="http://www.coboltmetamodel.org/#//Link"/>
+        </nodes>
+        <typegraph href="http://www.coboltmetamodel.org/#/"/>
+      </codomain>
+    </condition>
+    <domain>
+      <typegraph href="http://www.coboltmetamodel.org/#/"/>
+    </domain>
+    <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
+  </nestedconstrainmodels>
+  <nestedconstrainmodels name="InactiveLinkIsLongestLinkInTriangle">
+    <typeGraph href="http://www.coboltmetamodel.org/#/"/>
+    <condition xsi:type="nestedcondition:QuantifiedCondition" domain="//@nestedconstrainmodels.1/@domain" quantifier="FORALL">
+      <variables name="w32"/>
+      <variables name="w13"/>
+      <variables name="w12"/>
+      <condition xsi:type="nestedcondition:QuantifiedCondition" domain="//@nestedconstrainmodels.1/@condition/@codomain">
+        <morphism from="//@nestedconstrainmodels.1/@condition/@codomain" to="//@nestedconstrainmodels.1/@condition/@condition/@codomain">
+          <nodeMappings origin="//@nestedconstrainmodels.1/@condition/@codomain/@nodes.0" image="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.0"/>
+        </morphism>
+        <codomain>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.1" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.0">
+            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+          </edges>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.0" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.2">
+            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+          </edges>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.1" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.4">
+            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+          </edges>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.4" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.3">
+            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+          </edges>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.3" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.5">
+            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+          </edges>
+          <edges source="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.5" target="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@nodes.2">
+            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+          </edges>
+          <nodes outgoing="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.1" name="e12" incoming="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.0">
+            <attributes op="=" value="0">
+              <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+            </attributes>
+            <attributes op="=" value="w12">
+              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+            </attributes>
+            <type href="http://www.coboltmetamodel.org/#//Link"/>
+          </nodes>
+          <nodes outgoing="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.0 //@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.2" name="n1">
+            <type href="http://www.coboltmetamodel.org/#//Node"/>
+          </nodes>
+          <nodes name="n2" incoming="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.1 //@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.5">
+            <type href="http://www.coboltmetamodel.org/#//Node"/>
+          </nodes>
+          <nodes outgoing="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.4" name="n3" incoming="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.3">
+            <type href="http://www.coboltmetamodel.org/#//Node"/>
+          </nodes>
+          <nodes outgoing="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.3" name="e13" incoming="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.2">
+            <attributes op="=" value="w13">
+              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+            </attributes>
+            <type href="http://www.coboltmetamodel.org/#//Link"/>
+          </nodes>
+          <nodes outgoing="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.5" name="e32" incoming="//@nestedconstrainmodels.1/@condition/@condition/@codomain/@edges.4">
+            <attributes op="=" value="w32">
+              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+            </attributes>
+            <type href="http://www.coboltmetamodel.org/#//Link"/>
+          </nodes>
+          <typegraph href="http://www.coboltmetamodel.org/#/"/>
+        </codomain>
+      </condition>
+      <morphism from="//@nestedconstrainmodels.1/@domain" to="//@nestedconstrainmodels.1/@condition/@codomain"/>
+      <codomain>
+        <nodes name="e12">
+          <attributes op="=" value="0">
+            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+          </attributes>
+          <type href="http://www.coboltmetamodel.org/#//Link"/>
+        </nodes>
+        <typegraph href="http://www.coboltmetamodel.org/#/"/>
+      </codomain>
+    </condition>
+    <domain>
+      <typegraph href="http://www.coboltmetamodel.org/#/"/>
+    </domain>
+  </nestedconstrainmodels>
+</nestedconstraintmodel:NestedConstraintModel>
