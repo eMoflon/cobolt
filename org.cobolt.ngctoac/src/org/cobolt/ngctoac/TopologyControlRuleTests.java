@@ -1,5 +1,9 @@
 package org.cobolt.ngctoac;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 
 import org.eclipse.emf.ecore.EObject;
@@ -9,7 +13,6 @@ import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
 import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
 import org.eclipse.emf.henshin.model.Module;
 import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,8 +42,8 @@ public class TopologyControlRuleTests {
 	@Test
 	public void testTestmodelValidity() {
 		final EObject topology = getTopology();
-		Assert.assertEquals(3, GraphUtils.getNodes(topology).size());
-		Assert.assertEquals(0, GraphUtils.getLinks(topology).size());
+		assertEquals(3, GraphUtils.getNodes(topology).size());
+		assertEquals(0, GraphUtils.getLinks(topology).size());
 	}
 
 	@Test
@@ -49,11 +52,11 @@ public class TopologyControlRuleTests {
 
 		final String linkIdToAdd = "1->2";
 
-		Assert.assertFalse(GraphUtils.containsLinkWithId(topology, linkIdToAdd));
-		Assert.assertTrue(addLink(linkIdToAdd));
-		Assert.assertTrue(GraphUtils.containsLinkWithId(topology, linkIdToAdd));
-		Assert.assertTrue(GraphUtils.containsLinkWithIdAndWeight(topology, linkIdToAdd, 1));
-		Assert.assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkIdToAdd, LinkState.UNMARKED));
+		assertFalse(GraphUtils.containsLinkWithId(topology, linkIdToAdd));
+		assertTrue(addLink(linkIdToAdd));
+		assertTrue(GraphUtils.containsLinkWithId(topology, linkIdToAdd));
+		assertTrue(GraphUtils.containsLinkWithIdAndWeight(topology, linkIdToAdd, 1));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkIdToAdd, LinkState.UNMARKED));
 	}
 
 	@Test
@@ -62,11 +65,11 @@ public class TopologyControlRuleTests {
 
 		final String linkId = "1->2";
 
-		Assert.assertTrue(addLink(linkId));
-		Assert.assertTrue(setLinkState(linkId, LinkState.INACTIVE));
-		Assert.assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE));
-		Assert.assertTrue(setLinkState(linkId, LinkState.ACTIVE));
-		Assert.assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE));
+		assertTrue(addLink(linkId));
+		assertTrue(setLinkState(linkId, LinkState.INACTIVE));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkId, LinkState.INACTIVE));
+		assertTrue(setLinkState(linkId, LinkState.ACTIVE));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(topology, linkId, LinkState.ACTIVE));
 	}
 
 	@Test
@@ -74,9 +77,9 @@ public class TopologyControlRuleTests {
 		final EObject topology = getTopology();
 
 		for (final String linkIdToAdd : Arrays.asList("1->2", "1->3", "3->2")) {
-			Assert.assertTrue(addLink(linkIdToAdd));
+			assertTrue(addLink(linkIdToAdd));
 		}
-		Assert.assertEquals(3, GraphUtils.getLinks(topology).size());
+		assertEquals(3, GraphUtils.getLinks(topology).size());
 	}
 
 	/**
@@ -85,24 +88,62 @@ public class TopologyControlRuleTests {
 	 */
 	@Test
 	public void testCreateTriangleAllowedByApplicationCondition() {
-		Assert.assertTrue(addLink_Refined("1->2", 7));
-		Assert.assertTrue(setLinkState("1->2", LinkState.INACTIVE));
-		Assert.assertTrue(addLink_Refined("1->3", 2));
+		assertTrue(addLink_Refined("1->2", 7));
+		assertTrue(setLinkState("1->2", LinkState.INACTIVE));
+		assertTrue(addLink_Refined("1->3", 2));
 
-		Assert.assertTrue(addLink_Refined("3->2", 3));
+		assertTrue(addLink_Refined("3->2", 3));
 	}
 
 	/**
 	 * This test case illustrates that closing creating a triangle on top of an
-	 * active link is forbidden
+	 * active link is forbidden. Order: e12[A], e13, e32
 	 */
 	@Test
-	public void testCreateTriangleForbiddenByApplicationCondition() {
-		Assert.assertTrue(addLink_Refined("1->2", 7));
-		Assert.assertTrue(setLinkState("1->2", LinkState.ACTIVE));
-		Assert.assertTrue(addLink_Refined("1->3", 1));
+	public void testCreateTriangleForbiddenByApplicationCondition1() {
+		assertTrue(addLink_Refined("1->2", 7));
+		assertTrue(setLinkState("1->2", LinkState.ACTIVE));
+		assertTrue(addLink_Refined("1->3", 1));
 
-		Assert.assertFalse(addLink_Refined("3->2", 6));
+		assertFalse(addLink_Refined("3->2", 6));
+	}
+
+	/**
+	 * This test case illustrates that closing creating a triangle on top of an
+	 * active link is forbidden. Order: e13, e12[A], e32
+	 */
+	@Test
+	public void testCreateTriangleForbiddenByApplicationCondition2() {
+		assertTrue(addLink_Refined("1->3", 1));
+		assertTrue(addLink_Refined("1->2", 7));
+		assertTrue(setLinkState("1->2", LinkState.ACTIVE));
+
+		assertFalse(addLink_Refined("3->2", 6));
+	}
+
+	/**
+	 * This test case illustrates that closing creating a triangle on top of an
+	 * active link is forbidden. Order: e32, e12[A], e13
+	 */
+	@Test
+	public void testCreateTriangleForbiddenByApplicationCondition3() {
+		assertTrue(addLink_Refined("3->2", 6));
+		assertTrue(addLink_Refined("1->2", 7));
+		assertTrue(setLinkState("1->2", LinkState.ACTIVE));
+
+		assertFalse(addLink_Refined("1->3", 1));
+	}
+
+	/**
+	 * This test case illustrates that closing creating a triangle on top of an
+	 * active link is forbidden. Order: e32, e13, e12[A]
+	 */
+	@Test
+	public void testCreateTriangleForbiddenByApplicationCondition4() {
+		assertTrue(addLink_Refined("3->2", 6));
+		assertTrue(addLink_Refined("1->3", 1));
+		assertTrue(addLink_Refined("1->2", 7));
+		assertFalse(setLinkState_Refined("1->2", LinkState.ACTIVE));
 	}
 
 	private boolean addLink(final String linkIdToAdd) {
@@ -115,6 +156,10 @@ public class TopologyControlRuleTests {
 
 	private boolean setLinkState(final String linkId, final int newState) {
 		return this.ruleExecutionHelper.prepare_setLinkState(linkId, newState).execute(null);
+	}
+
+	private boolean setLinkState_Refined(final String linkId, final int newState) {
+		return this.ruleExecutionHelper.prepare_setLinkState_Refined(linkId, newState).execute(null);
 	}
 
 	/**

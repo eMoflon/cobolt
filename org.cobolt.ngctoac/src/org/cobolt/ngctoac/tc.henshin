@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_8-5-MHufEeiIVbgtI9SCvA">
   <imports href="http://www.coboltmetamodel.org/#/"/>
-  <units xsi:type="henshin:Rule" xmi:id="_TfzwMH3NEeiCTO_xSyPOzQ" name="setLinkState">
+  <units xsi:type="henshin:Rule" xmi:id="_TfzwMH3NEeiCTO_xSyPOzQ" name="setLinkState_updated_ActiveLinkIsNotLongestLinkInTriangle">
     <parameters xmi:id="_bWtbAH3NEeiCTO_xSyPOzQ" name="linkId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -14,6 +14,9 @@
     <parameters xmi:id="_CKP9IH3OEeiCTO_xSyPOzQ" name="x" kind="VAR">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </parameters>
+    <parameters xmi:id="_sNTaMN6wEeiNqMp56kT4iA" name="w32"/>
+    <parameters xmi:id="_sNTaMd6wEeiNqMp56kT4iA" name="w13"/>
+    <parameters xmi:id="_sNTaMt6wEeiNqMp56kT4iA" name="w12"/>
     <lhs xmi:id="_Tf_9cH3NEeiCTO_xSyPOzQ" name="Lhs">
       <nodes xmi:id="_c22_IH3NEeiCTO_xSyPOzQ" name="topology" outgoing="_irAvEH3NEeiCTO_xSyPOzQ">
         <type href="http://www.coboltmetamodel.org/#//Topology"/>
@@ -30,6 +33,331 @@
       <edges xmi:id="_irAvEH3NEeiCTO_xSyPOzQ" source="_c22_IH3NEeiCTO_xSyPOzQ" target="_hscOAH3NEeiCTO_xSyPOzQ">
         <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
       </edges>
+      <formula xsi:type="henshin:And" xmi:id="_sNV2cN6wEeiNqMp56kT4iA">
+        <left xsi:type="henshin:Not" xmi:id="_sNV2cd6wEeiNqMp56kT4iA">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_sNV2ct6wEeiNqMp56kT4iA">
+            <conclusion xmi:id="_sNV2c96wEeiNqMp56kT4iA">
+              <nodes xmi:id="_sNV2dN6wEeiNqMp56kT4iA" name="topology" outgoing="_sNWdhd6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+              </nodes>
+              <nodes xmi:id="_sNWdgd6wEeiNqMp56kT4iA" name="link" incoming="_sNWdhd6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                <attributes xmi:id="_sNWdgt6wEeiNqMp56kT4iA" value="linkId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+                <attributes xmi:id="_sNWdg96wEeiNqMp56kT4iA" value="x">
+                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                </attributes>
+              </nodes>
+              <nodes xmi:id="_sNXroN6wEeiNqMp56kT4iA" name="e12">
+                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                <attributes xmi:id="_sNXrod6wEeiNqMp56kT4iA" value="1">
+                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                </attributes>
+              </nodes>
+              <edges xmi:id="_sNWdhd6wEeiNqMp56kT4iA" source="_sNV2dN6wEeiNqMp56kT4iA" target="_sNWdgd6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+              </edges>
+              <formula xsi:type="henshin:Or" xmi:id="_sNYSsN6wEeiNqMp56kT4iA">
+                <left xsi:type="henshin:Or" xmi:id="_sNYSsd6wEeiNqMp56kT4iA">
+                  <left xsi:type="henshin:NestedCondition" xmi:id="_sNYSst6wEeiNqMp56kT4iA">
+                    <conclusion xmi:id="_sNYSs96wEeiNqMp56kT4iA">
+                      <nodes xmi:id="_sNYStN6wEeiNqMp56kT4iA" name="topology" outgoing="_sNYSvd6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                      </nodes>
+                      <nodes xmi:id="_sNYStt6wEeiNqMp56kT4iA" name="link" incoming="_sNYSvd6wEeiNqMp56kT4iA _sNYSx96wEeiNqMp56kT4iA" outgoing="_sNYSyN6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNYSt96wEeiNqMp56kT4iA" value="linkId">
+                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                        </attributes>
+                        <attributes xmi:id="_sNYSuN6wEeiNqMp56kT4iA" value="x">
+                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                        </attributes>
+                        <attributes xmi:id="_sNYSwt6wEeiNqMp56kT4iA" value="w13">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_sNYSut6wEeiNqMp56kT4iA" name="e12" incoming="_sNYSxd6wEeiNqMp56kT4iA" outgoing="_sNYSxt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNYSu96wEeiNqMp56kT4iA" value="1">
+                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                        </attributes>
+                        <attributes xmi:id="_sNYSvt6wEeiNqMp56kT4iA" value="w12">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_sNYSv96wEeiNqMp56kT4iA" name="n1" outgoing="_sNYSxd6wEeiNqMp56kT4iA _sNYSx96wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNYSwN6wEeiNqMp56kT4iA" name="n2" incoming="_sNYSxt6wEeiNqMp56kT4iA _sNYSyt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNYSwd6wEeiNqMp56kT4iA" name="n3" incoming="_sNYSyN6wEeiNqMp56kT4iA" outgoing="_sNYSyd6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNYSw96wEeiNqMp56kT4iA" name="e32" incoming="_sNYSyd6wEeiNqMp56kT4iA" outgoing="_sNYSyt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNYSxN6wEeiNqMp56kT4iA" value="w32">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <edges xmi:id="_sNYSvd6wEeiNqMp56kT4iA" source="_sNYStN6wEeiNqMp56kT4iA" target="_sNYStt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+                      </edges>
+                      <edges xmi:id="_sNYSxd6wEeiNqMp56kT4iA" source="_sNYSv96wEeiNqMp56kT4iA" target="_sNYSut6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNYSxt6wEeiNqMp56kT4iA" source="_sNYSut6wEeiNqMp56kT4iA" target="_sNYSwN6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_sNYSx96wEeiNqMp56kT4iA" source="_sNYSv96wEeiNqMp56kT4iA" target="_sNYStt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNYSyN6wEeiNqMp56kT4iA" source="_sNYStt6wEeiNqMp56kT4iA" target="_sNYSwd6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_sNYSyd6wEeiNqMp56kT4iA" source="_sNYSwd6wEeiNqMp56kT4iA" target="_sNYSw96wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNYSyt6wEeiNqMp56kT4iA" source="_sNYSw96wEeiNqMp56kT4iA" target="_sNYSwN6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                    </conclusion>
+                    <mappings xmi:id="_sNYStd6wEeiNqMp56kT4iA" origin="_sNV2dN6wEeiNqMp56kT4iA" image="_sNYStN6wEeiNqMp56kT4iA"/>
+                    <mappings xmi:id="_sNYSud6wEeiNqMp56kT4iA" origin="_sNWdgd6wEeiNqMp56kT4iA" image="_sNYStt6wEeiNqMp56kT4iA"/>
+                    <mappings xmi:id="_sNYSvN6wEeiNqMp56kT4iA" origin="_sNXroN6wEeiNqMp56kT4iA" image="_sNYSut6wEeiNqMp56kT4iA"/>
+                  </left>
+                  <right xsi:type="henshin:NestedCondition" xmi:id="_sNY5wN6wEeiNqMp56kT4iA">
+                    <conclusion xmi:id="_sNY5wd6wEeiNqMp56kT4iA">
+                      <nodes xmi:id="_sNY5wt6wEeiNqMp56kT4iA" name="topology" outgoing="_sNY5y96wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                      </nodes>
+                      <nodes xmi:id="_sNY5xN6wEeiNqMp56kT4iA" name="link" incoming="_sNY5y96wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNY5xd6wEeiNqMp56kT4iA" value="linkId">
+                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                        </attributes>
+                        <attributes xmi:id="_sNY5xt6wEeiNqMp56kT4iA" value="x">
+                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_sNY5yN6wEeiNqMp56kT4iA" name="e12" incoming="_sNY51N6wEeiNqMp56kT4iA" outgoing="_sNY51d6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNY5yd6wEeiNqMp56kT4iA" value="1">
+                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                        </attributes>
+                        <attributes xmi:id="_sNY5zN6wEeiNqMp56kT4iA" value="w12">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_sNY5zd6wEeiNqMp56kT4iA" name="n1" outgoing="_sNY51N6wEeiNqMp56kT4iA _sNY51t6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNY5zt6wEeiNqMp56kT4iA" name="n2" incoming="_sNY51d6wEeiNqMp56kT4iA _sNY52d6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNY5z96wEeiNqMp56kT4iA" name="n3" incoming="_sNY5196wEeiNqMp56kT4iA" outgoing="_sNY52N6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_sNY50N6wEeiNqMp56kT4iA" name="e13" incoming="_sNY51t6wEeiNqMp56kT4iA" outgoing="_sNY5196wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNY50d6wEeiNqMp56kT4iA" value="w13">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_sNY50t6wEeiNqMp56kT4iA" name="e32" incoming="_sNY52N6wEeiNqMp56kT4iA" outgoing="_sNY52d6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_sNY5096wEeiNqMp56kT4iA" value="w32">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <edges xmi:id="_sNY5y96wEeiNqMp56kT4iA" source="_sNY5wt6wEeiNqMp56kT4iA" target="_sNY5xN6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+                      </edges>
+                      <edges xmi:id="_sNY51N6wEeiNqMp56kT4iA" source="_sNY5zd6wEeiNqMp56kT4iA" target="_sNY5yN6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNY51d6wEeiNqMp56kT4iA" source="_sNY5yN6wEeiNqMp56kT4iA" target="_sNY5zt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_sNY51t6wEeiNqMp56kT4iA" source="_sNY5zd6wEeiNqMp56kT4iA" target="_sNY50N6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNY5196wEeiNqMp56kT4iA" source="_sNY50N6wEeiNqMp56kT4iA" target="_sNY5z96wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_sNY52N6wEeiNqMp56kT4iA" source="_sNY5z96wEeiNqMp56kT4iA" target="_sNY50t6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_sNY52d6wEeiNqMp56kT4iA" source="_sNY50t6wEeiNqMp56kT4iA" target="_sNY5zt6wEeiNqMp56kT4iA">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                    </conclusion>
+                    <mappings xmi:id="_sNY5w96wEeiNqMp56kT4iA" origin="_sNV2dN6wEeiNqMp56kT4iA" image="_sNY5wt6wEeiNqMp56kT4iA"/>
+                    <mappings xmi:id="_sNY5x96wEeiNqMp56kT4iA" origin="_sNWdgd6wEeiNqMp56kT4iA" image="_sNY5xN6wEeiNqMp56kT4iA"/>
+                    <mappings xmi:id="_sNY5yt6wEeiNqMp56kT4iA" origin="_sNXroN6wEeiNqMp56kT4iA" image="_sNY5yN6wEeiNqMp56kT4iA"/>
+                  </right>
+                </left>
+                <right xsi:type="henshin:NestedCondition" xmi:id="_sNY52t6wEeiNqMp56kT4iA">
+                  <conclusion xmi:id="_sNY5296wEeiNqMp56kT4iA">
+                    <nodes xmi:id="_sNY53N6wEeiNqMp56kT4iA" name="topology" outgoing="_sNY55d6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                    </nodes>
+                    <nodes xmi:id="_sNY53t6wEeiNqMp56kT4iA" name="link" incoming="_sNY55d6wEeiNqMp56kT4iA _sNZg296wEeiNqMp56kT4iA" outgoing="_sNZg3N6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_sNY5396wEeiNqMp56kT4iA" value="linkId">
+                        <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                      </attributes>
+                      <attributes xmi:id="_sNY54N6wEeiNqMp56kT4iA" value="x">
+                        <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                      </attributes>
+                      <attributes xmi:id="_sNZg1t6wEeiNqMp56kT4iA" value="w32">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_sNY54t6wEeiNqMp56kT4iA" name="e12" incoming="_sNZg196wEeiNqMp56kT4iA" outgoing="_sNZg2N6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_sNY5496wEeiNqMp56kT4iA" value="1">
+                        <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                      </attributes>
+                      <attributes xmi:id="_sNZg0N6wEeiNqMp56kT4iA" value="w12">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_sNZg0d6wEeiNqMp56kT4iA" name="n1" outgoing="_sNZg196wEeiNqMp56kT4iA _sNZg2d6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    </nodes>
+                    <nodes xmi:id="_sNZg0t6wEeiNqMp56kT4iA" name="n2" incoming="_sNZg2N6wEeiNqMp56kT4iA _sNZg3N6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    </nodes>
+                    <nodes xmi:id="_sNZg096wEeiNqMp56kT4iA" name="n3" incoming="_sNZg2t6wEeiNqMp56kT4iA" outgoing="_sNZg296wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    </nodes>
+                    <nodes xmi:id="_sNZg1N6wEeiNqMp56kT4iA" name="e13" incoming="_sNZg2d6wEeiNqMp56kT4iA" outgoing="_sNZg2t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_sNZg1d6wEeiNqMp56kT4iA" value="w13">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <edges xmi:id="_sNY55d6wEeiNqMp56kT4iA" source="_sNY53N6wEeiNqMp56kT4iA" target="_sNY53t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+                    </edges>
+                    <edges xmi:id="_sNZg196wEeiNqMp56kT4iA" source="_sNZg0d6wEeiNqMp56kT4iA" target="_sNY54t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_sNZg2N6wEeiNqMp56kT4iA" source="_sNY54t6wEeiNqMp56kT4iA" target="_sNZg0t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                    <edges xmi:id="_sNZg2d6wEeiNqMp56kT4iA" source="_sNZg0d6wEeiNqMp56kT4iA" target="_sNZg1N6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_sNZg2t6wEeiNqMp56kT4iA" source="_sNZg1N6wEeiNqMp56kT4iA" target="_sNZg096wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                    <edges xmi:id="_sNZg296wEeiNqMp56kT4iA" source="_sNZg096wEeiNqMp56kT4iA" target="_sNY53t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_sNZg3N6wEeiNqMp56kT4iA" source="_sNY53t6wEeiNqMp56kT4iA" target="_sNZg0t6wEeiNqMp56kT4iA">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                  </conclusion>
+                  <mappings xmi:id="_sNY53d6wEeiNqMp56kT4iA" origin="_sNV2dN6wEeiNqMp56kT4iA" image="_sNY53N6wEeiNqMp56kT4iA"/>
+                  <mappings xmi:id="_sNY54d6wEeiNqMp56kT4iA" origin="_sNWdgd6wEeiNqMp56kT4iA" image="_sNY53t6wEeiNqMp56kT4iA"/>
+                  <mappings xmi:id="_sNY55N6wEeiNqMp56kT4iA" origin="_sNXroN6wEeiNqMp56kT4iA" image="_sNY54t6wEeiNqMp56kT4iA"/>
+                </right>
+              </formula>
+            </conclusion>
+            <mappings xmi:id="_sNWdgN6wEeiNqMp56kT4iA" origin="_c22_IH3NEeiCTO_xSyPOzQ" image="_sNV2dN6wEeiNqMp56kT4iA"/>
+            <mappings xmi:id="_sNWdhN6wEeiNqMp56kT4iA" origin="_hscOAH3NEeiCTO_xSyPOzQ" image="_sNWdgd6wEeiNqMp56kT4iA"/>
+          </child>
+        </left>
+        <right xsi:type="henshin:Not" xmi:id="_sNZg3d6wEeiNqMp56kT4iA">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_sNZg3t6wEeiNqMp56kT4iA">
+            <conclusion xmi:id="_sNZg396wEeiNqMp56kT4iA">
+              <nodes xmi:id="_sNZg4N6wEeiNqMp56kT4iA" name="topology" outgoing="_sNZg5t6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+              </nodes>
+              <nodes xmi:id="_sNZg4t6wEeiNqMp56kT4iA" name="link" incoming="_sNZg5t6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                <attributes xmi:id="_sNZg496wEeiNqMp56kT4iA" value="linkId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+                <attributes xmi:id="_sNZg5N6wEeiNqMp56kT4iA" value="x">
+                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                </attributes>
+              </nodes>
+              <edges xmi:id="_sNZg5t6wEeiNqMp56kT4iA" source="_sNZg4N6wEeiNqMp56kT4iA" target="_sNZg4t6wEeiNqMp56kT4iA">
+                <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+              </edges>
+              <formula xsi:type="henshin:NestedCondition" xmi:id="_sNZg596wEeiNqMp56kT4iA">
+                <conclusion xmi:id="_sNZg6N6wEeiNqMp56kT4iA">
+                  <nodes xmi:id="_sNZg6d6wEeiNqMp56kT4iA" name="topology" outgoing="_sNZg796wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                  </nodes>
+                  <nodes xmi:id="_sNZg696wEeiNqMp56kT4iA" name="link" incoming="_sNZg796wEeiNqMp56kT4iA _sNaH5N6wEeiNqMp56kT4iA" outgoing="_sNaH5d6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                    <attributes xmi:id="_sNZg7N6wEeiNqMp56kT4iA" value="linkId">
+                      <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                    </attributes>
+                    <attributes xmi:id="_sNZg7d6wEeiNqMp56kT4iA" value="x">
+                      <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                    </attributes>
+                    <attributes xmi:id="_sNZg8N6wEeiNqMp56kT4iA" value="w12">
+                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                    </attributes>
+                  </nodes>
+                  <nodes xmi:id="_sNZg8d6wEeiNqMp56kT4iA" name="n1" outgoing="_sNaH5N6wEeiNqMp56kT4iA _sNaH5t6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                  </nodes>
+                  <nodes xmi:id="_sNZg8t6wEeiNqMp56kT4iA" name="n2" incoming="_sNaH5d6wEeiNqMp56kT4iA _sNaH6d6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                  </nodes>
+                  <nodes xmi:id="_sNZg896wEeiNqMp56kT4iA" name="n3" incoming="_sNaH596wEeiNqMp56kT4iA" outgoing="_sNaH6N6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                  </nodes>
+                  <nodes xmi:id="_sNaH4N6wEeiNqMp56kT4iA" name="e13" incoming="_sNaH5t6wEeiNqMp56kT4iA" outgoing="_sNaH596wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                    <attributes xmi:id="_sNaH4d6wEeiNqMp56kT4iA" value="w13">
+                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                    </attributes>
+                  </nodes>
+                  <nodes xmi:id="_sNaH4t6wEeiNqMp56kT4iA" name="e32" incoming="_sNaH6N6wEeiNqMp56kT4iA" outgoing="_sNaH6d6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                    <attributes xmi:id="_sNaH496wEeiNqMp56kT4iA" value="w32">
+                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                    </attributes>
+                  </nodes>
+                  <edges xmi:id="_sNZg796wEeiNqMp56kT4iA" source="_sNZg6d6wEeiNqMp56kT4iA" target="_sNZg696wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+                  </edges>
+                  <edges xmi:id="_sNaH5N6wEeiNqMp56kT4iA" source="_sNZg8d6wEeiNqMp56kT4iA" target="_sNZg696wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                  </edges>
+                  <edges xmi:id="_sNaH5d6wEeiNqMp56kT4iA" source="_sNZg696wEeiNqMp56kT4iA" target="_sNZg8t6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                  </edges>
+                  <edges xmi:id="_sNaH5t6wEeiNqMp56kT4iA" source="_sNZg8d6wEeiNqMp56kT4iA" target="_sNaH4N6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                  </edges>
+                  <edges xmi:id="_sNaH596wEeiNqMp56kT4iA" source="_sNaH4N6wEeiNqMp56kT4iA" target="_sNZg896wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                  </edges>
+                  <edges xmi:id="_sNaH6N6wEeiNqMp56kT4iA" source="_sNZg896wEeiNqMp56kT4iA" target="_sNaH4t6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                  </edges>
+                  <edges xmi:id="_sNaH6d6wEeiNqMp56kT4iA" source="_sNaH4t6wEeiNqMp56kT4iA" target="_sNZg8t6wEeiNqMp56kT4iA">
+                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                  </edges>
+                </conclusion>
+                <mappings xmi:id="_sNZg6t6wEeiNqMp56kT4iA" origin="_sNZg4N6wEeiNqMp56kT4iA" image="_sNZg6d6wEeiNqMp56kT4iA"/>
+                <mappings xmi:id="_sNZg7t6wEeiNqMp56kT4iA" origin="_sNZg4t6wEeiNqMp56kT4iA" image="_sNZg696wEeiNqMp56kT4iA"/>
+              </formula>
+            </conclusion>
+            <mappings xmi:id="_sNZg4d6wEeiNqMp56kT4iA" origin="_c22_IH3NEeiCTO_xSyPOzQ" image="_sNZg4N6wEeiNqMp56kT4iA"/>
+            <mappings xmi:id="_sNZg5d6wEeiNqMp56kT4iA" origin="_hscOAH3NEeiCTO_xSyPOzQ" image="_sNZg4t6wEeiNqMp56kT4iA"/>
+          </child>
+        </right>
+      </formula>
     </lhs>
     <rhs xmi:id="_Tf_9cX3NEeiCTO_xSyPOzQ" name="Rhs">
       <nodes xmi:id="_c22_IX3NEeiCTO_xSyPOzQ" name="topology" outgoing="_irAvEX3NEeiCTO_xSyPOzQ">
@@ -48,10 +376,11 @@
         <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
       </edges>
     </rhs>
+    <attributeConditions xmi:id="_sNLeYN6wEeiNqMp56kT4iA" conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
     <mappings xmi:id="_c22_In3NEeiCTO_xSyPOzQ" origin="_c22_IH3NEeiCTO_xSyPOzQ" image="_c22_IX3NEeiCTO_xSyPOzQ"/>
     <mappings xmi:id="_hscOAn3NEeiCTO_xSyPOzQ" origin="_hscOAH3NEeiCTO_xSyPOzQ" image="_hscOAX3NEeiCTO_xSyPOzQ"/>
   </units>
-  <units xsi:type="henshin:Rule" xmi:id="_6SNSsIEWEeiXqL1IxdW93g" name="addLink">
+  <units xsi:type="henshin:Rule" xmi:id="_6SNSsIEWEeiXqL1IxdW93g" name="addLink_updated_ActiveLinkIsNotLongestLinkInTriangle">
     <parameters xmi:id="_6SNSsYEWEeiXqL1IxdW93g" name="srcId" kind="IN">
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </parameters>
@@ -65,6 +394,9 @@
       <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     </parameters>
     <parameters xmi:id="_6SNStYEWEeiXqL1IxdW93g" name="topology" kind="IN"/>
+    <parameters xmi:id="_Muzha96jEei6j_YA94QTAw" name="w32"/>
+    <parameters xmi:id="_MuzhbN6jEei6j_YA94QTAw" name="w13"/>
+    <parameters xmi:id="_Muzhbd6jEei6j_YA94QTAw" name="w12"/>
     <lhs xmi:id="_6SNStoEWEeiXqL1IxdW93g" name="Lhs">
       <nodes xmi:id="_6SNSt4EWEeiXqL1IxdW93g" name="n1r" incoming="_6SNSvIEWEeiXqL1IxdW93g">
         <type href="http://www.coboltmetamodel.org/#//Node"/>
@@ -87,6 +419,1222 @@
       <edges xmi:id="_6SNSvYEWEeiXqL1IxdW93g" source="_6SNSu4EWEeiXqL1IxdW93g" target="_6SNSuYEWEeiXqL1IxdW93g">
         <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
       </edges>
+      <formula xsi:type="henshin:And" xmi:id="_Muzhbt6jEei6j_YA94QTAw">
+        <left xsi:type="henshin:Not" xmi:id="_Muzhb96jEei6j_YA94QTAw">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_MuzhcN6jEei6j_YA94QTAw">
+            <conclusion xmi:id="_Muzhcd6jEei6j_YA94QTAw">
+              <nodes xmi:id="_Muzhct6jEei6j_YA94QTAw" name="n1r" incoming="_Muzhet6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                <attributes xmi:id="_Muzhc96jEei6j_YA94QTAw" value="srcId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+              </nodes>
+              <nodes xmi:id="_Muzhdd6jEei6j_YA94QTAw" name="n2r" incoming="_Muzhe96jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                <attributes xmi:id="_Muzhdt6jEei6j_YA94QTAw" value="trgId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+              </nodes>
+              <nodes xmi:id="_MuzheN6jEei6j_YA94QTAw" name="topologyR" outgoing="_Muzhet6jEei6j_YA94QTAw _Muzhe96jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+              </nodes>
+              <nodes xmi:id="_MuzhfN6jEei6j_YA94QTAw" name="e12">
+                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                <attributes xmi:id="_Muzhfd6jEei6j_YA94QTAw" value="1">
+                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                </attributes>
+              </nodes>
+              <edges xmi:id="_Muzhet6jEei6j_YA94QTAw" source="_MuzheN6jEei6j_YA94QTAw" target="_Muzhct6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+              </edges>
+              <edges xmi:id="_Muzhe96jEei6j_YA94QTAw" source="_MuzheN6jEei6j_YA94QTAw" target="_Muzhdd6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+              </edges>
+              <formula xsi:type="henshin:Or" xmi:id="_Mu0F8N6jEei6j_YA94QTAw">
+                <left xsi:type="henshin:Or" xmi:id="_Mu0F9d6jEei6j_YA94QTAw">
+                  <left xsi:type="henshin:Or" xmi:id="_Mu0F9t6jEei6j_YA94QTAw">
+                    <left xsi:type="henshin:Or" xmi:id="_Mu0F-d6jEei6j_YA94QTAw">
+                      <left xsi:type="henshin:Or" xmi:id="_Mu0F_d6jEei6j_YA94QTAw">
+                        <left xsi:type="henshin:Or" xmi:id="_Mu0F_t6jEei6j_YA94QTAw">
+                          <left xsi:type="henshin:Or" xmi:id="_Mu0F_96jEei6j_YA94QTAw">
+                            <left xsi:type="henshin:Or" xmi:id="_Mu0GAd6jEei6j_YA94QTAw">
+                              <left xsi:type="henshin:Or" xmi:id="_Mu0GB96jEei6j_YA94QTAw">
+                                <left xsi:type="henshin:Or" xmi:id="_Mu0GCt6jEei6j_YA94QTAw">
+                                  <left xsi:type="henshin:Or" xmi:id="_Mu0GC96jEei6j_YA94QTAw">
+                                    <left xsi:type="henshin:Or" xmi:id="_Mu0GDd6jEei6j_YA94QTAw">
+                                      <left xsi:type="henshin:Or" xmi:id="_Mu0GEt6jEei6j_YA94QTAw">
+                                        <left xsi:type="henshin:Or" xmi:id="_Mu0GE96jEei6j_YA94QTAw">
+                                          <left xsi:type="henshin:NestedCondition" xmi:id="_Mu0GFt6jEei6j_YA94QTAw">
+                                            <conclusion xmi:id="_Mu0GF96jEei6j_YA94QTAw">
+                                              <nodes xmi:id="_Mu0GGN6jEei6j_YA94QTAw" name="n1r" incoming="_Mu0GI96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                                <attributes xmi:id="_Mu0GGd6jEei6j_YA94QTAw" value="srcId">
+                                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GG96jEei6j_YA94QTAw" name="n2r" incoming="_Mu0GJN6jEei6j_YA94QTAw" outgoing="_Mu0GLN6jEei6j_YA94QTAw _Mu0GLt6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                                <attributes xmi:id="_Mu0GHN6jEei6j_YA94QTAw" value="trgId">
+                                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GHt6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu0GI96jEei6j_YA94QTAw _Mu0GJN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GIN6jEei6j_YA94QTAw" name="e12" incoming="_Mu0GLN6jEei6j_YA94QTAw" outgoing="_Mu0GLd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                                <attributes xmi:id="_Mu0GId6jEei6j_YA94QTAw" value="1">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                                </attributes>
+                                                <attributes xmi:id="_Mu0GJd6jEei6j_YA94QTAw" value="w12">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GJt6jEei6j_YA94QTAw" name="n2" incoming="_Mu0GLd6jEei6j_YA94QTAw _Mu0GMd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GJ96jEei6j_YA94QTAw" name="n3" incoming="_Mu0GL96jEei6j_YA94QTAw" outgoing="_Mu0GMN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GKN6jEei6j_YA94QTAw" name="e13" incoming="_Mu0GLt6jEei6j_YA94QTAw" outgoing="_Mu0GL96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                                <attributes xmi:id="_Mu0GKd6jEei6j_YA94QTAw" value="w13">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GKt6jEei6j_YA94QTAw" name="e32" incoming="_Mu0GMN6jEei6j_YA94QTAw" outgoing="_Mu0GMd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                                <attributes xmi:id="_Mu0GK96jEei6j_YA94QTAw" value="w32">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                                </attributes>
+                                              </nodes>
+                                              <edges xmi:id="_Mu0GI96jEei6j_YA94QTAw" source="_Mu0GHt6jEei6j_YA94QTAw" target="_Mu0GGN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GJN6jEei6j_YA94QTAw" source="_Mu0GHt6jEei6j_YA94QTAw" target="_Mu0GG96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GLN6jEei6j_YA94QTAw" source="_Mu0GG96jEei6j_YA94QTAw" target="_Mu0GIN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GLd6jEei6j_YA94QTAw" source="_Mu0GIN6jEei6j_YA94QTAw" target="_Mu0GJt6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GLt6jEei6j_YA94QTAw" source="_Mu0GG96jEei6j_YA94QTAw" target="_Mu0GKN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GL96jEei6j_YA94QTAw" source="_Mu0GKN6jEei6j_YA94QTAw" target="_Mu0GJ96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GMN6jEei6j_YA94QTAw" source="_Mu0GJ96jEei6j_YA94QTAw" target="_Mu0GKt6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GMd6jEei6j_YA94QTAw" source="_Mu0GKt6jEei6j_YA94QTAw" target="_Mu0GJt6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                              </edges>
+                                            </conclusion>
+                                            <mappings xmi:id="_Mu0GGt6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu0GGN6jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0GHd6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu0GG96jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0GH96jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu0GHt6jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0GIt6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu0GIN6jEei6j_YA94QTAw"/>
+                                          </left>
+                                          <right xsi:type="henshin:NestedCondition" xmi:id="_Mu0GX96jEei6j_YA94QTAw">
+                                            <conclusion xmi:id="_Mu0GYN6jEei6j_YA94QTAw">
+                                              <nodes xmi:id="_Mu0GYd6jEei6j_YA94QTAw" name="n1r" incoming="_Mu0GbN6jEei6j_YA94QTAw _Mu0Gdd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                                <attributes xmi:id="_Mu0GYt6jEei6j_YA94QTAw" value="srcId">
+                                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GZN6jEei6j_YA94QTAw" name="n2r" incoming="_Mu0Gbd6jEei6j_YA94QTAw _Mu0Gc96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                                <attributes xmi:id="_Mu0GZd6jEei6j_YA94QTAw" value="trgId">
+                                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GZ96jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu0GbN6jEei6j_YA94QTAw _Mu0Gbd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0Gad6jEei6j_YA94QTAw" name="e12" incoming="_Mu0Gct6jEei6j_YA94QTAw" outgoing="_Mu0Gc96jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                                <attributes xmi:id="_Mu0Gat6jEei6j_YA94QTAw" value="1">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                                </attributes>
+                                                <attributes xmi:id="_Mu0Gbt6jEei6j_YA94QTAw" value="w12">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                                </attributes>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0Gb96jEei6j_YA94QTAw" name="n1" outgoing="_Mu0Gct6jEei6j_YA94QTAw _Mu0GdN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                              </nodes>
+                                              <nodes xmi:id="_Mu0GcN6jEei6j_YA94QTAw" name="e13" incoming="_Mu0GdN6jEei6j_YA94QTAw" outgoing="_Mu0Gdd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                                <attributes xmi:id="_Mu0Gcd6jEei6j_YA94QTAw" value="w13">
+                                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                                </attributes>
+                                              </nodes>
+                                              <edges xmi:id="_Mu0GbN6jEei6j_YA94QTAw" source="_Mu0GZ96jEei6j_YA94QTAw" target="_Mu0GYd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0Gbd6jEei6j_YA94QTAw" source="_Mu0GZ96jEei6j_YA94QTAw" target="_Mu0GZN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0Gct6jEei6j_YA94QTAw" source="_Mu0Gb96jEei6j_YA94QTAw" target="_Mu0Gad6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0Gc96jEei6j_YA94QTAw" source="_Mu0Gad6jEei6j_YA94QTAw" target="_Mu0GZN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0GdN6jEei6j_YA94QTAw" source="_Mu0Gb96jEei6j_YA94QTAw" target="_Mu0GcN6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                              </edges>
+                                              <edges xmi:id="_Mu0Gdd6jEei6j_YA94QTAw" source="_Mu0GcN6jEei6j_YA94QTAw" target="_Mu0GYd6jEei6j_YA94QTAw">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                              </edges>
+                                            </conclusion>
+                                            <mappings xmi:id="_Mu0GY96jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu0GYd6jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0GZt6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu0GZN6jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0GaN6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu0GZ96jEei6j_YA94QTAw"/>
+                                            <mappings xmi:id="_Mu0Ga96jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu0Gad6jEei6j_YA94QTAw"/>
+                                          </right>
+                                        </left>
+                                        <right xsi:type="henshin:NestedCondition" xmi:id="_Mu0Gdt6jEei6j_YA94QTAw">
+                                          <conclusion xmi:id="_Mu0Gd96jEei6j_YA94QTAw">
+                                            <nodes xmi:id="_Mu0GeN6jEei6j_YA94QTAw" name="n1r" incoming="_Mu0Gg96jEei6j_YA94QTAw _Mu0tCN6jEei6j_YA94QTAw _Mu0tDN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                              <attributes xmi:id="_Mu0Ged6jEei6j_YA94QTAw" value="srcId">
+                                                <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                              </attributes>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0Ge96jEei6j_YA94QTAw" name="n2r" incoming="_Mu0GhN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                              <attributes xmi:id="_Mu0GfN6jEei6j_YA94QTAw" value="trgId">
+                                                <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                              </attributes>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0Gft6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu0Gg96jEei6j_YA94QTAw _Mu0GhN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0GgN6jEei6j_YA94QTAw" name="e12" incoming="_Mu0tB96jEei6j_YA94QTAw" outgoing="_Mu0tCN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                              <attributes xmi:id="_Mu0Ggd6jEei6j_YA94QTAw" value="1">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                              </attributes>
+                                              <attributes xmi:id="_Mu0tAN6jEei6j_YA94QTAw" value="w12">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                              </attributes>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0tAd6jEei6j_YA94QTAw" name="n1" outgoing="_Mu0tB96jEei6j_YA94QTAw _Mu0tCd6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0tAt6jEei6j_YA94QTAw" name="n3" incoming="_Mu0tCt6jEei6j_YA94QTAw" outgoing="_Mu0tC96jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0tA96jEei6j_YA94QTAw" name="e13" incoming="_Mu0tCd6jEei6j_YA94QTAw" outgoing="_Mu0tCt6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                              <attributes xmi:id="_Mu0tBN6jEei6j_YA94QTAw" value="w13">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                              </attributes>
+                                            </nodes>
+                                            <nodes xmi:id="_Mu0tBd6jEei6j_YA94QTAw" name="e32" incoming="_Mu0tC96jEei6j_YA94QTAw" outgoing="_Mu0tDN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                              <attributes xmi:id="_Mu0tBt6jEei6j_YA94QTAw" value="w32">
+                                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                              </attributes>
+                                            </nodes>
+                                            <edges xmi:id="_Mu0Gg96jEei6j_YA94QTAw" source="_Mu0Gft6jEei6j_YA94QTAw" target="_Mu0GeN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0GhN6jEei6j_YA94QTAw" source="_Mu0Gft6jEei6j_YA94QTAw" target="_Mu0Ge96jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tB96jEei6j_YA94QTAw" source="_Mu0tAd6jEei6j_YA94QTAw" target="_Mu0GgN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tCN6jEei6j_YA94QTAw" source="_Mu0GgN6jEei6j_YA94QTAw" target="_Mu0GeN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tCd6jEei6j_YA94QTAw" source="_Mu0tAd6jEei6j_YA94QTAw" target="_Mu0tA96jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tCt6jEei6j_YA94QTAw" source="_Mu0tA96jEei6j_YA94QTAw" target="_Mu0tAt6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tC96jEei6j_YA94QTAw" source="_Mu0tAt6jEei6j_YA94QTAw" target="_Mu0tBd6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                            </edges>
+                                            <edges xmi:id="_Mu0tDN6jEei6j_YA94QTAw" source="_Mu0tBd6jEei6j_YA94QTAw" target="_Mu0GeN6jEei6j_YA94QTAw">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                            </edges>
+                                          </conclusion>
+                                          <mappings xmi:id="_Mu0Get6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu0GeN6jEei6j_YA94QTAw"/>
+                                          <mappings xmi:id="_Mu0Gfd6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu0Ge96jEei6j_YA94QTAw"/>
+                                          <mappings xmi:id="_Mu0Gf96jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu0Gft6jEei6j_YA94QTAw"/>
+                                          <mappings xmi:id="_Mu0Ggt6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu0GgN6jEei6j_YA94QTAw"/>
+                                        </right>
+                                      </left>
+                                      <right xsi:type="henshin:NestedCondition" xmi:id="_Mu17Od6jEei6j_YA94QTAw">
+                                        <conclusion xmi:id="_Mu17Ot6jEei6j_YA94QTAw">
+                                          <nodes xmi:id="_Mu17O96jEei6j_YA94QTAw" name="n1r" incoming="_Mu17Rt6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                            <attributes xmi:id="_Mu17PN6jEei6j_YA94QTAw" value="srcId">
+                                              <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                            </attributes>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17Pt6jEei6j_YA94QTAw" name="n2r" incoming="_Mu17R96jEei6j_YA94QTAw _Mu2iM96jEei6j_YA94QTAw _Mu2iN96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                            <attributes xmi:id="_Mu17P96jEei6j_YA94QTAw" value="trgId">
+                                              <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                            </attributes>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17Qd6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu17Rt6jEei6j_YA94QTAw _Mu17R96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17Q96jEei6j_YA94QTAw" name="e12" incoming="_Mu2iMt6jEei6j_YA94QTAw" outgoing="_Mu2iM96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                            <attributes xmi:id="_Mu17RN6jEei6j_YA94QTAw" value="1">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                            </attributes>
+                                            <attributes xmi:id="_Mu17SN6jEei6j_YA94QTAw" value="w12">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                            </attributes>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17Sd6jEei6j_YA94QTAw" name="n1" outgoing="_Mu2iMt6jEei6j_YA94QTAw _Mu2iNN6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17St6jEei6j_YA94QTAw" name="n3" incoming="_Mu2iNd6jEei6j_YA94QTAw" outgoing="_Mu2iNt6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu17S96jEei6j_YA94QTAw" name="e13" incoming="_Mu2iNN6jEei6j_YA94QTAw" outgoing="_Mu2iNd6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                            <attributes xmi:id="_Mu17TN6jEei6j_YA94QTAw" value="w13">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                            </attributes>
+                                          </nodes>
+                                          <nodes xmi:id="_Mu2iMN6jEei6j_YA94QTAw" name="e32" incoming="_Mu2iNt6jEei6j_YA94QTAw" outgoing="_Mu2iN96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                            <attributes xmi:id="_Mu2iMd6jEei6j_YA94QTAw" value="w32">
+                                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                            </attributes>
+                                          </nodes>
+                                          <edges xmi:id="_Mu17Rt6jEei6j_YA94QTAw" source="_Mu17Qd6jEei6j_YA94QTAw" target="_Mu17O96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu17R96jEei6j_YA94QTAw" source="_Mu17Qd6jEei6j_YA94QTAw" target="_Mu17Pt6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iMt6jEei6j_YA94QTAw" source="_Mu17Sd6jEei6j_YA94QTAw" target="_Mu17Q96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iM96jEei6j_YA94QTAw" source="_Mu17Q96jEei6j_YA94QTAw" target="_Mu17Pt6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iNN6jEei6j_YA94QTAw" source="_Mu17Sd6jEei6j_YA94QTAw" target="_Mu17S96jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iNd6jEei6j_YA94QTAw" source="_Mu17S96jEei6j_YA94QTAw" target="_Mu17St6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iNt6jEei6j_YA94QTAw" source="_Mu17St6jEei6j_YA94QTAw" target="_Mu2iMN6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                          </edges>
+                                          <edges xmi:id="_Mu2iN96jEei6j_YA94QTAw" source="_Mu2iMN6jEei6j_YA94QTAw" target="_Mu17Pt6jEei6j_YA94QTAw">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                          </edges>
+                                        </conclusion>
+                                        <mappings xmi:id="_Mu17Pd6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu17O96jEei6j_YA94QTAw"/>
+                                        <mappings xmi:id="_Mu17QN6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu17Pt6jEei6j_YA94QTAw"/>
+                                        <mappings xmi:id="_Mu17Qt6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu17Qd6jEei6j_YA94QTAw"/>
+                                        <mappings xmi:id="_Mu17Rd6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu17Q96jEei6j_YA94QTAw"/>
+                                      </right>
+                                    </left>
+                                    <right xsi:type="henshin:NestedCondition" xmi:id="_Mu2iTd6jEei6j_YA94QTAw">
+                                      <conclusion xmi:id="_Mu2iTt6jEei6j_YA94QTAw">
+                                        <nodes xmi:id="_Mu2iT96jEei6j_YA94QTAw" name="n1r" incoming="_Mu2iWt6jEei6j_YA94QTAw" outgoing="_Mu2iYN6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                          <attributes xmi:id="_Mu2iUN6jEei6j_YA94QTAw" value="srcId">
+                                            <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                          </attributes>
+                                        </nodes>
+                                        <nodes xmi:id="_Mu2iUt6jEei6j_YA94QTAw" name="n2r" incoming="_Mu2iW96jEei6j_YA94QTAw" outgoing="_Mu2iYt6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                          <attributes xmi:id="_Mu2iU96jEei6j_YA94QTAw" value="trgId">
+                                            <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                          </attributes>
+                                        </nodes>
+                                        <nodes xmi:id="_Mu2iVd6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu2iWt6jEei6j_YA94QTAw _Mu2iW96jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                        </nodes>
+                                        <nodes xmi:id="_Mu2iV96jEei6j_YA94QTAw" name="e12" incoming="_Mu2iYN6jEei6j_YA94QTAw" outgoing="_Mu2iYd6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                          <attributes xmi:id="_Mu2iWN6jEei6j_YA94QTAw" value="1">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                          </attributes>
+                                          <attributes xmi:id="_Mu2iXN6jEei6j_YA94QTAw" value="w12">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                          </attributes>
+                                        </nodes>
+                                        <nodes xmi:id="_Mu2iXd6jEei6j_YA94QTAw" name="n2" incoming="_Mu2iYd6jEei6j_YA94QTAw _Mu2iY96jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                        </nodes>
+                                        <nodes xmi:id="_Mu2iXt6jEei6j_YA94QTAw" name="e32" incoming="_Mu2iYt6jEei6j_YA94QTAw" outgoing="_Mu2iY96jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                          <attributes xmi:id="_Mu2iX96jEei6j_YA94QTAw" value="w32">
+                                            <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                          </attributes>
+                                        </nodes>
+                                        <edges xmi:id="_Mu2iWt6jEei6j_YA94QTAw" source="_Mu2iVd6jEei6j_YA94QTAw" target="_Mu2iT96jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                        </edges>
+                                        <edges xmi:id="_Mu2iW96jEei6j_YA94QTAw" source="_Mu2iVd6jEei6j_YA94QTAw" target="_Mu2iUt6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                        </edges>
+                                        <edges xmi:id="_Mu2iYN6jEei6j_YA94QTAw" source="_Mu2iT96jEei6j_YA94QTAw" target="_Mu2iV96jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                        </edges>
+                                        <edges xmi:id="_Mu2iYd6jEei6j_YA94QTAw" source="_Mu2iV96jEei6j_YA94QTAw" target="_Mu2iXd6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                        </edges>
+                                        <edges xmi:id="_Mu2iYt6jEei6j_YA94QTAw" source="_Mu2iUt6jEei6j_YA94QTAw" target="_Mu2iXt6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                        </edges>
+                                        <edges xmi:id="_Mu2iY96jEei6j_YA94QTAw" source="_Mu2iXt6jEei6j_YA94QTAw" target="_Mu2iXd6jEei6j_YA94QTAw">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                        </edges>
+                                      </conclusion>
+                                      <mappings xmi:id="_Mu2iUd6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu2iT96jEei6j_YA94QTAw"/>
+                                      <mappings xmi:id="_Mu2iVN6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu2iUt6jEei6j_YA94QTAw"/>
+                                      <mappings xmi:id="_Mu2iVt6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu2iVd6jEei6j_YA94QTAw"/>
+                                      <mappings xmi:id="_Mu2iWd6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu2iV96jEei6j_YA94QTAw"/>
+                                    </right>
+                                  </left>
+                                  <right xsi:type="henshin:NestedCondition" xmi:id="_Mu2iZN6jEei6j_YA94QTAw">
+                                    <conclusion xmi:id="_Mu2iZd6jEei6j_YA94QTAw">
+                                      <nodes xmi:id="_Mu2iZt6jEei6j_YA94QTAw" name="n1r" incoming="_Mu2icd6jEei6j_YA94QTAw" outgoing="_Mu3JQt6jEei6j_YA94QTAw _Mu3JRN6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                        <attributes xmi:id="_Mu2iZ96jEei6j_YA94QTAw" value="srcId">
+                                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                        </attributes>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2iad6jEei6j_YA94QTAw" name="n2r" incoming="_Mu2ict6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                        <attributes xmi:id="_Mu2iat6jEei6j_YA94QTAw" value="trgId">
+                                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                        </attributes>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2ibN6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu2icd6jEei6j_YA94QTAw _Mu2ict6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2ibt6jEei6j_YA94QTAw" name="e12" incoming="_Mu3JQt6jEei6j_YA94QTAw" outgoing="_Mu3JQ96jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                        <attributes xmi:id="_Mu2ib96jEei6j_YA94QTAw" value="1">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                        </attributes>
+                                        <attributes xmi:id="_Mu2ic96jEei6j_YA94QTAw" value="w12">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                        </attributes>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2idN6jEei6j_YA94QTAw" name="n2" incoming="_Mu3JQ96jEei6j_YA94QTAw _Mu3JR96jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2idd6jEei6j_YA94QTAw" name="n3" incoming="_Mu3JRd6jEei6j_YA94QTAw" outgoing="_Mu3JRt6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu2idt6jEei6j_YA94QTAw" name="e13" incoming="_Mu3JRN6jEei6j_YA94QTAw" outgoing="_Mu3JRd6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                        <attributes xmi:id="_Mu2id96jEei6j_YA94QTAw" value="w13">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                        </attributes>
+                                      </nodes>
+                                      <nodes xmi:id="_Mu3JQN6jEei6j_YA94QTAw" name="e32" incoming="_Mu3JRt6jEei6j_YA94QTAw" outgoing="_Mu3JR96jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                        <attributes xmi:id="_Mu3JQd6jEei6j_YA94QTAw" value="w32">
+                                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                        </attributes>
+                                      </nodes>
+                                      <edges xmi:id="_Mu2icd6jEei6j_YA94QTAw" source="_Mu2ibN6jEei6j_YA94QTAw" target="_Mu2iZt6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu2ict6jEei6j_YA94QTAw" source="_Mu2ibN6jEei6j_YA94QTAw" target="_Mu2iad6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JQt6jEei6j_YA94QTAw" source="_Mu2iZt6jEei6j_YA94QTAw" target="_Mu2ibt6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JQ96jEei6j_YA94QTAw" source="_Mu2ibt6jEei6j_YA94QTAw" target="_Mu2idN6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JRN6jEei6j_YA94QTAw" source="_Mu2iZt6jEei6j_YA94QTAw" target="_Mu2idt6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JRd6jEei6j_YA94QTAw" source="_Mu2idt6jEei6j_YA94QTAw" target="_Mu2idd6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JRt6jEei6j_YA94QTAw" source="_Mu2idd6jEei6j_YA94QTAw" target="_Mu3JQN6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                      </edges>
+                                      <edges xmi:id="_Mu3JR96jEei6j_YA94QTAw" source="_Mu3JQN6jEei6j_YA94QTAw" target="_Mu2idN6jEei6j_YA94QTAw">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                      </edges>
+                                    </conclusion>
+                                    <mappings xmi:id="_Mu2iaN6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu2iZt6jEei6j_YA94QTAw"/>
+                                    <mappings xmi:id="_Mu2ia96jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu2iad6jEei6j_YA94QTAw"/>
+                                    <mappings xmi:id="_Mu2ibd6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu2ibN6jEei6j_YA94QTAw"/>
+                                    <mappings xmi:id="_Mu2icN6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu2ibt6jEei6j_YA94QTAw"/>
+                                  </right>
+                                </left>
+                                <right xsi:type="henshin:NestedCondition" xmi:id="_Mu3Jdd6jEei6j_YA94QTAw">
+                                  <conclusion xmi:id="_Mu3Jdt6jEei6j_YA94QTAw">
+                                    <nodes xmi:id="_Mu3Jd96jEei6j_YA94QTAw" name="n1r" incoming="_Mu3Jgt6jEei6j_YA94QTAw" outgoing="_Mu3Jit6jEei6j_YA94QTAw _Mu3JjN6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                      <attributes xmi:id="_Mu3JeN6jEei6j_YA94QTAw" value="srcId">
+                                        <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                      </attributes>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3Jet6jEei6j_YA94QTAw" name="n2r" incoming="_Mu3Jg96jEei6j_YA94QTAw _Mu3Jjd6jEei6j_YA94QTAw" outgoing="_Mu3Jjt6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                      <attributes xmi:id="_Mu3Je96jEei6j_YA94QTAw" value="trgId">
+                                        <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                      </attributes>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3Jfd6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu3Jgt6jEei6j_YA94QTAw _Mu3Jg96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3Jf96jEei6j_YA94QTAw" name="e12" incoming="_Mu3Jit6jEei6j_YA94QTAw" outgoing="_Mu3Ji96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                      <attributes xmi:id="_Mu3JgN6jEei6j_YA94QTAw" value="1">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                      </attributes>
+                                      <attributes xmi:id="_Mu3JhN6jEei6j_YA94QTAw" value="w12">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                      </attributes>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3Jhd6jEei6j_YA94QTAw" name="n2" incoming="_Mu3Ji96jEei6j_YA94QTAw _Mu3Jj96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3Jht6jEei6j_YA94QTAw" name="e13" incoming="_Mu3JjN6jEei6j_YA94QTAw" outgoing="_Mu3Jjd6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                      <attributes xmi:id="_Mu3Jh96jEei6j_YA94QTAw" value="w13">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                      </attributes>
+                                    </nodes>
+                                    <nodes xmi:id="_Mu3JiN6jEei6j_YA94QTAw" name="e32" incoming="_Mu3Jjt6jEei6j_YA94QTAw" outgoing="_Mu3Jj96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                      <attributes xmi:id="_Mu3Jid6jEei6j_YA94QTAw" value="w32">
+                                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                      </attributes>
+                                    </nodes>
+                                    <edges xmi:id="_Mu3Jgt6jEei6j_YA94QTAw" source="_Mu3Jfd6jEei6j_YA94QTAw" target="_Mu3Jd96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Jg96jEei6j_YA94QTAw" source="_Mu3Jfd6jEei6j_YA94QTAw" target="_Mu3Jet6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Jit6jEei6j_YA94QTAw" source="_Mu3Jd96jEei6j_YA94QTAw" target="_Mu3Jf96jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Ji96jEei6j_YA94QTAw" source="_Mu3Jf96jEei6j_YA94QTAw" target="_Mu3Jhd6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3JjN6jEei6j_YA94QTAw" source="_Mu3Jd96jEei6j_YA94QTAw" target="_Mu3Jht6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Jjd6jEei6j_YA94QTAw" source="_Mu3Jht6jEei6j_YA94QTAw" target="_Mu3Jet6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Jjt6jEei6j_YA94QTAw" source="_Mu3Jet6jEei6j_YA94QTAw" target="_Mu3JiN6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                    </edges>
+                                    <edges xmi:id="_Mu3Jj96jEei6j_YA94QTAw" source="_Mu3JiN6jEei6j_YA94QTAw" target="_Mu3Jhd6jEei6j_YA94QTAw">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                    </edges>
+                                  </conclusion>
+                                  <mappings xmi:id="_Mu3Jed6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu3Jd96jEei6j_YA94QTAw"/>
+                                  <mappings xmi:id="_Mu3JfN6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu3Jet6jEei6j_YA94QTAw"/>
+                                  <mappings xmi:id="_Mu3Jft6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu3Jfd6jEei6j_YA94QTAw"/>
+                                  <mappings xmi:id="_Mu3Jgd6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu3Jf96jEei6j_YA94QTAw"/>
+                                </right>
+                              </left>
+                              <right xsi:type="henshin:NestedCondition" xmi:id="_Mu4Xgd6jEei6j_YA94QTAw">
+                                <conclusion xmi:id="_Mu4Xgt6jEei6j_YA94QTAw">
+                                  <nodes xmi:id="_Mu4Xg96jEei6j_YA94QTAw" name="n1r" incoming="_Mu4Xjt6jEei6j_YA94QTAw _Mu4Xl96jEei6j_YA94QTAw _Mu4Xm96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                    <attributes xmi:id="_Mu4XhN6jEei6j_YA94QTAw" value="srcId">
+                                      <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                    </attributes>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4Xht6jEei6j_YA94QTAw" name="n2r" incoming="_Mu4Xj96jEei6j_YA94QTAw _Mu4Xmd6jEei6j_YA94QTAw" outgoing="_Mu4Xmt6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                    <attributes xmi:id="_Mu4Xh96jEei6j_YA94QTAw" value="trgId">
+                                      <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                    </attributes>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4Xid6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu4Xjt6jEei6j_YA94QTAw _Mu4Xj96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4Xi96jEei6j_YA94QTAw" name="e12" incoming="_Mu4Xlt6jEei6j_YA94QTAw" outgoing="_Mu4Xl96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                    <attributes xmi:id="_Mu4XjN6jEei6j_YA94QTAw" value="1">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                    </attributes>
+                                    <attributes xmi:id="_Mu4XkN6jEei6j_YA94QTAw" value="w12">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                    </attributes>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4Xkd6jEei6j_YA94QTAw" name="n1" outgoing="_Mu4Xlt6jEei6j_YA94QTAw _Mu4XmN6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4Xkt6jEei6j_YA94QTAw" name="e13" incoming="_Mu4XmN6jEei6j_YA94QTAw" outgoing="_Mu4Xmd6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                    <attributes xmi:id="_Mu4Xk96jEei6j_YA94QTAw" value="w13">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                    </attributes>
+                                  </nodes>
+                                  <nodes xmi:id="_Mu4XlN6jEei6j_YA94QTAw" name="e32" incoming="_Mu4Xmt6jEei6j_YA94QTAw" outgoing="_Mu4Xm96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                    <attributes xmi:id="_Mu4Xld6jEei6j_YA94QTAw" value="w32">
+                                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                    </attributes>
+                                  </nodes>
+                                  <edges xmi:id="_Mu4Xjt6jEei6j_YA94QTAw" source="_Mu4Xid6jEei6j_YA94QTAw" target="_Mu4Xg96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xj96jEei6j_YA94QTAw" source="_Mu4Xid6jEei6j_YA94QTAw" target="_Mu4Xht6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xlt6jEei6j_YA94QTAw" source="_Mu4Xkd6jEei6j_YA94QTAw" target="_Mu4Xi96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xl96jEei6j_YA94QTAw" source="_Mu4Xi96jEei6j_YA94QTAw" target="_Mu4Xg96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4XmN6jEei6j_YA94QTAw" source="_Mu4Xkd6jEei6j_YA94QTAw" target="_Mu4Xkt6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xmd6jEei6j_YA94QTAw" source="_Mu4Xkt6jEei6j_YA94QTAw" target="_Mu4Xht6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xmt6jEei6j_YA94QTAw" source="_Mu4Xht6jEei6j_YA94QTAw" target="_Mu4XlN6jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                  </edges>
+                                  <edges xmi:id="_Mu4Xm96jEei6j_YA94QTAw" source="_Mu4XlN6jEei6j_YA94QTAw" target="_Mu4Xg96jEei6j_YA94QTAw">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                  </edges>
+                                </conclusion>
+                                <mappings xmi:id="_Mu4Xhd6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu4Xg96jEei6j_YA94QTAw"/>
+                                <mappings xmi:id="_Mu4XiN6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu4Xht6jEei6j_YA94QTAw"/>
+                                <mappings xmi:id="_Mu4Xit6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu4Xid6jEei6j_YA94QTAw"/>
+                                <mappings xmi:id="_Mu4Xjd6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu4Xi96jEei6j_YA94QTAw"/>
+                              </right>
+                            </left>
+                            <right xsi:type="henshin:NestedCondition" xmi:id="_Mu4-cN6jEei6j_YA94QTAw">
+                              <conclusion xmi:id="_Mu4-cd6jEei6j_YA94QTAw">
+                                <nodes xmi:id="_Mu4-ct6jEei6j_YA94QTAw" name="n1r" incoming="_Mu4-fd6jEei6j_YA94QTAw _Mu4-id6jEei6j_YA94QTAw" outgoing="_Mu4-it6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                  <attributes xmi:id="_Mu4-c96jEei6j_YA94QTAw" value="srcId">
+                                    <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                  </attributes>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-dd6jEei6j_YA94QTAw" name="n2r" incoming="_Mu4-ft6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                  <attributes xmi:id="_Mu4-dt6jEei6j_YA94QTAw" value="trgId">
+                                    <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                  </attributes>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-eN6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu4-fd6jEei6j_YA94QTAw _Mu4-ft6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-et6jEei6j_YA94QTAw" name="e12" incoming="_Mu4-ht6jEei6j_YA94QTAw" outgoing="_Mu4-h96jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                  <attributes xmi:id="_Mu4-e96jEei6j_YA94QTAw" value="1">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                  </attributes>
+                                  <attributes xmi:id="_Mu4-f96jEei6j_YA94QTAw" value="w12">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                  </attributes>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-gN6jEei6j_YA94QTAw" name="n1" outgoing="_Mu4-ht6jEei6j_YA94QTAw _Mu4-iN6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-gd6jEei6j_YA94QTAw" name="n2" incoming="_Mu4-h96jEei6j_YA94QTAw _Mu4-i96jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-gt6jEei6j_YA94QTAw" name="e13" incoming="_Mu4-iN6jEei6j_YA94QTAw" outgoing="_Mu4-id6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                  <attributes xmi:id="_Mu4-g96jEei6j_YA94QTAw" value="w13">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                  </attributes>
+                                </nodes>
+                                <nodes xmi:id="_Mu4-hN6jEei6j_YA94QTAw" name="e32" incoming="_Mu4-it6jEei6j_YA94QTAw" outgoing="_Mu4-i96jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                  <attributes xmi:id="_Mu4-hd6jEei6j_YA94QTAw" value="w32">
+                                    <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                  </attributes>
+                                </nodes>
+                                <edges xmi:id="_Mu4-fd6jEei6j_YA94QTAw" source="_Mu4-eN6jEei6j_YA94QTAw" target="_Mu4-ct6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-ft6jEei6j_YA94QTAw" source="_Mu4-eN6jEei6j_YA94QTAw" target="_Mu4-dd6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-ht6jEei6j_YA94QTAw" source="_Mu4-gN6jEei6j_YA94QTAw" target="_Mu4-et6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-h96jEei6j_YA94QTAw" source="_Mu4-et6jEei6j_YA94QTAw" target="_Mu4-gd6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-iN6jEei6j_YA94QTAw" source="_Mu4-gN6jEei6j_YA94QTAw" target="_Mu4-gt6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-id6jEei6j_YA94QTAw" source="_Mu4-gt6jEei6j_YA94QTAw" target="_Mu4-ct6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-it6jEei6j_YA94QTAw" source="_Mu4-ct6jEei6j_YA94QTAw" target="_Mu4-hN6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                                </edges>
+                                <edges xmi:id="_Mu4-i96jEei6j_YA94QTAw" source="_Mu4-hN6jEei6j_YA94QTAw" target="_Mu4-gd6jEei6j_YA94QTAw">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                                </edges>
+                              </conclusion>
+                              <mappings xmi:id="_Mu4-dN6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu4-ct6jEei6j_YA94QTAw"/>
+                              <mappings xmi:id="_Mu4-d96jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu4-dd6jEei6j_YA94QTAw"/>
+                              <mappings xmi:id="_Mu4-ed6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu4-eN6jEei6j_YA94QTAw"/>
+                              <mappings xmi:id="_Mu4-fN6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu4-et6jEei6j_YA94QTAw"/>
+                            </right>
+                          </left>
+                          <right xsi:type="henshin:NestedCondition" xmi:id="_Mu4-jN6jEei6j_YA94QTAw">
+                            <conclusion xmi:id="_Mu4-jd6jEei6j_YA94QTAw">
+                              <nodes xmi:id="_Mu4-jt6jEei6j_YA94QTAw" name="n1r" incoming="_Mu4-md6jEei6j_YA94QTAw _Mu4-ot6jEei6j_YA94QTAw _Mu4-pt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                <attributes xmi:id="_Mu4-j96jEei6j_YA94QTAw" value="srcId">
+                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                </attributes>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-kd6jEei6j_YA94QTAw" name="n2r" incoming="_Mu4-mt6jEei6j_YA94QTAw" outgoing="_Mu4-od6jEei6j_YA94QTAw _Mu4-o96jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                                <attributes xmi:id="_Mu4-kt6jEei6j_YA94QTAw" value="trgId">
+                                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                                </attributes>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-lN6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu4-md6jEei6j_YA94QTAw _Mu4-mt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-lt6jEei6j_YA94QTAw" name="e12" incoming="_Mu4-od6jEei6j_YA94QTAw" outgoing="_Mu4-ot6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                <attributes xmi:id="_Mu4-l96jEei6j_YA94QTAw" value="1">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                                </attributes>
+                                <attributes xmi:id="_Mu4-m96jEei6j_YA94QTAw" value="w12">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                </attributes>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-nN6jEei6j_YA94QTAw" name="n3" incoming="_Mu4-pN6jEei6j_YA94QTAw" outgoing="_Mu4-pd6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-nd6jEei6j_YA94QTAw" name="e13" incoming="_Mu4-o96jEei6j_YA94QTAw" outgoing="_Mu4-pN6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                <attributes xmi:id="_Mu4-nt6jEei6j_YA94QTAw" value="w13">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                </attributes>
+                              </nodes>
+                              <nodes xmi:id="_Mu4-n96jEei6j_YA94QTAw" name="e32" incoming="_Mu4-pd6jEei6j_YA94QTAw" outgoing="_Mu4-pt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link"/>
+                                <attributes xmi:id="_Mu4-oN6jEei6j_YA94QTAw" value="w32">
+                                  <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                                </attributes>
+                              </nodes>
+                              <edges xmi:id="_Mu4-md6jEei6j_YA94QTAw" source="_Mu4-lN6jEei6j_YA94QTAw" target="_Mu4-jt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-mt6jEei6j_YA94QTAw" source="_Mu4-lN6jEei6j_YA94QTAw" target="_Mu4-kd6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-od6jEei6j_YA94QTAw" source="_Mu4-kd6jEei6j_YA94QTAw" target="_Mu4-lt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-ot6jEei6j_YA94QTAw" source="_Mu4-lt6jEei6j_YA94QTAw" target="_Mu4-jt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-o96jEei6j_YA94QTAw" source="_Mu4-kd6jEei6j_YA94QTAw" target="_Mu4-nd6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-pN6jEei6j_YA94QTAw" source="_Mu4-nd6jEei6j_YA94QTAw" target="_Mu4-nN6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-pd6jEei6j_YA94QTAw" source="_Mu4-nN6jEei6j_YA94QTAw" target="_Mu4-n96jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                              </edges>
+                              <edges xmi:id="_Mu4-pt6jEei6j_YA94QTAw" source="_Mu4-n96jEei6j_YA94QTAw" target="_Mu4-jt6jEei6j_YA94QTAw">
+                                <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                              </edges>
+                            </conclusion>
+                            <mappings xmi:id="_Mu4-kN6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu4-jt6jEei6j_YA94QTAw"/>
+                            <mappings xmi:id="_Mu4-k96jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu4-kd6jEei6j_YA94QTAw"/>
+                            <mappings xmi:id="_Mu4-ld6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu4-lN6jEei6j_YA94QTAw"/>
+                            <mappings xmi:id="_Mu4-mN6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu4-lt6jEei6j_YA94QTAw"/>
+                          </right>
+                        </left>
+                        <right xsi:type="henshin:NestedCondition" xmi:id="_Mu4-p96jEei6j_YA94QTAw">
+                          <conclusion xmi:id="_Mu4-qN6jEei6j_YA94QTAw">
+                            <nodes xmi:id="_Mu4-qd6jEei6j_YA94QTAw" name="n1r" incoming="_Mu4-tN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                              <attributes xmi:id="_Mu4-qt6jEei6j_YA94QTAw" value="srcId">
+                                <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                              </attributes>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-rN6jEei6j_YA94QTAw" name="n2r" incoming="_Mu4-td6jEei6j_YA94QTAw _Mu4-wN6jEei6j_YA94QTAw" outgoing="_Mu4-wd6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                              <attributes xmi:id="_Mu4-rd6jEei6j_YA94QTAw" value="trgId">
+                                <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                              </attributes>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-r96jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu4-tN6jEei6j_YA94QTAw _Mu4-td6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-sd6jEei6j_YA94QTAw" name="e12" incoming="_Mu4-vd6jEei6j_YA94QTAw" outgoing="_Mu4-vt6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                              <attributes xmi:id="_Mu4-st6jEei6j_YA94QTAw" value="1">
+                                <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                              </attributes>
+                              <attributes xmi:id="_Mu4-tt6jEei6j_YA94QTAw" value="w12">
+                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                              </attributes>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-t96jEei6j_YA94QTAw" name="n1" outgoing="_Mu4-vd6jEei6j_YA94QTAw _Mu4-v96jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-uN6jEei6j_YA94QTAw" name="n2" incoming="_Mu4-vt6jEei6j_YA94QTAw _Mu4-wt6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node"/>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-ud6jEei6j_YA94QTAw" name="e13" incoming="_Mu4-v96jEei6j_YA94QTAw" outgoing="_Mu4-wN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                              <attributes xmi:id="_Mu4-ut6jEei6j_YA94QTAw" value="w13">
+                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                              </attributes>
+                            </nodes>
+                            <nodes xmi:id="_Mu4-u96jEei6j_YA94QTAw" name="e32" incoming="_Mu4-wd6jEei6j_YA94QTAw" outgoing="_Mu4-wt6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link"/>
+                              <attributes xmi:id="_Mu4-vN6jEei6j_YA94QTAw" value="w32">
+                                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                              </attributes>
+                            </nodes>
+                            <edges xmi:id="_Mu4-tN6jEei6j_YA94QTAw" source="_Mu4-r96jEei6j_YA94QTAw" target="_Mu4-qd6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-td6jEei6j_YA94QTAw" source="_Mu4-r96jEei6j_YA94QTAw" target="_Mu4-rN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-vd6jEei6j_YA94QTAw" source="_Mu4-t96jEei6j_YA94QTAw" target="_Mu4-sd6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-vt6jEei6j_YA94QTAw" source="_Mu4-sd6jEei6j_YA94QTAw" target="_Mu4-uN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-v96jEei6j_YA94QTAw" source="_Mu4-t96jEei6j_YA94QTAw" target="_Mu4-ud6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-wN6jEei6j_YA94QTAw" source="_Mu4-ud6jEei6j_YA94QTAw" target="_Mu4-rN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-wd6jEei6j_YA94QTAw" source="_Mu4-rN6jEei6j_YA94QTAw" target="_Mu4-u96jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                            </edges>
+                            <edges xmi:id="_Mu4-wt6jEei6j_YA94QTAw" source="_Mu4-u96jEei6j_YA94QTAw" target="_Mu4-uN6jEei6j_YA94QTAw">
+                              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                            </edges>
+                          </conclusion>
+                          <mappings xmi:id="_Mu4-q96jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu4-qd6jEei6j_YA94QTAw"/>
+                          <mappings xmi:id="_Mu4-rt6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu4-rN6jEei6j_YA94QTAw"/>
+                          <mappings xmi:id="_Mu4-sN6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu4-r96jEei6j_YA94QTAw"/>
+                          <mappings xmi:id="_Mu4-s96jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu4-sd6jEei6j_YA94QTAw"/>
+                        </right>
+                      </left>
+                      <right xsi:type="henshin:NestedCondition" xmi:id="_Mu5ln96jEei6j_YA94QTAw">
+                        <conclusion xmi:id="_Mu5loN6jEei6j_YA94QTAw">
+                          <nodes xmi:id="_Mu5lod6jEei6j_YA94QTAw" name="n1r" incoming="_Mu5lrN6jEei6j_YA94QTAw _Mu5lt96jEei6j_YA94QTAw" outgoing="_Mu5luN6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                            <attributes xmi:id="_Mu5lot6jEei6j_YA94QTAw" value="srcId">
+                              <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                            </attributes>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lpN6jEei6j_YA94QTAw" name="n2r" incoming="_Mu5lrd6jEei6j_YA94QTAw _Mu5ltd6jEei6j_YA94QTAw _Mu5lud6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                            <attributes xmi:id="_Mu5lpd6jEei6j_YA94QTAw" value="trgId">
+                              <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                            </attributes>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lp96jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu5lrN6jEei6j_YA94QTAw _Mu5lrd6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lqd6jEei6j_YA94QTAw" name="e12" incoming="_Mu5ltN6jEei6j_YA94QTAw" outgoing="_Mu5ltd6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                            <attributes xmi:id="_Mu5lqt6jEei6j_YA94QTAw" value="1">
+                              <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                            </attributes>
+                            <attributes xmi:id="_Mu5lrt6jEei6j_YA94QTAw" value="w12">
+                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                            </attributes>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lr96jEei6j_YA94QTAw" name="n1" outgoing="_Mu5ltN6jEei6j_YA94QTAw _Mu5ltt6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node"/>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lsN6jEei6j_YA94QTAw" name="e13" incoming="_Mu5ltt6jEei6j_YA94QTAw" outgoing="_Mu5lt96jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                            <attributes xmi:id="_Mu5lsd6jEei6j_YA94QTAw" value="w13">
+                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                            </attributes>
+                          </nodes>
+                          <nodes xmi:id="_Mu5lst6jEei6j_YA94QTAw" name="e32" incoming="_Mu5luN6jEei6j_YA94QTAw" outgoing="_Mu5lud6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link"/>
+                            <attributes xmi:id="_Mu5ls96jEei6j_YA94QTAw" value="w32">
+                              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                            </attributes>
+                          </nodes>
+                          <edges xmi:id="_Mu5lrN6jEei6j_YA94QTAw" source="_Mu5lp96jEei6j_YA94QTAw" target="_Mu5lod6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                          </edges>
+                          <edges xmi:id="_Mu5lrd6jEei6j_YA94QTAw" source="_Mu5lp96jEei6j_YA94QTAw" target="_Mu5lpN6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                          </edges>
+                          <edges xmi:id="_Mu5ltN6jEei6j_YA94QTAw" source="_Mu5lr96jEei6j_YA94QTAw" target="_Mu5lqd6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                          </edges>
+                          <edges xmi:id="_Mu5ltd6jEei6j_YA94QTAw" source="_Mu5lqd6jEei6j_YA94QTAw" target="_Mu5lpN6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                          </edges>
+                          <edges xmi:id="_Mu5ltt6jEei6j_YA94QTAw" source="_Mu5lr96jEei6j_YA94QTAw" target="_Mu5lsN6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                          </edges>
+                          <edges xmi:id="_Mu5lt96jEei6j_YA94QTAw" source="_Mu5lsN6jEei6j_YA94QTAw" target="_Mu5lod6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                          </edges>
+                          <edges xmi:id="_Mu5luN6jEei6j_YA94QTAw" source="_Mu5lod6jEei6j_YA94QTAw" target="_Mu5lst6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                          </edges>
+                          <edges xmi:id="_Mu5lud6jEei6j_YA94QTAw" source="_Mu5lst6jEei6j_YA94QTAw" target="_Mu5lpN6jEei6j_YA94QTAw">
+                            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                          </edges>
+                        </conclusion>
+                        <mappings xmi:id="_Mu5lo96jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu5lod6jEei6j_YA94QTAw"/>
+                        <mappings xmi:id="_Mu5lpt6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu5lpN6jEei6j_YA94QTAw"/>
+                        <mappings xmi:id="_Mu5lqN6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu5lp96jEei6j_YA94QTAw"/>
+                        <mappings xmi:id="_Mu5lq96jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu5lqd6jEei6j_YA94QTAw"/>
+                      </right>
+                    </left>
+                    <right xsi:type="henshin:NestedCondition" xmi:id="_Mu6Mpd6jEei6j_YA94QTAw">
+                      <conclusion xmi:id="_Mu6Mpt6jEei6j_YA94QTAw">
+                        <nodes xmi:id="_Mu6Mp96jEei6j_YA94QTAw" name="n1r" incoming="_Mu6Mst6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                          <attributes xmi:id="_Mu6MqN6jEei6j_YA94QTAw" value="srcId">
+                            <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                          </attributes>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mqt6jEei6j_YA94QTAw" name="n2r" incoming="_Mu6Ms96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                          <attributes xmi:id="_Mu6Mq96jEei6j_YA94QTAw" value="trgId">
+                            <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                          </attributes>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mrd6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu6Mst6jEei6j_YA94QTAw _Mu6Ms96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mr96jEei6j_YA94QTAw" name="e12" incoming="_Mu6MvN6jEei6j_YA94QTAw" outgoing="_Mu6Mvd6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link"/>
+                          <attributes xmi:id="_Mu6MsN6jEei6j_YA94QTAw" value="1">
+                            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                          </attributes>
+                          <attributes xmi:id="_Mu6MtN6jEei6j_YA94QTAw" value="w12">
+                            <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                          </attributes>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mtd6jEei6j_YA94QTAw" name="n1" outgoing="_Mu6MvN6jEei6j_YA94QTAw _Mu6Mvt6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mtt6jEei6j_YA94QTAw" name="n2" incoming="_Mu6Mvd6jEei6j_YA94QTAw _Mu6Mwd6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mt96jEei6j_YA94QTAw" name="n3" incoming="_Mu6Mv96jEei6j_YA94QTAw" outgoing="_Mu6MwN6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node"/>
+                        </nodes>
+                        <nodes xmi:id="_Mu6MuN6jEei6j_YA94QTAw" name="e13" incoming="_Mu6Mvt6jEei6j_YA94QTAw" outgoing="_Mu6Mv96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link"/>
+                          <attributes xmi:id="_Mu6Mud6jEei6j_YA94QTAw" value="w13">
+                            <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                          </attributes>
+                        </nodes>
+                        <nodes xmi:id="_Mu6Mut6jEei6j_YA94QTAw" name="e32" incoming="_Mu6MwN6jEei6j_YA94QTAw" outgoing="_Mu6Mwd6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link"/>
+                          <attributes xmi:id="_Mu6Mu96jEei6j_YA94QTAw" value="w32">
+                            <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                          </attributes>
+                        </nodes>
+                        <edges xmi:id="_Mu6Mst6jEei6j_YA94QTAw" source="_Mu6Mrd6jEei6j_YA94QTAw" target="_Mu6Mp96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                        </edges>
+                        <edges xmi:id="_Mu6Ms96jEei6j_YA94QTAw" source="_Mu6Mrd6jEei6j_YA94QTAw" target="_Mu6Mqt6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                        </edges>
+                        <edges xmi:id="_Mu6MvN6jEei6j_YA94QTAw" source="_Mu6Mtd6jEei6j_YA94QTAw" target="_Mu6Mr96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                        </edges>
+                        <edges xmi:id="_Mu6Mvd6jEei6j_YA94QTAw" source="_Mu6Mr96jEei6j_YA94QTAw" target="_Mu6Mtt6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                        </edges>
+                        <edges xmi:id="_Mu6Mvt6jEei6j_YA94QTAw" source="_Mu6Mtd6jEei6j_YA94QTAw" target="_Mu6MuN6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                        </edges>
+                        <edges xmi:id="_Mu6Mv96jEei6j_YA94QTAw" source="_Mu6MuN6jEei6j_YA94QTAw" target="_Mu6Mt96jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                        </edges>
+                        <edges xmi:id="_Mu6MwN6jEei6j_YA94QTAw" source="_Mu6Mt96jEei6j_YA94QTAw" target="_Mu6Mut6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                        </edges>
+                        <edges xmi:id="_Mu6Mwd6jEei6j_YA94QTAw" source="_Mu6Mut6jEei6j_YA94QTAw" target="_Mu6Mtt6jEei6j_YA94QTAw">
+                          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                        </edges>
+                      </conclusion>
+                      <mappings xmi:id="_Mu6Mqd6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu6Mp96jEei6j_YA94QTAw"/>
+                      <mappings xmi:id="_Mu6MrN6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu6Mqt6jEei6j_YA94QTAw"/>
+                      <mappings xmi:id="_Mu6Mrt6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu6Mrd6jEei6j_YA94QTAw"/>
+                      <mappings xmi:id="_Mu6Msd6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu6Mr96jEei6j_YA94QTAw"/>
+                    </right>
+                  </left>
+                  <right xsi:type="henshin:NestedCondition" xmi:id="_Mu6Mwt6jEei6j_YA94QTAw">
+                    <conclusion xmi:id="_Mu6Mw96jEei6j_YA94QTAw">
+                      <nodes xmi:id="_Mu6MxN6jEei6j_YA94QTAw" name="n1r" incoming="_Mu6Mz96jEei6j_YA94QTAw _Mu6M2t6jEei6j_YA94QTAw" outgoing="_Mu6M296jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                        <attributes xmi:id="_Mu6Mxd6jEei6j_YA94QTAw" value="srcId">
+                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_Mu6Mx96jEei6j_YA94QTAw" name="n2r" incoming="_Mu6M0N6jEei6j_YA94QTAw" outgoing="_Mu6M196jEei6j_YA94QTAw _Mu6M2d6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                        <attributes xmi:id="_Mu6MyN6jEei6j_YA94QTAw" value="trgId">
+                          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_Mu6Myt6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu6Mz96jEei6j_YA94QTAw _Mu6M0N6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                      </nodes>
+                      <nodes xmi:id="_Mu6MzN6jEei6j_YA94QTAw" name="e12" incoming="_Mu6M196jEei6j_YA94QTAw" outgoing="_Mu6M2N6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_Mu6Mzd6jEei6j_YA94QTAw" value="1">
+                          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                        </attributes>
+                        <attributes xmi:id="_Mu6M0d6jEei6j_YA94QTAw" value="w12">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_Mu6M0t6jEei6j_YA94QTAw" name="n2" incoming="_Mu6M2N6jEei6j_YA94QTAw _Mu6M3N6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      </nodes>
+                      <nodes xmi:id="_Mu6M096jEei6j_YA94QTAw" name="e13" incoming="_Mu6M2d6jEei6j_YA94QTAw" outgoing="_Mu6M2t6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_Mu6M1N6jEei6j_YA94QTAw" value="w13">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <nodes xmi:id="_Mu6M1d6jEei6j_YA94QTAw" name="e32" incoming="_Mu6M296jEei6j_YA94QTAw" outgoing="_Mu6M3N6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link"/>
+                        <attributes xmi:id="_Mu6M1t6jEei6j_YA94QTAw" value="w32">
+                          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                        </attributes>
+                      </nodes>
+                      <edges xmi:id="_Mu6Mz96jEei6j_YA94QTAw" source="_Mu6Myt6jEei6j_YA94QTAw" target="_Mu6MxN6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M0N6jEei6j_YA94QTAw" source="_Mu6Myt6jEei6j_YA94QTAw" target="_Mu6Mx96jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M196jEei6j_YA94QTAw" source="_Mu6Mx96jEei6j_YA94QTAw" target="_Mu6MzN6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M2N6jEei6j_YA94QTAw" source="_Mu6MzN6jEei6j_YA94QTAw" target="_Mu6M0t6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M2d6jEei6j_YA94QTAw" source="_Mu6Mx96jEei6j_YA94QTAw" target="_Mu6M096jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M2t6jEei6j_YA94QTAw" source="_Mu6M096jEei6j_YA94QTAw" target="_Mu6MxN6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M296jEei6j_YA94QTAw" source="_Mu6MxN6jEei6j_YA94QTAw" target="_Mu6M1d6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                      </edges>
+                      <edges xmi:id="_Mu6M3N6jEei6j_YA94QTAw" source="_Mu6M1d6jEei6j_YA94QTAw" target="_Mu6M0t6jEei6j_YA94QTAw">
+                        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                      </edges>
+                    </conclusion>
+                    <mappings xmi:id="_Mu6Mxt6jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu6MxN6jEei6j_YA94QTAw"/>
+                    <mappings xmi:id="_Mu6Myd6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu6Mx96jEei6j_YA94QTAw"/>
+                    <mappings xmi:id="_Mu6My96jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu6Myt6jEei6j_YA94QTAw"/>
+                    <mappings xmi:id="_Mu6Mzt6jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu6MzN6jEei6j_YA94QTAw"/>
+                  </right>
+                </left>
+                <right xsi:type="henshin:NestedCondition" xmi:id="_Mu7ax96jEei6j_YA94QTAw">
+                  <conclusion xmi:id="_Mu7ayN6jEei6j_YA94QTAw">
+                    <nodes xmi:id="_Mu7ayd6jEei6j_YA94QTAw" name="n1r" incoming="_Mu7a1N6jEei6j_YA94QTAw" outgoing="_Mu7a3N6jEei6j_YA94QTAw _Mu7a3t6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      <attributes xmi:id="_Mu7ayt6jEei6j_YA94QTAw" value="srcId">
+                        <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_Mu7azN6jEei6j_YA94QTAw" name="n2r" incoming="_Mu7a1d6jEei6j_YA94QTAw _Mu7a3d6jEei6j_YA94QTAw _Mu7a4d6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                      <attributes xmi:id="_Mu7azd6jEei6j_YA94QTAw" value="trgId">
+                        <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_Mu7az96jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu7a1N6jEei6j_YA94QTAw _Mu7a1d6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                    </nodes>
+                    <nodes xmi:id="_Mu7a0d6jEei6j_YA94QTAw" name="e12" incoming="_Mu7a3N6jEei6j_YA94QTAw" outgoing="_Mu7a3d6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_Mu7a0t6jEei6j_YA94QTAw" value="1">
+                        <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+                      </attributes>
+                      <attributes xmi:id="_Mu7a1t6jEei6j_YA94QTAw" value="w12">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_Mu7a196jEei6j_YA94QTAw" name="n3" incoming="_Mu7a396jEei6j_YA94QTAw" outgoing="_Mu7a4N6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    </nodes>
+                    <nodes xmi:id="_Mu7a2N6jEei6j_YA94QTAw" name="e13" incoming="_Mu7a3t6jEei6j_YA94QTAw" outgoing="_Mu7a396jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_Mu7a2d6jEei6j_YA94QTAw" value="w13">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <nodes xmi:id="_Mu7a2t6jEei6j_YA94QTAw" name="e32" incoming="_Mu7a4N6jEei6j_YA94QTAw" outgoing="_Mu7a4d6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link"/>
+                      <attributes xmi:id="_Mu7a296jEei6j_YA94QTAw" value="w32">
+                        <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                      </attributes>
+                    </nodes>
+                    <edges xmi:id="_Mu7a1N6jEei6j_YA94QTAw" source="_Mu7az96jEei6j_YA94QTAw" target="_Mu7ayd6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a1d6jEei6j_YA94QTAw" source="_Mu7az96jEei6j_YA94QTAw" target="_Mu7azN6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a3N6jEei6j_YA94QTAw" source="_Mu7ayd6jEei6j_YA94QTAw" target="_Mu7a0d6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a3d6jEei6j_YA94QTAw" source="_Mu7a0d6jEei6j_YA94QTAw" target="_Mu7azN6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a3t6jEei6j_YA94QTAw" source="_Mu7ayd6jEei6j_YA94QTAw" target="_Mu7a2N6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a396jEei6j_YA94QTAw" source="_Mu7a2N6jEei6j_YA94QTAw" target="_Mu7a196jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a4N6jEei6j_YA94QTAw" source="_Mu7a196jEei6j_YA94QTAw" target="_Mu7a2t6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                    </edges>
+                    <edges xmi:id="_Mu7a4d6jEei6j_YA94QTAw" source="_Mu7a2t6jEei6j_YA94QTAw" target="_Mu7azN6jEei6j_YA94QTAw">
+                      <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                    </edges>
+                  </conclusion>
+                  <mappings xmi:id="_Mu7ay96jEei6j_YA94QTAw" origin="_Muzhct6jEei6j_YA94QTAw" image="_Mu7ayd6jEei6j_YA94QTAw"/>
+                  <mappings xmi:id="_Mu7azt6jEei6j_YA94QTAw" origin="_Muzhdd6jEei6j_YA94QTAw" image="_Mu7azN6jEei6j_YA94QTAw"/>
+                  <mappings xmi:id="_Mu7a0N6jEei6j_YA94QTAw" origin="_MuzheN6jEei6j_YA94QTAw" image="_Mu7az96jEei6j_YA94QTAw"/>
+                  <mappings xmi:id="_Mu7a096jEei6j_YA94QTAw" origin="_MuzhfN6jEei6j_YA94QTAw" image="_Mu7a0d6jEei6j_YA94QTAw"/>
+                </right>
+              </formula>
+            </conclusion>
+            <mappings xmi:id="_MuzhdN6jEei6j_YA94QTAw" origin="_6SNSt4EWEeiXqL1IxdW93g" image="_Muzhct6jEei6j_YA94QTAw"/>
+            <mappings xmi:id="_Muzhd96jEei6j_YA94QTAw" origin="_6SNSuYEWEeiXqL1IxdW93g" image="_Muzhdd6jEei6j_YA94QTAw"/>
+            <mappings xmi:id="_Muzhed6jEei6j_YA94QTAw" origin="_6SNSu4EWEeiXqL1IxdW93g" image="_MuzheN6jEei6j_YA94QTAw"/>
+          </child>
+        </left>
+        <right xsi:type="henshin:Not" xmi:id="_Mu7a4t6jEei6j_YA94QTAw">
+          <child xsi:type="henshin:NestedCondition" xmi:id="_Mu7a496jEei6j_YA94QTAw">
+            <conclusion xmi:id="_Mu7a5N6jEei6j_YA94QTAw">
+              <nodes xmi:id="_Mu7a5d6jEei6j_YA94QTAw" name="n1r" incoming="_Mu7a7d6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                <attributes xmi:id="_Mu7a5t6jEei6j_YA94QTAw" value="srcId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+              </nodes>
+              <nodes xmi:id="_Mu7a6N6jEei6j_YA94QTAw" name="n2r" incoming="_Mu7a7t6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Node"/>
+                <attributes xmi:id="_Mu7a6d6jEei6j_YA94QTAw" value="trgId">
+                  <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                </attributes>
+              </nodes>
+              <nodes xmi:id="_Mu7a696jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu7a7d6jEei6j_YA94QTAw _Mu7a7t6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology"/>
+              </nodes>
+              <edges xmi:id="_Mu7a7d6jEei6j_YA94QTAw" source="_Mu7a696jEei6j_YA94QTAw" target="_Mu7a5d6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+              </edges>
+              <edges xmi:id="_Mu7a7t6jEei6j_YA94QTAw" source="_Mu7a696jEei6j_YA94QTAw" target="_Mu7a6N6jEei6j_YA94QTAw">
+                <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+              </edges>
+              <formula xsi:type="henshin:NestedCondition" xmi:id="_Mu8B0t6jEei6j_YA94QTAw">
+                <conclusion xmi:id="_Mu8B096jEei6j_YA94QTAw">
+                  <nodes xmi:id="_Mu8B1N6jEei6j_YA94QTAw" name="n1r" incoming="_Mu8B3N6jEei6j_YA94QTAw" outgoing="_Mu8B496jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    <attributes xmi:id="_Mu8B1d6jEei6j_YA94QTAw" value="srcId">
+                      <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                    </attributes>
+                  </nodes>
+                  <nodes xmi:id="_Mu8B196jEei6j_YA94QTAw" name="n2r" incoming="_Mu8B3d6jEei6j_YA94QTAw _Mu8B5t6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                    <attributes xmi:id="_Mu8B2N6jEei6j_YA94QTAw" value="trgId">
+                      <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+                    </attributes>
+                  </nodes>
+                  <nodes xmi:id="_Mu8B2t6jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu8B3N6jEei6j_YA94QTAw _Mu8B3d6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Topology"/>
+                  </nodes>
+                  <nodes xmi:id="_Mu8B3t6jEei6j_YA94QTAw" name="n3" incoming="_Mu8B5N6jEei6j_YA94QTAw" outgoing="_Mu8B5d6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Node"/>
+                  </nodes>
+                  <nodes xmi:id="_Mu8B396jEei6j_YA94QTAw" name="e13" incoming="_Mu8B496jEei6j_YA94QTAw" outgoing="_Mu8B5N6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                    <attributes xmi:id="_Mu8B4N6jEei6j_YA94QTAw" value="w13">
+                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                    </attributes>
+                  </nodes>
+                  <nodes xmi:id="_Mu8B4d6jEei6j_YA94QTAw" name="e32" incoming="_Mu8B5d6jEei6j_YA94QTAw" outgoing="_Mu8B5t6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Link"/>
+                    <attributes xmi:id="_Mu8B4t6jEei6j_YA94QTAw" value="w32">
+                      <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+                    </attributes>
+                  </nodes>
+                  <edges xmi:id="_Mu8B3N6jEei6j_YA94QTAw" source="_Mu8B2t6jEei6j_YA94QTAw" target="_Mu8B1N6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                  </edges>
+                  <edges xmi:id="_Mu8B3d6jEei6j_YA94QTAw" source="_Mu8B2t6jEei6j_YA94QTAw" target="_Mu8B196jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+                  </edges>
+                  <edges xmi:id="_Mu8B496jEei6j_YA94QTAw" source="_Mu8B1N6jEei6j_YA94QTAw" target="_Mu8B396jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                  </edges>
+                  <edges xmi:id="_Mu8B5N6jEei6j_YA94QTAw" source="_Mu8B396jEei6j_YA94QTAw" target="_Mu8B3t6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                  </edges>
+                  <edges xmi:id="_Mu8B5d6jEei6j_YA94QTAw" source="_Mu8B3t6jEei6j_YA94QTAw" target="_Mu8B4d6jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+                  </edges>
+                  <edges xmi:id="_Mu8B5t6jEei6j_YA94QTAw" source="_Mu8B4d6jEei6j_YA94QTAw" target="_Mu8B196jEei6j_YA94QTAw">
+                    <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+                  </edges>
+                </conclusion>
+                <mappings xmi:id="_Mu8B1t6jEei6j_YA94QTAw" origin="_Mu7a5d6jEei6j_YA94QTAw" image="_Mu8B1N6jEei6j_YA94QTAw"/>
+                <mappings xmi:id="_Mu8B2d6jEei6j_YA94QTAw" origin="_Mu7a6N6jEei6j_YA94QTAw" image="_Mu8B196jEei6j_YA94QTAw"/>
+                <mappings xmi:id="_Mu8B296jEei6j_YA94QTAw" origin="_Mu7a696jEei6j_YA94QTAw" image="_Mu8B2t6jEei6j_YA94QTAw"/>
+              </formula>
+            </conclusion>
+            <mappings xmi:id="_Mu7a596jEei6j_YA94QTAw" origin="_6SNSt4EWEeiXqL1IxdW93g" image="_Mu7a5d6jEei6j_YA94QTAw"/>
+            <mappings xmi:id="_Mu7a6t6jEei6j_YA94QTAw" origin="_6SNSuYEWEeiXqL1IxdW93g" image="_Mu7a6N6jEei6j_YA94QTAw"/>
+            <mappings xmi:id="_Mu7a7N6jEei6j_YA94QTAw" origin="_6SNSu4EWEeiXqL1IxdW93g" image="_Mu7a696jEei6j_YA94QTAw"/>
+          </child>
+        </right>
+      </formula>
     </lhs>
     <rhs xmi:id="_6SNSvoEWEeiXqL1IxdW93g" name="Rhs">
       <nodes xmi:id="_6SNSv4EWEeiXqL1IxdW93g" name="n1r" incoming="_6SNSyoEWEeiXqL1IxdW93g" outgoing="_6SNSyIEWEeiXqL1IxdW93g">
@@ -132,8 +1680,144 @@
         <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
       </edges>
     </rhs>
+    <attributeConditions xmi:id="_Mt11kN6jEei6j_YA94QTAw" conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
     <mappings xmi:id="_6SNSzYEWEeiXqL1IxdW93g" origin="_6SNSt4EWEeiXqL1IxdW93g" image="_6SNSv4EWEeiXqL1IxdW93g"/>
     <mappings xmi:id="_6SNSzoEWEeiXqL1IxdW93g" origin="_6SNSuYEWEeiXqL1IxdW93g" image="_6SNSwYEWEeiXqL1IxdW93g"/>
     <mappings xmi:id="_6SNSz4EWEeiXqL1IxdW93g" origin="_6SNSu4EWEeiXqL1IxdW93g" image="_6SNSx4EWEeiXqL1IxdW93g"/>
+  </units>
+  <units xsi:type="henshin:Rule" xmi:id="_Mu9P4N6jEei6j_YA94QTAw" name="addLink">
+    <parameters xmi:id="_Mu9P4d6jEei6j_YA94QTAw" name="srcId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_Mu9P4t6jEei6j_YA94QTAw" name="trgId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_Mu9P496jEei6j_YA94QTAw" name="linkId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_Mu9P5N6jEei6j_YA94QTAw" name="weight" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameters>
+    <parameters xmi:id="_Mu9P5d6jEei6j_YA94QTAw" name="topology" kind="IN"/>
+    <lhs xmi:id="_Mu9P5t6jEei6j_YA94QTAw" name="Lhs">
+      <nodes xmi:id="_Mu9P596jEei6j_YA94QTAw" name="n1r" incoming="_Mu9P7N6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Node"/>
+        <attributes xmi:id="_Mu9P6N6jEei6j_YA94QTAw" value="srcId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_Mu9P6d6jEei6j_YA94QTAw" name="n2r" incoming="_Mu9P7d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Node"/>
+        <attributes xmi:id="_Mu9P6t6jEei6j_YA94QTAw" value="trgId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_Mu9P696jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu9P7N6jEei6j_YA94QTAw _Mu9P7d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+      </nodes>
+      <edges xmi:id="_Mu9P7N6jEei6j_YA94QTAw" source="_Mu9P696jEei6j_YA94QTAw" target="_Mu9P596jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+      </edges>
+      <edges xmi:id="_Mu9P7d6jEei6j_YA94QTAw" source="_Mu9P696jEei6j_YA94QTAw" target="_Mu9P6d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_Mu9P7t6jEei6j_YA94QTAw" name="Rhs">
+      <nodes xmi:id="_Mu9P796jEei6j_YA94QTAw" name="n1r" incoming="_Mu9P-t6jEei6j_YA94QTAw" outgoing="_Mu9P-N6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Node"/>
+        <attributes xmi:id="_Mu9P8N6jEei6j_YA94QTAw" value="srcId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_Mu9P8d6jEei6j_YA94QTAw" name="n2r" incoming="_Mu9P-d6jEei6j_YA94QTAw _Mu9P-96jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Node"/>
+        <attributes xmi:id="_Mu9P8t6jEei6j_YA94QTAw" value="trgId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_Mu9P896jEei6j_YA94QTAw" name="e12r" incoming="_Mu9P-N6jEei6j_YA94QTAw _Mu9P_N6jEei6j_YA94QTAw" outgoing="_Mu9P-d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Link"/>
+        <attributes xmi:id="_Mu9P9N6jEei6j_YA94QTAw" value="linkId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+        <attributes xmi:id="_Mu9P9d6jEei6j_YA94QTAw" value="weight">
+          <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+        </attributes>
+        <attributes xmi:id="_Mu9P9t6jEei6j_YA94QTAw" value="0">
+          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_Mu9P996jEei6j_YA94QTAw" name="topologyR" outgoing="_Mu9P-t6jEei6j_YA94QTAw _Mu9P-96jEei6j_YA94QTAw _Mu9P_N6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+      </nodes>
+      <edges xmi:id="_Mu9P-N6jEei6j_YA94QTAw" source="_Mu9P796jEei6j_YA94QTAw" target="_Mu9P896jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+      </edges>
+      <edges xmi:id="_Mu9P-d6jEei6j_YA94QTAw" source="_Mu9P896jEei6j_YA94QTAw" target="_Mu9P8d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+      </edges>
+      <edges xmi:id="_Mu9P-t6jEei6j_YA94QTAw" source="_Mu9P996jEei6j_YA94QTAw" target="_Mu9P796jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+      </edges>
+      <edges xmi:id="_Mu9P-96jEei6j_YA94QTAw" source="_Mu9P996jEei6j_YA94QTAw" target="_Mu9P8d6jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology/nodes"/>
+      </edges>
+      <edges xmi:id="_Mu9P_N6jEei6j_YA94QTAw" source="_Mu9P996jEei6j_YA94QTAw" target="_Mu9P896jEei6j_YA94QTAw">
+        <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_Mu9P_d6jEei6j_YA94QTAw" origin="_Mu9P596jEei6j_YA94QTAw" image="_Mu9P796jEei6j_YA94QTAw"/>
+    <mappings xmi:id="_Mu9P_t6jEei6j_YA94QTAw" origin="_Mu9P6d6jEei6j_YA94QTAw" image="_Mu9P8d6jEei6j_YA94QTAw"/>
+    <mappings xmi:id="_Mu9P_96jEei6j_YA94QTAw" origin="_Mu9P696jEei6j_YA94QTAw" image="_Mu9P996jEei6j_YA94QTAw"/>
+  </units>
+  <units xsi:type="henshin:Rule" xmi:id="_sNaH6t6wEeiNqMp56kT4iA" name="setLinkState">
+    <parameters xmi:id="_sNaH696wEeiNqMp56kT4iA" name="linkId" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_sNaH7N6wEeiNqMp56kT4iA" name="newState" kind="IN">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </parameters>
+    <parameters xmi:id="_sNaH7d6wEeiNqMp56kT4iA" name="topology" kind="IN">
+      <type xsi:type="ecore:EClass" href="http://www.coboltmetamodel.org/#//Topology"/>
+    </parameters>
+    <parameters xmi:id="_sNaH7t6wEeiNqMp56kT4iA" name="x" kind="VAR">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </parameters>
+    <lhs xmi:id="_sNaH796wEeiNqMp56kT4iA" name="Lhs">
+      <nodes xmi:id="_sNaH8N6wEeiNqMp56kT4iA" name="topology" outgoing="_sNaH9N6wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_sNaH8d6wEeiNqMp56kT4iA" name="link" incoming="_sNaH9N6wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Link"/>
+        <attributes xmi:id="_sNaH8t6wEeiNqMp56kT4iA" value="linkId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+        <attributes xmi:id="_sNaH896wEeiNqMp56kT4iA" value="x">
+          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_sNaH9N6wEeiNqMp56kT4iA" source="_sNaH8N6wEeiNqMp56kT4iA" target="_sNaH8d6wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_sNaH9d6wEeiNqMp56kT4iA" name="Rhs">
+      <nodes xmi:id="_sNaH9t6wEeiNqMp56kT4iA" name="topology" outgoing="_sNaH-t6wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Topology"/>
+      </nodes>
+      <nodes xmi:id="_sNaH996wEeiNqMp56kT4iA" name="link" incoming="_sNaH-t6wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Link"/>
+        <attributes xmi:id="_sNaH-N6wEeiNqMp56kT4iA" value="linkId">
+          <type href="http://www.coboltmetamodel.org/#//TopologyElement/id"/>
+        </attributes>
+        <attributes xmi:id="_sNaH-d6wEeiNqMp56kT4iA" value="newState">
+          <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_sNaH-t6wEeiNqMp56kT4iA" source="_sNaH9t6wEeiNqMp56kT4iA" target="_sNaH996wEeiNqMp56kT4iA">
+        <type href="http://www.coboltmetamodel.org/#//Topology/links"/>
+      </edges>
+    </rhs>
+    <mappings xmi:id="_sNaH-96wEeiNqMp56kT4iA" origin="_sNaH8N6wEeiNqMp56kT4iA" image="_sNaH9t6wEeiNqMp56kT4iA"/>
+    <mappings xmi:id="_sNaH_N6wEeiNqMp56kT4iA" origin="_sNaH8d6wEeiNqMp56kT4iA" image="_sNaH996wEeiNqMp56kT4iA"/>
   </units>
 </henshin:Module>

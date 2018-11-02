@@ -5,9 +5,11 @@ import org.eclipse.emf.henshin.model.Unit;
 
 public final class HenshinRules {
 
+	static final String RULES_FILE = "tc.henshin";
 	static final String RULE_ADD_LINK = "addLink";
 	static final String RULE_ADD_LINK_REFINED = "addLink_updated_ActiveLinkIsNotLongestLinkInTriangle";
-	static final String RULES_FILE = "tc.henshin";
+	static final String RULE_SET_LINK_STATE = "setLinkState";
+	static final String RULE_SET_LINK_STATE_REFINED = "setLinkState_updated_ActiveLinkIsNotLongestLinkInTriangle";
 
 	private HenshinRules() {
 		throw new UnsupportedOperationException("Utility class");

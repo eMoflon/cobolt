@@ -54,7 +54,18 @@ public class TopologyControlRuleExecutionHelper {
 		final EObject topology = getTopology();
 		final UnitApplication unit = new UnitApplicationImpl(engine);
 		unit.setEGraph(graph);
-		unit.setUnit(HenshinRules.getUnitChecked(rulesModule, "setLinkState"));
+		unit.setUnit(HenshinRules.getUnitChecked(rulesModule, HenshinRules.RULE_SET_LINK_STATE));
+		unit.setParameterValue("linkId", linkId);
+		unit.setParameterValue("newState", newState);
+		unit.setParameterValue("topology", topology);
+		return unit;
+	}
+
+	UnitApplication prepare_setLinkState_Refined(final String linkId, final int newState) {
+		final EObject topology = getTopology();
+		final UnitApplication unit = new UnitApplicationImpl(engine);
+		unit.setEGraph(graph);
+		unit.setUnit(HenshinRules.getUnitChecked(rulesModule, HenshinRules.RULE_SET_LINK_STATE_REFINED));
 		unit.setParameterValue("linkId", linkId);
 		unit.setParameterValue("newState", newState);
 		unit.setParameterValue("topology", topology);
