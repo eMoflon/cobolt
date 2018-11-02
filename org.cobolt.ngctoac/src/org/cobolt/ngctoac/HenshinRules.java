@@ -1,31 +1,44 @@
 package org.cobolt.ngctoac;
 
-public final class HenshinRules
-{
-   public static final String MINIMAL_MODEL_FILENAME = "minimal-model.ecore";
+import org.eclipse.emf.henshin.model.Module;
+import org.eclipse.emf.henshin.model.Unit;
 
-   private HenshinRules()
-   {
-      throw new UnsupportedOperationException("Utility class");
-   }
+public final class HenshinRules {
 
-   /**
-    * Returns the project-relative path to the folder containing models and metamodels
-    */
-   public static String getRulesDirectory()
-   {
-      return "src/org/cobolt/ngctoac";
-   }
+	static final String RULE_ADD_LINK = "addLink";
+	static final String RULE_ADD_LINK_REFINED = "addLink_updated_ActiveLinkIsNotLongestLinkInTriangle";
+	static final String RULES_FILE = "tc.henshin";
 
-   public static String getMetamodelFileName()
-   {
-      return "tccpa.ecore";
-   }
+	private HenshinRules() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
+	/**
+	 * Returns the project-relative path to the folder containing models and
+	 * metamodels
+	 */
+	public static String getRulesDirectory() {
+		return "src/org/cobolt/ngctoac";
+	}
 
-   public static String getHenshinRulesFilename()
-   {
-      return "tccpa.henshin";
-   }
-
+	/**
+	 * Extracts the {@link Unit} with the given name from the given {@link Module}
+	 * (if exists)
+	 *
+	 * If no such unit exists, an exception is thrown
+	 *
+	 * @param rulesModule
+	 *            the module
+	 * @param unitName
+	 *            the unit
+	 * @return the {@link Unit} if exists
+	 */
+	static Unit getUnitChecked(final Module rulesModule, final String unitName) {
+		final Unit unit = rulesModule.getUnit(unitName);
+		if (unit == null)
+			throw new IllegalArgumentException(
+					String.format("No unit with name %s in module %s", unitName, rulesModule));
+		else
+			return unit;
+	}
 }
