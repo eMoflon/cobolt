@@ -71,11 +71,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	private int constraintViolationCounter;
 
-	private EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
+	private final EdgeStateBasedConnectivityConstraint physicalConnectivityConstraint;
 
-	private EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
+	private final EdgeStateBasedConnectivityConstraint weakConnectivityConstraint;
 
-	private TopologyConstraint noUnclassifiedLinksConstraint;
+	private final TopologyConstraint noUnclassifiedLinksConstraint;
 
 	private NodePreprocessor nodePreprocessor;
 
@@ -95,7 +95,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		this.noUnclassifiedLinksConstraint = ConstraintsFactory.eINSTANCE.createNoUnclassifiedLinksConstraint();
 	}
 
-	public void setNodePreprocessor(NodePreprocessor nodePreprocessor) {
+	public void setNodePreprocessor(final NodePreprocessor nodePreprocessor) {
 		this.nodePreprocessor = nodePreprocessor;
 	}
 
@@ -116,12 +116,11 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 		final AbstractTopologyControlAlgorithm algorithm = EMoflonFacadeAlgorithmHelper
 				.createAlgorithmForID(algorithmId);
-		// TODO@rkluge: Re-enable assertion as soon as TC architecture has been
-		// refactored
-		// if (!algorithm.supportsOperationMode(mapOperationMode(this.operationMode)))
-		// throw new IllegalArgumentException(
-		// String.format("The configured algorithm '%s' does not support operation mode
-		// '%s'", algorithmId, this.operationMode));
+		if (!algorithm.supportsOperationMode(mapOperationMode(this.operationMode))) {
+			throw new IllegalArgumentException(
+					String.format("The configured algorithm '%s' does not support operation mode '%s'", algorithmId,
+							this.operationMode));
+		}
 
 		algorithm.setOperationMode(mapOperationMode(this.operationMode));
 		this.algorithm = algorithm;
@@ -132,7 +131,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private TopologyControlOperationMode mapOperationMode(
-			de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode) {
+			final de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlOperationMode operationMode) {
 		switch (operationMode) {
 		case BATCH:
 			return TopologyControlOperationMode.BATCH;
@@ -167,7 +166,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		}
 
 		if (this.algorithm instanceof YaoGraphAlgorithm) {
-			// TODO@rkluge: Fix getInt
 			final Integer coneCount = parameters.getInt(UnderlayTopologyControlAlgorithms.YAO_PARAM_CONE_COUNT);
 			if (coneCount == null)
 				throw new IllegalArgumentException(String.format("Missing mandatory parameter '%s' for %s",
@@ -239,7 +237,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	@Override
-	public IEdge addEdge(IEdge prototype) {
+	public IEdge addEdge(final IEdge prototype) {
 		if (isEdgeIdKnown(prototype))
 			throw new IllegalStateException(String.format("Edge ID has already been added. Existing: %s. New: %s",
 					this.simonstratorGraph.getEdge(prototype.getId()), prototype));
@@ -301,7 +299,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	@Override
 	public void checkConstraintsAfterContextEvent() {
 
-		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		if (algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL) {
 			for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
 				constraint.checkOnTopology(topology, report);
@@ -317,7 +315,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	@Override
 	public void checkConstraintsAfterTopologyControl() {
-		ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 
 		for (final TopologyConstraint constraint : this.algorithm.getAlgorithmSpecificConstraints()) {
 			constraint.checkOnTopology(topology, report);
@@ -332,7 +330,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	@Override
-	public void connectOppositeEdges(IEdge fwdEdgePrototype, IEdge bwdEdgePrototype) {
+	public void connectOppositeEdges(final IEdge fwdEdgePrototype, final IEdge bwdEdgePrototype) {
 		super.connectOppositeEdges(fwdEdgePrototype, bwdEdgePrototype);
 
 		final Edge fwdModelLink = getModelLinkForSimonstratorEdge(fwdEdgePrototype);
@@ -353,7 +351,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	/**
 	 * Creates a model node from the given Simonstrator node
 	 */
-	private Node createNodeFromPrototype(INode prototype) {
+	private Node createNodeFromPrototype(final INode prototype) {
 		final Node modelNode = ModelFactory.eINSTANCE.createNode();
 		topology.getNodes().add(modelNode);
 		modelNode.setId(prototype.getId().valueAsString());
@@ -397,11 +395,12 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		return getPropertySafe(prototype, UnderlayTopologyProperties.HOP_COUNT, DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT);
 	}
 
-	private double getPropertySafe(IElement prototype, SiSType<Double> property) {
+	private double getPropertySafe(final IElement prototype, final SiSType<Double> property) {
 		return getPropertySafe(prototype, property, DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES);
 	}
 
-	private <T> T getPropertySafe(IElement prototype, SiSType<T> property, T defaultValueForUndefinedAttributes) {
+	private <T> T getPropertySafe(final IElement prototype, final SiSType<T> property,
+			final T defaultValueForUndefinedAttributes) {
 		final T value = prototype.getProperty(property);
 		if (value != null)
 			return value;
@@ -418,7 +417,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private boolean isEdgeIdKnown(final IEdge prototype) {
-		EdgeID id = prototype.getId();
+		final EdgeID id = prototype.getId();
 		return isEdgeIdKnown(id);
 	}
 
@@ -427,9 +426,9 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	private boolean isTopologyPhysicallyConnected() {
-		ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
+		final ConstraintViolationReport tempReport = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
 		physicalConnectivityConstraint.checkOnTopology(this.topology, tempReport);
-		boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
+		final boolean isPhysicallyConnected = tempReport.getViolations().size() == 0;
 		return isPhysicallyConnected;
 	}
 
@@ -446,7 +445,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	public <T> void updateModelNodeAttribute(final Node modelNode, final SiSType<T> property, final T value) {
 
 		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
-			double oldEnergyLevel = modelNode.getEnergyLevel();
+			final double oldEnergyLevel = modelNode.getEnergyLevel();
 			modelNode.setEnergyLevel((Double) value);
 			this.algorithm.handleNodeEnergyLevelModification(modelNode, oldEnergyLevel);
 		}
@@ -479,7 +478,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 			modelEdge.setWeight((Double) value);
 			this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
 		} else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
-			double oldExpectedLifetime = modelEdge.getExpectedLifetime();
+			final double oldExpectedLifetime = modelEdge.getExpectedLifetime();
 			modelEdge.setExpectedLifetime((Double) value);
 			this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
 		} else if (UnderlayTopologyProperties.EDGE_STATE.equals(property)) {
@@ -499,7 +498,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		this.topology.removeEdge(modelEdge);
 	}
 
-	private void reportConstraintViolations(ConstraintViolationReport report) {
+	private void reportConstraintViolations(final ConstraintViolationReport report) {
 		final EList<ConstraintViolation> violations = report.getViolations();
 		final int violationCount = violations.size();
 		if (!violations.isEmpty()) {
@@ -511,9 +510,9 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		}
 	}
 
-	private String formatHistogramOfViolations(ConstraintViolationReport report) {
-		Map<String, Integer> histogramm = new HashMap<>();
-		Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
+	private String formatHistogramOfViolations(final ConstraintViolationReport report) {
+		final Map<String, Integer> histogramm = new HashMap<>();
+		final Map<String, List<ConstraintViolation>> bytype = new HashMap<>();
 		for (final ConstraintViolation violation : report.getViolations()) {
 			final String simpleName = violation.getViolatedConstraint().getClass().getSimpleName();
 			if (!histogramm.containsKey(simpleName)) {
@@ -554,7 +553,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		}
 	}
 
-	private Edge findReverseModelEdge(Edge modelLink) {
+	private Edge findReverseModelEdge(final Edge modelLink) {
 		final NodePair nodePairForReverse = new NodePair(modelLink.getTarget(), modelLink.getSource());
 		if (this.nodePairToModelLink.containsKey(nodePairForReverse)) {
 			return this.nodePairToModelLink.get(nodePairForReverse);
@@ -578,7 +577,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		return modelNodeToSimonstratorNode.get(node);
 	}
 
-	private void establishNodeMapping(INode simonstratorNode, final Node modelNode) {
+	private void establishNodeMapping(final INode simonstratorNode, final Node modelNode) {
 		this.simonstratorNodeToModelNode.put(simonstratorNode.getId(), modelNode);
 		this.modelNodeToSimonstratorNode.put(modelNode, simonstratorNode.getId());
 	}
@@ -589,7 +588,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		this.nodePairToModelLink.put(createNodePair(modelLink), modelLink);
 	}
 
-	private NodePair createNodePair(Edge modelLink) {
+	private NodePair createNodePair(final Edge modelLink) {
 		return new NodePair(modelLink.getSource(), modelLink.getTarget());
 	}
 
@@ -629,7 +628,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 		final Node node2;
 
-		public NodePair(Node node1, Node node2) {
+		public NodePair(final Node node1, final Node node2) {
 			this.node1 = node1;
 			this.node2 = node2;
 		}
@@ -649,14 +648,14 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj)
 				return true;
 			if (obj == null)
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			NodePair other = (NodePair) obj;
+			final NodePair other = (NodePair) obj;
 			if (node1 == null) {
 				if (other.node1 != null)
 					return false;
