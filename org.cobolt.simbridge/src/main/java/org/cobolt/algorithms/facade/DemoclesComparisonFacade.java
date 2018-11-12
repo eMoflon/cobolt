@@ -102,8 +102,8 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	private final FourChainWithoutShortcutsPatternMatcher fourChainWithoutShortcutsMatcher;
 
 	public DemoclesComparisonFacade() {
-		outputFile = new File(String.format("./output/rkluge/democles/PatternMatcherEvaluationData_%s.csv",
-				dateFormat.format(new Date())));
+		outputFile = new File(
+				String.format("./output/democles/PatternMatcherEvaluationData_%s.csv", dateFormat.format(new Date())));
 		trianglePattern = createTrianglePattern();
 		ktcPattern = createKtcPattern();
 		fourChainWithoutShortcutsPattern = createFourChainWithoutShortcutsMatcher();
@@ -117,7 +117,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	}
 
 	@Override
-	public void run(TopologyControlAlgorithmParamters parameters) {
+	public void run(final TopologyControlAlgorithmParamters parameters) {
 		final int widthOfPatternColumn = 10;
 		final int widthOfPMColumn = 20;
 		final Graph graph = this.getGraph();
@@ -138,7 +138,7 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 			final Map<String, Long> times = new HashMap<>();
 			final Map<String, Integer> matchCounts = new HashMap<>();
 			for (final String patternMatcherID : PATTERN_MATCHERS) {
-				long startTime = System.currentTimeMillis();
+				final long startTime = System.currentTimeMillis();
 				final int matchCount;
 				switch (patternMatcherID) {
 				case SIM_PM_ID:
@@ -336,8 +336,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	@Test
 	public void testFourChainSingleMatch() throws Exception {
 		final Graph graph = createFourChain();
-		TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(createFourChainWithoutShortcutsMatcher());
-		Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
+		final TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(
+				createFourChainWithoutShortcutsMatcher());
+		final Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
 		Assert.assertEquals(1, Iterables.size(match));
 	}
 
@@ -345,8 +346,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	public void testFourChainWithShortcut1() throws Exception {
 		final Graph graph = createFourChain();
 		graph.addEdge(Graphs.createDirectedEdge(EdgeID.get("e13"), INodeID.get("n1"), INodeID.get("n3")));
-		TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(createFourChainWithoutShortcutsMatcher());
-		Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
+		final TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(
+				createFourChainWithoutShortcutsMatcher());
+		final Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
 		Assert.assertEquals(0, Iterables.size(match));
 	}
 
@@ -354,8 +356,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 	public void testFourChainWithShortcut2() throws Exception {
 		final Graph graph = createFourChain();
 		graph.addEdge(Graphs.createDirectedEdge(EdgeID.get("e14"), INodeID.get("n1"), INodeID.get("n4")));
-		TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(createFourChainWithoutShortcutsMatcher());
-		Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
+		final TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(
+				createFourChainWithoutShortcutsMatcher());
+		final Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
 		Assert.assertEquals(0, Iterables.size(match));
 	}
 
@@ -364,8 +367,9 @@ public class DemoclesComparisonFacade extends EMoflonFacade {
 		final Graph graph = createFourChain();
 		graph.addEdge(Graphs.createDirectedEdge(EdgeID.get("e13"), INodeID.get("n1"), INodeID.get("n3")));
 		graph.addEdge(Graphs.createDirectedEdge(EdgeID.get("e14"), INodeID.get("n1"), INodeID.get("n4")));
-		TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(createFourChainWithoutShortcutsMatcher());
-		Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
+		final TopologyPatternMatcher_Impl pm = new TopologyPatternMatcher_Impl(
+				createFourChainWithoutShortcutsMatcher());
+		final Iterable<TopologyPatternMatch> match = pm.match(INodeID.get("n1"), graph);
 		Assert.assertEquals(0, Iterables.size(match));
 	}
 
