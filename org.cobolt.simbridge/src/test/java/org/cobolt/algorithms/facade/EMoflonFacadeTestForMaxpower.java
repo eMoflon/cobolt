@@ -5,17 +5,17 @@ import static org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils.getPathTo
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 import org.cobolt.model.TopologyModelTestUtils;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
-import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 
 /**
  * Tests for implementation of
  * {@link UnderlayTopologyControlAlgorithms#MAXPOWER_TC}
- * 
+ *
  * @author Roland Kluge - Initial implementation
  *
  */
@@ -34,6 +34,6 @@ public class EMoflonFacadeTestForMaxpower extends AbstractEMoflonFacadeTest {
 
 		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), true);
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology());
 	}
 }

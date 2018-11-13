@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.Validate;
 import org.cobolt.algorithms.AbstractKTC;
 import org.cobolt.algorithms.AbstractTopologyControlAlgorithm;
 import org.cobolt.algorithms.LStarKTC;
@@ -469,9 +470,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	 * </p>
 	 */
 	public <T> void updateModelLinkAttribute(final Edge modelEdge, final SiSType<T> property, final T value) {
-		if (modelEdge == null) {
-			throw new NullPointerException();
-		}
+		Validate.notNull(modelEdge);
 
 		if (UnderlayTopologyProperties.WEIGHT.equals(property)) {
 			final double oldWeight = modelEdge.getWeight();

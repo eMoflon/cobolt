@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.cobolt.model.Edge;
-import org.cobolt.model.EdgeState;
-import org.cobolt.model.Topology;
 import org.cobolt.model.constraints.ConstraintViolationReport;
 import org.cobolt.model.constraints.ConstraintsFactory;
 import org.cobolt.model.constraints.EdgeStateBasedConnectivityConstraint;
@@ -18,7 +15,7 @@ import org.moflon.core.utilities.UtilityClassNotInstantiableException;
 
 /**
  * Test utilities for the topology model
- * 
+ *
  * @author Roland Kluge - Initial implementation
  *
  */
@@ -135,9 +132,9 @@ public class TopologyModelTestUtils {
 	 * {@edges EdgeState#ACTIVE}, except for those edges that have an ID in the
 	 * specified list of inactiveEdgeIds.
 	 */
-	public static void assertActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges,
-			final String... inactiveEdgeIds) {
-		final List<String> sortedInactiveEdgeIds = new ArrayList<>(Arrays.asList(inactiveEdgeIds));
+	private static void assertActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges,
+			final String... exceptions) {
+		final List<String> sortedInactiveEdgeIds = new ArrayList<>(Arrays.asList(exceptions));
 		Collections.sort(sortedInactiveEdgeIds);
 		for (final Edge edge : topology.getEdges()) {
 			if (Collections.binarySearch(sortedInactiveEdgeIds, edge.getId()) >= 0) {
@@ -161,6 +158,16 @@ public class TopologyModelTestUtils {
 
 	/**
 	 * Asserts that all edges (except for those with the given IDs) are active.
+	 *
+	 * @param topology
+	 * @param exceptions
+	 */
+	public static void assertAllActiveWithExceptions(final Topology topology, final String... exceptions) {
+		assertActiveWithExceptions(topology, false, exceptions);
+	}
+	
+	/**
+	 * Asserts that all edges (except for those with the given IDs) are active.
 	 * 
 	 * Additionally, symmetry w.r.t. edge states is checked.
 	 * 
@@ -170,7 +177,6 @@ public class TopologyModelTestUtils {
 	public static void assertAllActiveSymmetricWithExceptions(final Topology topology, final String... edgeIds) {
 		assertActiveWithExceptions(topology, true, edgeIds);
 	}
-
 	/**
 	 * Asserts that the active-edges-induced subgraph of the given graph is
 	 * connected.
@@ -183,7 +189,7 @@ public class TopologyModelTestUtils {
 	 * Asserts that the subgraph induced by active and unclassified edges of the
 	 * given graph is connected.
 	 */
-	public static void assertClassifiedConnectivity(Topology graph) {
+	public static void assertClassifiedConnectivity(final Topology graph) {
 		assertConnectivity(graph, EdgeState.ACTIVE, EdgeState.UNCLASSIFIED);
 	}
 
@@ -191,7 +197,7 @@ public class TopologyModelTestUtils {
 	 * Asserts that the subgraph induced by the edges of the given states of the
 	 * given graph is connected.
 	 */
-	public static void assertConnectivity(Topology graph, EdgeState... states) {
+	public static void assertConnectivity(final Topology graph, final EdgeState... states) {
 		final EdgeStateBasedConnectivityConstraint constraint = ConstraintsFactory.eINSTANCE
 				.createEdgeStateBasedConnectivityConstraint();
 		constraint.getStates().addAll(Arrays.asList(states));
@@ -200,20 +206,21 @@ public class TopologyModelTestUtils {
 
 	/**
 	 * Asserts that the given graph fulfills all given constraints
-	 * 
+	 *
 	 * @see #assertTopologyConstraint(Topology, TopologyConstraint)
 	 */
-	public static void assertTopologyConstraints(Topology topology, List<? extends TopologyConstraint> constraints) {
+	public static void assertTopologyConstraints(final Topology topology,
+			final List<? extends TopologyConstraint> constraints) {
 		constraints.forEach(constraint -> assertTopologyConstraint(topology, constraint));
 	}
 
 	/**
 	 * Checks whether the given constraint is fulfilled on the given topology
-	 * 
+	 *
 	 * @param topology
-	 *            the topology
+	 *                       the topology
 	 * @param constraint
-	 *            the constraint to check
+	 *                       the constraint to check
 	 */
 	public static void assertTopologyConstraint(final Topology topology, final TopologyConstraint constraint) {
 		final ConstraintViolationReport report = ConstraintsFactory.eINSTANCE.createConstraintViolationReport();
@@ -224,7 +231,7 @@ public class TopologyModelTestUtils {
 	/**
 	 * Utility method for checking wether the given topology has the expected node
 	 * and edge count
-	 * 
+	 *
 	 * @param topology
 	 * @param expectedNodeCount
 	 * @param expectedEdgeCount
@@ -238,13 +245,13 @@ public class TopologyModelTestUtils {
 	/**
 	 * Checks whether the edge with the given id has the given distance (no
 	 * tolerance)
-	 * 
+	 *
 	 * @param topology
-	 *            the topology
+	 *                             the topology
 	 * @param id
-	 *            the edge ID
+	 *                             the edge ID
 	 * @param expectedDistance
-	 *            the expected weight
+	 *                             the expected weight
 	 */
 	public static void assertEdgeDistance(final Topology topology, final String id, final double expectedDistance) {
 		Assert.assertEquals("Distance mismatch of " + id + ".", expectedDistance,
@@ -253,13 +260,13 @@ public class TopologyModelTestUtils {
 
 	/**
 	 * Checks whether the edge with the given id has the given weight (no tolerance)
-	 * 
+	 *
 	 * @param topology
-	 *            the topology
+	 *                           the topology
 	 * @param id
-	 *            the edge ID
+	 *                           the edge ID
 	 * @param expectedWeight
-	 *            the expected weight
+	 *                           the expected weight
 	 */
 	public static void assertEdgeWeight(final Topology topology, final String id, final double expectedWeight) {
 		Assert.assertEquals("Weight mismatch of " + id + ".", expectedWeight, topology.getEdgeById(id).getWeight(),

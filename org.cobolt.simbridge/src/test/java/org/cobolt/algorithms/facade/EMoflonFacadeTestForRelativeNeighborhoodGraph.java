@@ -5,6 +5,7 @@ import static org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils.getPathTo
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 import org.cobolt.model.TopologyModelTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,12 +14,11 @@ import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLifetimeWeightProvider;
-import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 
 /**
  * Tests for implementation of
  * {@link UnderlayTopologyControlAlgorithms#RELATIVE_NEIGHBORHOOD_GRAPH}
- * 
+ *
  * @author Roland Kluge - Initial implementation
  *
  */
@@ -39,7 +39,7 @@ public class EMoflonFacadeTestForRelativeNeighborhoodGraph extends AbstractEMofl
 
 		TopologyControlAlgorithmsTestUtils.runFacadeKTC(this.facade, -1.0);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e13");
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology(), "e13");
 
 		this.facade.checkConstraintsAfterTopologyControl();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());

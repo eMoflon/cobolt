@@ -25,28 +25,40 @@ public class TopologyUtils {
 		throw new UtilityClassNotInstantiableException();
 	}
 
-	public static Node addNode(final Topology topology, String id, double remainingEnergy) {
-		Node node = topology.addNode(id);
+	/**
+	 * Adds a node with the given ID and energy level to the given topology.
+	 */
+	public static Node addNode(final Topology topology, final String id, final double remainingEnergy) {
+		final Node node = topology.addNode(id);
 		node.setEnergyLevel(remainingEnergy);
 		return node;
 	}
 
-	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance,
-			double requiredTransmissionPower, EdgeState state) {
-		Edge edge = topology.addDirectedEdge(id, source, target);
+	/**
+	 * Adds a node with the given ID to the given topology.
+	 *
+	 * No information about the energy level is stored
+	 */
+	public static Node addNode(final Topology topology, final String id) {
+		return addNode(topology, id, Double.NaN);
+	}
+
+	public static Edge addEdge(final Topology topology, final String id, final Node source, final Node target,
+			final double distance, final double requiredTransmissionPower, final EdgeState state) {
+		final Edge edge = topology.addDirectedEdge(id, source, target);
 		edge.setWeight(distance);
 		edge.setExpectedLifetime(edge.getSource().getEnergyLevel() / requiredTransmissionPower);
 		edge.setState(state);
 		return edge;
 	}
 
-	public static Edge addEdge(final Topology topology, String id, Node source, Node target, double distance,
-			double requiredTransmissionPower) {
+	public static Edge addEdge(final Topology topology, final String id, final Node source, final Node target,
+			final double distance, final double requiredTransmissionPower) {
 		return addEdge(topology, id, source, target, distance, requiredTransmissionPower, EdgeState.UNCLASSIFIED);
 	}
 
-	public static Edge addUndirectedEdge(final Topology topology, String idFwd, String idBwd, Node node1, Node node2,
-			double distance, double requiredTransmissionPower) {
+	public static Edge addUndirectedEdge(final Topology topology, final String idFwd, final String idBwd,
+			final Node node1, final Node node2, final double distance, final double requiredTransmissionPower) {
 		final Edge fwdEdge = topology.addUndirectedEdge(idFwd, idBwd, node1, node2);
 		fwdEdge.setExpectedLifetime(fwdEdge.getSource().getEnergyLevel() / requiredTransmissionPower);
 		fwdEdge.setDistance(distance);
@@ -56,6 +68,16 @@ public class TopologyUtils {
 		bwdEdge.setDistance(distance);
 
 		return fwdEdge;
+	}
+
+	/**
+	 * Adds an undirected edge to the given topology.
+	 *
+	 * No information about the required transmission power of the edge is provided
+	 */
+	public static Edge addUndirectedEdge(final Topology topology, final String idFwd, final String idBwd,
+			final Node node1, final Node node2, final double distance) {
+		return addUndirectedEdge(topology, idFwd, idBwd, node1, node2, distance, Double.NaN);
 	}
 
 	/**
@@ -76,7 +98,7 @@ public class TopologyUtils {
 		final List<Edge> edges = new ArrayList<>(topology.getEdges());
 		edges.sort(new Comparator<Edge>() {
 			@Override
-			public int compare(Edge o1, Edge o2) {
+			public int compare(final Edge o1, final Edge o2) {
 				return o1.getId().compareTo(o2.getId());
 			}
 
@@ -89,13 +111,13 @@ public class TopologyUtils {
 		for (final Edge link : edges) {
 			if (!processedEdges.contains(link)) {
 				final Edge revLink = link.getReverseEdge();
-				EdgeState linkState = link.getState();
+				final EdgeState linkState = link.getState();
 				builder.append(String.format("%6s", link.getId()) + " : " + linkState.toString().substring(0, 1));
 				processedEdges.add(link);
 				stateCounts.put(linkState, stateCounts.get(linkState) + 1);
 
 				if (revLink != null) {
-					EdgeState revLinkState = revLink.getState();
+					final EdgeState revLinkState = revLink.getState();
 					builder.append(" || " + String.format("%6s", revLink.getId()) + " : "
 							+ revLinkState.toString().substring(0, 1));
 					processedEdges.add(revLink);
@@ -123,10 +145,10 @@ public class TopologyUtils {
 	 * Returns true if the topology contains at least one unclassified edge
 	 *
 	 * @param topology
-	 *            the topology to check
+	 *                     the topology to check
 	 * @return whether the topology contains at least one unclassified edge
 	 */
-	public static boolean containsUnclassifiedEdges(Topology topology) {
+	public static boolean containsUnclassifiedEdges(final Topology topology) {
 		return topology.getEdges().stream().anyMatch(e -> e.getState() == EdgeState.UNCLASSIFIED);
 	}
 }

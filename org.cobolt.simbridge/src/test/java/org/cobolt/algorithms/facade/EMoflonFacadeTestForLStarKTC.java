@@ -4,18 +4,18 @@ import static org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils.getPathTo
 
 import java.io.FileInputStream;
 
+import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 import org.cobolt.model.TopologyModelTestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
-import org.cobolt.algorithms.TopologyControlAlgorithmsTestUtils;
 
 /**
  * Tests for implementation of
  * {@link UnderlayTopologyControlAlgorithms#GABRIEL_GRAPH}
- * 
+ *
  * @author Roland Kluge - Initial implementation
  *
  */
@@ -35,7 +35,7 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest {
 
 		TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.0);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e12");
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology(), "e12");
 
 		this.facade.checkConstraintsAfterTopologyControl();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
@@ -50,7 +50,7 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest {
 
 		TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.2);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false);
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology());
 
 		this.facade.checkConstraintsAfterTopologyControl();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
@@ -65,7 +65,7 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest {
 
 		TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.3);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false, "e12");
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology(), "e12");
 
 		this.facade.checkConstraintsAfterTopologyControl();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
@@ -80,7 +80,7 @@ public class EMoflonFacadeTestForLStarKTC extends AbstractEMoflonFacadeTest {
 
 		TopologyControlAlgorithmsTestUtils.runFacadeLStarKTC(this.facade, 3.0, 1.11);
 
-		TopologyModelTestUtils.assertActiveWithExceptions(this.facade.getTopology(), false);
+		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology());
 
 		this.facade.checkConstraintsAfterTopologyControl();
 		Assert.assertEquals(0, this.facade.getConstraintViolationCount());
