@@ -45,7 +45,7 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
 /**
  * Implementation of {@link ITopologyControlFacade} that integrates with eMoflon
  * (www.emoflon.org)
- * 
+ *
  * @author Roland Kluge - Initial implementation
  *
  */
@@ -463,7 +463,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	/**
 	 * Sets the property of the given link to the given value.
-	 * 
+	 *
 	 * <p>
 	 * This method also handles the notification of the CE handlers.
 	 * </p>
@@ -476,14 +476,20 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		if (UnderlayTopologyProperties.WEIGHT.equals(property)) {
 			final double oldWeight = modelEdge.getWeight();
 			modelEdge.setWeight((Double) value);
-			this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
+			if (isInIncrementalMode()) {
+				this.algorithm.handleLinkWeightModification(modelEdge, oldWeight);
+			}
 		} else if (UnderlayTopologyProperties.EXPECTED_LIFETIME_PER_EDGE.equals(property)) {
 			final double oldExpectedLifetime = modelEdge.getExpectedLifetime();
 			modelEdge.setExpectedLifetime((Double) value);
-			this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
+			if (isInIncrementalMode()) {
+				this.algorithm.handleLinkExpectedLifetimeModification(modelEdge, oldExpectedLifetime);
+			}
 		} else if (UnderlayTopologyProperties.EDGE_STATE.equals(property)) {
 			modelEdge.setState(org.cobolt.model.EdgeState.UNCLASSIFIED);
-			this.algorithm.handleLinkUnclassification(modelEdge);
+			if (isInIncrementalMode()) {
+				this.algorithm.handleLinkUnclassification(modelEdge);
+			}
 		}
 	}
 
@@ -493,9 +499,14 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	}
 
 	public void removeEdge(final Edge modelEdge) {
-		this.algorithm.handleLinkDeletion(modelEdge);
-
+		if (isInIncrementalMode()) {
+			this.algorithm.handleLinkDeletion(modelEdge);
+		}
 		this.topology.removeEdge(modelEdge);
+	}
+
+	private boolean isInIncrementalMode() {
+		return this.algorithm.getOperationMode() == TopologyControlOperationMode.INCREMENTAL;
 	}
 
 	private void reportConstraintViolations(final ConstraintViolationReport report) {
@@ -620,7 +631,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	/**
 	 * Pair of {@link Node}s
-	 * 
+	 *
 	 * @author Roland Kluge - Initial implementation
 	 */
 	private static class NodePair {
