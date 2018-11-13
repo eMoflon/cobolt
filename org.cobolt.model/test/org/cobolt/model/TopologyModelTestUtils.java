@@ -130,7 +130,7 @@ public class TopologyModelTestUtils {
 	/**
 	 * Asserts that all edges in the given graph are of state
 	 * {@edges EdgeState#ACTIVE}, except for those edges that have an ID in the
-	 * specified list of inactiveEdgeIds.
+	 * specified list of exceptions.
 	 */
 	private static void assertActiveWithExceptions(final Topology topology, final boolean assumeSymmetricEdges,
 			final String... exceptions) {
@@ -138,10 +138,10 @@ public class TopologyModelTestUtils {
 		Collections.sort(sortedInactiveEdgeIds);
 		for (final Edge edge : topology.getEdges()) {
 			if (Collections.binarySearch(sortedInactiveEdgeIds, edge.getId()) >= 0) {
-				assertInactive(edge);
+				continue;
 			} else if (assumeSymmetricEdges
 					&& Collections.binarySearch(sortedInactiveEdgeIds, edge.getReverseEdge().getId()) >= 0) {
-				assertInactive(edge);
+				continue;
 			} else {
 				assertActive(edge);
 			}
@@ -165,18 +165,19 @@ public class TopologyModelTestUtils {
 	public static void assertAllActiveWithExceptions(final Topology topology, final String... exceptions) {
 		assertActiveWithExceptions(topology, false, exceptions);
 	}
-	
+
 	/**
 	 * Asserts that all edges (except for those with the given IDs) are active.
-	 * 
+	 *
 	 * Additionally, symmetry w.r.t. edge states is checked.
-	 * 
+	 *
 	 * @param topology
 	 * @param edgeIds
 	 */
 	public static void assertAllActiveSymmetricWithExceptions(final Topology topology, final String... edgeIds) {
 		assertActiveWithExceptions(topology, true, edgeIds);
 	}
+
 	/**
 	 * Asserts that the active-edges-induced subgraph of the given graph is
 	 * connected.

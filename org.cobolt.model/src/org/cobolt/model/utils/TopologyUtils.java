@@ -43,8 +43,10 @@ public class TopologyUtils {
 		return addNode(topology, id, Double.NaN);
 	}
 
-	public static Edge addEdge(final Topology topology, final String id, final Node source, final Node target,
+	public static Edge addEdge(final Topology topology, final String id, final String sourceId, final String targetId,
 			final double distance, final double requiredTransmissionPower, final EdgeState state) {
+		final Node source = topology.getNodeById(sourceId);
+		final Node target = topology.getNodeById(targetId);
 		final Edge edge = topology.addDirectedEdge(id, source, target);
 		edge.setWeight(distance);
 		edge.setExpectedLifetime(edge.getSource().getEnergyLevel() / requiredTransmissionPower);
@@ -52,9 +54,14 @@ public class TopologyUtils {
 		return edge;
 	}
 
-	public static Edge addEdge(final Topology topology, final String id, final Node source, final Node target,
+	public static Edge addEdge(final Topology topology, final String id, final String source, final String target,
 			final double distance, final double requiredTransmissionPower) {
 		return addEdge(topology, id, source, target, distance, requiredTransmissionPower, EdgeState.UNCLASSIFIED);
+	}
+
+	public static Edge addEdge(final Topology topology, final String id, final String source, final String target,
+			final double distance) {
+		return addEdge(topology, id, source, target, distance, Double.NaN);
 	}
 
 	public static Edge addUndirectedEdge(final Topology topology, final String idFwd, final String idBwd,

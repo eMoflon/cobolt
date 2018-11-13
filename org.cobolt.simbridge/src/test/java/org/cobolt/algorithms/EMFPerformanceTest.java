@@ -23,12 +23,12 @@ public class EMFPerformanceTest {
 	@Test
 	public void testSorting() throws Exception {
 
-		Topology topology = ModelFactory.eINSTANCE.createTopology();
+		final Topology topology = ModelFactory.eINSTANCE.createTopology();
 		Node previous = TopologyUtils.addNode(topology, "n1", Double.NaN);
-		int numberOfNodes = 10;
+		final int numberOfNodes = 10;
 		for (int nodeCount = 2; nodeCount <= numberOfNodes; ++nodeCount) {
-			Node next = TopologyUtils.addNode(topology, "n" + nodeCount, Double.NaN);
-			TopologyUtils.addEdge(topology, "e" + (nodeCount - 1) + "->" + nodeCount, previous, next,
+			final Node next = TopologyUtils.addNode(topology, "n" + nodeCount, Double.NaN);
+			TopologyUtils.addEdge(topology, "e" + (nodeCount - 1) + "->" + nodeCount, previous.getId(), next.getId(),
 					Math.random() * 100, Double.NaN);
 			previous = next;
 		}
@@ -37,7 +37,7 @@ public class EMFPerformanceTest {
 
 		topology.eAdapters().add(new GraphContentAdapter() {
 			@Override
-			protected void edgeAttributeChanged(Edge edge, EAttribute attribute, Object oldValue) {
+			protected void edgeAttributeChanged(final Edge edge, final EAttribute attribute, final Object oldValue) {
 				super.edgeAttributeChanged(edge, attribute, oldValue);
 				Assert.fail("Sorting should not trigger a notification, but something happened: " + edge + " - "
 						+ attribute + " - " + oldValue);
@@ -48,7 +48,7 @@ public class EMFPerformanceTest {
 			final long tic = System.currentTimeMillis();
 			ECollections.sort(topology.getEdges(), new Comparator<Edge>() {
 				@Override
-				public int compare(Edge o1, Edge o2) {
+				public int compare(final Edge o1, final Edge o2) {
 					final Edge link1 = o1;
 					final Edge link2 = o2;
 					return Double.compare(link1.getWeight(), link2.getWeight());
@@ -68,7 +68,7 @@ public class EMFPerformanceTest {
 			final long tic = System.currentTimeMillis();
 			Collections.sort(copiedLinks, new Comparator<Edge>() {
 				@Override
-				public int compare(Edge o1, Edge o2) {
+				public int compare(final Edge o1, final Edge o2) {
 					final Edge link1 = o1;
 					final Edge link2 = o2;
 					return Double.compare(link1.getWeight(), link2.getWeight());

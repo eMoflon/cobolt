@@ -23,7 +23,6 @@ import org.cobolt.model.constraints.ConstraintViolationReport;
 import org.cobolt.model.constraints.ConstraintsFactory;
 import org.cobolt.model.constraints.EdgeStateBasedConnectivityConstraint;
 import org.cobolt.model.constraints.TopologyConstraint;
-import org.cobolt.model.utils.TopologyUtils;
 import org.eclipse.emf.common.util.EList;
 
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
@@ -251,6 +250,8 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 		connectWithReverseEdge(modelEdge);
 
+		this.algorithm.handleLinkAddition(modelEdge);
+
 		this.firePostEdgeAdded(prototype);
 
 		return newEdge;
@@ -433,16 +434,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		return isPhysicallyConnected;
 	}
 
-	public Edge addSymmetricEdge(final String forwardEdgeId, final String backwardEdgeId, final Node sourceNode,
-			final Node targetNode, final double distance, final double requiredTransmissionPower) {
-		final Edge modelEdge = TopologyUtils.addUndirectedEdge(this.topology, forwardEdgeId, backwardEdgeId, sourceNode,
-				targetNode, distance, requiredTransmissionPower);
-
-		this.algorithm.handleLinkAddition(modelEdge);
-
-		return modelEdge;
-	}
-
 	public <T> void updateModelNodeAttribute(final Node modelNode, final SiSType<T> property, final T value) {
 
 		if (UnderlayTopologyProperties.REMAINING_ENERGY.equals(property)) {
@@ -618,6 +609,13 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 	 */
 	public Topology getTopology() {
 		return this.topology;
+	}
+
+	/**
+	 * Returns the configured TC algorithm
+	 */
+	public AbstractTopologyControlAlgorithm getAlgorithm() {
+		return algorithm;
 	}
 
 	/**

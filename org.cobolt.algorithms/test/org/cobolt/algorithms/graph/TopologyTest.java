@@ -24,9 +24,9 @@ public class TopologyTest {
 
 	@Test
 	public void testCreateEdge() throws Exception {
-		final Node n1 = TopologyUtils.addNode(this.topology, "n1", 1.2);
+		TopologyUtils.addNode(this.topology, "n1", 1.2);
 		final Node n2 = TopologyUtils.addNode(this.topology, "n2", 2.5);
-		final Edge link = TopologyUtils.addEdge(this.topology, "e12", n1, n2, 15.7, 2.9);
+		final Edge link = TopologyUtils.addEdge(this.topology, "e12", "n1", "n2", 15.7, 2.9);
 		Assert.assertSame(EdgeState.UNCLASSIFIED, link.getState());
 
 		final Edge link12 = this.topology.getEdgeById("e12");
@@ -39,13 +39,13 @@ public class TopologyTest {
 	@Ignore("Performance test for unclassification effort")
 	@Test
 	public void testRuntimeOfLinkUnclassification() throws Exception {
-		for (int edgeCount : Arrays.asList((int) 1e3, (int) 1e4, (int) 5e4, (int) 1e5, (int) 2e5, (int) 5e5,
+		for (final int edgeCount : Arrays.asList((int) 1e3, (int) 1e4, (int) 5e4, (int) 1e5, (int) 2e5, (int) 5e5,
 				(int) 1e6)) {
 			Node previousNode = TopologyUtils.addNode(this.topology, "n" + 1, 0.0);
 			for (int i = 2; i <= edgeCount; ++i) {
-				Node currentNode = TopologyUtils.addNode(this.topology, "n" + i, 0.0);
-				TopologyUtils.addEdge(this.topology, "e" + (i - 1) + "-" + i, previousNode, currentNode, 1, 1,
-						EdgeState.ACTIVE);
+				final Node currentNode = TopologyUtils.addNode(this.topology, "n" + i, 0.0);
+				TopologyUtils.addEdge(this.topology, "e" + (i - 1) + "-" + i, previousNode.getId(), currentNode.getId(),
+						1, 1, EdgeState.ACTIVE);
 				previousNode = currentNode;
 			}
 
