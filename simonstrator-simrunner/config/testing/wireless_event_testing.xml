@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+	<Default>
+		<Variable name="enableVisualization" value="true" />
+
+		<Variable name="seed" value="4" />
+		<Variable name="size" value="99" /><!-- excluding the base station! -->
+		<Variable name="world_size" value="750" />
+		
+		<Variable name="end" value="1h" />
+		<!-- Greater than 0 in order to ensure event scheduling -->
+		<!-- if possible an integer multiple of the UDG range -->
+		<Variable name="routing" value="GLOBAL_KNOWLEDGE" />
+		<!-- Possible values: ONE_HOP, GLOBAL_KNOWLEDGE, AODV -->
+		<Variable name="outputFolder" value="" />
+		<!-- Leave empty for generating a default name -->
+		<Variable name="outputFilePrefix" value="" />
+		<!-- Leave empty for generating a default name -->
+
+		<!-- This is not equal to the initial capacity of each node, which is set 
+			randomly in EnergyModelFactory!! -->
+		<!-- <Variable name="batteryCapacity" value="1268" /> -->
+		<!-- You might use 1268, which is the value for an AAA Carbon-zinc battery: 
+			http://www.allaboutbatteries.com/Energy-tables.html -->
+		<Variable name="batteryCapacitySensor" value="100" />
+		<Variable name="batteryCapacityBaseStation" value="100000" />
+		<Variable name="enableMovement" value="true" />
+		<Variable name="speedOfTheMobileNodes" value="2" />
+		<Variable name="scenario" value="DATACOLLECTION" />
+		<!-- Possible values: DATACOLLECTION, ALLTOALL, GOSSIP, see de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.ScenarioType -->
+
+		<Variable name="timeBetweenMovements" value="10m" />
+		<Variable name="hesitationProbability" value="0.95" /><!-- The 
+			probability that a node does NOT move in a time step. -->
+		<Variable name="phyType" value="WIFI" /><!-- WIFI, WIFI80211B 
+			See de.tud.kom.p2psim.api.linklayer.mac.PhyType -->
+	</Default>
+
+	<!-- Choose exactly one of the following SimulatorCore definitions to choose 
+		between realTime mode and normal mode -->
+	<!-- <SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator" static="getInstance" 
+		seed="$seed" finishAt="$end" timeSkew="10.0" /> -->
+	<SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator"
+		static="getInstance" seed="$seed" finishAt="$end" />
+
+	<Topology class="de.tud.kom.p2psim.impl.topology.TopologyFactory"
+		worldX="$world_size" worldY="$world_size">
+
+		<View class="de.tud.kom.p2psim.impl.topology.views.LogicalWifiTopologyView"
+			phy="$phyType" csDbm="-96" satDbm="-77" rxSensitivityDbm="-75"><!-- previously: 
+				rxSensitivityDbm="-75" satDbm="-80" csDbm="-77"> -->
+			<PropagationLossModel
+				class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.propagation.loss.LogDistancePropagationLossModel"
+				exponent="2.5" />
+			<ErrorRateModel
+				class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.errormodel.NistErrorRateModel" />
+		</View>
+
+		<IfEqualStr arg0="$enableVisualization" arg1="true">
+			<!-- Uncomment/Comment for topology visualization. The link visualization 
+				can be enable by uncommenting the according analyzer below -->
+			<View
+				class="de.tud.kom.p2psim.impl.topology.views.VisualizationTopologyView"
+				scale="1" worldX="$world_size" worldY="$world_size" />
+		</IfEqualStr>
+
+		<Placement
+			class="de.tud.kom.p2psim.impl.topology.placement.RandomPositionDistribution" />
+
+		<Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement" />
+	</Topology>
+
+	<EnergyModelBaseStation
+		class="de.tud.kom.p2psim.impl.energy.EnergyModelFactory"
+		maxBatteryCapacity="$batteryCapacityBaseStation">
+		<Component class="de.tud.kom.p2psim.impl.energy.configs.WifiBCM4329Chip" />
+	</EnergyModelBaseStation>
+	<EnergyModelSensor class="de.tud.kom.p2psim.impl.energy.EnergyModelFactory"
+		maxBatteryCapacity="$batteryCapacitySensor">
+		<Component class="de.tud.kom.p2psim.impl.energy.configs.WifiBCM4329Chip" />
+	</EnergyModelSensor>
+
+	<LinkLayer class="de.tud.kom.p2psim.impl.linklayer.LinkLayerFactory">
+		<Mac
+			class="de.tud.kom.p2psim.impl.linklayer.mac.configs.Ieee80211AdHocConfig"
+			phy="$phyType" standard="g" /> <!--Default: MaxRetransmission="7" MaxTimeInQueue="10s" MaxQueueLength="1000" 
+			RtsCtsThreshold="$RtsCtsThreshold"/> -->
+	</LinkLayer>
+
+	<NetLayer class="de.tud.kom.p2psim.impl.network.routed.RoutedNetLayerFactory">
+		<Routing class="de.tud.kom.p2psim.impl.network.routed.config.Routing"
+			protocol="IPv4" algorithm="$routing" phy="$phyType" />
+	</NetLayer>
+	<TransLayer
+		class="de.tud.kom.p2psim.impl.transport.modular.ModularTransLayerFactory"
+		useRealTcpAck="true" />
+
+	<TopologyMonitoring
+		class="de.tud.kom.p2psim.impl.topology.monitoring.DistributedTopologyMonitoringComponentFactory" />
+
+	<!-- - Group composition for the different scenarios -->
+	<HostBuilder class="de.tud.kom.p2psim.impl.scenario.DefaultHostBuilder"
+		experimentSize="$size">
+		<Group size="$size" groupID="sensors">
+			<Topology>
+				<Placement
+					class="de.tud.kom.p2psim.impl.topology.placement.RandomPositionDistribution" />
+
+				<IfNotEqualStr arg0="$enableMovement" arg1="true">
+					<Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement"
+						timeBetweenMoveOperations="5s" />
+				</IfNotEqualStr>
+				<IfEqualStr arg0="$enableMovement" arg1="true">
+					<Movement
+						class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.HesitatedGaussMarkovMovement"
+						alpha="0.1" edgeThreshold="20" timeBetweenMoveOperations="$timeBetweenMovements"
+						hesitationProbability="$hesitationProbability">
+					</Movement>
+				</IfEqualStr>
+
+			</Topology>
+			<EnergyModelSensor />
+			<LinkLayer />
+			<NetLayer />
+			<TransLayer />
+			<!-- <TopologyMonitoring /> -->
+			<Properties enableChurn="false" maxMovementSpeed="$speedOfTheMobileNodes" />
+		</Group>
+		<Group size="1" groupID="base_station">
+			<Topology>
+				<Placement
+					class="de.tud.kom.p2psim.impl.topology.placement.CenterPlacement" />
+				<Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement"
+					timeBetweenMoveOperations="5s" />
+			</Topology>
+			<EnergyModelBaseStation />
+			<LinkLayer />
+			<NetLayer />
+			<TransLayer />
+			<Properties enableChurn="false" />
+		</Group>
+	</HostBuilder>
+
+
+
+	<Monitor class="de.tud.kom.p2psim.impl.common.DefaultMonitor"
+		static="getInstance" start="0m" stop="$end">
+		<ResultWriter
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.ConsoleWriter" />
+		<Analyzer
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.sensor.analyzer.TopologyLinkVisualizationAnalyzer" />
+		<Analyzer
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.TotalEnergyConsumptionAnalyzer" />
+	</Monitor>
+
+	<!-- Provides global knowledge view to the hosts -->
+	<Oracle class="de.tud.kom.p2psim.impl.util.oracle.GlobalOracle"
+		static="getInstance" />
+
+	<Scenario class="de.tud.kom.p2psim.impl.scenario.DOMScenarioFactory"
+		componentClass="de.tudarmstadt.maki.simonstrator.peerfact.application.topopologymonitoring.TopologyMonitoringApplicationFactory" />
+</Configuration>

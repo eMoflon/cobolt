@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   version="1.0"
+   sodipodi:docbase="/home/leo/eclipse-workspace/bp_experiments/Vektorgrafiken/Buttons"
+   sodipodi:docname="PauseButton.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/leo/eclipse-workspace/bp_experiments/images/icons/PlayButton.png"
+   inkscape:export-xdpi="22.5"
+   inkscape:export-ydpi="22.5">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4128">
+      <stop
+         style="stop-color:#198c28;stop-opacity:1;"
+         offset="0"
+         id="stop4130" />
+      <stop
+         style="stop-color:#e3e000;stop-opacity:1"
+         offset="1"
+         id="stop4132" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3129">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3131" />
+      <stop
+         style="stop-color:#198c28;stop-opacity:0"
+         offset="1"
+         id="stop3133" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3129"
+       id="linearGradient3135"
+       x1="27.405741"
+       y1="48.022827"
+       x2="39.011887"
+       y2="5.0387053"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.1870129,0,0,1.2848276,-61.842298,-12.96394)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4128"
+       id="linearGradient4134"
+       x1="16.25"
+       y1="52.214287"
+       x2="26.428572"
+       y2="7.0357137"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.942029,0,0,1.4226191,31.410456,-15.021683)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4128"
+       id="linearGradient4138"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.942029,0,0,1.4226191,6.8568834,-15.28954)"
+       x1="16.25"
+       y1="52.214287"
+       x2="26.428572"
+       y2="7.0357137" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="21.97354"
+     inkscape:cy="34.616657"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     width="64px"
+     height="64px"
+     inkscape:window-width="924"
+     inkscape:window-height="683"
+     inkscape:window-x="154"
+     inkscape:window-y="20" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:url(#linearGradient4134);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 39.622154,10.476403 C 39.285715,52.392858 39.821429,54.178572 39.821429,54.178572 L 51.428573,54.178572 L 50.587475,11.5 L 39.622154,10.476403 z "
+       id="path3157"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:url(#linearGradient4138);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 15.604295,11.99426 C 15.267856,53.910715 15.267856,53.910715 15.267856,53.910715 L 26.875,53.910715 L 26.033902,11.232143 L 15.604295,11.99426 z "
+       id="path4136" />
+  </g>
+</svg>

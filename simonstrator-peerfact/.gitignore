@@ -1,0 +1,11 @@
+lib/
+bin/
+logging/*
+guiCfg/*
+outputs/
+target/
+*~
+cache/*
+data/*
+/.DS_Store
+.settings/

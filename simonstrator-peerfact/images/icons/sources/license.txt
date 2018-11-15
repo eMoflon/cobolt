@@ -1,0 +1,5 @@
+Heckert_GNU_white.svg:
+
+(c) Aurelio A. Heckert <aurium@gmail.com>
+Licensed under the Free Art License
+http://artlibre.org/licence/lal/en/

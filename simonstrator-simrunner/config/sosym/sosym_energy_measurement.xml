@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+	<Default>
+		<Variable name="seed" value="43" />
+		<Variable name="enableVisualization" value="true" />
+		<Variable name="end" value="6h" />	<!-- Greater than 0 in order to ensure event scheduling -->
+		<Variable name="worldWidth" value="1000" /> <!-- if possible an integer multiple of the UDG range -->
+		<Variable name="worldHeight" value="100" /> <!-- if possible an integer multiple of the UDG range -->
+		<Variable name="routing" value="GLOBAL_KNOWLEDGE" />
+		<Variable name="batteryCapacity" value="130000" />
+		<Variable name="outputFile" value="" />
+		<Variable name="phyType" value="WIFI" />
+		<!-- WIFI, WIFI80211B See de.tud.kom.p2psim.api.linklayer.mac.PhyType -->
+		<Variable name="transmissionFrequencyAverageInSeconds" value="1e-3" />
+		<Variable name="messageSizeInBytes" value="1000"/>
+		<Variable name="movementStepSizeInMeters" value="5.0"/>
+		<Variable name="movementTimeInterval" value="10m"/>
+		<Variable name="initialDistanceInMeters" value="10"/>
+	</Default>
+
+	<!-- Choose exactly one of the following SimulatorCore definitions to choose 
+		between realTime mode and normal mode -->
+	<!-- <SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator" static="getInstance" 
+		seed="$seed" finishAt="$end" timeSkew="10.0" /> -->
+	<SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator"
+		static="getInstance" seed="$seed" finishAt="$end" timeSkew="60.0" />
+
+	<Topology class="de.tud.kom.p2psim.impl.topology.TopologyFactory"
+		worldX="$worldWidth" worldY="$worldHeight">
+
+		<View class="de.tud.kom.p2psim.impl.topology.views.LogicalWifiTopologyView"
+			phy="$phyType" csDbm="-96" satDbm="-77" rxSensitivityDbm="-75"><!-- previously: 
+				rxSensitivityDbm="-75" satDbm="-80" csDbm="-77"> -->
+			<PropagationLossModel
+				class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.propagation.loss.LogDistancePropagationLossModel"
+				exponent="2.5" />
+			<ErrorRateModel
+				class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.errormodel.NistErrorRateModel" />
+		</View>
+
+		<IfEqualStr arg0="$enableVisualization" arg1="true">
+			<View
+				class="de.tud.kom.p2psim.impl.topology.views.VisualizationTopologyView"/>
+		</IfEqualStr>
+	</Topology>
+
+	<EnergyModel class="de.tud.kom.p2psim.impl.energy.EnergyModelFactory"
+		maxBatteryCapacity="$batteryCapacity" randomizeInitialCapacity="false">
+		<Component class="de.tud.kom.p2psim.impl.energy.configs.WifiBCM4329Chip" />
+	</EnergyModel>
+
+	<LinkLayer class="de.tud.kom.p2psim.impl.linklayer.LinkLayerFactory">
+		<Mac
+			class="de.tud.kom.p2psim.impl.linklayer.mac.configs.Ieee80211AdHocConfig"
+			phy="$phyType" standard="g" /> <!--Default: MaxRetransmission="7" MaxTimeInQueue="10s" MaxQueueLength="1000" 
+			RtsCtsThreshold="$RtsCtsThreshold"/> -->
+	</LinkLayer>
+
+	<NetLayer class="de.tud.kom.p2psim.impl.network.routed.RoutedNetLayerFactory">
+		<Routing class="de.tud.kom.p2psim.impl.network.routed.config.Routing"
+			protocol="IPv4" algorithm="$routing" phy="$phyType" />
+	</NetLayer>
+	<TransLayer
+		class="de.tud.kom.p2psim.impl.transport.modular.ModularTransLayerFactory"
+		useRealTcpAck="true" />
+
+	<TopologyMonitoring
+		class="de.tud.kom.p2psim.impl.topology.monitoring.DistributedTopologyMonitoringComponentFactory" />
+
+	<HostBuilder class="de.tud.kom.p2psim.impl.scenario.DefaultHostBuilder"
+		experimentSize="2">
+		<Group size="1" groupID="receiver">
+			<Topology>
+				<Movement class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.energyanalysis.IntervalMovement"
+					movementDimension="0"
+					movementStepSizeInMeters="$movementStepSizeInMeters"
+					timeBetweenMoveOperations="$movementTimeInterval"
+				/>
+				<Placement
+					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.energyanalysis.SinglePositionPlacement"
+					longitude="$initialDistanceInMeters"
+					latitude="50"
+				/>
+					
+			</Topology>
+			<EnergyModel />
+			<LinkLayer />
+			<NetLayer />
+			<TransLayer />
+			<Properties enableChurn="false" />
+			<Application
+				class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.energyanalysis.EnergyMeasurementApplicationFactory"
+				transmissionFrequencyAverageInSeconds="$transmissionFrequencyAverageInSeconds"
+				outputFile="$outputFile" role="RECEIVER" />
+		</Group>
+		<Group size="1" groupID="sender">
+			<Topology>
+				<Placement
+					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.energyanalysis.SinglePositionPlacement"
+					longitude="0"
+					latitude="50"
+				/>
+				<Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement" />
+			</Topology>
+			<EnergyModel />
+			<LinkLayer />
+			<NetLayer />
+			<TransLayer />
+			<Application2
+				class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.energyanalysis.EnergyMeasurementApplicationFactory"
+				outputFile="$outputFile" 
+				transmissionFrequencyAverageInSeconds="$transmissionFrequencyAverageInSeconds"
+				messageSizeInBytes="$messageSizeInBytes"
+				role="SENDER" />
+			<Properties enableChurn="false" />
+		</Group>
+	</HostBuilder>
+
+	<Monitor class="de.tud.kom.p2psim.impl.common.DefaultMonitor"
+		static="getInstance" start="0m" stop="$end">
+		<ResultWriter
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.ConsoleWriter" />
+		<Analyzer
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.sensor.analyzer.TopologyLinkVisualizationAnalyzer"
+			phyType="$phyType" />
+		<Analyzer
+			class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.TotalEnergyConsumptionAnalyzer" />
+	</Monitor>
+
+	<!-- Provides global knowledge view to the hosts -->
+	<Oracle class="de.tud.kom.p2psim.impl.util.oracle.GlobalOracle"
+		static="getInstance" />
+
+	<Scenario class="de.tud.kom.p2psim.impl.scenario.DOMScenarioFactory"
+		componentClass="de.tudarmstadt.maki.simonstrator.peerfact.application.topopologymonitoring.TopologyMonitoringApplicationFactory" />
+</Configuration>

@@ -1,0 +1,11 @@
+1: local: 
+on match any at ("DefaultTopologyProvider.class", "WiFi")  (
+ self <- e1 -> n2, 
+ self <- e2 -> n3,
+ n2 <- e3 -> n3,
+ e1 . weight >= e2 . weight,
+ e2 . weight >= e3 . weight, 
+ e1 . weight >= e3 . weight * 1.41)
+execute first match after 10 s: 
+[ execute TopoTransition at (self, "DefaultTopologyProvider.class", "WiFi-Reduced") remove neighbor (n2); ];
+

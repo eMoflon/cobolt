@@ -1,0 +1,25 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="PeerfactSIM-EM" transaction-type="RESOURCE_LOCAL">
+        <properties>
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+ 
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            
+            <!-- DO NOT SET url, password and user HERE! 
+            Instead, use the MetricOutputDAO-class to set those values in your config! -->
+            <property name="hibernate.connection.url" value="" />
+            <property name="hibernate.connection.username" value="" />
+            <property name="hibernate.connection.password" value="" />
+
+            
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+            <property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory" />
+    		<property name="hibernate.pool_size" value="1" />
+    
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            
+		    <property name="hibernate.current_session_context_class" value="thread" />
+        </properties>
+    </persistence-unit>
+</persistence>

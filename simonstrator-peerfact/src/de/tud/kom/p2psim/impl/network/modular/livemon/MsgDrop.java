@@ -1,0 +1,64 @@
+/*
+ * Copyright (c) 2005-2011 KOM - Multimedia Communications Lab
+ *
+ * This file is part of PeerfactSim.KOM.
+ * 
+ * PeerfactSim.KOM is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * PeerfactSim.KOM is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with PeerfactSim.KOM.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+package de.tud.kom.p2psim.impl.network.modular.livemon;
+
+import de.tud.kom.p2psim.impl.util.LiveMonitoring.ProgressValue;
+import de.tud.kom.p2psim.impl.util.toolkits.NumberFormatToolkit;
+
+public class MsgDrop implements ProgressValue {
+	
+	long dropped = 0;
+	long total = 0;
+	private String ownerName;
+	Object lock = new Object();
+	
+	public MsgDrop(String ownerName) {
+		this.ownerName = ownerName;
+	}
+	
+	public void droppedMessage() {
+		synchronized(lock) {
+			dropped ++;
+			total ++;
+		}
+	}
+	
+	public void noDropMessage() {
+		synchronized(lock) {
+			total ++;
+		}
+	}
+
+	@Override
+	public String getName() {
+		return "Net: " + ownerName + " Msg Drop";
+	}
+
+	@Override
+	public String getValue() {
+		synchronized(lock) {
+			if (total == 0) return "Unknown";
+			return dropped + ", quota: " + NumberFormatToolkit.formatPercentage(dropped/(double)total, 3);
+		}
+	}
+	
+}

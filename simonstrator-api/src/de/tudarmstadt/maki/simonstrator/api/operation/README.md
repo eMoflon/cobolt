@@ -1,0 +1,4 @@
+# Operations
+To schedule specific actions within the API, you would normally just use the `Event`-class together with an `EventHandler`. If an action involves waiting for a given reply (as is commonly the case with specific maintenance tasks within overlays), you can use Operations instead. They allow you to execute a set of actions once or periodically (please extend the provided abstract classes) and to return a result to an `OperationCallback`.
+
+In general, most protocol behavior can also be realized using solely events, as you can include an `int` identifier as well as an arbitrary state object. Therefore, if in doubt, it is generally a good idea not to use Operations at all.

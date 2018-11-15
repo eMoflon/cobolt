@@ -1,0 +1,3 @@
+Dieser Ordner enthält lokale Konfigurationsdateien der GUI, die nicht ins SVN übernommen werden sollen.
+
+Bei Veränderungen .cvsignore anpassen!

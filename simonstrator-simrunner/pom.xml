@@ -1,0 +1,186 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <cobolt.version>1.0.0-SNAPSHOT</cobolt.version>
+  </properties>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>maki</groupId>
+  <artifactId>simonstrator-simRunner</artifactId>
+  <version>2.5-SNAPSHOT</version>
+  <parent>
+    <groupId>org.cobolt</groupId>
+    <artifactId>cobolt-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>assets</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>de.tudarmstadt.maki.simonstrator.peerfact.GUIRunner</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+		<!-- simonstrator-repository -->
+    <repository>
+      <id>simonstrator</id>
+      <url>https://dev.kom.e-technik.tu-darmstadt.de/mvn/</url>
+    </repository>
+
+		<!-- uk maven central, since the local central server is slow as hell -->
+    <repository>
+      <id>uk.maven.org</id>
+      <url>http://uk.maven.org/maven2</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+		<!-- The other "simonstrator"-projects -->
+    <dependency>
+      <groupId>maki</groupId>
+      <artifactId>simonstrator-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+		<!-- <dependency> <groupId>maki</groupId> <artifactId>simonstrator-peerfactsim</artifactId>
+			<version>2.2</version> </dependency> -->
+
+    <dependency>
+      <groupId>maki</groupId>
+      <artifactId>simonstrator-peerfactsim</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>maki</groupId>
+      <artifactId>simonstrator-topology-control</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-algo</artifactId>
+      <version>1.2</version>
+      <optional>false</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-core</artifactId>
+      <version>1.2</version>
+      <optional>false</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.graphstream</groupId>
+      <artifactId>gs-ui</artifactId>
+      <version>1.2</version>
+      <optional>false</optional>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.1.Final</version>
+    </dependency>
+
+
+		<!-- Testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+		<!--
+		 EXTREMELY IMPORTANT:
+		 Coala has to appear before Cobolt because Cobolt has a transitive dependency to a newer version of Antlr,
+		 which is not supported by the Xtext version that ships with Coala.
+		 -->
+     <!--
+        <dependency>
+            <groupId>org.coala</groupId>
+            <artifactId>org.coala.simonstrator</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        -->
+
+    <dependency>
+      <groupId>org.cobolt</groupId>
+      <artifactId>
+				cobolt-simbridge
+			</artifactId>
+      <version>${cobolt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cobolt</groupId>
+      <artifactId>
+                cobolt-model
+            </artifactId>
+      <version>${cobolt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cobolt</groupId>
+      <artifactId>
+                cobolt-algorithms
+            </artifactId>
+      <version>${cobolt.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.cobolt</groupId>
+      <artifactId>
+				cobolt-simbridge
+			</artifactId>
+      <version>${cobolt.version}</version>
+    </dependency>
+  </dependencies>
+</project>

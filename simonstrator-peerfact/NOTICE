@@ -1,0 +1,135 @@
+This file contains information about the utilized libraries in PeerfactSim.KOM.
+
+Library: commons-math-1.1.jar
+Authors: The Apache Software Foundation
+Homepage: http://www.apache.org/
+
+Library: dom4j-1.6.1.jar
+Authors: http://dom4j.sourceforge.net/team-list.html
+Homepage: http://www.dom4j.org
+
+Library: log4j.jar
+Authors: http://logging.apache.org/team-list.html
+Homepage: http://logging.apache.org/log4j/index.html
+
+Library: slf4j-log4j12-1.6.1.jar
+Authors: http://www.slf4j.org/index.html
+Homepage: http://www.slf4j.org/index.html
+License:  MIT License
+
+Library: ssj.jar
+Author: Richard Simard
+Homepage: http://www.iro.umontreal.ca/~simardr/ssj/indexe.html
+
+Library: jcommon-1.0.10.jar 
+Authors: http://www.jfree.org/jcommon/
+Homepage: http://www.jfree.org/jcommon/
+
+Library: jfreechart-1.0.6.jar
+Authors: http://www.jfree.org/jfreechart/
+Homepage: http://www.jfree.org/jfreechart/
+
+Library: stax-utils.jar
+Authors: http://java.net/projects/stax-utils/members
+Homepage: http://java.net/projects/stax-utils/
+
+Library: mysql-connector-java-5.1.14-bin.jar
+Authors: http://www.mysql.de/downloads/connector/j/
+Homepage: http://www.mysql.de/downloads/connector/j/
+License: GNU GPL v2
+
+Library: hibernate3.jar
+Authors: http://www.hibernate.org/
+Homepage: http://www.hibernate.org/
+License: LGPL v2.1
+
+Library: hibernate-jpa-2.0-api-1.0.0.Final.jar (Java Persistence API v2.0)
+Authors: http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html
+Homepage: http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html
+License: ???
+
+
+########## Libraries which are used by Hibernate: ##########
+
+Library: antlr-2.7.6.jar
+Authors: http://www.antlr.org/credits.html
+Homepage: http://www.antlr.org/
+License: The BSD License
+
+Library: commons-collections-3.1.jar
+Authors: http://commons.apache.org/collections
+Homepage: http://commons.apache.org/collections
+License: The Apache Software License, Version 2.0
+
+Library: javassist-3.12.0.GA.jar
+Authors: http://www.javassist.org/
+Homepage: http://www.javassist.org/
+License: LGPL 2.1
+
+Library: jta-1.1.jar
+Authors: http://www.oracle.com/technetwork/java/javaee/jta/index.html
+Homepage: http://www.oracle.com/technetwork/java/javaee/jta/index.html
+License: ???
+
+Library: slf4j-api-1.6.1.jar
+Authors: http://www.slf4j.org
+Homepage: http://www.slf4j.org
+License:  MIT License
+
+
+Classes:
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/network/gnp/geoip/LookupService.java
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/network/gnp/geoip/Location.java
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/network/gnp/geoip/DatabaseInfo.java
+Copyright: MaxMind LLC 
+License: GPLv2 and later versions
+
+Classes:
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/overlay/ido/von/voronoi/Point2d.java
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/overlay/ido/von/voronoi/Voronoi.java
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/overlay/ido/von/voronoi/Line2d.java
+PeerfactSim.KOM-Main/trunk/src/de/tud/kom/p2psim/impl/overlay/ido/von/voronoi/Segment.java
+Copyright: Shun-Yun Hu
+License: LGPL v2
+
+License of dom4j:
+Copyright 2001-2010 (C) MetaStuff, Ltd. All Rights Reserved.
+
+Redistribution and use of this software and associated documentation
+("Software"), with or without modification, are permitted provided
+that the following conditions are met:
+
+1. Redistributions of source code must retain copyright
+   statements and notices.  Redistributions must also contain a
+   copy of this document.
+ 
+2. Redistributions in binary form must reproduce the
+   above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other
+   materials provided with the distribution.
+ 
+3. The name "DOM4J" must not be used to endorse or promote
+   products derived from this Software without prior written
+   permission of MetaStuff, Ltd.  For written permission,
+   please contact dom4j-info@metastuff.com.
+ 
+4. Products derived from this Software may not be called "DOM4J"
+   nor may "DOM4J" appear in their names without prior written
+   permission of MetaStuff, Ltd. DOM4J is a registered
+   trademark of MetaStuff, Ltd.
+ 
+5. Due credit should be given to the DOM4J Project - 
+   http://dom4j.sourceforge.net
+ 
+THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
+``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.

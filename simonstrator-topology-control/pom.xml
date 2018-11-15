@@ -1,0 +1,148 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>maki</groupId>
+  <artifactId>simonstrator-topology-control</artifactId>
+  <version>2.5-SNAPSHOT</version>
+  <name>Simonstrator-Topology-Control</name>
+  <parent>
+    <groupId>org.cobolt</groupId>
+    <artifactId>cobolt-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+					<!--<encoding>ISO-8859-1</encoding> -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+		<!-- simonstrator-repository -->
+    <repository>
+      <id>simonstrator</id>
+      <url>http://dev.kom.e-technik.tu-darmstadt.de/mvn/</url>
+    </repository>
+
+		<!-- uk maven central, since the local central server is slow as hell -->
+    <repository>
+      <id>uk.maven.org</id>
+      <url>http://uk.maven.org/maven2</url>
+    </repository>
+
+    <repository>
+      <id>clojars.org</id>
+      <url>http://clojars.org/repo</url>
+    </repository>
+
+    <repository>
+      <id>democles-mvn-repo-releases</id>
+      <url>https://github.com/eMoflon/democles-mvn-repo/raw/master/releases</url>
+    </repository>
+    <repository>
+      <id>democles-mvn-repo-snapshots</id>
+      <url>https://github.com/eMoflon/democles-mvn-repo/raw/master/snapshots</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+		<!-- Simonstrator-Platform -->
+    <dependency>
+      <groupId>maki</groupId>
+      <artifactId>simonstrator-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tinkerpop.blueprints</groupId>
+      <artifactId>blueprints-core</artifactId>
+      <version>2.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.clojars.cbilson</groupId>
+      <artifactId>javaplot</artifactId>
+      <version>0.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.gervarro</groupId>
+      <artifactId>org.gervarro.democles.plan</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gervarro</groupId>
+      <artifactId>org.gervarro.democles.common</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.gervarro</groupId>
+      <artifactId>org.gervarro.democles.interpreter</artifactId>
+      <version>1.0.0.v20170228-2312</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20140107</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+  </dependencies>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+</project>

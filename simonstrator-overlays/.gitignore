@@ -1,0 +1,13 @@
+target/
+bin/
+.settings/
+
+build/
+simonstratoroverlays.iml
+
+# Antlr files
+**/*tokens
+**/*Lexer.java
+**/*Parser.java
+**/ExecutionLanguageListener.java
+**/ExecutionLanguageBaseListener.java

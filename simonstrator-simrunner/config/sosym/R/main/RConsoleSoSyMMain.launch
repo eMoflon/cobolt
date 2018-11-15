@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="de.walware.statet.r.launchConfigurationTypes.RConsole">
+<stringAttribute key="bad_container_name" value="${project_loc}/config/rkluge/jvlc/R"/>
+<stringAttribute key="de.walware.statet.r.debug/RConsole/arguments.options" value="--no-save"/>
+<booleanAttribute key="de.walware.statet.r.debug/RConsole/console.pin" value="false"/>
+<booleanAttribute key="de.walware.statet.r.debug/RConsole/objectdb.autorefresh.enabled" value="true"/>
+<booleanAttribute key="de.walware.statet.r.debug/RConsole/objectdb.enabled" value="true"/>
+<intAttribute key="de.walware.statet.r.debug/RConsole/objectdb.envs.max_length" value="20000"/>
+<intAttribute key="de.walware.statet.r.debug/RConsole/objectdb.lists.max_length" value="200000"/>
+<stringAttribute key="de.walware.statet.r.debug/RConsole/type" value="local.rjs-rmi"/>
+<booleanAttribute key="de.walware.statet.r.debug/integrationintegration.rdbgext.enabled" value="true"/>
+<booleanAttribute key="de.walware.statet.r.debug/integrationintegration.rgraphics.asdefault" value="true"/>
+<booleanAttribute key="de.walware.statet.r.debug/integrationintegration.rhelp.enabled" value="true"/>
+<stringAttribute key="de.walware.statet.r/renv/REnvCode" value="user-local--ubfd116wrqn0;R"/>
+<stringAttribute key="de.walware.statet.r/renv/WorkingDirectory" value="${project_loc}/config/rkluge/sosym/R/main"/>
+<intAttribute key="history.File.mode" value="1"/>
+<stringAttribute key="history.File.path" value="${session_startup_wd}/.Rhistory"/>
+<booleanAttribute key="history.Prepend.Timestamp.enable" value="true"/>
+<listAttribute key="history.SubmitTypes.ids">
+<listEntry value="CONSOLE"/>
+</listAttribute>
+<booleanAttribute key="history.TrackInfo.enable" value="false"/>
+<booleanAttribute key="history.TrackInput.HistoryOnly.enable" value="true"/>
+<booleanAttribute key="history.TrackInput.enable" value="true"/>
+<booleanAttribute key="history.TrackOutput.Truncate.enable" value="false"/>
+<intAttribute key="history.TrackOutput.Truncate.lines" value="50"/>
+<booleanAttribute key="history.TrackOutput.enable" value="false"/>
+<stringAttribute key="history.label" value="History"/>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="R_KEEP_PKG_SOURCE" value="yes"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="de.walware.statet.r.sourceLocators.RSourceLocator"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;sourceLookupDirector&gt;&#13;&#10;&lt;sourceContainers duplicates=&quot;false&quot;&gt;&#13;&#10;&lt;container memento=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;no&amp;quot;?&amp;gt;&amp;#13;&amp;#10;&amp;lt;de.walware.statet.r.sourceContainers.AllRProjectsType/&amp;gt;&amp;#13;&amp;#10;&quot; typeId=&quot;de.walware.statet.r.sourceContainers.AllRProjectsType&quot;/&gt;&#13;&#10;&lt;container memento=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;no&amp;quot;?&amp;gt;&amp;#13;&amp;#10;&amp;lt;default/&amp;gt;&amp;#13;&amp;#10;&quot; typeId=&quot;org.eclipse.debug.core.containerType.default&quot;/&gt;&#13;&#10;&lt;/sourceContainers&gt;&#13;&#10;&lt;/sourceLookupDirector&gt;&#13;&#10;"/>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_OUTPUT_ON" value="false"/>
+<stringAttribute key="process_factory_id" value="de.walware.statet.nico.LogRuntimeProcessFactory"/>
+<listAttribute key="tracking.enabled.ids">
+<listEntry value="transcript"/>
+<listEntry value="history"/>
+</listAttribute>
+<listAttribute key="tracking.ids">
+<listEntry value="history"/>
+<listEntry value="transcript"/>
+</listAttribute>
+<intAttribute key="transcript.File.mode" value="1"/>
+<stringAttribute key="transcript.File.path" value="${session_startup_wd}/${session_startup_date:yyyy-MM-dd HH-mm-ss}.Rtr"/>
+<booleanAttribute key="transcript.Prepend.Timestamp.enable" value="true"/>
+<listAttribute key="transcript.SubmitTypes.ids">
+<listEntry value="CONSOLE"/>
+<listEntry value="EDITOR"/>
+<listEntry value="TOOLS"/>
+<listEntry value="OTHER"/>
+</listAttribute>
+<booleanAttribute key="transcript.TrackInfo.enable" value="true"/>
+<booleanAttribute key="transcript.TrackInput.HistoryOnly.enable" value="false"/>
+<booleanAttribute key="transcript.TrackInput.enable" value="true"/>
+<booleanAttribute key="transcript.TrackOutput.Truncate.enable" value="false"/>
+<intAttribute key="transcript.TrackOutput.Truncate.lines" value="50"/>
+<booleanAttribute key="transcript.TrackOutput.enable" value="true"/>
+<stringAttribute key="transcript.label" value="Transcript"/>
+</launchConfiguration>
