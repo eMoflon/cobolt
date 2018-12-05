@@ -204,7 +204,8 @@ public class TopologyControlComponent implements HostComponent {
 	}
 
 	private String getIterationPrefix() {
-		return String.format("iter#%03d ", this.statisticsHelper.getIterationCounter());
+		return String.format("[%03d]iter#%03d ", this.configuration.configurationNumber,
+				this.statisticsHelper.getIterationCounter());
 	}
 
 	/**
@@ -454,7 +455,8 @@ public class TopologyControlComponent implements HostComponent {
 	private void invokeContextEventHandlers() {
 		final Graph inputTopology = getInputTopology();
 
-		Monitor.log(getClass(), Level.INFO, "iter#%03d CEH...", this.statisticsHelper.getIterationCounter());
+		Monitor.log(getClass(), Level.INFO, "%sCEH...", getIterationPrefix(),
+				this.statisticsHelper.getIterationCounter());
 
 		final CountingLinkStateListener ceLSMListener = new CountingLinkStateListener(this.eventRecordingFacade);
 		final CountingContextEventListener intraCEExecutionCountingContextEventListener = new CountingContextEventListener();
@@ -563,15 +565,14 @@ public class TopologyControlComponent implements HostComponent {
 		statisticsHelper.recordPostContextEventStatistics(this, ceLSMListener,
 				intraCEExecutionCountingContextEventListener, contextEventDuration, contextEventCheckTime);
 
-		Monitor.log(getClass(), Level.INFO,
-				"iter#%03d CEH   Done (t=%.0fms, t_check=%.0fms, numCEs=%s, allLSMs=%d [%s])",
-				this.statisticsHelper.getIterationCounter(), this.getStatisticsDTO().ceTimeInMillis,
-				getStatisticsDTO().ceCheckTimeInMillis, intraCEExecutionCountingContextEventListener.format(),
-				getStatisticsDTO().ceLSMCountTotal, ceLSMListener.format());
+		Monitor.log(getClass(), Level.INFO, "%sCEH   Done (t=%.0fms, t_check=%.0fms, numCEs=%s, allLSMs=%d [%s])",
+				getIterationPrefix(), this.getStatisticsDTO().ceTimeInMillis, getStatisticsDTO().ceCheckTimeInMillis,
+				intraCEExecutionCountingContextEventListener.format(), getStatisticsDTO().ceLSMCountTotal,
+				ceLSMListener.format());
 	}
 
 	private void invokeTopologyControlAlgorithm() {
-		Monitor.log(getClass(), Level.INFO, "iter#%03d TCA...(algo=%s, parameters=%s)",
+		Monitor.log(getClass(), Level.INFO, "%sTCA...(algo=%s, parameters=%s)", getIterationPrefix(),
 				this.statisticsHelper.getIterationCounter(), getTopologyControlFacade().getConfiguredAlgorithm(),
 				getTopologyControlAlgorithmParameters());
 
@@ -612,17 +613,17 @@ public class TopologyControlComponent implements HostComponent {
 		this.multiplexingFacade.endTopologyControlSequence();
 
 		Monitor.log(getClass(), Level.INFO,
-				String.format(
-						"iter#%03d TCA   Done (t=%.0fms,  t_check=%.0fms,  violations=%d, allLSMs=%d [%s], effLSMs=%d)",
-						this.statisticsHelper.getIterationCounter(), statisticsDTO.tcTimeInMillis,
-						statisticsDTO.tcCheckTimeInMillis, statisticsDTO.tcViolationCount,
-						statisticsDTO.tcLSMCountTotal, tcLSMListener.format(), statisticsDTO.tcLSMCountEffective));
+				String.format("%sTCA   Done (t=%.0fms,  t_check=%.0fms,  violations=%d, allLSMs=%d [%s], effLSMs=%d)",
+						getIterationPrefix(), statisticsDTO.tcTimeInMillis, statisticsDTO.tcCheckTimeInMillis,
+						statisticsDTO.tcViolationCount, statisticsDTO.tcLSMCountTotal, tcLSMListener.format(),
+						statisticsDTO.tcLSMCountEffective));
 
 		getTopologyControlFacade().removeLinkStateListener(tcLSMListener);
 	}
 
 	private void doStatisticsRecording() {
-		Monitor.log(getClass(), Level.INFO, "iter#%03d Stat...", this.statisticsHelper.getIterationCounter());
+		Monitor.log(getClass(), Level.INFO, "%sStat...", getIterationPrefix(),
+				this.statisticsHelper.getIterationCounter());
 		final long tic = System.currentTimeMillis();
 
 		this.statisticsHelper.collectStatistics(getInputTopology(), getOutputTopology());
@@ -636,9 +637,9 @@ public class TopologyControlComponent implements HostComponent {
 
 		final String formattedSimulationTime = Time.getFormattedTime(Time.getCurrentTime());
 		Monitor.log(getClass(), Level.INFO,
-				"iter#%03d Stat  Done (t=%.0fms, n=%d, m=%d, t-real: %.2fmin, t-sim: %s, avgBatPct=%.2f, minBatPct=%.2f, maxBatPct=%.2f, numEmptyNodes=%d, numSCCsInInput=%d, numSCCsInOutput=%d)",
-				this.statisticsHelper.getIterationCounter(), statisticsDTO.statTimeInMillis,
-				statisticsDTO.nodeCountTotal, statisticsDTO.edgeCountTotal, //
+				"%sStat   Done (t=%.0fms, n=%d, m=%d, t-real: %.2fmin, t-sim: %s, avgBatPct=%.2f, minBatPct=%.2f, maxBatPct=%.2f, numEmptyNodes=%d, numSCCsInInput=%d, numSCCsInOutput=%d)",
+				getIterationPrefix(), statisticsDTO.statTimeInMillis, statisticsDTO.nodeCountTotal,
+				statisticsDTO.edgeCountTotal, //
 				statisticsDTO.totalTimeInMinutes, formattedSimulationTime, //
 				statisticsDTO.energyPercentageAvg, statisticsDTO.energyPercentageMin, statisticsDTO.energyPercentageMax, //
 				statisticsDTO.nodeCountEmpty, //

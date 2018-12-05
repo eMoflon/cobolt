@@ -616,4 +616,7 @@ public abstract class AbstractTopologyControlReconfigurationExecutor {
 		}
 	}
 
+	public String getExecutor() {
+		return executor;
+	}
 }
