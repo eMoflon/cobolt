@@ -2,22 +2,21 @@
  * Copyright (c) 2005-2011 KOM - Multimedia Communications Lab
  *
  * This file is part of PeerfactSim.KOM.
- * 
+ *
  * PeerfactSim.KOM is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- * 
+ *
  * PeerfactSim.KOM is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with PeerfactSim.KOM.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 package de.tud.kom.p2psim.impl.util.guirunner.progress;
 
@@ -41,10 +40,11 @@ import javax.swing.SwingConstants;
 
 import de.tud.kom.p2psim.impl.util.toolkits.TimeToolkit;
 
-public abstract class RichProgressView extends JFrame implements ActionListener {
+public abstract class RichProgressView extends JFrame
+		implements ActionListener {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -682537688746137796L;
 
@@ -71,10 +71,12 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 	JLabel estTimeLabel;
 
 	String title;
-	
+
 	JPanel buttonPanel;
-	
+
 	TimeToolkit timeTk = new TimeToolkit(1);
+
+	private String previousFrameTitle = "";
 
 	public RichProgressView() {
 		this.setSize(800, 600);
@@ -87,7 +89,7 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 		elapsedTimeLabel = new JLabel();
 		estTimeLabel = new JLabel();
 
-		JPanel progressPane = new JPanel();
+		final JPanel progressPane = new JPanel();
 
 		populateProgressPane(progressPane);
 
@@ -108,13 +110,13 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 		timeOperationStarted = System.currentTimeMillis();
 	}
 
-	private void populateProgressPane(JPanel progressPane) {
-		GridBagLayout gbl = new GridBagLayout();
+	private void populateProgressPane(final JPanel progressPane) {
+		final GridBagLayout gbl = new GridBagLayout();
 		// progressPane.setBorder(new LineBorder(Color.BLACK, 1));
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 		progressPane.setLayout(gbl);
 
-		Insets padding = new Insets(3, 3, 3, 3);
+		final Insets padding = new Insets(3, 3, 3, 3);
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -152,12 +154,12 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 
 	}
 
-	public void setMaximum(int max) {
+	public void setMaximum(final int max) {
 		progress.setMaximum(max);
 	}
 
 	@Override
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 		refreshTitle();
 	}
@@ -166,7 +168,10 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 		String title = this.title + " - " + getValuePercent() + "%";
 		if (jobName != null && !jobName.trim().isEmpty())
 			title += " - " + jobName;
-		super.setTitle(title);
+		if (!previousFrameTitle.equals(title)) {
+			super.setTitle(title);
+			previousFrameTitle = title;
+		}
 	}
 
 	public void rebuildProgressValues() {
@@ -177,7 +182,7 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 	}
 
 	public void update() {
-		int prog = getProgress();
+		final int prog = getProgress();
 
 		if (lastProgress != prog) {
 			jobName = getActualJobName();
@@ -185,13 +190,14 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 			refreshTitle();
 			jobNameLabel.setText(jobName);
 			progressLabel.setText(getValuePercent() + "%");
-			elapsedTimeLabel.setText(timeTk.richTimeStringFromLong(getElapsedTime())
-					.toString());
+			elapsedTimeLabel.setText(
+					timeTk.richTimeStringFromLong(getElapsedTime()).toString());
 
-			long timeMs = getEstimatedTime();
+			final long timeMs = getEstimatedTime();
 
 			estTimeLabel.setText("Remaining time: "
-					+ ((timeMs > -1) ? timeTk.richTimeStringFromLong(timeMs) : "n.a."));
+					+ ((timeMs > -1) ? timeTk.richTimeStringFromLong(timeMs)
+							: "n.a."));
 
 			repaint();
 		}
@@ -203,6 +209,7 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 
 	/**
 	 * Returns the estimated time to finish in milliseconds
+	 *
 	 * @return
 	 */
 	public abstract long getEstimatedTime();
@@ -229,7 +236,7 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == cancelBtn) {
 			onCancelWithConfirmation();
 		}
@@ -237,7 +244,7 @@ public abstract class RichProgressView extends JFrame implements ActionListener 
 
 	public void onCancelWithConfirmation() {
 		if (!finished) {
-			int n = JOptionPane.showConfirmDialog(this,
+			final int n = JOptionPane.showConfirmDialog(this,
 					"Cancel simulation?", "Cancel Simulation?",
 					JOptionPane.YES_NO_OPTION);
 
