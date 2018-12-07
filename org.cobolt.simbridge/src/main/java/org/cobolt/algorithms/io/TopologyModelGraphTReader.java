@@ -30,11 +30,11 @@ public class TopologyModelGraphTReader extends GraphTReader {
 
 	/**
 	 * Reads a GraphT file from the given file into the given topology
-	 * 
+	 *
 	 * @param topology
-	 *            the {@link Topology} to fill
+	 *                     the {@link Topology} to fill
 	 * @param filename
-	 *            the file name to read from
+	 *                     the file name to read from
 	 */
 	public void read(final Topology topology, final String filename) throws FileNotFoundException {
 		this.read(topology, new File(filename));
@@ -42,25 +42,25 @@ public class TopologyModelGraphTReader extends GraphTReader {
 
 	/**
 	 * Reads a GraphT file from the given file into the given topology
-	 * 
+	 *
 	 * @param topology
-	 *            the {@link Topology} to fill
+	 *                      the {@link Topology} to fill
 	 * @param inputFile
-	 *            the file to read from
+	 *                      the file to read from
 	 */
-	public void read(final Topology topology, final File inputFile) throws FileNotFoundException {
+	private void read(final Topology topology, final File inputFile) throws FileNotFoundException {
 		this.read(topology, new FileInputStream(inputFile));
 	}
 
 	/**
 	 * Reads a GraphT file from the given stream into the given topology
-	 * 
+	 *
 	 * @param topology
-	 *            the {@link Topology} to fill
+	 *                     the {@link Topology} to fill
 	 * @param stream
-	 *            the stream to read from
+	 *                     the stream to read from
 	 */
-	public void read(final Topology topology, final InputStream stream) {
+	private void read(final Topology topology, final InputStream stream) {
 		Scanner scanner = null;
 
 		try {
@@ -140,7 +140,7 @@ public class TopologyModelGraphTReader extends GraphTReader {
 	}
 
 	private void parseAttributeSpecification(final TopologyElement topologyElement, final String attributeSpec,
-			Topology topology) {
+			final Topology topology) {
 		final String[] attributeEntry = attributeSpec.split(Pattern.quote("="));
 		if (attributeEntry.length != 2)
 			throw new IllegalArgumentException(String.format("Invalid attribute specification: '%s'", attributeSpec));

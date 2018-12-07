@@ -8,10 +8,10 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgor
 
 /**
  * Helper class for algorithms in the {@link EMoflonFacade}
- * 
+ *
  * @author Roland Kluge - Initial implementation
  */
-public class EMoflonFacadeAlgorithmHelper {
+class EMoflonFacadeAlgorithmHelper {
 
 	/**
 	 * Maps the given {@link TopologyControlAlgorithmID} to an (executable)

@@ -10,14 +10,14 @@ import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyProperties;
  * 
  * @author Roland Kluge - Initial implementation
  */
-public class EMoflonFacadeAttributeHelper {
+class EMoflonFacadeAttributeHelper {
 	private static final EdgeState DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE = EdgeState.UNCLASSIFIED;
 
 	private EMoflonFacadeAttributeHelper() {
 		throw new UnsupportedOperationException();
 	}
 
-	static EdgeState getEdgeStateSafe(IEdge prototype) {
+	static EdgeState getEdgeStateSafe(final IEdge prototype) {
 		final de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value = prototype
 				.getProperty(UnderlayTopologyProperties.EDGE_STATE);
 		if (value != null)
@@ -26,7 +26,7 @@ public class EMoflonFacadeAttributeHelper {
 			return DEFAULT_VALUE_FOR_UNDEFINED_EDGE_STATE;
 	}
 
-	private static EdgeState mapToModelEdgeState(de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value) {
+	private static EdgeState mapToModelEdgeState(final de.tudarmstadt.maki.simonstrator.tc.underlay.EdgeState value) {
 		switch (value) {
 		case ACTIVE:
 			return EdgeState.ACTIVE;

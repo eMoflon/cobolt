@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import de.tudarmstadt.maki.simonstrator.api.util.UtilityClassNotInstantiableException;
 
-public final class TopologyModelGraphTIO {
+final class TopologyModelGraphTIO {
 	public TopologyModelGraphTIO() {
 		throw new UtilityClassNotInstantiableException();
 	}
@@ -35,8 +35,8 @@ public final class TopologyModelGraphTIO {
 		return modelAttributeMapping;
 	}
 
-	static Object convertToObject(String attributeValue, String attributeIdentifier, Topology topology,
-			TopologyElement topologyElement) {
+	static Object convertToObject(final String attributeValue, final String attributeIdentifier,
+			final Topology topology, final TopologyElement topologyElement) {
 		switch (attributeIdentifier) {
 		case "a":
 		case "d":
@@ -68,7 +68,7 @@ public final class TopologyModelGraphTIO {
 		}
 	}
 
-	static EdgeState parseEdgeState(String stateIdentifier) {
+	private static EdgeState parseEdgeState(final String stateIdentifier) {
 		switch (stateIdentifier) {
 		case "A":
 			return EdgeState.ACTIVE;

@@ -28,7 +28,6 @@ import org.eclipse.emf.common.util.EList;
 import de.tudarmstadt.maki.simonstrator.api.Monitor;
 import de.tudarmstadt.maki.simonstrator.api.Monitor.Level;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.EdgeID;
-import de.tudarmstadt.maki.simonstrator.api.common.graph.GraphElementProperty;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IEdge;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.IElement;
 import de.tudarmstadt.maki.simonstrator.api.common.graph.INode;
@@ -53,7 +52,7 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 
 	public static final Double DEFAULT_VALUE_FOR_UNDEFINED_ATTRIBUTES = Double.NaN;
 
-	public static final int DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT = -1;
+	private static final int DEFAULT_VALUE_FOR_UNDEFINED_HOP_COUNT = -1;
 
 	private final Topology topology;
 
@@ -140,11 +139,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 		default:
 			throw new IllegalArgumentException(String.format("Unsupported mode: '%s'", operationMode));
 		}
-	}
-
-	@Override
-	public void run() {
-		this.run(new TopologyControlAlgorithmParamters());
 	}
 
 	@Override
@@ -441,16 +435,6 @@ public class EMoflonFacade extends TopologyControlFacade_ImplBase {
 			modelNode.setEnergyLevel((Double) value);
 			this.algorithm.handleNodeEnergyLevelModification(modelNode, oldEnergyLevel);
 		}
-	}
-
-	/**
-	 * Calls {@link #updateModelLinkAttribute(Edge, GraphElementProperty, Object)}
-	 * for the given link and its reverse link, setting the same value for the given
-	 * property on both links.
-	 */
-	public <T> void updateModelLinkAttributeSymmetric(final Edge modelEdge, final SiSType<T> property, final T value) {
-		updateModelLinkAttribute(modelEdge, property, value);
-		updateModelLinkAttribute(modelEdge.getReverseEdge(), property, value);
 	}
 
 	/**

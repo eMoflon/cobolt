@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmID;
+import de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters;
 import de.tudarmstadt.maki.simonstrator.tc.underlay.UnderlayTopologyControlAlgorithms;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.EdgeWeightProviders;
 import de.tudarmstadt.maki.simonstrator.tc.weighting.InverseEstimatedRemainingLifetimeWeightProvider;
@@ -37,7 +38,7 @@ public class EMoflonFacadeTestForGabrielGraph extends AbstractEMoflonFacadeTest 
 		TopologyModelTestUtils.assertUnclassified(this.facade.getTopology());
 		TopologyControlAlgorithmsTestUtils.assertWeightSet(this.facade);
 
-		this.facade.run();
+		this.facade.run(new TopologyControlAlgorithmParamters());
 
 		TopologyModelTestUtils.assertAllActiveWithExceptions(this.facade.getTopology(), "e13");
 
