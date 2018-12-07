@@ -1,0 +1,6 @@
+property;metric;col_00;col_01;col_02;col_03
+medians;Execution time [ms];10.1;80.6;0.607;77.8
+caps;Execution time [ms];0.819,59.9;0.754,272;0.061,7.81;0.686,272
+whiskers;Execution time [ms];2.41 - 0.819,30.1 - 59.9;4.67 - 0.754,229 - 272;0.252 - 0.061,3.3 - 7.81;4.18 - 0.686,227 - 272
+fliers;Execution time [ms];
+

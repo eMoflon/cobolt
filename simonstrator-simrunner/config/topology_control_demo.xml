@@ -145,7 +145,6 @@
 			movementInterval="$movementInterval" end="$end">
 			<TopologyControlFacade 
 				class="de.tudarmstadt.maki.simonstrator.tc.facade.MaxpowerTopologyControlFacade"/>
-			<BatchTopologyControlFacade class="de.tudarmstadt.maki.simonstrator.tc.facade.MaxpowerTopologyControlFacade"/>
 			<TopologyControlAlgorithmParamters class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters">
 				<TopologyControlAlgorithmParamter class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamter" key="k" value="$topologyControlParameterK"/>
 			</TopologyControlAlgorithmParamters>
@@ -195,7 +194,7 @@
 				class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.TopologyControlEvaluationScenarioFactory"
 				scenario="$scenario" role="GROUPNODE">
 				<Config
-					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.alltoall.PointToPointTransmissionApplicationConfig"
+					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.TopologyControlEvaluationApplicationConfig"
 					transmissionProbability="$transmissionProbability" sender="true"
 					receiver="true" sendDistributionScale="$transmissionScale">
 					<SendDistribution
@@ -237,7 +236,7 @@
 				class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.TopologyControlEvaluationScenarioFactory"
 				scenario="$scenario" role="TCNODE">
 				<Config
-					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.alltoall.PointToPointTransmissionApplicationConfig"
+					class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.TopologyControlEvaluationApplicationConfig"
 					transmissionProbability="$transmissionProbability" sender="true"
 					receiver="true" sendDistributionScale="1m">
 					<SendDistribution

@@ -1,0 +1,12 @@
+property;metric;col_00;col_01;col_02
+medians;Num. link state modifications;8.77e+05;2.8e+05;1.34e+05
+caps;Num. link state modifications;2.25e+05,2.1e+06;6.47e+04,6.56e+05;3.1e+04,3.16e+05
+whiskers;Num. link state modifications;2.92e+05 - 2.25e+05,1.66e+06 - 2.1e+06;8.94e+04 - 6.47e+04,5.13e+05 - 6.56e+05;4.3e+04 - 3.1e+04,2.49e+05 - 3.16e+05
+fliers;Num. link state modifications;
+
+property;metric;col_00;col_01;col_02
+medians;Num. link state modifications;7.6e+04;3.69e+04;2e+04
+caps;Num. link state modifications;8.05e+03,5.7e+05;2.4e+03,2.59e+05;1.15e+03,1.61e+05
+whiskers;Num. link state modifications;3.69e+04 - 8.05e+03,2.72e+05 - 5.7e+05;1.18e+04 - 2.4e+03,1.34e+05 - 2.59e+05;5.58e+03 - 1.15e+03,7.03e+04 - 1.61e+05
+fliers;Num. link state modifications;
+

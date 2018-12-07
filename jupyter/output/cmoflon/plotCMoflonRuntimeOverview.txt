@@ -1,0 +1,12 @@
+property;metric;col_00;col_01;col_02
+medians;Runtime [ms];117;181;582
+caps;Runtime [ms];11,331;32,535;4,1.32e+03
+whiskers;Runtime [ms];66 - 11,174 - 331;98 - 32,276 - 535;367 - 4,779 - 1.32e+03
+fliers;Runtime [ms];
+
+property;metric;col_00;col_01;col_02
+medians;Runtime [ms];483;542;466
+caps;Runtime [ms];5,1.38e+03;4,1.34e+03;3,1.56e+03
+whiskers;Runtime [ms];283 - 5,791 - 1.38e+03;299 - 4,733 - 1.34e+03;228 - 3,778 - 1.56e+03
+fliers;Runtime [ms];
+

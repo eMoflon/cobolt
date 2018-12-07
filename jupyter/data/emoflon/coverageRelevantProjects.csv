@@ -1,0 +1,21 @@
+Project name;Coverage;Covered instructions;Total instructions
+org.moflon.core.moca.processing;0.022;210;9723
+org.moflon.sdm.compiler.eclipse;0.302;836;277
+MocaTree;0.37;1411;3816
+org.moflon.sdm.constraints.democles;0.478;379;793
+org.moflon.core.mocatomoflon;0.526;24586;46764
+org.moflon.sdm.runtime.democles;0.536;5433;10131
+org.moflon.sdm.constraints.operationspecification;0.537;2062;3838
+org.moflon.sdm.compiler.democles.validation.controlflow;0.544;16527;30387
+org.moflon.sdm.compiler.democles.validation.result;0.546;930;1703
+org.moflon.sdm.democles.literalexpressionsolver;0.564;3621;6419
+org.moflon.core.dfs;0.565;2429;4301
+SDMLanguage;0.601;13953;23224
+org.moflon.sdm.constraints.constraintstodemocles;0.61;384;6296
+org.moflon.sdm.constraints.scopevalidation;0.654;1301;1989
+org.moflon.sdm.compiler.democles;0.674;4771;7074
+org.moflon.ide.core;0.676;4819;713
+org.moflon.sdm.compiler.democles.validation.scope;0.679;19719;29027
+org.moflon.sdm.compiler.democles.pattern;0.771;11622;15078
+org.moflon.sdm.controlflow.reversenavigation;0.924;375;406
+org.moflon.sdm.constraints.codegenerator;0.933;1101;118

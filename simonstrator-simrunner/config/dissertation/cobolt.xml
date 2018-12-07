@@ -11,7 +11,7 @@
     <!-- excluding the base station! -->
     <Variable name="end" value="15m"/>
     <!-- Greater than 0 in order to ensure event scheduling -->
-    <Variable name="world_size" value="900"/>
+    <Variable name="world_size" value="600"/>
     <!-- if possible an integer multiple of the UDG range -->
     <Variable name="outputFolder" value="output/wsntraces/singlerun_[DATETIME]/"/>
     <!-- Leave empty for generating a default name -->
@@ -28,12 +28,12 @@
     <Variable name="batteryCapacitySensor" value="1268"/>
     <Variable name="batteryCapacityMaster" value="100000"/>
     <!-- ==== MOVEMENT MODEL === -->
-    <Variable name="movementModel" value="None"/>
+    <Variable name="movementModel" value="GaussMarkov"/>
     <!-- None, GaussMarkov, HesitatingGaussMarkov, GeoFencedGaussMarkovMovement -->
     <Variable name="movementModelMaster" value="None"/>
     <!-- None, GaussMarkov, HesitatingGaussMarkov, GeoFencedGaussMarkovMovement -->
     <Variable name="movementInterval" value="1s"/>
-    <Variable name="movementMaxSpeed" value="0.3"/>
+    <Variable name="movementMaxSpeed" value="0.5"/>
     <Variable name="movementHesitationProbability" value="0.995"/>
     <!-- The probability that a node does NOT move in a time step. -->
     <!-- ==== UNDERLAY / TOPOLOGY CONTROL === -->
@@ -42,14 +42,14 @@
       See de.tud.kom.p2psim.api.linklayer.mac.PhyType -->
     <Variable name="routing" value="GLOBAL_KNOWLEDGE"/>
     <!-- Possible values: ONE_HOP, GLOBAL_KNOWLEDGE, AODV -->
-    <Variable name="topologyControlAlgorithm" value="MAXPOWER_TC"/>
+    <Variable name="topologyControlAlgorithm" value="D_KTC"/>
     <!-- MAXPOWER_TC D_KTC E_KTC LSTAR_KTC GG Yao RNG GMST LMST-->
     <Variable name="topologyControlOperationMode" value="INCREMENTAL"/>
     <!-- INCREMENTAL, BATCH -->
     <Variable name="topologyControlEdgeWeightProvider" value="de.tudarmstadt.maki.simonstrator.tc.weighting.DistanceEdgeWeightProvider"/>
     <Variable name="minimumDistanceThresholdInMeters" value="0.0"/>
     <Variable name="requiredTransmissionPowerExponent" value="2.0"/>
-    <Variable name="topologyControlIntervalInMinutes" value="5.0"/>
+    <Variable name="topologyControlIntervalInMinutes" value="1"/>
     <Variable name="topologyControlExecutionMode" value="PERIODIC"/>
     <!-- PERIODIC, SINGLESHOT -->
     <Variable name="topologyMonitoringLocalViewSize" value="3"/>

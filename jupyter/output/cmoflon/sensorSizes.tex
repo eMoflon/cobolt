@@ -1,0 +1,22 @@
+\begin{table}
+\begin{center}
+\caption[Binary image size comparison]{Binary image size comparison (\deltaManGen: Manual-to-generated size increase)}
+\label{tabCMoflonBinaryImageSizes}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ \textbf{Algorithm} & \textbf{Text[B]} & \deltaManGen & \textbf{Data[B]} & \deltaManGen & \textbf{BSS[B]} & \deltaManGen & \textbf{Total[B]} & \deltaManGen \\
+\midrule
+ MP & \num{37843} & \multicolumn{1}{c}{--} & \num{234} & \multicolumn{1}{c}{--} & \num{9212} & \multicolumn{1}{c}{--} & \num{47289} & \multicolumn{1}{c}{--} \\
+ \midrule
+$\tcaKtc_{\idxFont{M}}$ & \num{39161} & \multicolumn{1}{c}{--} & \num{234} & \multicolumn{1}{c}{--} & \num{9224} & \multicolumn{1}{c}{--} & \num{48619} & \multicolumn{1}{c}{--} \\
+ $\tcaKtc_{\idxFont{G}}$ & \num{41091} & \SI[retain-explicit-plus]{4.9}{\percent} & \num{242} & \SI[retain-explicit-plus]{3.4}{\percent} & \num{9440} & \SI[retain-explicit-plus]{2.3}{\percent} & \num{50773} & \SI[retain-explicit-plus]{4.4}{\percent} \\
+ \midrule
+$\tcaLStarKtc_{\idxFont{M}}$ & \num{40305} & \multicolumn{1}{c}{--} & \num{244} & \multicolumn{1}{c}{--} & \num{9474} & \multicolumn{1}{c}{--} & \num{50023} & \multicolumn{1}{c}{--} \\
+ $\tcaLStarKtc_{\idxFont{G}}$ & \num{42587} & \SI[retain-explicit-plus]{5.7}{\percent} & \num{252} & \SI[retain-explicit-plus]{3.3}{\percent} & \num{9690} & \SI[retain-explicit-plus]{2.3}{\percent} & \num{52529} & \SI[retain-explicit-plus]{5.0}{\percent} \\
+ \midrule
+$\tcaLmst_{\idxFont{M}}$ & \num{39357} & \multicolumn{1}{c}{--} & \num{242} & \multicolumn{1}{c}{--} & \num{9436} & \multicolumn{1}{c}{--} & \num{49035} & \multicolumn{1}{c}{--} \\
+ $\tcaLmst_{\idxFont{G}}$ & \num{41745} & \SI[retain-explicit-plus]{6.1}{\percent} & \num{244} & \SI[retain-explicit-plus]{0.8}{\percent} & \num{9444} & \SI[retain-explicit-plus]{0.1}{\percent} & \num{51433} & \SI[retain-explicit-plus]{4.9}{\percent} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}

@@ -1,0 +1,8 @@
+text;data;bss;dec;hex;filename;
+37843;234;9212;47289;b8b9;Maxpower.sky;
+39161;234;9224;48619;bdeb;KtcMan.sky;
+41091;242;9440;50773;c655;KtcGen.sky;
+40305;244;9474;50023;c367;LStarKtcMan.sky;
+42587;252;9690;52529;cd31;LStarKtcGen.sky;
+39357;242;9436;49035;bf8b;LmstMan.sky;
+41745;244;9444;51433;c8e9;LmstGen.sky;
