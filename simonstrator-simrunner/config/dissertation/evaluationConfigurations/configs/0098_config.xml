@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><Configuration>
+  <Description>Configuration for WSN trace generation</Description>
+  <Default>
+    <!-- ==== METADATA === -->
+    <Variable name="name" value="NOT_SET"/>
+    <Variable name="configurationNumber" value="98"/>
+    <Variable name="enableVisualization" value="true"/>
+    <Variable name="seed" value="8"/>
+    <Variable name="size" value="100"/>
+    <!-- excluding the base station! -->
+    <Variable name="end" value="1h"/>
+    <!-- Greater than 0 in order to ensure event scheduling -->
+    <Variable name="world_size" value="300"/>
+    <!-- if possible an integer multiple of the UDG range -->
+    <Variable name="outputFolder" value="C:\Users\rkluge\Documents\data\workspaces\maki_a01\git\simonstrator-simrunner\output\cobolt\batchrun_2018-11-14T163420_debug"/>
+    <!-- Leave empty for generating a default name -->
+    <Variable name="tracesOutputFolder" value="C:\Users\rkluge\Documents\data\workspaces\maki_a01\git\simonstrator-simrunner\output\cobolt\batchrun_2018-11-14T163420_debug"/>
+    <!-- Leave empty for generating a default name -->
+    <Variable name="outputFilePrefix" value="cobolt"/>
+    <!-- Leave empty for generating a default name -->
+    <Variable name="screenshotOutputFolder" value=""/>
+    <!-- Parent folder of topology screenshots. Can be omitted or left empty for disabling this feature. -->
+    <!-- ==== ENERGY MODEL === -->
+    <!-- <Variable name="batteryCapacity" value="1268" /> -->
+    <!-- You might use 1268, which is the value for an AAA Carbon-zinc battery:
+      http://www.allaboutbatteries.com/Energy-tables.html -->
+    <Variable name="batteryCapacitySensor" value="130.0"/>
+    <Variable name="batteryCapacityMaster" value="1000000.0"/>
+    <!-- ==== MOVEMENT MODEL === -->
+    <Variable name="movementModel" value="None"/>
+    <!-- None, GaussMarkov, HesitatingGaussMarkov, GeoFencedGaussMarkovMovement -->
+    <Variable name="movementModelMaster" value="None"/>
+    <!-- None, GaussMarkov, HesitatingGaussMarkov, GeoFencedGaussMarkovMovement -->
+    <Variable name="movementInterval" value="1m"/>
+    <Variable name="movementMaxSpeed" value="0.0"/>
+    <Variable name="movementHesitationProbability" value="0.995"/>
+    <!-- The probability that a node does NOT move in a time step. -->
+    <!-- ==== UNDERLAY / TOPOLOGY CONTROL === -->
+    <Variable name="phyType" value="WIFI"/>
+    <!-- WIFI, WIFI80211B
+      See de.tud.kom.p2psim.api.linklayer.mac.PhyType -->
+    <Variable name="routing" value="GLOBAL_KNOWLEDGE"/>
+    <!-- Possible values: ONE_HOP, GLOBAL_KNOWLEDGE, AODV -->
+    <Variable name="topologyControlAlgorithm" value="D_KTC"/>
+    <!-- MAXPOWER_TC D_KTC E_KTC LSTAR_KTC GG Yao RNG GMST LMST-->
+    <Variable name="topologyControlOperationMode" value="INCREMENTAL"/>
+    <!-- INCREMENTAL, BATCH -->
+    <Variable name="topologyControlEdgeWeightProvider" value="de.tudarmstadt.maki.simonstrator.tc.weighting.DistanceEdgeWeightProvider"/>
+    <Variable name="minimumDistanceThresholdInMeters" value="0.0"/>
+    <Variable name="requiredTransmissionPowerExponent" value="2.0"/>
+    <Variable name="topologyControlIntervalInMinutes" value="1.0"/>
+    <Variable name="topologyControlExecutionMode" value="PERIODIC"/>
+    <!-- PERIODIC, SINGLESHOT -->
+    <Variable name="topologyMonitoringLocalViewSize" value="2"/>
+    <Variable name="monitoringIntervalInMinutes" value="0.5"/>
+    <Variable name="topologyControlParameterK" value="1.41"/>
+    <Variable name="topologyControlParameterA" value="2.0"/>
+    <Variable name="topologyControlParameterConeCount" value="6"/>
+    <Variable name="nodePreprocessorClass" value="org.cobolt.algorithms.facade.preprocessing.NullNodePreprocessor"/>
+    <Variable name="nodePreprocessorShallReverseOrder" value="false"/>
+    <!-- ==== OVERLAY / APPLICATION === -->
+    <Variable name="scenario" value="DATACOLLECTION"/>
+    <!-- Possible values: DATACOLLECTION, GOSSIP, POINTTOPOINT, WILDFIRE see
+      de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.ScenarioType -->
+    <Variable name="datacollectionProbability" value="1.0"/>
+    <Variable name="newMessageGenerationProbability" value="0.1"/>
+    <Variable name="messageForwardingProbability" value="0.1"/>
+    <Variable name="transmissionProbability" value="0.1"/>
+    <Variable name="transmissionScale" value="1ms"/>
+    <Variable name="transmissionIntervalMin" value="100"/>
+    <Variable name="transmissionIntervalMax" value="200"/>
+    <!-- ==== RECONFIGURATION === -->
+    <!-- <Variable name="splcOutputFile" value="C:\Users\rkluge\Documents\repos\topology-control-seams2018\de.uni-mannheim.bwl.becker.topology-control\src\main\resources\spl-conqueror\D6-splc2\splc_logfile_fraction100_seed0000_mEJain.log" /> -->
+    <Variable name="reconfigurationEnabled" value="false"/>
+    <Variable name="splcOutputFile" value="C:\Users\rkluge\Documents\data\workspaces\maki_a01\git\splc2018-code\org.coala.adaptationlogic\src\main\resources\spl-conqueror\D6-splc4\splc_logfile_fraction100_seed0000_mEMean.log"/>
+    <Variable name="splcFeatureInteractionLineNumber" value="0"/>
+    <Variable name="adaptationLogicSeed" value="0"/>
+    <Variable name="adaptationLogicPlanner" value="null"/>
+    <Variable name="goalNonfunctionalProperty" value="mEMean"/>
+  </Default>
+  <!-- Choose exactly one of the following SimulatorCore definitions to choose
+    between realTime mode and normal mode -->
+  <!-- <SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator" static="getInstance"
+    seed="$seed" finishAt="$end" timeSkew="10.0" /> -->
+  <SimulatorCore class="de.tud.kom.p2psim.impl.simengine.Simulator" finishAt="$end" seed="$seed" static="getInstance"/>
+  <Topology class="de.tud.kom.p2psim.impl.topology.TopologyFactory" worldX="$world_size" worldY="$world_size">
+    <View class="de.tud.kom.p2psim.impl.topology.views.LogicalWifiTopologyView" csDbm="-96" phy="$phyType" rxSensitivityDbm="-75" satDbm="-77">
+      <!-- previously:
+        rxSensitivityDbm="-75" satDbm="-80" csDbm="-77"> -->
+      <PropagationLossModel class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.propagation.loss.LogDistancePropagationLossModel" exponent="2.5"/>
+      <ErrorRateModel class="de.tud.kom.p2psim.impl.topology.views.wifi.phy.errormodel.NistErrorRateModel"/>
+    </View>
+    <IfEqualStr arg0="$enableVisualization" arg1="true">
+      <View class="de.tud.kom.p2psim.impl.topology.views.VisualizationTopologyView"/>
+    </IfEqualStr>
+    <Placement class="de.tud.kom.p2psim.impl.topology.placement.RandomPositionDistribution"/>
+    <Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement"/>
+  </Topology>
+  <EnergyModelBaseStation class="de.tud.kom.p2psim.impl.energy.EnergyModelFactory" maxBatteryCapacity="$batteryCapacityMaster">
+    <InitialBatteryPercentageDistribution class="de.tud.kom.p2psim.impl.util.stat.distributions.UniformDistribution" max="1.0" min="1.0"/>
+    <!-- For power-supplied base station -->
+    <!--<InitialBatteryPercentageDistribution class="de.tud.kom.p2psim.impl.util.stat.distributions.StaticDistribution"
+      value="1.0"/> -->
+    <Component class="de.tud.kom.p2psim.impl.energy.configs.WifiBCM4329Chip"/>
+  </EnergyModelBaseStation>
+  <EnergyModelSensor class="de.tud.kom.p2psim.impl.energy.EnergyModelFactory" maxBatteryCapacity="$batteryCapacitySensor">
+    <InitialBatteryPercentageDistribution class="de.tud.kom.p2psim.impl.util.stat.distributions.UniformDistribution" max="1.0" min="0.3"/>
+    <Component class="de.tud.kom.p2psim.impl.energy.configs.WifiBCM4329Chip"/>
+  </EnergyModelSensor>
+  <LinkLayer class="de.tud.kom.p2psim.impl.linklayer.LinkLayerFactory">
+    <Mac class="de.tud.kom.p2psim.impl.linklayer.mac.configs.Ieee80211AdHocConfig" phy="$phyType" rateManager="IDEAL" standard="g"/>
+    <!--Default: MaxRetransmission="7" MaxTimeInQueue="10s" MaxQueueLength="1000" RtsCtsThreshold="$RtsCtsThreshold"/> -->
+  </LinkLayer>
+  <NetLayer class="de.tud.kom.p2psim.impl.network.routed.RoutedNetLayerFactory">
+    <Routing algorithm="$routing" class="de.tud.kom.p2psim.impl.network.routed.config.Routing" phy="$phyType" protocol="IPv4"/>
+  </NetLayer>
+  <TransLayer class="de.tud.kom.p2psim.impl.transport.modular.ModularTransLayerFactory" useRealTcpAck="true"/>
+  <TopologyMonitoring class="de.tud.kom.p2psim.impl.topology.monitoring.DistributedTopologyMonitoringComponentFactory"/>
+  <CentralizedTopologyControl class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.TopologyControlComponentFactory">
+    <Config adaptationLogicPlanner="$adaptationLogicPlanner" adaptationLogicSeed="$adaptationLogicSeed" batteryCapacityMaster="$batteryCapacityMaster" batteryCapacitySensor="$batteryCapacitySensor" class="de.tudarmstadt.maki.simonstrator.tc.reconfiguration.TopologyControlComponentConfig" configurationNumber="$configurationNumber" datacollectionProbability="$datacollectionProbability" end="$end" goalNonfunctionalProperty="$goalNonfunctionalProperty" minimumDistanceThresholdInMeters="$minimumDistanceThresholdInMeters" monitoringIntervalInMinutes="$monitoringIntervalInMinutes" movementInterval="$movementInterval" movementMaxSpeed="$movementMaxSpeed" movementModel="$movementModel" movementModelMaster="$movementModelMaster" name="$name" nodeCount="$size" outputFilePrefix="$outputFilePrefix" outputFolder="$outputFolder" reconfigurationEnabled="$reconfigurationEnabled" requiredTransmissionPowerExponent="$requiredTransmissionPowerExponent" scenario="$scenario" splcFeatureInteractionLineNumber="$splcFeatureInteractionLineNumber" splcOutputFile="$splcOutputFile" topologyControlAlgorithm="$topologyControlAlgorithm" topologyControlExecutionMode="$topologyControlExecutionMode" topologyControlIntervalInMinutes="$topologyControlIntervalInMinutes" topologyControlOperationMode="$topologyControlOperationMode" topologyMonitoringLocalViewSize="$topologyMonitoringLocalViewSize" worldSize="$world_size">
+      <InputTopologyProvider class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.GlobalOracleTopologyProvider" role="UDG"/>
+      <OutputTopologyProvider class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.GlobalOracleTopologyProvider" role="Logical"/>
+      <TopologyControlFacade class="org.cobolt.algorithms.facade.EMoflonFacade">
+        <NodePreprocessor class="$nodePreprocessorClass" shallReverseEdgeOrder="$nodePreprocessorShallReverseOrder"/>
+      </TopologyControlFacade>
+      <TopologyControlAlgorithmParamters class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamters">
+        <TopologyControlAlgorithmParamter class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamter" key="k" value="$topologyControlParameterK"/>
+        <TopologyControlAlgorithmParamter class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamter" key="a" value="$topologyControlParameterA"/>
+        <TopologyControlAlgorithmParamter class="de.tudarmstadt.maki.simonstrator.tc.facade.TopologyControlAlgorithmParamter" key="coneCount" value="$topologyControlParameterConeCount"/>
+      </TopologyControlAlgorithmParamters>
+      <EdgeWeightingFunction class="$topologyControlEdgeWeightProvider"/>
+      <EdgeFilterFactory class="de.tudarmstadt.maki.simonstrator.tc.filtering.DistanceEdgeFilterFactory" threshold="$minimumDistanceThresholdInMeters"/>
+      <DistanceToTransmissionPowerFunction class="de.tudarmstadt.maki.simonstrator.tc.weighting.CsvEdgeWeightingFunction" distanceColumn="0" file="config/sosym/R/energy/avg_power_vs_distance.csv" weightColumn="1"/>
+      <MonitoringComponent class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.GlobalKnowledgeMonitoringComponent"/>
+    </Config>
+  </CentralizedTopologyControl>
+  <InformationStore class="de.tudarmstadt.maki.simonstrator.tc.monitoring.TopologyControlInformationStoreComponentFactory"/>
+  <!-- - Group composition for the different scenarios -->
+  <HostBuilder class="de.tud.kom.p2psim.impl.scenario.DefaultHostBuilder" experimentSize="$size">
+    <Group groupID="sensors" size="$size">
+      <Topology>
+        <Placement class="de.tud.kom.p2psim.impl.topology.placement.RandomPositionDistribution"/>
+        <IfEqualStr arg0="$movementModel" arg1="None">
+          <Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement" timeBetweenMoveOperations="5s"/>
+        </IfEqualStr>
+        <IfEqualStr arg0="$movementModel" arg1="HesitatingGaussMarkov">
+          <Movement alpha="0.1" class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.HesitatedGaussMarkovMovement" edgeThreshold="20" movementHesitationProbability="$movementHesitationProbability" timeBetweenMoveOperations="$movementInterval"/>
+        </IfEqualStr>
+        <IfEqualStr arg0="$movementModel" arg1="GaussMarkov">
+          <Movement alpha="0.01" class="de.tud.kom.p2psim.impl.topology.movement.GaussMarkovMovement" edgeThreshold="20" timeBetweenMoveOperations="$movementInterval"/>
+        </IfEqualStr>
+        <IfEqualStr arg0="$movementModel" arg1="GeoFencedGaussMarkovMovement">
+          <Movement alpha="0.01" class="de.tud.kom.p2psim.impl.topology.movement.GeoFencedGaussMarkovMovement" edgeThreshold="20" timeBetweenMoveOperations="$movementInterval">
+            <GeoFence class="de.tud.kom.p2psim.impl.topology.movement.GeoFence" sizeX="200.0" sizeY="200.0" t="10m"/>
+          </Movement>
+        </IfEqualStr>
+      </Topology>
+      <EnergyModelSensor/>
+      <LinkLayer/>
+      <NetLayer/>
+      <TransLayer/>
+      <Properties enableChurn="false" maxMovementSpeed="$movementMaxSpeed"/>
+      <Application class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.TopologyControlEvaluationScenarioFactory" role="GROUPNODE" scenario="$scenario">
+        <Config class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.TopologyControlEvaluationApplicationConfig" datacollectionProbability="$datacollectionProbability" forwardingProbability="$messageForwardingProbability" newMessageGenerationProbability="$newMessageGenerationProbability" sendDistributionScale="$transmissionScale" transmissionProbability="$transmissionProbability">
+          <SendDistribution class="de.tud.kom.p2psim.impl.util.stat.distributions.UniformDistribution" max="$transmissionIntervalMax" min="$transmissionIntervalMin"/>
+        </Config>
+      </Application>
+    </Group>
+    <Group groupID="base_station" size="1">
+      <Topology>
+        <!-- For static base station -->
+        <Placement class="de.tud.kom.p2psim.impl.topology.placement.CenterPlacement"/>
+        <!--<Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement"
+          timeBetweenMoveOperations="5s" />-->
+        <IfEqualStr arg0="$movementModelMaster" arg1="None">
+          <Movement class="de.tud.kom.p2psim.impl.topology.movement.NoMovement" timeBetweenMoveOperations="5s"/>
+        </IfEqualStr>
+        <IfEqualStr arg0="$movementModelMaster" arg1="HesitatingGaussMarkov">
+          <Movement alpha="0.1" class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.HesitatedGaussMarkovMovement" edgeThreshold="20" movementHesitationProbability="$movementHesitationProbability" timeBetweenMoveOperations="$movementInterval"/>
+        </IfEqualStr>
+        <IfEqualStr arg0="$movementModelMaster" arg1="GaussMarkov">
+          <Movement alpha="0.01" class="de.tud.kom.p2psim.impl.topology.movement.GaussMarkovMovement" edgeThreshold="20" timeBetweenMoveOperations="$movementInterval"/>
+        </IfEqualStr>
+      </Topology>
+      <EnergyModelBaseStation/>
+      <LinkLayer/>
+      <NetLayer/>
+      <TransLayer/>
+      <CentralizedTopologyControl/>
+      <InformationStore/>
+      <Properties enableChurn="false" maxMovementSpeed="$movementMaxSpeed"/>
+      <Application class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.TopologyControlEvaluationScenarioFactory" role="TCNODE" scenario="$scenario">
+        <Config class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.common.TopologyControlEvaluationApplicationConfig" datacollectionProbability="0.0" forwardingProbability="$messageForwardingProbability" newMessageGenerationProbability="$newMessageGenerationProbability" sendDistributionScale="$transmissionScale" transmissionProbability="$transmissionProbability">
+          <SendDistribution class="de.tud.kom.p2psim.impl.util.stat.distributions.UniformDistribution" max="$transmissionIntervalMax" min="$transmissionIntervalMin"/>
+        </Config>
+      </Application>
+    </Group>
+  </HostBuilder>
+  <Monitor class="de.tud.kom.p2psim.impl.common.DefaultMonitor" start="0m" static="getInstance" stop="$end">
+    <ResultWriter class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.ConsoleWriter"/>
+    <Analyzer class="de.tudarmstadt.maki.simonstrator.peerfact.application.sensor.analyzer.TopologyLinkVisualizationAnalyzer"/>
+    <Analyzer class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.analyzer.TotalEnergyConsumptionAnalyzer"/>
+    <Analyzer class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.analyzer.TopologyControlEvaluationApplicationMessageCountAnalyzer"/>
+    <Analyzer class="de.tud.kom.p2psim.impl.util.livemon.LivemonCommonAnalyzer"/>
+    <Analyzer class="de.tudarmstadt.maki.simonstrator.peerfact.application.topologycontrol.scenarios.wildfire.WildfireMonitoringAnalyzer" updateInterval="1m"/>
+    <!-- <Analyzer class="de.tudarmstadt.maki.simonstrator.peerfact.application.sensor.wsntraces.TopologyControlReconfigurationAnalyzer" outputFolder="$tracesOutputFolder" isLivePlottingEnabled="$enableVisualization"/> -->
+  </Monitor>
+  <!-- Provides global knowledge view to the hosts -->
+  <Oracle class="de.tud.kom.p2psim.impl.util.oracle.GlobalOracle" static="getInstance"/>
+  <Scenario class="de.tud.kom.p2psim.impl.scenario.DOMScenarioFactory" componentClass="de.tudarmstadt.maki.simonstrator.peerfact.application.topopologymonitoring.TopologyMonitoringApplicationFactory"/>
+</Configuration>
