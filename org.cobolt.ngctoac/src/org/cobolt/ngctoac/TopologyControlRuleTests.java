@@ -141,8 +141,13 @@ public class TopologyControlRuleTests {
 	@Test
 	public void testCreateTriangleForbiddenByApplicationCondition4() {
 		assertTrue(addLink_Refined("3->2", 6));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(getTopology(), "3->2", LinkState.UNMARKED));
+
 		assertTrue(addLink_Refined("1->3", 1));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(getTopology(), "1->3", LinkState.UNMARKED));
+
 		assertTrue(addLink_Refined("1->2", 7));
+		assertTrue(GraphUtils.containsLinkWithStateAndId(getTopology(), "1->2", LinkState.UNMARKED));
 		assertFalse(setLinkState_Refined("1->2", LinkState.ACTIVE));
 	}
 

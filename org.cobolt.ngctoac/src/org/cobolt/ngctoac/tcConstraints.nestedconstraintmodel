@@ -156,5 +156,6 @@
     <domain>
       <typegraph href="http://www.coboltmetamodel.org/#/"/>
     </domain>
+    <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
   </nestedconstrainmodels>
 </nestedconstraintmodel:NestedConstraintModel>
