@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.eclipse.egit.core.GitProvider">
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,org.cobolt.algorithms"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,org.cobolt.analysis"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,org.cobolt.model"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,org.cobolt.simbridge"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,org.cobolt.specification"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,simonstrator-api"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,simonstrator-overlays"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,simonstrator-peerfact"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,simonstrator-simrunner"/>
-<project reference="1.0,https://RolandKluge@github.com/eMoflon/cobolt.git,master,simonstrator-topology-control"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,org.cobolt.algorithms"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,org.cobolt.analysis"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,org.cobolt.model"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,org.cobolt.simbridge"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,org.cobolt.specification"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,simonstrator-api"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,simonstrator-overlays"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,simonstrator-peerfact"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,simonstrator-simrunner"/>
+<project reference="1.0,https://github.com/eMoflon/cobolt.git,master,simonstrator-topology-control"/>
 </provider>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1523346482918_4" label="Cobolt" name="Cobolt">
 <item elementID="=org.cobolt.simbridge" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
