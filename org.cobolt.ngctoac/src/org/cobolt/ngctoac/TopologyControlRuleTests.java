@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.henshin.interpreter.Engine;
 import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
 import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
@@ -17,7 +19,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TopologyControlRuleTests {
-	private static final String TOPOLOGY_INSTANCE_TWO_NODES = "../../../../instance/Topology.xmi";
+	private static final String PROJECT_ROOT_RELATIVE_PATH = "../../../..";
+
+	private static final String TOPOLOGY_INSTANCE_TWO_NODES = PROJECT_ROOT_RELATIVE_PATH + "/instance/Topology.xmi";
+	private static final String TOPOLOGY_INSTANCE_TEMP = PROJECT_ROOT_RELATIVE_PATH + "/output/Topology.xmi";
 
 	private HenshinResourceSet resourceSet;
 
@@ -105,6 +110,8 @@ public class TopologyControlRuleTests {
 		assertTrue(setLinkState("1->2", LinkState.ACTIVE));
 		assertTrue(addLink_Refined("1->3", 1));
 
+		saveCurrentTopology();
+
 		assertFalse(addLink_Refined("3->2", 6));
 	}
 
@@ -175,5 +182,21 @@ public class TopologyControlRuleTests {
 	 */
 	private EObject getTopology() {
 		return this.graph.getRoots().get(0);
+	}
+
+	@SuppressWarnings("unused")
+	/**
+	 * Utility function for saving the current state of the topology
+	 */
+	private void saveCurrentTopology() {
+		final Resource topologyResource = this.resourceSet.getResource(TOPOLOGY_INSTANCE_TWO_NODES);
+		final Resource tempResource = this.resourceSet.createResource(TOPOLOGY_INSTANCE_TEMP);
+		final EObject copiedTopology = EcoreUtil.copy(topologyResource.getContents().get(0));
+		tempResource.getContents().add(copiedTopology);
+		try {
+			tempResource.save(null);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
