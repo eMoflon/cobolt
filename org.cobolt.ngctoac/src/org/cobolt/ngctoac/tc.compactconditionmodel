@@ -3,133 +3,85 @@
   <compactconditions name="ActiveLinkIsNotLongestLinkInTriangle">
     <typeGraph href="http://www.coboltmetamodel.org/#/"/>
     <laxCondition xsi:type="laxcondition:QuantifiedLaxCondition" quantifier="FORALL">
-      <graph>
-        <nodes name="e12">
+      <graph name="">
+        <edges source="//@compactconditions.0/@laxCondition/@graph/@nodes.0" target="//@compactconditions.0/@laxCondition/@graph/@nodes.1">
+          <type href="http://www.coboltmetamodel.org/#//Link/source"/>
+        </edges>
+        <edges source="//@compactconditions.0/@laxCondition/@graph/@nodes.0" target="//@compactconditions.0/@laxCondition/@graph/@nodes.2">
+          <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+        </edges>
+        <nodes outgoing="//@compactconditions.0/@laxCondition/@graph/@edges.1 //@compactconditions.0/@laxCondition/@graph/@edges.0" name="e12">
           <attributes op="=" value="1">
             <type href="http://www.coboltmetamodel.org/#//Link/state"/>
           </attributes>
           <type href="http://www.coboltmetamodel.org/#//Link"/>
         </nodes>
+        <nodes name="n1" incoming="//@compactconditions.0/@laxCondition/@graph/@edges.0">
+          <type href="http://www.coboltmetamodel.org/#//Node"/>
+        </nodes>
+        <nodes name="n2" incoming="//@compactconditions.0/@laxCondition/@graph/@edges.1">
+          <type href="http://www.coboltmetamodel.org/#//Node"/>
+        </nodes>
+        <typegraph href="http://www.coboltmetamodel.org/#/"/>
       </graph>
       <condition xsi:type="laxcondition:Formula">
         <arguments xsi:type="laxcondition:QuantifiedLaxCondition">
-          <graph name="">
-            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.0" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.3">
-              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+          <graph>
+            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.3" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.0">
+              <type href="http://www.coboltmetamodel.org/#//Link/source"/>
             </edges>
-            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.3" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.1">
+            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.3" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.2">
               <type href="http://www.coboltmetamodel.org/#//Link/target"/>
             </edges>
-            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.0" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.4">
-              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
-            </edges>
-            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.4" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.2">
-              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
-            </edges>
-            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.2" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.5">
-              <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
+            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.5" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.2">
+              <type href="http://www.coboltmetamodel.org/#//Link/source"/>
             </edges>
             <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.5" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.1">
               <type href="http://www.coboltmetamodel.org/#//Link/target"/>
             </edges>
-            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.0 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.2" name="n1">
+            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.4" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.0">
+              <type href="http://www.coboltmetamodel.org/#//Link/source"/>
+            </edges>
+            <edges source="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.4" target="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@nodes.1">
+              <type href="http://www.coboltmetamodel.org/#//Link/target"/>
+            </edges>
+            <nodes name="n1" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.0 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.4">
               <type href="http://www.coboltmetamodel.org/#//Node"/>
             </nodes>
-            <nodes name="n2" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.1 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.5">
+            <nodes name="n2" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.3 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.5">
               <type href="http://www.coboltmetamodel.org/#//Node"/>
             </nodes>
-            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.4" name="n3" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.3">
+            <nodes name="n3" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.1 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.2">
               <type href="http://www.coboltmetamodel.org/#//Node"/>
             </nodes>
-            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.1" name="e12" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.0">
-              <attributes op="=" value="w12">
-                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
-              </attributes>
-              <type href="http://www.coboltmetamodel.org/#//Link"/>
-            </nodes>
-            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.3" name="e13" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.2">
+            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.0 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.1" name="e13">
               <attributes op="=" value="w13">
                 <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
               </attributes>
               <type href="http://www.coboltmetamodel.org/#//Link"/>
             </nodes>
-            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.5" name="e32" incoming="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.4">
+            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.4 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.5" name="e12">
+              <attributes op="=" value="w12">
+                <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
+              </attributes>
+              <attributes op="=" value="1">
+                <type href="http://www.coboltmetamodel.org/#//Link/state"/>
+              </attributes>
+              <type href="http://www.coboltmetamodel.org/#//Link"/>
+            </nodes>
+            <nodes outgoing="//@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.2 //@compactconditions.0/@laxCondition/@condition/@arguments.0/@graph/@edges.3" name="e32">
               <attributes op="=" value="w32">
                 <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
               </attributes>
               <type href="http://www.coboltmetamodel.org/#//Link"/>
             </nodes>
+            <typegraph href="http://www.coboltmetamodel.org/#/"/>
           </graph>
+          <condition xsi:type="laxcondition:True"/>
           <variables name="w12"/>
           <variables name="w13"/>
           <variables name="w32"/>
         </arguments>
-      </condition>
-    </laxCondition>
-    <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
-  </compactconditions>
-  <compactconditions name="InactiveLinkIsLongestLinkInTriangle">
-    <typeGraph href="http://www.coboltmetamodel.org/#/"/>
-    <laxCondition xsi:type="laxcondition:QuantifiedLaxCondition" quantifier="FORALL">
-      <graph>
-        <nodes name="e12">
-          <attributes op="=" value="0">
-            <type href="http://www.coboltmetamodel.org/#//Link/state"/>
-          </attributes>
-          <type href="http://www.coboltmetamodel.org/#//Link"/>
-        </nodes>
-      </graph>
-      <condition xsi:type="laxcondition:QuantifiedLaxCondition">
-        <graph name="">
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.0" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.3">
-            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
-          </edges>
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.3" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.1">
-            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
-          </edges>
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.0" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.4">
-            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
-          </edges>
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.4" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.2">
-            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
-          </edges>
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.2" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.5">
-            <type href="http://www.coboltmetamodel.org/#//Node/outgoingLinks"/>
-          </edges>
-          <edges source="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.5" target="//@compactconditions.1/@laxCondition/@condition/@graph/@nodes.1">
-            <type href="http://www.coboltmetamodel.org/#//Link/target"/>
-          </edges>
-          <nodes outgoing="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.0 //@compactconditions.1/@laxCondition/@condition/@graph/@edges.2" name="n1">
-            <type href="http://www.coboltmetamodel.org/#//Node"/>
-          </nodes>
-          <nodes name="n2" incoming="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.1 //@compactconditions.1/@laxCondition/@condition/@graph/@edges.5">
-            <type href="http://www.coboltmetamodel.org/#//Node"/>
-          </nodes>
-          <nodes outgoing="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.4" name="n3" incoming="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.3">
-            <type href="http://www.coboltmetamodel.org/#//Node"/>
-          </nodes>
-          <nodes outgoing="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.1" name="e12" incoming="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.0">
-            <attributes op="=" value="w12">
-              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
-            </attributes>
-            <type href="http://www.coboltmetamodel.org/#//Link"/>
-          </nodes>
-          <nodes outgoing="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.3" name="e13" incoming="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.2">
-            <attributes op="=" value="w13">
-              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
-            </attributes>
-            <type href="http://www.coboltmetamodel.org/#//Link"/>
-          </nodes>
-          <nodes outgoing="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.5" name="e32" incoming="//@compactconditions.1/@laxCondition/@condition/@graph/@edges.4">
-            <attributes op="=" value="w32">
-              <type href="http://www.coboltmetamodel.org/#//Link/weight"/>
-            </attributes>
-            <type href="http://www.coboltmetamodel.org/#//Link"/>
-          </nodes>
-        </graph>
-        <variables name="w12"/>
-        <variables name="w13"/>
-        <variables name="w32"/>
       </condition>
     </laxCondition>
     <attributeConditions conditionText="w12 > w13 &amp;&amp; w12 > w32"/>
